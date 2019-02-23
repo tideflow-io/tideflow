@@ -1,21 +1,26 @@
 <template name="dashboard">
   <div class="container">
-    {{> profileHeader}}
-    <div class="row justify-content-center">
-      <div class="col-md-3">
-        {{> profileMenu}}
-      </div>
-      <div class="col-md-9">
-        <div class="card">
-          <div class="card-body">
-            {{#autoForm collection="Meteor.users" doc=user id="profileForm" type="method-update" meteormethod="profile.update"}}
-            {{> afQuickField name='profile.firstName'}}
-            {{> afQuickField name='profile.lastName'}}
-            <button type="submit" class="btn btn-primary">{{__ "profile.index.submit"}}</button>
-            {{/autoForm}}
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "dashboard.title"}}
+          </h2>
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          {{__ "dashboard.humansWorking"}}
+        </p>
+        <p>
+            {{__ "dashboard.meanwhile"}}
+          <u><a href="{{pathFor 'channels.index'}}">{{__ "dashboard.yourChannels"}}</a></u> and
+          <u><a href="{{pathFor 'flows.index'}}">{{__ "dashboard.yourFlows"}}</a></u>.
+        </p>
+      </div>
+    </div>
   </div>
-</template>
+</template> 
