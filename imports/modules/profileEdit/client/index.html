@@ -1,0 +1,21 @@
+<template name="membership.profile.edit">
+  <div class="container">
+    {{> profileHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+      {{> profileMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            {{#autoForm collection="Meteor.users" doc=user id="profileForm" type="method-update" meteormethod="profile.update"}}
+            {{> afQuickField name='profile.firstName'}}
+            {{> afQuickField name='profile.lastName'}}
+            <button type="submit" class="btn btn-primary">{{__ "profileShared.home.submit"}}</button>
+            {{/autoForm}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

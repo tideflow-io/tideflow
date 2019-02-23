@@ -1,0 +1,11 @@
+_namespace: enroll
+sectionTitle: Enroll
+password: Password
+passwordPlaceholder: My password
+repeatPassword: Repeat password
+repeatPasswordPlaceholder: Repeat my password
+submit: Create my account
+password.length: The password must have at least 6 characters
+password.mustmatch: The passwords must match
+enroll.error: There was a problem
+enroll.ok: Enrollment successful

@@ -1,0 +1,9 @@
+<template name="managementMenu">
+  <ul class="nav nav-tabs flex-lg-column">
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'management.index'}}active{{/if}}" href="{{pathFor 'management.index'}}">
+        {{__ "managementHeader.general"}}
+      </a>
+    </li>
+  </ul>
+</template>

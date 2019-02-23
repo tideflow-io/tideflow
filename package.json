@@ -1,0 +1,41 @@
+{
+  "name": "tideflowio-platform",
+  "version": "0.0.4",
+  "license": "AGPLV3",
+  "bugs": {
+    "url": "https://github.com/tideflow-io/platform/issues"
+  },
+  "keywords": [
+    "workflows",
+    "processes",
+    "automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tideflow-io/platform.git"
+  },
+  "scripts": {
+    "start": "meteor run",
+    "lint": "eslint .",
+    "pretest": "npm run lint --silent",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "testwatch": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "debug": "meteor run --inspect-brk=9229"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.2.0",
+    "bcrypt": "^2.0.1",
+    "chai": "^4.2.0",
+    "cron-converter": "0.0.12",
+    "debug": "^4.1.1",
+    "meteor-node-stubs": "^0.3.2",
+    "moment": "^2.24.0",
+    "mongodb": "^3.1.13",
+    "nodemailer": "^5.1.1",
+    "pdfkit": "^0.9.0",
+    "rss-parser": "^3.6.2",
+    "simpl-schema": "^1.5.5",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
+  }
+}

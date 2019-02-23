@@ -1,0 +1,24 @@
+_namespace: channels
+update.error: There was a problem updating this channel
+update.ok: Channel updated
+delete.title: Are you sure?
+delete.text: Once deleted, you will not be able to recover this.
+delete.error: There was a problem deleting this channel
+delete.success: Channel removed
+delete.ok: Channel deleted
+edit.submit: Update
+index.title: Channels
+index.subtitle: This are things you own. They trigger workflows. Like email accounts, social media accounts but also forms, urls, etc.
+index.connectNew: Connect a new channel
+index.emptyListTitle: There are no channels registered under your account
+index.emptyListDescription: It seems you haven't created any channel yet.
+index.emptyListCreateFirst: Connect your first channel
+index.itemView: View
+newType.submit: Insert
+new.select: Select
+one.edit: Edit
+one.remove: Detele
+new.title: Connect to a new channel
+new.subtitle: Select the kind of channel you want to connect
+newType.subtitle: Fill in all the details
+new.moreInfo: More info about this

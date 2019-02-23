@@ -1,0 +1,16 @@
+_namespace: profilePassword
+title: 'Password'
+currentPassword: Your current password
+currentPasswordPlaceholder: Your password
+canNotRemember: Can not remember your password? Click here
+yourNewPassword: New password
+yourNewPasswordPlaceholder: Your new password
+repeatNewPassword: Repeat the new password
+repeatNewPasswordPlaceholder: Repeat your new password
+submit: Update password
+password.length: The password must have at least 6 characters
+password.password.mustmatch: The passwords must match
+error: There was an error updating your password
+success: Your password was updated
+recover.error: There was a problem recovering your password
+recover.success: Please check your inbox for instructions on recovering your password

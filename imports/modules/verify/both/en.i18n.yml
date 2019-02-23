@@ -1,0 +1,3 @@
+_namespace: verify
+error: There was a problem verifying your email address. Please try again.
+success: Your account is now verified.

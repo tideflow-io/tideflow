@@ -1,0 +1,20 @@
+_namespace: s-agent
+name: Agent
+description: Allows to execute commands and code in your own infrastructure
+createFormPreNote: Once you create the agent, Tideflow.io will assign it a token you need to use.
+token: Authentication token
+toGetStarted: To get started, visit
+events.command.name: Execute a command
+events.nodejs.name: Execute a single-file-code
+events.command.viewer.title: Execute a command in my agent.
+events.nodejs.viewer.title: Execute a single-file-code
+event.execute.command: Command to execute
+event.execute.selectAgent: Which agent must be used
+event.execute.anyAgent: Any agent available
+event.execute.nodeJs: Code to execute
+event.execute.retries: Number of retries
+channel.status.lastSeen: Last seen
+channel.status.offline: Offline
+channel.status.online: Online
+log.execute_sent: Command reported to the agent
+log.execute_notsent: The command could not be delivered

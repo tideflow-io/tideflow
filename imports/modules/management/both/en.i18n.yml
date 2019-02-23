@@ -1,0 +1,6 @@
+_namespace: mngmnt
+site.submit: Update
+site.title.label: Site's title
+site.title.empty: Site's title can not be empty
+site.ok: Site's settings updated
+site.error: Something went wrong

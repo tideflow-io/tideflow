@@ -1,0 +1,43 @@
+<template name="channels.new">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "channels.new.title"}}
+          </h2>
+          <p class="lead">{{__ "channels.new.subtitle"}}</p>
+        </div>
+        <div class="mb-3 channels-new-selector">
+          {{#each servicesAvailable}}
+          <div class="card card-task">
+            <div class="card-body">
+              <div class="mr-3 card-image card-mini-icon text-center">
+                <i class="{{this.icon}}" style="color: {{this.iconColor}}"></i>
+              </div>
+              <div class="card-title mr-auto">
+                <a href="{{pathFor 'channels.one.edit' type=type _id=_id}}">
+                  <h6>
+                    {{__ this.humanName}}
+                    {{#if this.website}}
+                      <a title="{{__ "channels.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
+                        <i class="fa fa-info-circle"></i>
+                      </a>
+                    {{/if}}
+                  </h6>
+                </a>
+                <span class="text-small">{{__ this.description}}</span>
+              </div>
+              <div class="card-meta">
+                <a href="{{pathFor 'channels.new.type' type=this.name}}" class="btn btn-outline-primary">
+                  {{__ "channels.new.select"}}
+                </a>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

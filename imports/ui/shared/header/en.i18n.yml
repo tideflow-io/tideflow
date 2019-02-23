@@ -1,0 +1,11 @@
+_namespace: header
+dashboard: Dashboard
+channels: Channels
+flows: Workflows
+myaccount.admin: Management
+myaccount.profile: Profile
+myaccount.logout: Logout
+goToApp: Go to the app
+home: Home
+login: Log in
+signup: Sign up

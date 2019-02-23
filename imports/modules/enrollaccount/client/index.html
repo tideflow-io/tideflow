@@ -1,0 +1,26 @@
+<template name="membershipEnrollaccount">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{__ "enroll.sectionTitle"}}</h5>
+            <form class="membership-form" id="enrollAccount">
+              <input type="hidden" name="token" value="{{token}}">
+              <div class="form-group">
+                <label for="password" class="sr-only">{{__ "enroll.password"}}</label>
+                <input type="password" id="password" name="password" class="form-control form-firstinput" placeholder="{{__ "enroll.passwordPlaceholder"}}" required="" autofocus="">
+              </div>
+              <div class="form-group">
+                <label for="repeatpassword" class="sr-only">{{__ "enroll.repeatPassword"}}</label>
+                <input type="password" id="repeatpassword" name="repeatpassword" class="form-control form-lastinput" placeholder="{{__ "enroll.repeatPasswordPlaceholder"}}" required="">
+              </div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">{{__ "enroll.submit"}}</button>
+              <hr class="my-4">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

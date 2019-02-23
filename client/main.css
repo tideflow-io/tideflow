@@ -1,0 +1,150 @@
+html {
+  touch-action: manipulation;
+}
+body {
+  color: #6c757d;
+  background: #F7F9FA !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.navbar-nav .active {
+  font-weight: 900 !important;
+}
+
+body .navbar-light .navbar-brand {
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+
+.navbar-light .navbar-brand {
+  font-weight: 600;
+  padding-right: 25px;
+  padding-left: 15px;
+}
+
+p.lead {
+  color: #6c757d !important;
+}
+
+.material-icons {
+  font-size: 2.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.75rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #212529 !important;
+}
+
+img.h2 {
+  width: 3em;
+  height: 3em;
+}
+
+.display-4 {
+  font-size: 3.5rem;
+  font-weight: 500 !important;
+  line-height: 1.2;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  border: none;
+  box-shadow: none;
+}
+
+.nav-tabs {
+  border-bottom: 0 solid none;
+  border-radius: 0.5rem;
+  background: #EEF2F5;
+}
+.nav-tabs .nav-link {
+  font-size: .875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: .5rem;
+  transition: color .35s ease-out;
+  border: 0 solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.nav-tabs .nav-item {
+  margin: .5rem;
+}
+.nav-tabs .nav-item:last-child {
+  margin-bottom: .5rem;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  color: #007bff;
+  background-color: #fff;
+  border-color: none;
+}
+
+@media (min-width: 992px) {
+  .flex-lg-column {
+    flex-direction: column;
+  }
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  color: #007bff;
+  background-color: #fff;
+  border-color: none;
+}
+
+
+@media (min-width: 992px) {
+  .nav-tabs .nav-link {
+    padding: .5rem 2.5rem;
+  }
+}
+
+
+.nav-tabs .nav-link:not(.active) {
+  color: rgba(33, 37, 41, 0.5);
+}
+
+
+.nav-tabs .nav-link {
+  font-size: .875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: .5rem;
+  transition: color .35s ease-out;
+}
+
+.app .navbar {
+  background-color: #fff !important;
+  border-bottom: 1px solid #E9EEF2;
+  min-height: 70px;
+}
+
+.page-header {
+  padding-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .min-width-100-md {
+    min-width: 100px;
+  }
+}

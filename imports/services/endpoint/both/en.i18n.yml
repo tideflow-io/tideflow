@@ -1,0 +1,10 @@
+_namespace: s-endpoint
+name: URL
+description: A unique URL you can use to push data into Tideflow.io and execute workflows.
+createFormPreNote: Once you create the endpoint, Tideflow.io will assign it an URL that you can use to trigger events.
+url: URL
+code: Code
+updateFormPre: URLs are inmutable over time. Updating its details won't change the URL.
+events.called.name: When it's reached
+events.called.viewer.title: When an endpoint it's reached
+log.called_input_parsed: Request's input parsed

@@ -1,0 +1,15 @@
+.breadcrumb {
+  background: white;
+  font-size: 0.9em;
+  border: 1px solid #E9EEF2
+}
+
+.breadcrumb li:not(:first-child):before {
+  content: '>';
+  height: 1rem;
+  position: relative;
+  display: inline-block;
+  padding-right: 0.25rem;
+  padding-left: 0.45rem;
+  color: #adb5bd;
+}

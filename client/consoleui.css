@@ -1,0 +1,11 @@
+.console-ui {
+  background: #002834;
+  padding: 2em;
+  font-family: Courier, "Lucida Console", monospace;
+}
+.console-ui .line {
+  color: #F7F9FA;
+}
+.console-ui .line.err {
+  color: red;
+}

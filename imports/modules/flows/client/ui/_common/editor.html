@@ -1,0 +1,92 @@
+<template name="flowEditor">
+  <div class="row">
+    <div class="col-md-12" id="trigger-creator">
+      <h4>
+        {{__ "flows.editor.trigger.title"}}
+      </h4>
+      <div class="trigger-container">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+              <select class="form-control" name="triggerSelector">
+                <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
+                {{#each triggers}}
+                  <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
+                {{/each}}
+              </select>
+            </div>
+            {{#if triggerSelected.events}}
+            <div class="form-group">
+              <select class="form-control" name="triggerEventSelector">
+                <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
+                {{#each triggerSelected.events}}
+                  <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            {{#if triggerEditorEventForm}}
+              {{> Template.dynamic template=triggerEditorEventForm}}
+            {{/if}}
+            
+            {{/if}}
+            {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
+            {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
+            {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12" id="steps-creator">
+      <h4>
+        {{__ "flows.editor.steps.title"}}
+      </h4>
+      <div class="steps-container mb-5">
+        {{#afEachArrayItem name="steps"}}
+        <div class="card" data-step="{{this.index}}">
+          <div class="card-body">
+            <div class="form-group">
+              <select class="step-type-selector form-control" data-step="{{this.index}}">
+                <option>{{__ "flows.editor.step.type.selectOneOption"}}</option>
+                {{#each stepsAvailable}}
+                  <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                {{/each}}
+              </select>
+            </div>
+            {{#if stepSelectedEvents ../../flow ../index this.name}}
+            <div class="form-group">
+              <select class="step-event-selector form-control" data-step="{{this.index}}">
+                <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                {{#each stepSelectedEvents}}
+                  <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                {{/each}}
+              </select>
+            </div>
+            {{/if}}
+            {{> afFieldInput label=true name=this.current.type type='hidden'}}
+            {{> afFieldInput label=true name=this.current._id type='hidden'}}
+            {{> afFieldInput label=true name=this.current.event type='hidden'}}
+            {{> stepEventConfig steps=../flow.steps index=this.index}}
+            <button type="button" class="btn btn-dark btn-outline-primary autoform-remove-item">
+              {{__ "flows.editor.step.removeOne"}}
+            </button>
+          </div>
+        </div>
+        <br>
+        {{/afEachArrayItem}}
+        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="steps">
+          {{__ "flows.editor.step.addOne"}}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="stepEventConfig">
+  {{#if event.templates.eventConfig}}
+  {{> Template.dynamic template=event.templates.eventConfig}}
+  {{/if}}
+</template>

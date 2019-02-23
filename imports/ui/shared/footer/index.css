@@ -1,0 +1,7 @@
+#footer a {
+  color: black;
+  margin-right: 2em;
+}
+#footer a:last-child {
+  margin-right: 0;
+}

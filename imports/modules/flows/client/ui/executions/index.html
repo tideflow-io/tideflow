@@ -1,0 +1,21 @@
+<template name="flowsOneExecutions">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "flows.executions.title"}}
+          </h2>
+          <p class="lead">
+            {{flow.title}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {{> flowOneExecutionSmallCards flow=flow executions=executions}}
+      </div>
+    </div>
+  </div>
+</template>

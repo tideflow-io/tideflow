@@ -1,0 +1,46 @@
+version: 2
+
+jobs:
+  build:
+    environment:
+      - GLOBAL_CACHE_VERSION: "v4"
+      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+    working_directory: ~/tideflow-app
+    docker:
+      - image: circleci/node:8.11.4
+    steps:
+      - run:
+          command: chmod -R 777 ~/tideflow-app
+      - checkout
+      - restore_cache:
+          name: Restoring Meteor cache
+          key: ${GLOBAL_CACHE_VERSION}-meteorjs
+      - run:
+          name: Install Meteor
+          command: |
+            if [[ -f ~/.meteor/meteor ]]; then \
+              printf "\nMeteor already installed. Creating symlink.\n"
+              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+            else
+              printf "\Installing Meteor\n"
+              curl https://install.meteor.com | /bin/sh
+            fi
+      - save_cache:
+          name: Saving Meteor to cache
+          key: ${GLOBAL_CACHE_VERSION}-meteorjs-{{ epoch }}
+          paths:
+            - ~/.meteor
+      - run:
+          name: Meteor NPM Install
+          command: meteor npm install
+      - save_cache:
+          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - save_cache:
+          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
+          paths:
+            - node_modules
+      - run:
+          name: Test
+          command: meteor test --once --driver-package meteortesting:mocha

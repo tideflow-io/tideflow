@@ -1,0 +1,91 @@
+<template name="flowsOneExecutionsOneDetails">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "flows.executions.title"}}
+          </h2>
+          <p class="lead">
+            #{{substr execution._id 3}} {{flow.title}}
+          </p>
+          <p>
+            {{#if isEq execution.status 'started'}}
+              <i class="fa fa-spinner fa-spin fa-fw"></i>
+              {{__ "flows.status.running"}}
+            {{else if isEq execution.status 'finished'}}
+              {{__ "flows.status.finished"}} {{fromNow execution.updatedAt}}
+            {{else}}
+              {{fromNow execution.createdAt}}
+            {{/if}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h4 class="float-left">{{__ "flows.executions.steps.title"}}</h4>
+        <button class="float-right btn btn-primary btn-sm mb-3 logsViewAsToggle">
+          {{viewAsToggleText}}
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {{#if sessEq 'logsViewAs' 'console'}}
+          {{> flowOneExecutionLogsConsole}}
+        {{else}}
+          {{> flowOneExecutionLogs}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="flowOneExecutionLogsConsole">
+  <div class="console-ui">
+    {{#each executionsLogs}}
+      {{#each msgs}}
+        <div class="line {{#if err}}err{{/if}}">
+          {{logDate d}}
+          {{#if err}}(ERROR){{/if}}
+          {{__ m}}
+        </div>
+      {{/each}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="flowOneExecutionLogs">
+  <div class="card-list">
+    {{#each executionsLogs}}
+      {{> flowOneExecutionLogsCard log=this execution=this}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="flowOneExecutionLogsCard">
+  <div class="card card-narrow large-card card-status card-status-{{logStatusCssClass}}">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-9">
+          {{serviceHumanName log.type}} > 
+          {{eventHumanName log.type log.event}}
+        </div>
+        <div class="col-3 text-right">
+          <div title="{{log.createdAt}}">
+            {{#if isEq log.step 'trigger'}}
+              -
+            {{else if isEq log.status 'success'}}
+              {{logLapsedInSeconds}}
+            {{else if isEq log.status 'error'}}
+              {{logLapsedInSeconds}}
+            {{else}}
+              <i class="fa fa-spinner fa-spin fa-fw"></i>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

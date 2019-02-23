@@ -1,0 +1,23 @@
+<template name="management.index">
+  <div class="container">
+    {{> managementHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        {{> managementMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <form id="site-update">
+              <div class="form-group">
+                <label class="control-label">{{__ "mngmnt.site.title.label"}}</label>
+                <input type="text" id="title" name="title" class="form-control form-firstinput" value="{{siteName}}" placeholder="{{siteName}}" required autofocus>
+              </div>
+              <button class="btn  btn-primary " type="submit">{{__ "mngmnt.site.submit"}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

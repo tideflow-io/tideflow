@@ -1,0 +1,72 @@
+<template name="flows.index">
+  <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header mb-4">
+            <h2>
+              {{__ "flows.index.title"}}
+            </h2>
+            <p class="lead">{{__ "flows.index.subtitle"}}</p>
+          </div>
+          {{#if cursorIsEmpty flows}}
+            <p>{{__ "flows.index.emptyListSubTitle"}}</p>
+            <p>
+              <u>
+                <a class="btn btn-outline-dark" href="{{pathFor 'flows.new'}}">{{__ "flows.index.emptyListCreateFirst"}}</a>
+              </u>
+            </p>
+          {{else}}
+            <a href="{{pathFor 'flows.new'}}" class="btn btn-outline-dark mb-4">{{__ "flows.index.createNew"}}</a>
+            <div class="card-list">
+              <!-- <div class="card-list-head">
+                <h6>Channels</h6>
+              </div> -->
+              <div class="card-list-body">
+                {{#each flows}}
+                  {{> flowsIndexListItem}}
+                {{/each}}
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+  </div>
+</template>
+
+<template name="flowsIndexListItem">
+  <div class="card clickable card-task">
+    <div class="card-body">
+      <div class="card-meta min-width-100-md mr-2">
+        <div class="btn-group-toggle flow-toggle" data-toggle="buttons">
+          <label class="btn {{#if flowEnabled}}btn-primary active{{else}}btn-outline-primary{{/if}}">
+            {{#if flowEnabled}}
+              <input type="checkbox" checked autocomplete="off"> Enabled
+            {{else}}
+              <input type="checkbox" autocomplete="off"> Disabled
+            {{/if}}
+          </label>
+        </div>
+      </div>
+      <div class="card-title mr-auto">
+        <a href="{{pathFor 'flows.one' _id=_id}}">
+          <h6>{{this.title}}</h6>
+        </a>
+        <span class="text-small">
+          {{#if this.description}}
+            {{this.description}}
+          {{else}}
+            -
+          {{/if}}
+        </span>
+      </div>
+      <div class="mr-auto">
+          <!-- {{flowTrigger}} -->
+      </div>
+      <div class="card-meta">
+        <button class="btn btn-outline-primary">
+          {{__ "flows.index.viewOne"}}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

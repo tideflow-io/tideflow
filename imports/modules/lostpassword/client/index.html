@@ -1,0 +1,19 @@
+<template name="membership.lostpassword">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{__ "lostpassword.sectionTitle"}}</h5>
+            <form class="form-signin">
+              <div class="form-group">
+                <input type="email" id="email" name="email" class="form-control form-lastinput" placeholder="{{__ "lostpassword.emailPlaceholder"}}" required autofocus>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">{{__ "lostpassword.submitButton"}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

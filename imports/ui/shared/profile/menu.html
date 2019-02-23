@@ -1,0 +1,14 @@
+<template name="profileMenu">
+  <ul class="nav nav-tabs flex-lg-column">
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'membership.profile.index'}}active{{/if}}" href="{{pathFor 'membership.profile.index'}}">
+        {{__ "profileShared.profile"}}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'membership.profile.password'}}active{{/if}}" href="{{pathFor 'membership.profile.password'}}">
+        {{__ "profileShared.password"}}
+      </a>
+    </li>
+  </ul>
+</template>

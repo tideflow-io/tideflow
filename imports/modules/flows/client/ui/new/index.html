@@ -1,0 +1,31 @@
+<template name="flows.new">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ 'flows.editor.title'}}
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    {{#autoForm collection=Flows id="insertFlowForm" type="method" meteormethod="flows.create"}}
+    <div class="row">
+      <div class="col-md-9">
+        {{> flowEditor}}
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            {{> afQuickField name='title'}}
+            {{> afQuickField name='status'}}
+            {{> afQuickField name='description' type='textarea'}}
+            <button type="submit" class="btn btn-primary">{{__ "flows.new.submit"}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/autoForm}}
+  </div>
+</template>

@@ -1,0 +1,8 @@
+_namespace: emails
+verify.title: Verify your email address
+verify.description: In order to continue, you need to verify your email address
+verify.button: Verify my email address and continue
+resetPassword.title: Recover your password
+resetPassword.description: No worries, we've got you
+resetPassword.button: Specify a new password
+footer.copyright: Sent via <a href="https://tidefow.io">tidefow.io</a>. All rights reserved.

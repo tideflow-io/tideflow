@@ -1,0 +1,19 @@
+<template name="servicesAgentExecuteConfig">
+  <div class="form-group">
+    <label class="control-label">{{__ "s-agent.event.execute.selectAgent"}}</label>
+    <select class="form-control" data-schema-key="{{stepConfigName 'agent'}}" name="{{stepConfigName 'agent'}}">
+      <option value="any" {{stepConfigValueSelected 'agent' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
+      {{#each registeredAgents}}
+        <option value="{{_id}}" {{selectedAgent _id}}>{{title}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="control-label">{{__ "s-agent.event.execute.command"}}</label>
+    <input class="form-control" value="{{stepConfigValue 'command' ''}}" data-schema-key="{{stepConfigName 'command'}}" name="{{stepConfigName 'command'}}">
+  </div>
+  <div class="form-group">
+    <label class="control-label">{{__ "s-agent.event.execute.retries"}}</label>
+    <input type="number" class="form-control" value="{{stepConfigValue 'retries' '1'}}" data-schema-key="{{stepConfigName 'retries'}}" name="{{stepConfigName 'retries'}}">
+  </div>
+</template>

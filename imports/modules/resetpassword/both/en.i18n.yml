@@ -1,0 +1,11 @@
+_namespace: resetpassword
+section.title: Update my password
+section.newPasswordPlaceholder: New password
+section.repeatPasswordPlaceholder: Repeat password
+section.submit: Update my password and log me in
+section.login: Log in in to my account
+password.length: The password must have at least 6 characters
+password.mustmatch: The passwords must match
+incorrectLink: Incorrect link used
+error: There was an error resetting your password
+ok: Your password have been resetted

@@ -1,0 +1,7 @@
+_namespace: lostpassword
+title: 'Recover account'
+sectionTitle: Reset Password
+emailPlaceholder: Email address
+submitButton: Reset Password
+result.error: Error recovering the password
+result.ok: We've sent an email to reset your password

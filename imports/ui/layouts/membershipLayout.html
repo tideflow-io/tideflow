@@ -1,0 +1,10 @@
+<template name="MembershipLayout">
+  {{>connectionBanner}}
+  <div id="page" class="app">
+    {{> appHeader}}
+    
+    {{> yield}}
+    {{> footer}}
+    {{> sAlert}}
+  </div>
+</template>
