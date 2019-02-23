@@ -14,6 +14,7 @@ const executeChannelHook = (service, hook, crud, stage, data, treat) => {
   return service.hooks[hook][crud][stage](data[0], data[1], treat)
 }
 
+// flow, delete, pre, [flow], original
 const executeFlowHook = (service, hook, crud, stage, data, treat) => {
   if (!service) throw new Error('Service not specified')
   const returnableData = treat === 'original' ? data[0] : treat === 'new' ? data[1] : data[0]
@@ -150,23 +151,21 @@ const flows = {
   delete: {
     pre: (flow) => {
       debug('flows.delete.pre')
-
       // Trigger hooks
       if (!flow.trigger) throw new Error('Service issue #flows.delete.pre')
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)
       if (!triggerService) throw new Error('Service not found')
-      flow.trigger = executeFlowHook(triggerService, 'flow', 'delete', 'pre', [flow], 'original')
+      flow.trigger = executeFlowHook(triggerService, 'trigger', 'delete', 'pre', [flow], 'original')
       // TODO: Steps hooks
       return flow
     },
     post: (flow) => {
       debug('flows.delete.post')
-
       // Trigger hooks
       if (!flow.trigger) throw new Error('Service issue #flows.delete.post')
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)
       if (!triggerService) throw new Error('Service not found')
-      flow.trigger = executeFlowHook(triggerService, 'flow', 'delete', 'post', [flow], 'original')
+      flow.trigger = executeFlowHook(triggerService, 'trigger', 'delete', 'post', [flow], 'original')
       // TODO: Steps hooks
       return flow
     }
