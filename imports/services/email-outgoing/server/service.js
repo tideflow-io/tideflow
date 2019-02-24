@@ -100,10 +100,13 @@ const service = {
         })
 
         debug('Attached!')
-        data.attachment.push(new mailgun.Attachment({
-          data: getFile(),
-          filename: f.data.fileName
-        }))
+
+        data.attachments = files.map(file => {
+          return {
+              content: new Buffer(file.data.data),
+              filename: file.data.fileName
+            }
+        })
       })
 
       emailHelper.send(data)
