@@ -43,10 +43,15 @@ const getMailConfig = () => {
     return config
   }
 
-  throw new Meteor.Error('smtp-settings-empty')
+  return null
 }
 
-let transporter = nodemailer.createTransport(getMailConfig())
+const mailConfing = getMailConfig()
+
+let transporter = mailConfing ? nodemailer.createTransport(getMailConfig()) : 
+  { sendMail: (data, cb) => {
+    console.log(data.text)
+  } }
 
 /**
  * 
