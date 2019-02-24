@@ -393,6 +393,12 @@ jobs.register('workflow-step', function(jobData) {
 
   eventCallback.result.map(r => {
     if (r.type === 'file') {
+
+      if (!r.data.data) {
+        console.error('File have no data attached')
+        return;
+      }
+
       let getFile = Meteor.wrapAsync((cb) => {
         let bufferChunks = []
         r.data.data.on('readable', () => {
