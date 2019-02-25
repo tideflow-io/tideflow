@@ -65,8 +65,7 @@ const service = {
           execution: executionId,
           log: logId,
           step: currentStep._id,
-          command: currentStep.config.command,
-          retries: currentStep.config.retries
+          command: currentStep.config.command
         })
 
         let callParameters = [currentStep.config.command]

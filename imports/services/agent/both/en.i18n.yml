@@ -12,7 +12,6 @@ event.execute.command: Command to execute
 event.execute.selectAgent: Which agent must be used
 event.execute.anyAgent: Any agent available
 event.execute.nodeJs: Code to execute
-event.execute.retries: Number of retries
 channel.status.lastSeen: Last seen
 channel.status.offline: Offline
 channel.status.online: Online
