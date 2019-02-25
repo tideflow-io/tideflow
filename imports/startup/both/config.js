@@ -1,10 +1,3 @@
-import SimpleSchema from "simpl-schema"
-
-// ***************************************************************
-// Config for both client and server
-// ***************************************************************
+import SimpleSchema from 'simpl-schema'
 
 SimpleSchema.extendOptions(['autoform'])
-
-// Extra logging for SimpleSchema. Turn off in production!
-SimpleSchema.debug = true
