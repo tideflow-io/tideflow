@@ -1,0 +1,7 @@
+<template name="servicesGhWebhooksDetailsView">
+    <p><strong>{{__ "s-gh-webhooks.webhookUrl"}}</strong></p>
+    <pre class="code"><code>{{absoluteUrl}}ghwebhook/{{channel.config.endpoint}}</code></pre>
+
+    <p><strong>{{__ "s-gh-webhooks.webhookSecret"}}</strong></p>
+    <pre class="code"><code>{{channel.config.secret}}</code></pre>
+</template>

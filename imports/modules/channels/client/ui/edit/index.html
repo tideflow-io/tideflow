@@ -23,6 +23,13 @@
     {{> afQuickField name='type' type='hidden' value=channel.type}}
     <div class="row">
       <div class="col-md-8">
+        {{#if channelUpdateFormPre}}
+          <div class="row">
+            <div class="col-md-12">
+              {{> Template.dynamic template=channelUpdateFormPre}}
+            </div>
+          </div>
+        {{/if}}
 
         {{#if channelService.templates.detailsView}}
           <div class="row">
@@ -32,14 +39,6 @@
           </div>
         {{/if}}
     
-        {{#if channelUpdateFormPre}}
-          <div class="row">
-            <div class="col-md-12">
-              {{> Template.dynamic template=channelUpdateFormPre}}
-            </div>
-          </div>
-        {{/if}}
-
         {{#if channelUpdateForm}}
           <div class="row">
             <div class="col-md-12">

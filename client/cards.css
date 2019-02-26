@@ -137,6 +137,8 @@
   padding-top: 0.4em;
 }
 
-.card-mini-icon .fa {
+.card-mini-icon .fa,
+.card-mini-icon .fas,
+.card-mini-icon .fab {
   font-size: 2.5em;
 }

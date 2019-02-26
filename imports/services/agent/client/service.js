@@ -7,7 +7,7 @@ const service = {
   humanName: 's-agent.name',
   description: 's-agent.description',
   website: 'https://www.tideflow.io/features/channels/agent/',
-  icon: 'fa fa-floppy-o',
+  icon: 'fas fa-save',
   iconColor: '#3498DB',
   inputable: false,
   stepable: true,

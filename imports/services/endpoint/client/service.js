@@ -14,7 +14,6 @@ const service = {
   ownable: true,
   templates: {
     detailsView: 'servicesEndpointDetailsView',
-    createForm: 'servicesEndpointCreateForm',
     createFormPre: 'servicesEndpointCreateFormPre',
     updateFormPre: 'servicesEndpointUpdateFormPre'
   },
