@@ -4,7 +4,7 @@ const service = {
   name: 'gh-webhooks',
   humanName: 's-gh-webhooks.name',
   description: 's-gh-webhooks.description',
-  website: 'https://www.tideflow.io/features/channels/gh-webhooks/',
+  website: 'https://docs.tideflow.io/docs/services-gh-webhooks',
   icon: 'fab fa-github',
   iconColor: '#333',
   inputable: true,

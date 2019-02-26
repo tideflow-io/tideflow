@@ -6,7 +6,7 @@ const service = {
   name: 'endpoint',
   humanName: 's-endpoint.name',
   description: 's-endpoint.description',
-  website: 'https://www.tideflow.io/features/channels/endpoint/',
+  website: 'https://docs.tideflow.io/docs/services-endpoints',
   icon: 'fa fa-server',
   iconColor: '#563D7C',
   inputable: true,

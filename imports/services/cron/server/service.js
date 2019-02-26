@@ -4,13 +4,9 @@ import i18n from 'meteor/universe:i18n'
 
 const cronConverter = require('cron-converter')
 
-import {
-  compare
-} from '/imports/helpers/both/compare'
+import { compare } from '/imports/helpers/both/compare'
 
-import {
-  servicesAvailable
-} from '/imports/services/_root/server'
+import { servicesAvailable } from '/imports/services/_root/server'
 
 const debug = console.log
 
