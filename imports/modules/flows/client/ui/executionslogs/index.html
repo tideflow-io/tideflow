@@ -56,6 +56,18 @@
   </div>
 </template>
 
+<template name="flowOneExecutionLogsConsoleItem">
+  <div class="console-ui console-ui-small collapse mb-3" id="{{id}}">
+    {{#each msgs}}
+      <div class="line {{#if err}}err{{/if}}">
+        {{logDate d}}
+        {{#if err}}(ERROR){{/if}}
+        {{__ m}}
+      </div>
+    {{/each}}
+  </div>
+</template>
+
 <template name="flowOneExecutionLogs">
   <div class="card-list">
     {{#each executionsLogs}}
@@ -65,9 +77,9 @@
 </template>
 
 <template name="flowOneExecutionLogsCard">
-  <div class="card card-narrow large-card card-status card-status-{{logStatusCssClass}}">
+  <div class="card card-narrow large-card card-status card-status-{{logStatusCssClass}} clickable" data-toggle="collapse" href="#{{log._id}}" role="button" aria-expanded="false" aria-controls="{{log._id}}">
     <div class="card-body">
-      <div class="row">
+      <div class="row log-body-card">
         <div class="col-9">
           {{serviceHumanName log.type}} > 
           {{eventHumanName log.type log.event}}
@@ -88,4 +100,5 @@
       </div>
     </div>
   </div>
+  {{> flowOneExecutionLogsConsoleItem msgs=log.msgs id=log._id}}
 </template>

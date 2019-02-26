@@ -22,17 +22,7 @@ Router.route('/flows', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('flows.all', {
-      }, {
-        fields: {
-          title: true,
-          descriptiom: true,
-          status: true,
-          'trigger.type': true,
-          'trigger.event': true,
-          'trigger.config.cron': true
-        }
-      })
+      
     ]
   },
   data: function() {
@@ -57,8 +47,7 @@ Router.route('/flows/new', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('channels.all', {
-      })
+      Meteor.subscribe('channels.all', {})
     ]
   },
   data: function() {
