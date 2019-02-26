@@ -32,9 +32,7 @@ Router.route('/flows', function () {
           'trigger.event': true,
           'trigger.config.cron': true
         }
-      }),
-      Meteor.subscribe('customers.all', {
-      }, { name: true })
+      })
     ]
   },
   data: function() {
@@ -59,8 +57,6 @@ Router.route('/flows/new', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('customers.all', {
-      }),
       Meteor.subscribe('channels.all', {
       })
     ]
@@ -214,7 +210,6 @@ Router.route('/flows/:_id/edit', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('customers.all', {}),
       Meteor.subscribe('channels.all', {})
     ]
   },
