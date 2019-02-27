@@ -6,7 +6,7 @@ Realtime, open source workflows execution platform.
 
 Tideflow integrates with:
 
-- [Tideflow's agent tool](https://docs.tideflow.io/docs/services-gh-webhooks)
+- [Tideflow's agent tool](https://github.com/tideflow-io/tideflow-agent)
 - [Github Webhooks](https://docs.tideflow.io/docs/services-gh-webhooks)
 - [RSS Channels](https://docs.tideflow.io/docs/services-rss)
 - [Inbound Endpoints](https://docs.tideflow.io/docs/services-endpoints)
