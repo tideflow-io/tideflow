@@ -10,9 +10,7 @@ Meteor.startup( function() {
       title: true,
       descriptiom: true,
       status: true,
-      'trigger.type': true,
-      'trigger.event': true,
-      'trigger.config.cron': true
+      trigger: true
     }
   })
 })
