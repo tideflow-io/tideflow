@@ -1,6 +1,13 @@
 <template name="servicesAgentNodejsConfig">
-    <div class="form-group">
-      <label class="control-label">{{__ "s-agent.event.execute.nodeJs"}}</label>
-      <input class="form-control" value="{{stepConfigValue 'code' ''}}" data-schema-key="{{stepConfigName 'code'}}" name="{{stepConfigName 'code'}}">
-    </div>
+  <div class="form-group">
+    <label class="control-label">{{__ "s-agent.event.execute.nodeJs"}}</label>
+    <input class="form-control" value="{{stepConfigValue 'code' ''}}" data-schema-key="{{stepConfigName 'code'}}" name="{{stepConfigName 'code'}}">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="{{stepConfigName 'inputLast'}}">{{__ "s-agent.event.common.attachPreviousStepOutput"}}</label>
+    <select class="form-control" data-schema-key="{{stepConfigName 'inputLast'}}" name="{{stepConfigName 'inputLast'}}">
+      <option value="yes" {{stepConfigValueSelected 'inputLast' 'yes'}}>{{__ "s-agent.event.common.attachPreviousStepOutputYes"}}</option>
+      <option value="no" {{stepConfigValueSelected 'inputLast' 'no'}}>{{__ "s-agent.event.common.attachPreviousStepOutputNo"}}</option>
+    </select>
+  </div>
 </template>

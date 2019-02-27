@@ -18,3 +18,6 @@ channel.status.offline: Offline
 channel.status.online: Online
 log.execute_sent: Command reported to the agent
 log.execute_notsent: The command could not be delivered
+event.common.attachPreviousStepOutput: Attach the output from the previous step
+event.common.attachPreviousStepOutputYes: Yes
+event.common.attachPreviousStepOutputNo: No

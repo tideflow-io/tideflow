@@ -65,7 +65,8 @@ const service = {
           execution: executionId,
           log: logId,
           step: currentStep._id,
-          command: currentStep.config.command
+          command: currentStep.config.command,
+          previous: attachPrevious ? JSON.stringify(lastData) : null
         })
 
         let callParameters = [currentStep.config.command]
