@@ -28,6 +28,7 @@
     "chai": "^4.2.0",
     "cron-converter": "0.0.12",
     "debug": "^4.1.1",
+    "dlv": "^1.1.2",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.24.0",
     "mongodb": "^3.1.13",
