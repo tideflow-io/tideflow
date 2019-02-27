@@ -52,8 +52,8 @@ Meteor.startup(() => {
     // An angent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.command.progress', async message => {
-      let msgs = message.stdout || message.strerr
-      let err = !!(message.strerr && message.strerr.length)
+      let err = !!(message.stderr && message.stderr.length)
+      let msgs = err ? message.stderr : message.stdout
       await logUpdate(
         message.execution,
         message.log,
@@ -64,8 +64,8 @@ Meteor.startup(() => {
     // An angent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.command.res', async message => {
-      let msgs = message.stdout || message.strerr
-      let err = !!(message.strerr && message.strerr.length)
+      let msgs = message.stdout || message.stderr
+      let err = !!(message.stderr && message.stderr.length)
       await logUpdate(
         message.execution,
         message.log,
