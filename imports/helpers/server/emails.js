@@ -50,7 +50,7 @@ const mailConfing = getMailConfig()
 
 let transporter = mailConfing ? nodemailer.createTransport(getMailConfig()) : 
   { sendMail: (data, cb) => {
-    console.log(data.text)
+    console.log('Email text', data.text)
   } }
 
 /**
@@ -80,8 +80,10 @@ module.exports.data = data
  * @param {*} data 
  */
 const send = (data) => {
-  transporter.sendMail(data, (error, body) => {
-    if (error) throw new Meteor.Error(error)
+  Meteor.defer(function() {
+    transporter.sendMail(data, (error, body) => {
+      if (error) throw new Meteor.Error(error)
+    })
   })
 }
 

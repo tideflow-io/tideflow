@@ -11,11 +11,13 @@ Meteor.methods({
 
     const userExists = Accounts.findUserByEmail(user.email)
 
-    // Fake if the user email doesn't exist
+    // Fake it if the user email doesn't exist
     if (!userExists) {
       return true
     }
 
-    return Accounts.sendResetPasswordEmail(userExists._id)
+    Meteor.defer(function() {
+      Accounts.sendResetPasswordEmail(userExists._id)
+    })
   }
 })
