@@ -30,13 +30,24 @@ const service = {
       }
 
       const fullName = user.profile ? user.profile.firstName || to : to
+
+      let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
+      let objects = attachPrevious ? (lastData || []).filter(data => data.type === 'object') : []
+
+      objects = objects.map(o => {
+        return {
+          content: JSON.stringify(o.data, ' ', 2)
+        }
+      })
+
       let tplVars = {
         messageTitle: flow.title,
         fullName,
         userEmail: to,
         sentVia: flow.title,
         lines: (currentStep.config.body || '').split('\n'),
-        links: attachPrevious ? (lastData || []).filter(data => data.type === 'link') : [],
+        links,
+        objects,
         allowReply: false
       }
 
@@ -70,13 +81,23 @@ const service = {
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const fullName = user.profile ? user.profile.firstName || userEmail.address : userEmail.address
 
+      let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
+      let objects = attachPrevious ? (lastData || []).filter(data => data.type === 'object') : []
+
+      objects = objects.map(o => {
+        return {
+          content: JSON.stringify(o.data, ' ', 2)
+        }
+      })
+
       let tplVars = {
         messageTitle: flow.title,
         fullName,
         userEmail: userEmail.address,
         sentVia: flow.title,
         lines: currentStep.config.body.split('\n'),
-        links: attachPrevious ? (lastData || []).filter(data => data.type === 'link') : [],
+        links,
+        objects,
         allowReply: true,
         replyButtonText: `Reply to ${fullName}`
       }

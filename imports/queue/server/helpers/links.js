@@ -1,42 +1,45 @@
+import delve from 'dlv';
+
 /**
  * 
- * @param {*} links 
+ * @param {array} links 
+ * @param {object} map
+ * @param {boolean} cleanObjects 
  */
-const buildLinks = (links) => {
+const buildLinks = (links, map, cleanObjects) => {
   return links.map(link => {
-    link['tf_author'] = 
+    let newProperties = {}
+
+    newProperties['tf_author'] = map ? delve(link, map.author) || null :
       link.creator ||
       link['db:creator'] ||
       link.author
     
-    link['tf_title'] = 
+    newProperties['tf_title'] = map ? delve(link, map.title) || null :
       link.title
 
-    link['tf_link'] = 
+    newProperties['tf_link'] = map ? delve(link, map.link) || null :
       link.link ||
       link.url
 
-    link['tf_tags'] = 
+    newProperties['tf_tags'] = map ? delve(link, map.tags) || null :
       link.tags ||
       link.categories
 
-    link['tf_isoDate'] = 
+    newProperties['tf_isoDate'] = map ? delve(link, map.date) || null :
       link.date ||
       link.created_at ||
       link.createdAt ||
       link.isoDate
 
-    link['tf_snippet'] = 
-      link.contentSnippet ||
+    newProperties['tf_snippet'] = map ? delve(link, map.snippet) || null :
+      newProperties.contentSnippet ||
       link.description ||
       link.content
 
-    link['tf_snippet'] = link['tf_snippet'].replace('&nbsp;', '')
-    if (link['tf_snippet'].length < 20) {
-      link['tf_snippet'] = undefined
-    }
-  
-    return link
+    newProperties['tf_snippet'] = newProperties['tf_snippet'] ? newProperties['tf_snippet'].replace('&nbsp;', '') : ''
+
+    return cleanObjects ? newProperties : Object.assign(link, newProperties)
   })
 }
 

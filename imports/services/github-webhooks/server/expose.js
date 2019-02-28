@@ -1,4 +1,5 @@
 import { Router } from 'meteor/iron:router'
+import { buildLinks } from '/imports/queue/server/helpers/links'
 
 import { Channels } from "/imports/modules/channels/both/collection.js"
 
@@ -24,6 +25,7 @@ const validateSignature = (channel, req) => {
 }
 
 Router.route('/ghwebhook/:uuid', function () {
+
   // Ignore requests without body
   if (!this.request.body) {
     debug('no body')
@@ -36,18 +38,13 @@ Router.route('/ghwebhook/:uuid', function () {
   const res = this.response;
   const uuid = this.params.uuid
 
+  // Find channels using this GH's webhook endpoint
   const channel = Channels.findOne({
     type: 'gh-webhooks',
     'config.endpoint': uuid
   })
 
-  if (!validateSignature(channel, req)) {
-    debug('Wrong Secret')
-    res.writeHead(401)
-    res.end()
-    return
-  }
-
+  // Ignore request that don't resolve to a channel
   if (!channel) {
     debug('no channel')
     res.writeHead(404)
@@ -55,20 +52,30 @@ Router.route('/ghwebhook/:uuid', function () {
     return
   }
 
+  // Validate the request secret with the one stored in the DB
+  if (!validateSignature(channel, req)) {
+    debug('Wrong Secret')
+    res.writeHead(401)
+    res.end()
+    return
+  }
+
+  // Send a response back to the client
   res.end('queued')
 
+  // Grab the user who created the channel
   let user = Meteor.users.findOne({_id: channel.user}, {
     fields: { services: false }
   })
 
+  // Ignore the execution if for some reason the owner is not found
   if (!user) {
     debug('User not found. Skipping')
     return null
   }
 
+  // Get the workflows using this endpoint's channel
   const flowsQuery = {status: 'enabled', 'trigger._id': channel._id}
-
-  debug(`Filtering flows ${JSON.stringify(flowsQuery)}`)
 
   let data = []
 
@@ -77,6 +84,7 @@ Router.route('/ghwebhook/:uuid', function () {
 
   req.body = Array.isArray(req.body) ? req.body : [req.body]
 
+  // Attach the request - as-is - as "objects"
   data = req.body.map(element => {
     return {
       type: 'object',
@@ -84,6 +92,23 @@ Router.route('/ghwebhook/:uuid', function () {
     }
   })
 
+  // In case the webhook contains GH issues, attach them as navigable links.
+  buildLinks(req.body.filter(b => !!b.issue), {
+    author: 'issue.user.login',
+    title: 'issue.title', 
+    link: 'issue.html_url',
+    tags: 'issue.labels',
+    date: 'issue.updated_at',
+    snippet: 'issue.body'
+  }, true)
+    .map(element => {
+      if (element.tf_tags && element.tf_tags.length) {
+        element.tf_tags = element.tf_tags.map(t => t.name)
+      }
+      data.push({ type: 'link', data: element })
+    })
+
+  // Trigger flows
   triggerFlows(
     channel,
     user,
