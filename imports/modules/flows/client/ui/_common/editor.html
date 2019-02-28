@@ -42,9 +42,9 @@
       <h4>
         {{__ "flows.editor.steps.title"}}
       </h4>
-      <div class="steps-container mb-5">
+      <div class="steps-container card-list mb-5">
         {{#afEachArrayItem name="steps"}}
-        <div class="card" data-step="{{this.index}}">
+        <div class="card mb-4" data-step="{{this.index}}">
           <div class="card-body">
             <div class="form-group">
               <select class="step-type-selector form-control" data-step="{{this.index}}">
@@ -68,14 +68,15 @@
             {{> afFieldInput label=true name=this.current._id type='hidden'}}
             {{> afFieldInput label=true name=this.current.event type='hidden'}}
             {{> stepEventConfig steps=../flow.steps index=this.index}}
-            <button type="button" class="btn btn-dark btn-outline-primary autoform-remove-item">
+          </div>
+          <div class="card-footer text-muted">
+            <button type="button" class="btn btn-sm btn-outline-danger float-right autoform-remove-item">
               {{__ "flows.editor.step.removeOne"}}
             </button>
           </div>
         </div>
-        <br>
         {{/afEachArrayItem}}
-        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="steps">
+        <button type="button" class="btn btn-dark autoform-add-item" data-autoform-field="steps">
           {{__ "flows.editor.step.addOne"}}
         </button>
       </div>
