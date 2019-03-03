@@ -1,0 +1,176 @@
+<!--
+
+  [
+    {
+      "bill": {
+        "id": "123",
+        "currency": "USD"
+      },
+      "notes": [
+        "A note visible in the PDF"
+      ],
+      "company": {
+        "name": "My company name",
+        "address": "My address",
+        "city": "Ourense",
+        "country": "Spain",
+        "pc": "32004",
+        "vat": "123456789A"
+      },
+      "customer": {
+        "name": "My customer's name",
+        "address": "Their address",
+        "city": "London",
+        "country": "UK",
+        "pc": "NW5 NW5",
+        "vat": "123456790B"
+      },
+      "items": [
+        {
+          "name": "Web development",
+          "price": "100"
+        }
+      ]
+    }
+  ]
+  
+-->
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    * {
+      font-family: "Noto Serif", "Times New Roman", Serif;
+    }
+    th {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row mt-5 mb-5">
+      <div class="col-12">
+        <h2>{{#if texts.title}}{{texts.title}}{{else}}Bill{{/if}} {{bill.id}}</h2>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">{{#if texts.to}}{{texts.to}}{{else}}To{{/if}}</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td>{{customer.name}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.address}}{{texts.address}}{{else}}Address{{/if}}</th>
+              <td>{{customer.address}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.city}}{{texts.city}}{{else}}City{{/if}}</th>
+              <td>{{customer.city}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.country}}{{texts.country}}{{else}}Country{{/if}}</th>
+              <td>{{customer.country}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.pc}}{{texts.pc}}{{else}}PC{{/if}}</th>
+              <td>{{customer.pc}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.vat}}{{texts.vat}}{{else}}VAT{{/if}}</th>
+              <td>{{customer.vat}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.date}}{{texts.date}}{{else}}Date{{/if}}</th>
+              <td>{{date}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{#if texts.items}}{{texts.items}}{{else}}Description{{/if}}</th>
+              <th scope="col">{{#if texts.total}}{{texts.total}}{{else}}Total{{/if}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each items}}
+              <tr>
+                <td>{{name}}</td>
+                <td>{{price}} {{#if bill.currency}}{{bill.currency}}{{else}}EUR{{/if}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="text-right">{{#if texts.total}}{{texts.total}}{{else}}Total{{/if}}</td>
+              <td>{{total}} {{#if bill.currency}}{{bill.currency}}{{else}}EUR{{/if}}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    {{#if notes}}
+    <div class="row mb-5">
+      <div class="col-12">
+        {{#each notes}}
+          <p>{{.}}</p>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+    <div class="row">
+      <div class="col-6">
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">{{#if texts.from}}{{texts.from}}{{else}}From{{/if}}</th>
+              <td>{{company.name}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if texts.address}}{{texts.address}}{{else}}Address{{/if}}</th>
+              <td>{{company.address}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if from.city}}{{from.city}}{{else}}City{{/if}}</th>
+              <td>{{company.city}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if from.country}}{{from.country}}{{else}}Country{{/if}}</th>
+              <td>{{company.country}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if from.pc}}{{from.pc}}{{else}}PC{{/if}}</th>
+              <td>{{company.pc}}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{#if from.vat}}{{from.vat}}{{else}}VAT{{/if}}</th>
+              <td>{{company.vat}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

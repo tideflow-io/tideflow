@@ -1,12 +1,41 @@
+const Handlebars = require('handlebars')
+import { moment } from 'meteor/momentjs:moment'
+
 import { servicesAvailable } from '/imports/services/_root/server'
 
 import { step, stepData } from '/imports/queue/server'
 
-const pdfTypes = require('./pdfs')
-
-const fs = require('fs')
+const puppeteer = require('puppeteer')
 
 const debug = console.log
+
+const generatePdf = async (template, data, cb) => {
+  let options = {
+    width: 1280,
+    height: 800,
+    scaleFactor: 2,
+    fullPage: false,
+    defaultBackground: true,
+    timeout: 60, // The Puppeteer default of 30 is too short
+    delay: 0,
+    debug: false,
+    launchOptions: {},
+    _keepAlive: false
+  }
+
+  const launchOptions = {...options.launchOptions}
+
+  const content = Assets.getText(`pdfs/${template}.html`)
+  console.log({content, data})
+  const html = Handlebars.compile(content)(data)
+
+  const browser = await puppeteer.launch(launchOptions)
+  const page = await browser.newPage()
+  await page.setContent(html)
+  const file = await page.pdf() 
+  await browser.close()
+  cb(null, file)
+}
 
 const service = {
   name: 'pdf',
@@ -23,28 +52,35 @@ const service = {
       name: 'build-pdf',
       visibe: true,
       callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
-        debug('pdf.build-pdf.callback')
         const filesData = stepData(executionLogs, 'last').filter(data => data.type === 'object')
 
         const pdfType = (currentStep.config || {}).type || null
-        if (!pdfType || !pdfTypes[pdfType]) return null
-        
-        const result = []
 
-        debug(`Building ${filesData.length} files`)
+        let results = []
 
         filesData.map(fileData => {
-          result.push({
+          let total = 0
+
+          fileData.data.date = moment().format('LL')
+          
+          if (pdfType === 'bill') {
+            (fileData.data.items || []).map(i => {
+              total += Number(i.price || 0)
+            })
+            fileData.data.total = fileData.data.total || total
+          }
+
+          results.push({
             type: 'file',
             data: {
               fileName: `${pdfType}.pdf`,
-              data: pdfTypes[pdfType].build(channel, user, currentStep, fileData.data)
+              data: Meteor.wrapAsync(cb => generatePdf(pdfType, fileData.data, cb))()
             }
           })
         })
 
         return {
-          result,
+          result: results,
           next: true,
           msgs: [
             {

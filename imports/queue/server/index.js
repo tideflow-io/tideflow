@@ -401,6 +401,9 @@ jobs.register('workflow-step', function(jobData) {
 
       let getFile = Meteor.wrapAsync((cb) => {
         let bufferChunks = []
+        if (Buffer.isBuffer(r.data.data)) {
+          return cb(null, r.data.data)
+        }
         r.data.data.on('readable', () => {
           // Store buffer chunk to array
           let i = r.data.data.read()
