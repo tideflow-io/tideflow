@@ -1,5 +1,6 @@
 _namespace: s-pdf
 name: PDF
+event.build.type.text: Text
 event.build.type.bill: Simple bill
 event.build.type.selectOne: Select a template
 events.buildpdf.title: Create a PDF file
