@@ -7,8 +7,6 @@ import { step, stepData } from '/imports/queue/server'
 
 const puppeteer = require('puppeteer')
 
-const debug = console.log
-
 const generatePdf = async (template, data, cb) => {
   let options = {
     width: 1280,
@@ -26,7 +24,6 @@ const generatePdf = async (template, data, cb) => {
   const launchOptions = {...options.launchOptions}
 
   const content = Assets.getText(`pdfs/${template}.html`)
-  console.log({content, data})
   const html = Handlebars.compile(content)(data)
 
   const browser = await puppeteer.launch(launchOptions)
