@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
+import { servicesAvailable } from '/imports/services/_root/client'
+
 import { Channels } from "/imports/modules/channels/both/collection.js"
 
 import './ui/index'
@@ -56,7 +58,14 @@ Router.route('/channels/new/:type', function () {
   },
   name: 'channels.new.type',
   title: function() {
-    return 'New'
+    try {
+      return i18n.__(
+        servicesAvailable.find(sa => sa.name === this.params.type).humanName
+      )
+    } catch (ex) {
+      console.log(ex)
+      return null
+    }
   },
   parent: 'channels.new'
 })
