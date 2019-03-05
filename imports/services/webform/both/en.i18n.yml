@@ -1,5 +1,5 @@
 _namespace: s-webform
-name: Web form
+name: Webform
 description: Create custom forms you can share with others
 createFormPreNote: Once you create the form, Tideflow will assign it an URL that you can use to trigger events.
 updateFormPre: URLs are inmutable over time. Updating its details won't change the URL.
