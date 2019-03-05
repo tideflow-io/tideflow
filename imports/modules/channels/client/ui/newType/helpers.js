@@ -11,6 +11,14 @@ Template['channels.new.type'].helpers({
   channelCreationForm: function() {
     return servicesAvailable.find(s => s.name === this.type).templates.createForm
   },
+  channelCreationFormAfter: function() {
+    try {
+      return servicesAvailable.find(s => s.name === this.type).templates.createFormAfter
+    }
+    catch (ex) {
+      return null
+    }
+  },
   channelCreationFormPre: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.createFormPre

@@ -44,6 +44,19 @@
         </div>
       </div>
     </div>
+
+    {{#if channelCreationFormAfter}}
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            {{> Template.dynamic template=channelCreationFormAfter}}
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+
     {{/autoForm}}
   </div>
 </template>

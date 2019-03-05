@@ -19,6 +19,14 @@ Template['channels.one.edit'].helpers({
       return null
     }
   },
+  channelUpdateFormAfter: function() {
+    try {
+      return servicesAvailable.find(s => s.name === this.type).templates.updateFormAfter
+    }
+    catch (ex) {
+      return null
+    }
+  },
   channelService: function () {
     if (!this.channel) return
     return servicesAvailable.find(sa => sa.name === this.channel.type)

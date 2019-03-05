@@ -1,0 +1,7 @@
+import './createFormAfter.html'
+import './updateFormAfter.html'
+import './createFormPre.html'
+import './updateFormPre.html'
+import './detailsView.html'
+import './service'
+import './events'

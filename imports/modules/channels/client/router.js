@@ -47,6 +47,7 @@ Router.route('/channels/new', function () {
 })
 
 Router.route('/channels/new/:type', function () {
+  window.editorViewDetailsHooks = []
   this.render('channels.new.type')
 }, {
   data: function() {
@@ -71,9 +72,10 @@ Router.route('/channels/new/:type', function () {
 })
 
 Router.route('/channels/:type/:_id/edit', function () {
+  window.editorViewDetailsHooks = []
   this.render('channels.one.edit')
 }, {
-  subscriptions: function () {
+  waitOn: function () {
     return [
       Meteor.subscribe('channels.single', {
         _id: this.params._id

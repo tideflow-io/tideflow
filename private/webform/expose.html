@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://formbuilder.online/assets/js/form-render.min.js"></script>
+  <script>
+    $(() => {
+      $('form')
+        .on('submit', function (e) {
+          e.preventDefault()
+          let data = {}
+          $(e.target).serializeArray().map(el => {
+            data[el.name] = el.value
+          })
+
+          $.ajax('{{postUrl}}', {
+            type: 'POST',
+            data: JSON.stringify(data),
+            success: function (data) {
+              alert('Form submitted')
+            },
+            error: function (error, result) {
+              alert('There was an error submitting the form. Plase try again.')
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+          })
+        })
+        .formRender({
+          formData: {{{form}}}
+        })
+    })
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <form id="form">
+
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

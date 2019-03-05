@@ -30,7 +30,7 @@ export const updateChannel = new ValidatedMethod({
   run(channel) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
-    const UPDATABLE_PROPERTIES = ['title', 'description']
+    const UPDATABLE_PROPERTIES = ['title', 'description', 'details']
 
     let originalChannel = Channels.findOne({_id: channel._id})
     let newChannelProperties = {}
