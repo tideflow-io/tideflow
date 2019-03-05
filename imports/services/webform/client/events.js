@@ -3,7 +3,7 @@ import { Channels } from '/imports/modules/channels/both/collection.js'
 
 const editorDefaults = {
   dataType: 'json',
-  disabledAttrs: ['access'],
+  disabledAttrs: ['access', 'style'],
   disableFields: ['file', 'autocomplete'],
   disabledActionButtons: ['data', 'clear', 'save']
 }

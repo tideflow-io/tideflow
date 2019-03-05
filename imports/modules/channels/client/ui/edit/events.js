@@ -5,7 +5,7 @@ import { Template } from 'meteor/templating'
 import i18n from 'meteor/universe:i18n'
 
 Template['channels.one.edit'].events({
-  'click .delete': (event, template) => {
+  'click .delete-channel': (event, template) => {
     event.preventDefault()
     event.stopPropagation()
 
