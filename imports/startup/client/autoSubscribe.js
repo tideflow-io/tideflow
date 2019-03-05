@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 
 Meteor.startup( function() {
-  console.log('123')
   Meteor.subscribe('settings.public.all')
   Meteor.subscribe('channels.all', {})
   Meteor.subscribe('flows.all', {
