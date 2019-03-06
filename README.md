@@ -13,6 +13,7 @@ Tideflow integrates with:
 - [Cron Based Triggers](https://docs.tideflow.io/docs/services-cron)
 - [PDF Creation](https://docs.tideflow.io/docs/services-pdf)
 - [Email Sending](https://docs.tideflow.io/docs/services-email-outgoing)
+- [Webforms](https://docs.tideflow.io/docs/services-webforms)
 - many more to come
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow/7e087e6ebd014d8b34f4b7b58449fd44fa90c9fa/home.jpg" height="400" style="border:1px solid gray;">
