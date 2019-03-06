@@ -1,6 +1,6 @@
 _namespace: install
 home.title: Install
-home.content: Welcome to the 1 minute install process
+home.content: Welcome to your Tideflow platform. Need help? Check our site https://docs.tideflow.io/
 home.detailsNeeded: Information needed
 home.detailsNeededHelp: Provide the following information. You can change this details later.
 home.userName: Your name
