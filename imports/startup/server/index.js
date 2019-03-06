@@ -48,6 +48,9 @@ import '/imports/modules/executions/server'
 import '/imports/modules/flows/both'
 import '/imports/modules/flows/server'
 
+import '/imports/modules/install/both'
+import '/imports/modules/install/server'
+
 import '/imports/modules/enrollaccount/both'
 import '/imports/modules/enrollaccount/server'
 

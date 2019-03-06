@@ -52,6 +52,9 @@ import '/imports/modules/executions/client'
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/client'
 
+import '/imports/modules/install/both'
+import '/imports/modules/install/client'
+
 import '/imports/modules/flows/both'
 import '/imports/modules/flows/client'
 

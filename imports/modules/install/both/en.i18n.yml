@@ -1,0 +1,13 @@
+_namespace: install
+home.title: Install
+home.content: Welcome to the 1 minute install process
+home.detailsNeeded: Information needed
+home.detailsNeededHelp: Provide the following information. You can change this details later.
+home.userName: Your name
+home.siteName: Site name
+home.emailAddress: Email address
+home.password: Password
+home.finishSetup: Finish setup
+sunmit.error: There was an error installing the platform
+finished.title: Installation complete
+finished.content: Tideflow is now installed. Log in to start using the platform.

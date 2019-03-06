@@ -16,6 +16,8 @@ Router.onBeforeAction(function () {
     this.next()
   }
 }, { except: [
+  'install.index',
+  'install.finished',
   'membership.verify',
   'membership.login',
   'membership.signup',

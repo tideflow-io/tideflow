@@ -1,0 +1,44 @@
+<template name="install.index">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div class="page-header mb-4">
+          <h2>
+              {{__ "install.home.title"}}
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <p>{{__ "install.home.content"}}</p>
+            <hr>
+            <h3>{{__ "install.home.detailsNeeded"}}</h3>
+            <p>{{__ "install.home.detailsNeededHelp"}}</p>
+            <form id="install">
+              <div class="form-group">
+                <label for="site-name">{{__ "install.home.siteName"}}</label>
+                <input type="text" class="form-control" id="site-name" required="required">
+              </div>
+              <div class="form-group">
+                <label for="user-name">{{__ "install.home.userName"}}</label>
+                <input type="text" class="form-control" id="user-name" required="required">
+              </div>
+              <div class="form-group">
+                <label for="email-address">{{__ "install.home.emailAddress"}}</label>
+                <input type="text" class="form-control" id="email-address" required="required">
+              </div>
+              <div class="form-group">
+                <label for="password">{{__ "install.home.password"}}</label>
+                <input type="password" class="form-control" id="password" required="required">
+              </div>
+              <button type="submit" class="btn btn-primary">{{__ "install.home.finishSetup"}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

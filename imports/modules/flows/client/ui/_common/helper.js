@@ -4,6 +4,7 @@ import i18n from 'meteor/universe:i18n'
 
 import { Channels } from '/imports/modules/channels/both/collection.js'
 import { servicesAvailable } from '/imports/services/_root/client'
+import { checkRole } from '/imports/helpers/both/roles'
 
 // The native sort modifies the array in place. `_.orderBy` and `_.sortBy` do not, so we use `.concat()` to
 // copy the array, then sort.
@@ -63,6 +64,9 @@ Template.registerHelper('eventHumanName', (serviceName, eventName) => {
 })
 
 Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
+Template.registerHelper('checkUserRole', (team) => {
+  return checkRole(Meteor.userId(), team)
+})
 
 Template.registerHelper('isInUrl', url => {
   if (!url) return null

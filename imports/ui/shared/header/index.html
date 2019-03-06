@@ -35,7 +35,11 @@
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{pathFor 'membership.profile.index'}}">{{__ "header.myaccount.profile"}}</a>
-                <a class="dropdown-item" href="{{pathFor 'management.index'}}">{{__ "header.myaccount.admin"}}</a>
+
+                {{#if checkUserRole 'super-admin'}}
+                  <a class="dropdown-item" href="{{pathFor 'management.index'}}">{{__ "header.myaccount.admin"}}</a>
+                {{/if}}
+                
                 <a id="logout" class="dropdown-item" href="#">{{__ "header.myaccount.logout"}}</a>
               </div>
             </li>
@@ -43,12 +47,16 @@
         </div>
       {{else}}
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item {{#if routeContains 'membership.login'}}active{{/if}}">
-            <a class="nav-link" href="{{pathFor 'membership.login'}}">{{__ "header.login"}}</a>
-          </li>
-          <li class="nav-item {{#if routeContains 'membership.signup'}}active{{/if}}">
-            <a class="nav-link" href="{{pathFor 'membership.signup'}}">{{__ "header.signup"}}</a>
-          </li>
+          {{#if showLogin}}
+            <li class="nav-item {{#if routeContains 'membership.login'}}active{{/if}}">
+              <a class="nav-link" href="{{pathFor 'membership.login'}}">{{__ "header.login"}}</a>
+            </li>
+          {{/if}}
+          {{#if showSignup}}
+            <li class="nav-item {{#if routeContains 'membership.signup'}}active{{/if}}">
+              <a class="nav-link" href="{{pathFor 'membership.signup'}}">{{__ "header.signup"}}</a>
+            </li>
+          {{/if}}
         </ul>
       {{/if}}
     </nav>

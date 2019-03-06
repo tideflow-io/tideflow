@@ -1,0 +1,29 @@
+import { Router } from 'meteor/iron:router'
+
+import i18n from 'meteor/universe:i18n'
+
+const mayGoHome = () => {
+  if (Meteor.user()) { Router.go('dashboard') }
+}
+
+Router.route('/install', function () {
+  mayGoHome()
+  this.render('install.index')
+}, {
+  subscriptions: function () {
+    return []
+  },
+  name: 'install.index',
+  title: i18n.__('install.title')
+})
+
+Router.route('/install/finished', function () {
+  mayGoHome()
+  this.render('install.finished')
+}, {
+  subscriptions: function () {
+    return []
+  },
+  name: 'install.finished',
+  title: i18n.__('install.finished')
+})
