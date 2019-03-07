@@ -1,4 +1,5 @@
 _namespace: mngmnt
+title: Management
 site.submit: Update
 site.title.label: Site's title
 site.title.empty: Site's title can not be empty
