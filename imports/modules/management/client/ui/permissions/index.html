@@ -1,0 +1,22 @@
+<template name="management.permissions">
+  <div class="container">
+    {{> managementHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        {{> managementMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <form id="permissions-update">
+              <div class="form-group">
+                <input type="checkbox" name="publicSignups" checked="{{#if publicSignups}}checked{{/if}}"> {{__ "mngmnt.permissions.publicSignups.label"}}
+              </div>
+              <button class="btn  btn-primary" type="submit">{{__ "mngmnt.permissions.submit.button"}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

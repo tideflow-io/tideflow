@@ -12,7 +12,7 @@ Template.appHeader.helpers({
     const st = Settings.findOne({
       type: 'siteSettings'
     })
-    return st && st.settings ? st.settings.allowSignups || '' : ''
+    return st && st.settings ? st.settings.publicSignups || '' : ''
   },
   showLogin: () => {
     const st = Settings.findOne({})

@@ -25,7 +25,26 @@ Meteor.methods({
     }, {
       $set: {
         public: true,
-        settings
+        'settings.title': settings.title
+      }
+    })
+  },
+
+  'site-permissions-settings' (settings) {
+    if (!checkRole(Meteor.userId(), 'super-admin')) {
+      throw new Meteor.Error('not-allowed')
+    }
+
+    check(settings, {
+      publicSignups: Boolean
+    })
+
+    SettingsCollection.upsert({
+      type: 'siteSettings'
+    }, {
+      $set: {
+        public: true,
+        'settings.publicSignups': settings.publicSignups
       }
     })
   }

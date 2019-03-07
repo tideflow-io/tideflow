@@ -16,7 +16,7 @@ Meteor.methods({
       }
     })
 
-    const allow = settingsHelper.getOne('siteSettings', 'allowSignups')
+    const allow = settingsHelper.getOne('siteSettings', 'publicSignups')
 
     if (!allow) {
       throw new Meteor.Error('not-allowed')

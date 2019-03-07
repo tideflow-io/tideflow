@@ -1,3 +1,5 @@
-_namespace: managementHeader
+_namespace: managementShared
 title: Management
-general: Home
+menu.general: Home
+menu.users: Users
+menu.permissions: Permissions

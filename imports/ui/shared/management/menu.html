@@ -2,7 +2,17 @@
   <ul class="nav nav-tabs flex-lg-column">
     <li class="nav-item">
       <a class="nav-link {{#if routeIs 'management.index'}}active{{/if}}" href="{{pathFor 'management.index'}}">
-        {{__ "managementHeader.general"}}
+        {{__ "managementShared.menu.general"}}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'management.users'}}active{{/if}}" href="{{pathFor 'management.users.index'}}">
+        {{__ "managementShared.menu.users"}}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'management.permissions'}}active{{/if}}" href="{{pathFor 'management.permissions'}}">
+        {{__ "managementShared.menu.permissions"}}
       </a>
     </li>
   </ul>
