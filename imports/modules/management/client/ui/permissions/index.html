@@ -10,7 +10,8 @@
           <div class="card-body">
             <form id="permissions-update">
               <div class="form-group">
-                <input type="checkbox" name="publicSignups" checked="{{#if publicSignups}}checked{{/if}}"> {{__ "mngmnt.permissions.publicSignups.label"}}
+                <input type="checkbox" id="publicSignups" name="publicSignups" checked="{{#if publicSignups}}checked{{/if}}">
+                <label for="publicSignups">{{__ "mngmnt.permissions.publicSignups.label"}}</label>
               </div>
               <button class="btn  btn-primary" type="submit">{{__ "mngmnt.permissions.submit.button"}}</button>
             </form>
