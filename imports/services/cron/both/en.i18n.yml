@@ -2,6 +2,7 @@ _namespace: s-cron
 name: Cron
 description: Cron cron
 events.called.name: "When cron's time is meet"
+events.called.title: "When cron's time is meet"
 cron.schedule.value: Cron
 validation.cron.wait: Validating value...
 validation.cron.ok: Valid value

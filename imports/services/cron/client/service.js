@@ -20,7 +20,7 @@ const service = {
     {
       name: 'called',
       humanName: 's-cron.events.called.name',
-      viewerTitle: 's-cron.events.called.viewer.title',
+      viewerTitle: 's-cron.events.called.title',
       templates: {
         triggerEditor: 'triggerEditorCronEventCalled'
       },

@@ -10,7 +10,7 @@
   </div>
   <div class="form-group">
     <label class="control-label">{{__ "s-agent.event.execute.command"}}</label>
-    <input class="form-control" value="{{stepConfigValue 'command' ''}}" data-schema-key="{{stepConfigName 'command'}}" name="{{stepConfigName 'command'}}">
+    <textarea class="code-editor form-control" name="{{stepConfigName 'command'}}" data-schema-key="{{stepConfigName 'command'}}">{{stepConfigValue 'command' ''}}</textarea>
   </div>
   <div class="form-group">
     <label class="control-label" for="{{stepConfigName 'inputLast'}}">{{__ "s-agent.event.common.attachPreviousStepOutput"}}</label>

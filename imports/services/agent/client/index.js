@@ -6,5 +6,6 @@ import './servicesAgentExecuteConfig'
 import './servicesAgentNodejsConfig'
 
 import './service'
+import './events'
 import './helpers'
 import './index.css'

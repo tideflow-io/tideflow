@@ -27,7 +27,7 @@ const service = {
     {
       name: 'execute',
       humanName: 's-agent.events.command.name',
-      viewerTitle: 's-agent.events.command.viewer.title',
+      viewerTitle: 's-agent.events.command.title',
       visibe: true,
       callback: () => {},
       templates: {
@@ -40,6 +40,7 @@ const service = {
     /*{
       name: 'nodejs',
       humanName: 's-agent.events.nodejs.name',
+      viewerTitle: 's-agent.events.nodejs.title',
       visibe: true,
       callback: () => {},
       templates: {

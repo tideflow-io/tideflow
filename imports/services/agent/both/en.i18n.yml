@@ -7,8 +7,8 @@ token: Authentication token
 moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
 events.nodejs.name: Execute a single-file-code
-events.command.viewer.title: Execute a command in my agent.
-events.nodejs.viewer.title: Execute a single-file-code
+events.command.title: Execute a command in my agent.
+events.nodejs.title: Execute a single-file-code
 event.execute.command: Command to execute
 event.execute.selectAgent: Which agent must be used
 event.execute.anyAgent: Any agent available
