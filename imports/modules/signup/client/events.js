@@ -28,6 +28,9 @@ Template['membership.signup'].events({
         if (error.reason === 'Email already exists.') {
           sAlert.error(i18n.__('signup.email.alreadyExists'))
         }
+        else if (error.error === 'not-allowed') {
+          sAlert.error(i18n.__('signup.notAllowed'))
+        }
         else {
           sAlert.error(i18n.__('signup.error'))
         }

@@ -10,3 +10,4 @@ password.length: The password must have at least 6 characters
 email.alreadyExists: The email address is already registered
 error: There was an error creating your account
 success.title: Your account have been created. Please verify your email address.
+notAllowed: You are not allowed to signup

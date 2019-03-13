@@ -6,6 +6,6 @@ Template.verifyIndex.onRendered(function() {
       Session.set('verifyMessage', i18n.__('verify.error'))
       return
     }
-    Router.go('welcome')
+    Router.go('home')
   })
 })

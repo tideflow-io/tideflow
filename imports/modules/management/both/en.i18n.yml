@@ -5,7 +5,11 @@ site.title.label: Site's title
 site.title.empty: Site's title can not be empty
 site.ok: Site's settings updated
 site.error: Something went wrong
+permissions.noSignups.label: No signups allowed
 permissions.publicSignups.label: Allow anyone to signup
+permissions.domainSignups.label: Allow signups for an specific domain
+permissions.domainName.placeholder: Domain name. example.com
 permissions.submit.button: Save
 permissions.submit.error: Error updating permissions
+permissions.submit.invalidDomain: Invalid domain
 permissions.submit.ok: Permissions updated succesfully

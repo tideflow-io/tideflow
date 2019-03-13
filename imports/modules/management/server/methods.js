@@ -36,7 +36,8 @@ Meteor.methods({
     }
 
     check(settings, {
-      publicSignups: Boolean
+      signupsType: String,
+      signupsDomain: String,
     })
 
     SettingsCollection.upsert({
@@ -44,7 +45,8 @@ Meteor.methods({
     }, {
       $set: {
         public: true,
-        'settings.publicSignups': settings.publicSignups
+        'settings.signupsType': settings.signupsType,
+        'settings.signupsDomain': settings.signupsDomain
       }
     })
   }

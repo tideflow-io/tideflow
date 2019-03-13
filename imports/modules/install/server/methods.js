@@ -42,7 +42,7 @@ Meteor.methods({
       $set: {
         public: true,
         type: 'siteSettings',
-        'settings.publicSignups': true,
+        'settings.signupsType': 'public',
         'settings.title': details.siteName
       }
     }, {

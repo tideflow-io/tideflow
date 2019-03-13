@@ -16,10 +16,17 @@ Meteor.methods({
       }
     })
 
-    const allow = settingsHelper.getOne('siteSettings', 'publicSignups')
+    const siteSettings = settingsHelper.getOne('siteSettings')
 
-    if (!allow) {
+    if (siteSettings.signupsType === 'none') {
       throw new Meteor.Error('not-allowed')
+    }
+    else if (siteSettings.signupsType === 'domain') {
+      const email = userData.email
+      const domain = email.split('@')[1] || ''
+      if (domain !== siteSettings.signupsDomain) {
+        throw new Meteor.Error('not-allowed')
+      }
     }
 
     const userId = Accounts.createUser(userData)

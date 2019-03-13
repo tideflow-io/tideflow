@@ -30,9 +30,6 @@ import '/imports/services/cron/server'
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/server'
 
-import '/imports/modules/welcome/both'
-import '/imports/modules/welcome/server'
-
 import '/imports/modules/verify/both'
 import '/imports/modules/verify/server'
 

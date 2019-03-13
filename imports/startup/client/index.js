@@ -34,9 +34,6 @@ import '/imports/ui/shared/footer'
 import '/imports/ui/shared/profile'
 import '/imports/ui/shared/loading'
 
-import '/imports/modules/welcome/both'
-import '/imports/modules/welcome/client'
-
 import '/imports/modules/verify/both'
 import '/imports/modules/verify/client'
 
