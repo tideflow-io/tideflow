@@ -40,7 +40,7 @@ const service = {
           error: false,
           msgs: [
             {
-              m: 's-webparsy.log.scrape.title',
+              m: 's-webparsy.log.scrape.yaml.title',
               err: false,
               d: new Date()
             }
