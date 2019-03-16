@@ -36,8 +36,8 @@ const service = {
       name: 'called',
       humanName: 's-gh-webhooks.events.called.name',
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
-        return {
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        cb(null, {
           result: stepData(executionLogs, 'last'),
           next: true,
           msgs: [
@@ -47,7 +47,7 @@ const service = {
               d: new Date()
             }
           ]
-        }
+        })
       },
       conditions: [
         // {}

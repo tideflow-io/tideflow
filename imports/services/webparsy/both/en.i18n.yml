@@ -1,0 +1,4 @@
+_namespace: s-webparsy
+name: Web scraper
+events.scrape.yml: YAML definition
+events.scrape.name: Scrape website content(s)

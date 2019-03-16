@@ -12,6 +12,9 @@ import '/imports/services/rss/server'
 import '/imports/services/github-webhooks/both'
 import '/imports/services/github-webhooks/server'
 
+import '/imports/services/webparsy/both'
+import '/imports/services/webparsy/server'
+
 import '/imports/services/webform/both'
 import '/imports/services/webform/server'
 

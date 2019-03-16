@@ -294,20 +294,25 @@ jobs.register('workflow-start', function(jobData) {
     // stderr
   })
 
-  let triggerResult = event.callback(
-    channel,
-    flow,
-    user,
-    Object.assign(flow.trigger, channel),
-    [
-      {
-        stepResults: originalTriggerData,
-        next: true
-      }
-    ],
-    executionId,
-    logId
-  )
+  let triggerEvent = Meteor.wrapAsync((cb) => {
+    event.callback(
+      channel,
+      flow,
+      user,
+      Object.assign(flow.trigger, channel),
+      [
+        {
+          stepResults: originalTriggerData,
+          next: true
+        }
+      ],
+      executionId,
+      logId,
+      cb
+    )
+  })
+
+  let triggerResult = triggerEvent()
 
   {
     let updateReq = {
@@ -388,15 +393,21 @@ jobs.register('workflow-step', function(jobData) {
   let stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
   let stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
   if (!stepEvent || !stepEvent.callback) return null
+  
+  let callEvent = Meteor.wrapAsync((cb) => {
+    stepEvent.callback(channel, flow, user, currentStep, previousSteps, executionId, logId, cb)
+  })
 
-  let eventCallback = stepEvent.callback(channel, flow, user, currentStep, previousSteps, executionId, logId)
+  let eventCallback = callEvent()
 
+  console.log(JSON.stringify({eventCallback}, ' ', 2))
+  
   eventCallback.result.map(r => {
     if (r.type === 'file') {
 
       if (!r.data.data) {
         console.error('File have no data attached')
-        return;
+        return
       }
 
       let getFile = Meteor.wrapAsync((cb) => {

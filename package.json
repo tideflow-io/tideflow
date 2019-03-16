@@ -38,6 +38,7 @@
     "rss-parser": "^3.6.2",
     "simpl-schema": "^1.5.5",
     "socket.io": "^2.2.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "webparsy": "^0.1.2"
   }
 }

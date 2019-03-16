@@ -20,8 +20,8 @@ const service = {
       name: 'new-content',
       humanName: i18n.__('s-rss.events.new-content.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
-        return stepData(executionLogs, 'last')
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        cb(null, stepData(executionLogs, 'last'))
       },
       conditions: [
         // {}

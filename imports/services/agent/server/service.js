@@ -45,7 +45,7 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const lastData = stepData(executionLogs, 'last')
 
@@ -75,7 +75,7 @@ const service = {
           callParameters.push(agentDoc._id || agentDoc)
         }
         
-        return {
+        cb(null, {
           result: [],
           next: false,
           error: !commandSent,
@@ -87,7 +87,7 @@ const service = {
               d: new Date()
             }
           ]
-        }
+        })
       },
       conditions: [
         // {}

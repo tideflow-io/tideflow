@@ -5,6 +5,9 @@ import './autoSubscribe'
 import '/imports/services/rss/both'
 import '/imports/services/rss/client'
 
+import '/imports/services/webparsy/both'
+import '/imports/services/webparsy/client'
+
 import '/imports/services/webform/both'
 import '/imports/services/webform/client'
 

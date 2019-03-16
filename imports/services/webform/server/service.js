@@ -38,8 +38,8 @@ const service = {
       name: 'submitted',
       humanName: i18n.__('s-webform.events.submitted.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
-        return {
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        cb(null, {
           result: stepData(executionLogs, 'last'),
           next: true,
           msgs: [
@@ -49,7 +49,7 @@ const service = {
               d: new Date()
             }
           ]
-        }
+        })
       },
       conditions: [
         // {}

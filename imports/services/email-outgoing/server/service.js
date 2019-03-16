@@ -19,7 +19,7 @@ const service = {
   events: [{
     name: 'to-me',
     visibe: true,
-    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
+    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const lastData = stepData(executionLogs, 'last')
       const to = commonEmailHelper.userEmail(user)
@@ -55,17 +55,17 @@ const service = {
 
       data.attachments = files.map(file => {
         return {
-            content: new Buffer(file.data.data),
-            filename: file.data.fileName
-          }
+          content: new Buffer(file.data.data),
+          filename: file.data.fileName
+        }
       })
 
       emailHelper.send(data)
 
-      return {
+      cb(null, {
         result: [],
         next: true
-      }
+      })
     },
     conditions: [
       // {}
@@ -74,12 +74,13 @@ const service = {
   {
     name: 'to-others',
     visibe: true,
-    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
+    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const lastData = stepData(executionLogs, 'last')
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
-      const fullName = user.profile ? user.profile.firstName || userEmail.address : userEmail.address
+      const userEmail = emailHelper.userEmail(user)
+      const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
 
       let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
       let objects = attachPrevious ? (lastData || []).filter(data => data.type === 'object') : []
@@ -93,7 +94,7 @@ const service = {
       let tplVars = {
         messageTitle: flow.title,
         fullName,
-        userEmail: userEmail.address,
+        userEmail,
         sentVia: flow.title,
         lines: currentStep.config.body.split('\n'),
         links,
@@ -124,18 +125,18 @@ const service = {
 
         data.attachments = files.map(file => {
           return {
-              content: new Buffer(file.data.data),
-              filename: file.data.fileName
-            }
+            content: new Buffer(file.data.data),
+            filename: file.data.fileName
+          }
         })
       })
 
       emailHelper.send(data)
 
-      return {
+      cb(null, {
         result: [],
         next: true
-      }
+      })
     },
     conditions: [
       // {}

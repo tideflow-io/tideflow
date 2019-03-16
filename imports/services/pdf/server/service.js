@@ -48,7 +48,7 @@ const service = {
     {
       name: 'build-pdf',
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const filesData = stepData(executionLogs, 'last').filter(data => data.type === 'object')
 
         const pdfType = (currentStep.config || {}).type || null
@@ -76,7 +76,7 @@ const service = {
           })
         })
 
-        return {
+        cb(null, {
           result: results,
           next: true,
           msgs: [
@@ -86,7 +86,7 @@ const service = {
               d: new Date()
             }
           ]
-        }
+        })
       }
     }
   ]

@@ -35,8 +35,8 @@ const service = {
       name: 'called',
       humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId) => {
-        return {
+      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        cb(null, {
           result: stepData(executionLogs, 'last'),
           next: true,
           msgs: [
@@ -46,7 +46,7 @@ const service = {
               d: new Date()
             }
           ]
-        }
+        })
       },
       conditions: [
         // {}
