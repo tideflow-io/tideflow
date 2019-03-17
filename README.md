@@ -16,7 +16,7 @@ Tideflow integrates with:
 - [Webforms](https://docs.tideflow.io/docs/services-webforms)
 - many more to come
 
-<img src="https://raw.githubusercontent.com/tideflow-io/tideflow/7e087e6ebd014d8b34f4b7b58449fd44fa90c9fa/home.jpg" height="400" style="border:1px solid gray;">
+<img src="https://raw.githubusercontent.com/tideflow-io/tideflow/358d884a345071fcdb615b5b6777b21de15e6cd4/D13Ue_3WsAEu9zx.jpg" height="400" style="border:1px solid gray;">
 
 ## Quick Start
 
