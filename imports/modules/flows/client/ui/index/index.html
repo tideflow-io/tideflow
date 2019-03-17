@@ -12,15 +12,12 @@
             <p>{{__ "flows.index.emptyListSubTitle"}}</p>
             <p>
               <u>
-                <a class="btn btn-outline-dark" href="{{pathFor 'flows.new'}}">{{__ "flows.index.emptyListCreateFirst"}}</a>
+                <a class="btn btn-dark" href="{{pathFor 'flows.new'}}">{{__ "flows.index.emptyListCreateFirst"}}</a>
               </u>
             </p>
           {{else}}
-            <a href="{{pathFor 'flows.new'}}" class="btn btn-outline-dark mb-4">{{__ "flows.index.createNew"}}</a>
+            <a href="{{pathFor 'flows.new'}}" class="btn btn-dark mb-4">{{__ "flows.index.createNew"}}</a>
             <div class="card-list">
-              <!-- <div class="card-list-head">
-                <h6>Channels</h6>
-              </div> -->
               <div class="card-list-body">
                 {{#each flows}}
                   {{> flowsIndexListItem}}
@@ -38,7 +35,7 @@
     <div class="card-body">
       <div class="card-meta min-width-100-md mr-2">
         <div class="btn-group-toggle flow-toggle" data-toggle="buttons">
-          <label class="btn {{#if flowEnabled}}btn-primary active{{else}}btn-outline-primary{{/if}}">
+          <label class="btn {{#if flowEnabled}}btn-outline-success{{else}}btn-outline-danger{{/if}}">
             {{#if flowEnabled}}
               <input type="checkbox" checked> Enabled
             {{else}}

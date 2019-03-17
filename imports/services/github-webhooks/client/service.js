@@ -6,7 +6,7 @@ const service = {
   description: 's-gh-webhooks.description',
   website: 'https://docs.tideflow.io/docs/services-gh-webhooks',
   icon: 'fab fa-github',
-  iconColor: '#333',
+  iconColor: '#CCC',
   inputable: true,
   stepable: false,
   ownable: true,

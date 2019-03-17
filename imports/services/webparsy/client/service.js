@@ -11,7 +11,7 @@ const service = {
   iconColor: '#3498DB',
   inputable: false,
   stepable: true,
-  ownable: true,
+  ownable: false,
   templates: {
   },
   hooks: {

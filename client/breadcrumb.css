@@ -1,7 +1,7 @@
 .breadcrumb {
-  background: white;
+  background: #252C3C;
   font-size: 0.9em;
-  border: 1px solid #E9EEF2
+  border: 1px solid #323B50
 }
 
 .breadcrumb li:not(:first-child):before {

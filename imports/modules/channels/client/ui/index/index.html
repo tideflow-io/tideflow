@@ -12,12 +12,12 @@
           <p>{{__ "channels.index.emptyListDescription"}}</p>
           <p>
             <u>
-              <a class="btn btn-outline-dark" href="{{pathFor 'channels.new'}}">
+              <a class="btn btn-dark" href="{{pathFor 'channels.new'}}">
                 {{__ "channels.index.emptyListCreateFirst"}}</a>
             </u>
           </p>
         {{else}}
-          <a href="{{pathFor 'channels.new'}}" class="btn btn-outline-dark mb-4">{{__ "channels.index.connectNew"}}</a>
+          <a href="{{pathFor 'channels.new'}}" class="btn btn-dark mb-4">{{__ "channels.index.connectNew"}}</a>
           <div class="card-list">
             <!-- <div class="card-list-head">
               <h6>Channels</h6>

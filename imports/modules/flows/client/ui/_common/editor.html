@@ -7,7 +7,9 @@
             <h5 class="card-title">{{__ "flows.editor.trigger.title"}}</h5>
             <div class="form-group">
               <select class="form-control" name="triggerSelector">
-                <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
+                <option value="">
+                  ({{__ "flows.editor.trigger.selectOneOption"}})
+                </option>
                 {{#each triggers}}
                   <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
                 {{/each}}
@@ -16,7 +18,9 @@
             {{#if triggerSelected.events}}
             <div class="form-group">
               <select class="form-control" name="triggerEventSelector">
-                <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
+                <option value="">
+                  ({{__ "flows.editor.triggerEvent.selectOneOption"}})
+                </option>
                 {{#each triggerSelected.events}}
                   <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
                 {{/each}}
@@ -48,7 +52,9 @@
           <div class="card-body">
             <div class="form-group">
               <select class="step-type-selector form-control" data-step="{{this.index}}">
-                <option>{{__ "flows.editor.step.type.selectOneOption"}}</option>
+                <option>
+                  ({{__ "flows.editor.step.type.selectOneOption"}})
+                </option>
                 {{#each stepsAvailable}}
                   <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
                 {{/each}}
@@ -57,7 +63,9 @@
             {{#if stepSelectedEvents ../../flow ../index this.name}}
             <div class="form-group">
               <select class="step-event-selector form-control" data-step="{{this.index}}">
-                <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                <option>
+                  ({{__ "flows.editor.step.event.selectOneOption"}})
+                </option>
                 {{#each stepSelectedEvents}}
                   <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
                 {{/each}}
