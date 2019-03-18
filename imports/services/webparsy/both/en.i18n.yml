@@ -1,5 +1,6 @@
 _namespace: s-webparsy
 name: Web scraper
+description: Get content(s) from a website
 events.scrape.yml: YAML definition
 events.scrape.name: Scrape website content(s)
 events.scrape.title: Run web scraping

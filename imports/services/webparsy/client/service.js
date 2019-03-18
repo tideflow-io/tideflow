@@ -9,8 +9,6 @@ const service = {
   website: 'https://docs.tideflow.io/docs/services-webparsy',
   icon: 'fas fa-save',
   iconColor: '#3498DB',
-  inputable: false,
-  stepable: true,
   ownable: false,
   templates: {
   },
@@ -24,7 +22,8 @@ const service = {
       name: 'scrape',
       humanName: 's-webparsy.events.scrape.name',
       viewerTitle: 's-webparsy.events.scrape.title',
-      visibe: true,
+      inputable: true,
+      stepable: false,
       callback: () => {},
       templates: {
         eventConfig: 'servicesWebparsyScrapeConfig'

@@ -9,8 +9,6 @@ const service = {
   humanName: 's-rss.name',
   description: 's-rss.description',
   website: 'https://docs.tideflow.io/docs/services-rss',
-  inputable: true,
-  stepable: false,
   ownable: true,
   templates: {
     detailsView: 'servicesRssDetailsView',
@@ -29,7 +27,8 @@ const service = {
       name: 'new-content',
       humanName: 's-rss.events.new-content.name',
       viewerTitle: 's-rss.events.new-content.viewer.title',
-      visibe: true,
+      inputable: true,
+      stepable: false,
       callback: () => {},
       conditions: [
         // {}

@@ -5,3 +5,8 @@
   border-top: 1px solid #E9EEF1;
   overflow: hidden;
 }
+.swal-button {
+  padding: 7px 19px;
+  border-radius: 1px;
+  font-size: 12px;
+}

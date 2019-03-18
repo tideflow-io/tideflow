@@ -5,6 +5,12 @@ import * as emailHelper from '/imports/helpers/both/emails'
 
 Template.registerHelper('sessVal', (name) => Session.get(name))
 
+Template.registerHelper('prop', (obj, prop) => {
+  return (obj && obj[prop]) ? obj[prop] : ''
+})
+
+Template.registerHelper('debug', (a) => console.log(a))
+
 Template.registerHelper('sessEq', (name, val) => Session.get(name) ? Session.get(name) === val : false)
 
 Template.registerHelper('simpleDate', (date) => moment(date).format('D MMMM'))

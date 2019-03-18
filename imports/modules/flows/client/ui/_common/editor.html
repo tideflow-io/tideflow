@@ -22,7 +22,9 @@
                   ({{__ "flows.editor.triggerEvent.selectOneOption"}})
                 </option>
                 {{#each triggerSelected.events}}
-                  <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
+                  {{#if inputable}}
+                    <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
+                  {{/if}}
                 {{/each}}
               </select>
             </div>

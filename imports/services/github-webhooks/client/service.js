@@ -7,8 +7,6 @@ const service = {
   website: 'https://docs.tideflow.io/docs/services-gh-webhooks',
   icon: 'fab fa-github',
   iconColor: '#CCC',
-  inputable: true,
-  stepable: false,
   ownable: true,
   templates: {
     detailsView: 'servicesGhWebhooksDetailsView',
@@ -25,7 +23,8 @@ const service = {
       name: 'called',
       humanName: 's-gh-webhooks.events.called.name',
       viewerTitle: 's-gh-webhooks.events.called.viewer.title',
-      visibe: true,
+      inputable: true,
+      stepable: false,
       callback: () => {},
       conditions: [
         // {}

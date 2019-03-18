@@ -1,0 +1,68 @@
+<template name="servicesDatatableDetailsView">
+  <table class="table table-bordered table-dark table-sm table-editable">
+    {{> sDTHeader}}
+    {{> sDTBody records=records headers=channel.config.headers}}
+  </table>
+  <div id="records-add" class="btn btn-outline-success">
+    {{__ "s-datatable.one.edit.addRecord"}}
+  </div>
+</template>
+
+<template name="sDTHeader">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      {{#each channel.config.headers}}
+        <th scope="col">{{> sDTColumnDropdown}}</th>
+      {{/each}}
+      <th scope="col">{{> sDTActionsColumnDropdown}}</th>
+    </tr>
+  </thead>
+</template>
+
+<template name="sDTRecord">
+  <tr>
+    <th scope="row">{{cardinality}}</th>
+    {{#each ../headers}}
+      <td contenteditable="true" data-column="{{name}}" data-type="{{type}}" data-record="{{../_id}}" scope="col">{{prop ../data name}}</td>
+    {{/each}}
+    <td scope="row" class="">
+      <div class="btn btn-sm btn-outline-danger sdt-record-remove float-right">
+        {{__ "s-datatable.one.edit.record.remove"}}
+      </div>
+    </td>
+  </tr>
+</template>
+
+<template name="sDTBody">
+  <tbody>
+    {{#each records}}
+      {{> sDTRecord}}
+    {{/each}}
+  </tbody>
+</template>
+
+<template name="sDTColumnDropdown">
+  <div class="dropdown show">
+    <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-tooltip="true" data-placement="top" title="{{name}}">
+      {{label}}
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" id="sdt-column-remove" href="#">{{__ "s-datatable.one.edit.columns.remove"}}</a>
+      <a class="dropdown-item" id="sdt-column-rename" href="#">{{__ "s-datatable.one.edit.columns.rename"}}</a>
+    </div>
+  </div>
+</template>
+
+<template name="sDTActionsColumnDropdown">
+  <div class="dropdown show float-right">
+    <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{__ "s-datatable.one.edit.actions.column.title"}}
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" id="sdt-columns-add" href="#">{{__ "s-datatable.one.edit.columns.add"}}</a>
+    </div>
+  </div>
+</template>

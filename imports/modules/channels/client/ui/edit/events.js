@@ -14,7 +14,8 @@ Template['channels.one.edit'].events({
       text: i18n.__('channels.delete.text'),
       icon: 'warning',
       buttons: true,
-      dangerMode: true
+      dangerMode: true,
+      animation: false
     })
     .then(accepted => {
       if (accepted) {

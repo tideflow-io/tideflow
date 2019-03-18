@@ -1,4 +1,4 @@
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Channels } from '/imports/modules/channels/both/collection.js'
 
 /**
  * 

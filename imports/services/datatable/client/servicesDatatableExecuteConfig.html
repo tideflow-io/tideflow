@@ -1,0 +1,10 @@
+<template name="servicesDatatableExecuteConfig">
+  <div class="form-group">
+    <label class="control-label">{{__ "s-datatable.event.datatable.selectTable"}}</label>
+    <select class="form-control" data-schema-key="{{stepConfigName 'datatable'}}" name="{{stepConfigName 'datatable'}}">
+      {{#each datatables}}
+        <option value="{{_id}}" {{selectedDatatable _id}}>{{title}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>

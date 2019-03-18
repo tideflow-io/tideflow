@@ -5,8 +5,6 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'email-outgoing',
   humanName: 's-email-outgoing.name',
-  inputable: false,
-  stepable: true,
   ownable: false,
   templates: {
   },
@@ -20,7 +18,8 @@ const service = {
       name: 'to-me',
       humanName: 's-email-outgoing.events.tome.name',
       viewerTitle: 's-email-outgoing.events.tome.viewer.title',
-      visibe: true,
+      inputable: false,
+      stepable: true,
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesEmailOutgoingToMeConfig'
@@ -33,7 +32,8 @@ const service = {
       name: 'to-others',
       humanName: 's-email-outgoing.events.toother.name',
       viewerTitle: 's-email-outgoing.events.toother.viewer.title',
-      visibe: true,
+      inputable: false,
+      stepable: true,
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesEmailOutgoingToOthersConfig'

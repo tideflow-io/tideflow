@@ -23,6 +23,9 @@ import '/imports/services/pdf/client'
 import '/imports/services/agent/both'
 import '/imports/services/agent/client'
 
+import '/imports/services/datatable/both'
+import '/imports/services/datatable/client'
+
 import '/imports/services/cron/both'
 import '/imports/services/cron/client'
 

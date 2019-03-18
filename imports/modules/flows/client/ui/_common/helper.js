@@ -128,7 +128,7 @@ Template.stepEventConfig.helpers({
 Template.flowEditor.helpers({
   stepSelectedEvents() {
     const selectedService = Session.get(`fe-step-${this.index}`)
-    return selectedService ? selectedService.events || false : false
+    return selectedService ? selectedService.events.filter(e => e.stepable) || false : false
   },
   isSelectedStepType: (flow, index, current) => {
     if (!flow || !flow.steps || !flow.steps[index]) return ''
@@ -150,17 +150,17 @@ Template.flowEditor.helpers({
   triggers: () => {
     let chs = []
     servicesAvailable.filter(sa => {
-      return sa.inputable && !sa.ownable
+      return !sa.ownable && sa.events.find(e => e.inputable)
     }).map(s => {
       chs.push({
         _id: s.name,
-        title: `${i18n.__(s.humanName)} ${s.description ? `(${s.description})` : ''}`
+        title: `${i18n.__(s.humanName)} ${s.description ? `- ${i18n.__(s.description)}` : ''}`
       })
     })
 
     Channels.find().map((c) => {
       let sa = servicesAvailable.find(s => s.name === c.type)
-      if (!sa.inputable) return;
+      if (!sa.events.find(e => e.inputable)) return;
       chs.push({
         _id: c._id,
         title: `${i18n.__(sa.humanName)} : ${c.title}`
@@ -202,7 +202,9 @@ Template.flowEditor.helpers({
   },
 
   stepsAvailable() {
-    return servicesAvailable.filter(sa => sa.stepable)
+    return servicesAvailable.filter(sa => {
+      return sa.events.find(e => e.stepable)
+    })
   },
 
   triggerEditorEventForm: function() {

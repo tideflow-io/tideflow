@@ -5,8 +5,6 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'pdf',
   humanName: 's-pdf.name',
-  inputable: false,
-  stepable: true,
   ownable: false,
   templates: {
   },
@@ -20,7 +18,8 @@ const service = {
       name: 'build-pdf',
       humanName: 's-pdf.events.buildpdf.title',
       viewerTitle: 's-pdf.events.buildpdf.viewer.title',
-      visibe: true,
+      inputable: false,
+      stepable: true,
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesPdfBuildPdfConfig'

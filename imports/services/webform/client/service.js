@@ -9,8 +9,6 @@ const service = {
   website: 'https://docs.tideflow.io/docs/services-webforms',
   icon: 'fas fa-clipboard-list',
   iconColor: '#FF3031',
-  inputable: true,
-  stepable: false,
   ownable: true,
   templates: {
     detailsView: 'servicesWebformDetailsView',
@@ -29,7 +27,8 @@ const service = {
       name: 'submitted',
       humanName: 's-webform.events.submitted.name',
       viewerTitle: 's-webform.events.submitted.viewer.title',
-      visibe: true,
+      inputable: true,
+      stepable: false,
       callback: () => {},
       conditions: [
         // {}

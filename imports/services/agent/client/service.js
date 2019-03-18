@@ -9,8 +9,6 @@ const service = {
   website: 'https://docs.tideflow.io/docs/services-agent',
   icon: 'fas fa-save',
   iconColor: '#3498DB',
-  inputable: false,
-  stepable: true,
   ownable: true,
   templates: {
     detailsView: 'servicesAgentDetailsView',
@@ -28,7 +26,8 @@ const service = {
       name: 'execute',
       humanName: 's-agent.events.command.name',
       viewerTitle: 's-agent.events.command.title',
-      visibe: true,
+      inputable: false,
+      stepable: true,
       callback: () => {},
       templates: {
         eventConfig: 'servicesAgentExecuteConfig'

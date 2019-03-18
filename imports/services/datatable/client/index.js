@@ -1,0 +1,5 @@
+import './detailsView.html'
+import './servicesDatatableExecuteConfig.html'
+import './service'
+import './events'
+import './helpers'

@@ -9,8 +9,6 @@ const service = {
   website: 'https://docs.tideflow.io/docs/services-endpoints',
   icon: 'fa fa-server',
   iconColor: '#563D7C',
-  inputable: true,
-  stepable: false,
   ownable: true,
   templates: {
     detailsView: 'servicesEndpointDetailsView',
@@ -27,7 +25,8 @@ const service = {
       name: 'called',
       humanName: 's-endpoint.events.called.name',
       viewerTitle: 's-endpoint.events.called.viewer.title',
-      visibe: true,
+      inputable: true,
+      stepable: false,
       callback: () => {},
       conditions: [
         // {}

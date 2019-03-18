@@ -23,7 +23,8 @@ Template['flows.one'].events({
       text: i18n.__('flows.delete.text'),
       icon: 'warning',
       buttons: true,
-      dangerMode: true
+      dangerMode: true,
+      animation: false
     })
     .then(accepted => {
       if (accepted) {
