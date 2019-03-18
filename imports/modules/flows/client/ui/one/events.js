@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
-
+import { sAlert } from 'meteor/juliancwirko:s-alert'
 import i18n from 'meteor/universe:i18n'
 
 Template['flows.one'].events({

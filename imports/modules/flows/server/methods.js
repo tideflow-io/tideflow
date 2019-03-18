@@ -1,14 +1,15 @@
-import { Random } from "meteor/random"
-import { Meteor } from "meteor/meteor"
-import SimpleSchema from "simpl-schema"
-import { ValidatedMethod } from "meteor/mdg:validated-method"
+import { Random } from 'meteor/random'
+import { Meteor } from 'meteor/meteor'
+import SimpleSchema from 'simpl-schema'
+import { ValidatedMethod } from 'meteor/mdg:validated-method'
+import { sAlert } from 'meteor/juliancwirko:s-alert'
 
 import { flows as flowsHooks } from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'
 
-import { Flows } from "../both/collection"
+import { Flows } from '../both/collection'
 
-import schema from "../both/schemas/schema.js"
+import schema from '../both/schemas/schema.js'
 
 const debug = console.log
 

@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating'
+import { sAlert } from 'meteor/juliancwirko:s-alert'
 
 Template['flows.one.edit'].events({
   'click .flows-one-delete': (event, template) => {

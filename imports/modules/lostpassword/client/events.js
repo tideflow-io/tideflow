@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { Accounts } from 'meteor/accounts-base'
+import { sAlert } from 'meteor/juliancwirko:s-alert'
 
 import i18n from 'meteor/universe:i18n'
 
