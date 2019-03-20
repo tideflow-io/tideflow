@@ -29,20 +29,6 @@ const service = {
       conditions: [
         // {}
       ]
-    },
-    {
-      name: 'insert',
-      humanName: 's-datatable.events.insert.name',
-      viewerTitle: 's-datatable.events.insert.viewer.title',
-      inputable: false,
-      stepable: true,
-      templates: {
-        eventConfig: 'servicesDatatableExecuteConfig'
-      },
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
     }
   ]
 }

@@ -42,8 +42,7 @@ const service = {
   },
   events: [
     {
-      name: 'updated',
-      visibe: true,
+      name: 'record-update',
       callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         cb(null, {
           result: stepData(executionLogs, 'last'),

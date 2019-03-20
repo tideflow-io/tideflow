@@ -2,8 +2,10 @@ import { Meteor } from 'meteor/meteor'
 import { check } from 'meteor/check'
 import slugs from '/imports/helpers/server/slugs'
 
-import { Channels } from '/imports/modules/channels/both/collection.js'
-import { ServiceDataTableRecords } from '../both/collection.js'
+import { Channels } from '/imports/modules/channels/both/collection'
+import { triggerFlows } from '/imports/queue/server'
+
+import { ServiceDataTableRecords } from '../both/collection'
 
 const checkPermissions = (details, channel) => {
   if (!Meteor.userId()) return false
@@ -136,16 +138,46 @@ Meteor.methods({
       throw new Meteor.Error('no-auth')
     }
 
-    let update = {}
-    update[`data.${details.column}`] = details.value
+    let executeUpdate = Meteor.wrapAsync((cb) => {
+      let update = {}
+      update[`data.${details.column}`] = details.value
 
-    ServiceDataTableRecords.update({
-      user: Meteor.userId(),
-      channel: channel._id,
-      _id: details.record
-    }, {
-      $set: update
+      ServiceDataTableRecords.rawCollection().findAndModify(
+        {
+          user: Meteor.userId(),
+          channel: channel._id,
+          _id: details.record
+        },
+        [],
+        { $set: update },
+        { new: true },
+        cb)
     })
+
+    let newRecord = executeUpdate().value
+
+    let user = Meteor.users.findOne({_id: channel.user}, {
+      fields: { services: false }
+    })
+  
+    if (!user) {
+      return null
+    }
+
+    let data = [{
+      type: 'object',
+      data: Object.assign({ id: newRecord.cardinality }, newRecord.data)
+    }]
+
+    triggerFlows(
+      channel,
+      user,
+      {
+        'trigger._id': channel._id,
+        'trigger.event': 'record-update'
+      },
+      data
+    )
   },
 
   's-datatable-record-remove' (details) {

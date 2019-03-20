@@ -18,8 +18,6 @@ one.edit.record.removeTitle: Are you sure?
 one.edit.record.removeDescription: Once deleted, you will not be able to recover this.
 one.edit.record.removeError: Error removing record
 one.edit.actions.column.title: Options
-events.insert.name: Insert a record
-events.insert.viewer.title: Insert a record
 events.record-update.name: A record is updated
 events.record-update.viewer.title: A record was updated
 event.datatable.selectTable: Select a datatable

@@ -1,14 +1,15 @@
+import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Channels } from '/imports/modules/channels/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
 const debug = console.log
 
 Router.route('/endpoint/:uuid', function () {
-  const req = this.request;
-  const res = this.response;
+  const req = this.request
+  const res = this.response
   const uuid = this.params.uuid
   const channel = Channels.findOne({
     type: 'endpoint',
@@ -26,6 +27,7 @@ Router.route('/endpoint/:uuid', function () {
   let user = Meteor.users.findOne({_id: channel.user}, {
     fields: { services: false }
   })
+
   if (!user) {
     debug('User not found. Skipping')
     return null
