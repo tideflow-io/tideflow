@@ -14,6 +14,7 @@ Tideflow integrates with:
 - [PDF Creation](https://docs.tideflow.io/docs/services-pdf)
 - [Email Sending](https://docs.tideflow.io/docs/services-email-outgoing)
 - [Webforms](https://docs.tideflow.io/docs/services-webforms)
+- [Webscraping](https://docs.tideflow.io/docs/services-webparsy)
 - many more to come
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow/358d884a345071fcdb615b5b6777b21de15e6cd4/D13Ue_3WsAEu9zx.jpg" height="400" style="border:1px solid gray;">
