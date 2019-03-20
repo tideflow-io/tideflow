@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/join_chat.svg)](https://gitter.im/tideflow-io/community)
 
-Realtime, open source workflows execution platform.
+Realtime, open source workflows execution web application.
 
 Tideflow integrates with:
 
