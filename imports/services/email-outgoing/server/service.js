@@ -4,8 +4,6 @@ import { servicesAvailable } from '/imports/services/_root/server'
 
 import { step, stepData } from '/imports/queue/server'
 
-const debug = console.log
-
 const service = {
   name: 'email-outgoing',
   inputable: false,
@@ -107,28 +105,11 @@ const service = {
 
       if (!data.to || data.to.trim() === '') return null;
 
-      files.map((f) => {
-        let getFile = Meteor.wrapAsync((cb) => {
-          let bufferChunks = []
-          f.data.data.on('readable', () => {
-            // Store buffer chunk to array
-            let i = f.data.data.read()
-            if (!i) return
-            bufferChunks.push(i)
-          })
-          f.data.data.on('end', () => {
-            cb(null, Buffer.concat(bufferChunks))
-          })
-        })
-
-        debug('Attached!')
-
-        data.attachments = files.map(file => {
-          return {
-            content: new Buffer(file.data.data),
-            filename: file.data.fileName
-          }
-        })
+      data.attachments = files.map(file => {
+        return {
+          content: new Buffer(file.data.data),
+          filename: file.data.fileName
+        }
       })
 
       emailHelper.send(data)

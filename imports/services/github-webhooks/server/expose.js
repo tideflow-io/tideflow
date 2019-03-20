@@ -1,13 +1,11 @@
 import { Router } from 'meteor/iron:router'
 import { buildLinks } from '/imports/queue/server/helpers/links'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Channels } from '/imports/modules/channels/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
 const crypto = require('crypto')
-
-const debug = console.log
 
 /**
  * Compares the request's x-hub-signature against the channel's webhook secret.
@@ -28,7 +26,6 @@ Router.route('/ghwebhook/:uuid', function () {
 
   // Ignore requests without body
   if (!this.request.body) {
-    debug('no body')
     res.writeHead(404)
     res.end()
     return
@@ -46,7 +43,6 @@ Router.route('/ghwebhook/:uuid', function () {
 
   // Ignore request that don't resolve to a channel
   if (!channel) {
-    debug('no channel')
     res.writeHead(404)
     res.end()
     return
@@ -54,7 +50,6 @@ Router.route('/ghwebhook/:uuid', function () {
 
   // Validate the request secret with the one stored in the DB
   if (!validateSignature(channel, req)) {
-    debug('Wrong Secret')
     res.writeHead(401)
     res.end()
     return
@@ -70,7 +65,6 @@ Router.route('/ghwebhook/:uuid', function () {
 
   // Ignore the execution if for some reason the owner is not found
   if (!user) {
-    debug('User not found. Skipping')
     return null
   }
 

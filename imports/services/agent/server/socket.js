@@ -1,7 +1,7 @@
+import { Meteor } from 'meteor/meteor'
+
 import http from 'http'
 import socket_io from 'socket.io'
-
-const debug = console.log
 
 import { Channels } from '/imports/modules/channels/both/collection.js'
 

@@ -2,8 +2,6 @@ import { Template } from 'meteor/templating'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-const debug = console.log
-
 Template.registerHelper('flowTrigger', function() {
   try {
     let output = this.trigger.type
@@ -23,7 +21,6 @@ Template.registerHelper('flowTrigger', function() {
     return output
   }
   catch (ex) {
-    debug({ex})
     return ''
   }
 })

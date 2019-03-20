@@ -11,7 +11,7 @@ import { Flows } from '../both/collection'
 
 import schema from '../both/schemas/schema.js'
 
-const debug = console.log
+import i18n from 'meteor/universe:i18n'
 
 export const createFlow = new ValidatedMethod({
   name: 'flows.create',

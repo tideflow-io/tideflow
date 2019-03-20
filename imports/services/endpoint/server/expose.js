@@ -5,8 +5,6 @@ import { Channels } from '/imports/modules/channels/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
-const debug = console.log
-
 Router.route('/endpoint/:uuid', function () {
   const req = this.request
   const res = this.response
@@ -29,15 +27,8 @@ Router.route('/endpoint/:uuid', function () {
   })
 
   if (!user) {
-    debug('User not found. Skipping')
     return null
   }
-
-  debug('User found')
-
-  const flowsQuery = {status: 'enabled', 'trigger._id': channel._id}
-
-  debug(`Filtering flows ${JSON.stringify(flowsQuery)}`)
 
   let data = []
 

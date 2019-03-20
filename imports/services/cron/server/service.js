@@ -8,8 +8,6 @@ import { compare } from '/imports/helpers/both/compare'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-const debug = console.log
-
 /**
  * 
  * @param {*} value 
@@ -26,10 +24,6 @@ const nextCronExecution = (flow) => {
     }
     return schedule.date.toDate()
   } catch (ex) {
-    debug({
-      ex,
-      d: flow.trigger.config.cron
-    })
     return null
   }
 }
@@ -51,7 +45,6 @@ const service = {
     trigger: {
       create: {
         pre: (flow) => {
-          debug('Register new cron task in the server')
           if (flow.status === 'enabled') {
             const schedule = nextCronExecution(flow)
             if (!schedule) {
@@ -87,29 +80,24 @@ const service = {
                 if (!schedule) {
                   newFlow.status = 'disabled'
                   tfQueue.jobs.deschedule('s-cron-runOne', {
-                      flowId: newFlow._id
-                    },
-                    'flow-disabled-wrong-date'
+                    flowId: newFlow._id
+                  },
+                  'flow-disabled-wrong-date'
                   )
                 } else {
-                  tfQueue.jobs.schedule('s-cron-runOne', {
-                    flowId: newFlow._id
-                  }, {
-                    singular: true,
-                    date: schedule
-                  })
+                  tfQueue.jobs.schedule('s-cron-runOne', 
+                    { flowId: newFlow._id }, 
+                    { singular: true, date: schedule }
+                  )
                 }
-                debug('Enable #81')
               }
 
               // ENABLE => DISABLE
               else if (newFlow.status === 'disabled') {
-                tfQueue.jobs.deschedule('s-cron-runOne', {
-                    flowId: newFlow._id
-                  }, {},
+                tfQueue.jobs.deschedule('s-cron-runOne',
+                  { flowId: newFlow._id }, {},
                   'flow-disabled'
                 )
-                debug('Disable')
               }
             }
 
@@ -132,9 +120,8 @@ const service = {
                 const schedule = nextCronExecution(newFlow)
                 if (!schedule) {
                   newFlow.status = 'disabled'
-                  tfQueue.jobs.deschedule('s-cron-runOne', {
-                      flowId: newFlow._id
-                    },
+                  tfQueue.jobs.deschedule('s-cron-runOne',
+                    { flowId: newFlow._id },
                     'flow-disabled-wrong-date'
                   )
                 } else {
@@ -145,17 +132,14 @@ const service = {
                     date: schedule
                   })
                 }
-                debug('Enable #113') // Update the cron
               }
 
               // ENABLE => DISABLE
               else if (newFlow.status === 'disabled') {
-                tfQueue.jobs.deschedule('s-cron-runOne', {
-                    flowId: newFlow._id
-                  },
+                tfQueue.jobs.deschedule('s-cron-runOne',
+                  { flowId: newFlow._id },
                   'flow-disabled'
                 )
-                debug('Disable') // Update the cron
               }
             }
 
@@ -164,9 +148,8 @@ const service = {
               let schedule = nextCronExecution(newFlow)
               if (!schedule) {
                 newFlow.status = 'disabled'
-                tfQueue.jobs.deschedule('s-cron-runOne', {
-                    flowId: newFlow._id
-                  },
+                tfQueue.jobs.deschedule('s-cron-runOne',
+                  { flowId: newFlow._id },
                   'flow-disabled-wrong-date'
                 )
               } else {
@@ -177,7 +160,6 @@ const service = {
                   date: schedule
                 })
               }
-              debug('Update the cron')
             }
 
             // CRON => CRON, WITH DIFFERENT SETUP, AND STILL DISABLED
@@ -188,7 +170,6 @@ const service = {
             compare(newFlow.trigger.type, 'cron') &&
             !compare(originalFlow.trigger.type, 'cron')
           ) {
-            debug('Register new cron')
             let schedule = nextCronExecution(newFlow)
             tfQueue.jobs.schedule('s-cron-runOne', {
               flowId: newFlow._id
@@ -200,7 +181,6 @@ const service = {
             !compare(newFlow.trigger.type, 'cron') &&
             compare(originalFlow.trigger.type, 'cron')
           ) {
-            debug('Unregister old cron')
             tfQueue.jobs.deschedule('s-cron-runOne', {
               flowId: newFlow._id
             })
@@ -213,7 +193,6 @@ const service = {
       },
       delete: {
         pre: (flow) => {
-          debug('Un-Register new cron task in the server')
           return flow.trigger
         },
         post: (flow) => {

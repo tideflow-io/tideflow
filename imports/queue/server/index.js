@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { Jobs as Queue } from 'meteor/msavin:sjobs'
 
 import { Random } from 'meteor/random'
@@ -12,10 +13,6 @@ import * as emailHelper from '/imports/helpers/both/emails'
 
 import * as executions from './helpers/executions'
 import * as executionsSteps from './helpers/executionsSteps'
-
-let Binary = require('mongodb').Binary
-
-const debug = require('debug')('queue')
 
 /**
  * 
@@ -198,8 +195,6 @@ const triggerFlows = (channel, user, flowsQuery, originalTriggerData, flows) => 
 module.exports.triggerFlows = triggerFlows
 
 const executeNextStep = (context) => {
-  debug('executeNextStep')
-
   check(context, {
     flow: String,
     execution: String,
@@ -247,8 +242,6 @@ const executionError = (context) => {
 module.exports.executionError = executionError
 
 jobs.register('workflow-start', function(jobData) {
-  debug(`workflow-start`)
-  
   let instance = this
 
   let lapseStart = new Date()

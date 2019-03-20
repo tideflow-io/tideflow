@@ -8,8 +8,6 @@ import { Flows } from '/imports/modules/flows/both/collection.js'
 
 import { triggerFlows } from '/imports/queue/server'
 
-let debug = console.log
-
 tfQueue.jobs.register('s-cron-runOne', function(job) {
   let instance = this
   const flow = Flows.findOne({_id:job.flowId})

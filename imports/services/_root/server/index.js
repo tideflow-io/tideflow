@@ -1,5 +1,3 @@
-const debug = console.log
-
 let servicesAvailable = []
 //calculateUsage
 module.exports.servicesAvailable = servicesAvailable
@@ -72,7 +70,6 @@ module.exports.channels = channels
 const flows = {
   create: {
     pre: (newFlow) => {
-      debug('flows.create.pre')
       // Trigger hooks
       {
         let triggerService = servicesAvailable.find(service => service.name === newFlow.trigger.type)
@@ -87,8 +84,6 @@ const flows = {
     },
 
     post: (newFlow) => {
-      debug('flows.create.post')
-
       // Trigger hooks
       {
         let triggerService = servicesAvailable.find(service => service.name === newFlow.trigger.type)
@@ -103,8 +98,6 @@ const flows = {
   },
   update: {
     pre: (originalFlow, newFlow) => {
-      debug('flows.update.pre')
-
       // Trigger hooks
       {
         // Old flow
@@ -126,8 +119,6 @@ const flows = {
       return newFlow
     },
     post: (originalFlow, newFlow) => {
-      debug('flows.update.post')
-
       // Trigger hooks
       {
         // Old flow
@@ -150,7 +141,6 @@ const flows = {
   },
   delete: {
     pre: (flow) => {
-      debug('flows.delete.pre')
       // Trigger hooks
       if (!flow.trigger) throw new Error('Service issue #flows.delete.pre')
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)
@@ -160,7 +150,6 @@ const flows = {
       return flow
     },
     post: (flow) => {
-      debug('flows.delete.post')
       // Trigger hooks
       if (!flow.trigger) throw new Error('Service issue #flows.delete.post')
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)

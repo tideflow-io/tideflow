@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import * as tfQueue from '/imports/queue/server'
 import { buildLinks } from '/imports/queue/server/helpers/links'
 
@@ -6,8 +7,6 @@ import { triggerFlows } from '/imports/queue/server'
 
 let Parser = require('rss-parser')
 let parser = new Parser()
-
-let debug = console.log
 
 tfQueue.jobs.register('s-rss-runOne', function(channel) {
   let instance = this
@@ -57,8 +56,6 @@ tfQueue.jobs.register('s-rss-runOne', function(channel) {
 })
 
 tfQueue.jobs.register('s-rss-schedule', function() {
-  debug('s-rss-schedule')
-
   let instance = this
 
   const finishJob = () => {
@@ -73,13 +70,9 @@ tfQueue.jobs.register('s-rss-schedule', function() {
     instance.success()
   }
 
-  debug('Find channels')
-
   const channels = Channels.find({
     type: 'rss'
   })
-
-  debug(`Channels found: ${channels.count()}`)
 
   if (!channels || !channels.count()) {
     finishJob()

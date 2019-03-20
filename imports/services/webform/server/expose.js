@@ -1,12 +1,12 @@
-const Handlebars = require('handlebars')
+import { Meteor } from 'meteor/meteor'
+
+import Handlebars from 'handlebars'
 
 import { Router } from 'meteor/iron:router'
 
 import { Channels } from '/imports/modules/channels/both/collection.js'
 
 import { triggerFlows } from '/imports/queue/server'
-
-const debug = console.log
 
 Router.route('/webform/:uuid', function () {
   const req = this.request
@@ -62,15 +62,8 @@ Router.route('/webform/:uuid/submit', function () {
     fields: { services: false }
   })
   if (!user) {
-    debug('User not found. Skipping')
     return null
   }
-
-  debug('User found')
-
-  const flowsQuery = {status: 'enabled', 'trigger._id': channel._id}
-
-  debug(`Filtering flows ${JSON.stringify(flowsQuery)}`)
 
   let data = []
 
