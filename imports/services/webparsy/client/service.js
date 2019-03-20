@@ -22,8 +22,8 @@ const service = {
       name: 'scrape',
       humanName: 's-webparsy.events.scrape.name',
       viewerTitle: 's-webparsy.events.scrape.title',
-      inputable: true,
-      stepable: false,
+      inputable: false,
+      stepable: true,
       callback: () => {},
       templates: {
         eventConfig: 'servicesWebparsyScrapeConfig'
