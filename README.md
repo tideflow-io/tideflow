@@ -1,8 +1,6 @@
 # <a href='https://tideflow.io'><img src='https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg' width='260' alt='Tideflow.io'></a>
 
-[![Gitter](https://badges.gitter.im/join_chat.svg)](https://gitter.im/tideflow-io/community)
-
-Realtime, open source workflows execution platform.
+Realtime, open source workflows execution web application.
 
 Tideflow integrates with:
 
@@ -14,6 +12,7 @@ Tideflow integrates with:
 - [PDF Creation](https://docs.tideflow.io/docs/services-pdf)
 - [Email Sending](https://docs.tideflow.io/docs/services-email-outgoing)
 - [Webforms](https://docs.tideflow.io/docs/services-webforms)
+- [Webscraping](https://docs.tideflow.io/docs/services-webparsy)
 - many more to come
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow/358d884a345071fcdb615b5b6777b21de15e6cd4/D13Ue_3WsAEu9zx.jpg" height="400" style="border:1px solid gray;">
