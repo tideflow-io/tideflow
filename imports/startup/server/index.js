@@ -27,9 +27,6 @@ import '/imports/services/pdf/server'
 import '/imports/services/agent/both'
 import '/imports/services/agent/server'
 
-import '/imports/services/datatable/both'
-import '/imports/services/datatable/server'
-
 import '/imports/services/cron/both'
 import '/imports/services/cron/server'
 
