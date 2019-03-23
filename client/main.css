@@ -9,7 +9,6 @@ html {
 :focus {
   outline-color: transparent !important;
   outline-style: none !important;
-  -webkit-appearance: none;
 }
 
 select { 
