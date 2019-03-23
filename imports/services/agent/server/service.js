@@ -33,6 +33,13 @@ const service = {
           }) 
         }
       },
+      update: {
+        pre: (existing, update) => {
+          const { token } = existing.config
+          const config = Object.assign(update.config || {}, { token })
+          return Object.assign(update, { config }) 
+        }
+      },
       delete: {
         pre: (channel) => {
           return channel

@@ -2,7 +2,7 @@ import i18n from 'meteor/universe:i18n'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { step, stepData } from '/imports/queue/server'
+import { stepData } from '/imports/queue/server'
 
 const uuidv4 = require('uuid/v4')
 
@@ -18,6 +18,13 @@ const service = {
         pre: (channel) => {
           const config = Object.assign(channel.config || {}, {endpoint: uuidv4()})
           return Object.assign(channel, { config }) 
+        }
+      },
+      update: {
+        pre: (existing, update) => {
+          const { endpoint } = existing.config
+          const config = Object.assign(update.config || {}, { endpoint })
+          return Object.assign(update, { config }) 
         }
       }
     }

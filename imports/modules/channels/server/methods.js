@@ -14,11 +14,10 @@ export const createChannel = new ValidatedMethod({
   validate: schema.validator(),
   run(channel) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-
-    // Additional data verification
     channel.user = Meteor.userId()
+
     channel = channelsHooks.create.pre(channel)
-    let doc = Channels.insert(channel)
+    Channels.insert(channel)
     channelsHooks.create.post(channel)
     return pick(channel, ['_id', 'type'])
   }
@@ -30,9 +29,10 @@ export const updateChannel = new ValidatedMethod({
   run(channel) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
-    const UPDATABLE_PROPERTIES = ['title', 'description', 'details']
+    const UPDATABLE_PROPERTIES = ['title', 'description', 'details', 'config']
 
     let originalChannel = Channels.findOne({_id: channel._id})
+
     let newChannelProperties = {}
     UPDATABLE_PROPERTIES.map(p => { newChannelProperties[p] = channel[p] })
 

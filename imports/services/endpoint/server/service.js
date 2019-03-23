@@ -23,6 +23,13 @@ const service = {
           }) 
         }
       },
+      update: {
+        pre: (existing, update) => {
+          const { endpoint } = existing.config
+          const config = Object.assign(update.config || {}, { endpoint })
+          return Object.assign(update, { config }) 
+        }
+      },
       delete: {
         pre: (channel) => {
           return channel
