@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
 
+import { Settings } from '/imports/modules/management/both/collection'
 import * as emailHelper from '/imports/helpers/both/emails'
 
 Template.registerHelper('sessVal', (name) => Session.get(name))
@@ -21,6 +22,13 @@ Template.registerHelper('cursorIsEmpty', (i) => i.count() === 0)
 Template.registerHelper('substr', (i, n) => (i || '').substr(0, n))
 
 Template.registerHelper('isEq', (a,b) => a === b)
+
+Template.registerHelper('showSignup', () => {
+  const st = Settings.findOne({
+    type: 'siteSettings'
+  })
+  return st && st.settings ? ['public', 'domain'].indexOf(st.settings.signupsType)>=0 : false
+})
 
 Template.registerHelper('logDate', date => {
   if (!date) return
