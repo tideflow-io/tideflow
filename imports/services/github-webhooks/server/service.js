@@ -6,7 +6,6 @@ const uuidv4 = require('uuid/v4')
 
 const service = {
   name: 'gh-webhooks',
-  humanName: 's-gh-webhooks.name',
   inputable: true,
   stepable: false,
   ownable: true,

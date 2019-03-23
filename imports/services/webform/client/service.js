@@ -11,6 +11,8 @@ const service = {
   iconColor: '#FF3031',
   ownable: true,
   templates: {
+    createForm: 'servicesWebformCreateForm',
+    updateForm: 'servicesWebformUpdateForm',
     detailsView: 'servicesWebformDetailsView',
     createFormAfter: 'servicesWebformCreateFormAfter',
     updateFormAfter: 'servicesWebformUpdateFormAfter',

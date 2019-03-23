@@ -1,11 +1,8 @@
 import { Meteor } from 'meteor/meteor'
-
 import Handlebars from 'handlebars'
-
 import { Router } from 'meteor/iron:router'
 
 import { Channels } from '/imports/modules/channels/both/collection.js'
-
 import { triggerFlows } from '/imports/queue/server'
 
 Router.route('/webform/:uuid', function () {
@@ -29,12 +26,16 @@ Router.route('/webform/:uuid', function () {
   const content = Assets.getText('webform/expose.html')
 
   let form = (channel.details||{}).form || {}
+  let successMessage = null
+  let successUrl = null
   form = JSON.stringify(form)
 
   const html = Handlebars.compile(content)({
     // channel,
     form,
-    postUrl
+    postUrl,
+    successMessage: successMessage || 'Form submitted',
+    successUrl: successUrl || null
   })
 
   res.end(html)

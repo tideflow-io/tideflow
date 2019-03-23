@@ -13,22 +13,11 @@ const service = {
   stepable: false,
   ownable: true,
   hooks: {
-    // step: {},
-    // trigger: {}
     channel: {
       create: {
         pre: (channel) => {
-          return Object.assign(channel, {
-            config: {
-              endpoint: uuidv4(),
-              form: (channel.config || {}).form || []
-            }
-          }) 
-        }
-      },
-      delete: {
-        pre: (channel) => {
-          return channel
+          const config = Object.assign(channel.config || {}, {endpoint: uuidv4()})
+          return Object.assign(channel, { config }) 
         }
       }
     }
