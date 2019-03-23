@@ -1,6 +1,10 @@
 _namespace: s-webform
 name: Webform
 url: Public URL
+create.successMessage: Message on success
+create.successUrl: Redirect the user on success to the following URL
+update.successMessage: Message on success
+update.successUrl: Redirect the user on success to the following URL
 description: Create custom forms you can share with others
 events.submitted.name: When it's submitted
 events.submitted.viewer.title: When an form it's submitted
