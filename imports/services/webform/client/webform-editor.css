@@ -1,0 +1,8 @@
+#webform-editor {
+    color: black;
+}
+
+.form-wrap.form-builder .frmb .prev-holder input[type="date"] {
+    background: white;
+    color: black;
+}

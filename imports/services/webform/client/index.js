@@ -1,3 +1,4 @@
+import './webform-editor.css'
 import './createFormAfter.html'
 import './updateFormAfter.html'
 import './createFormPre.html'
