@@ -26,8 +26,9 @@ Router.route('/webform/:uuid', function () {
   const content = Assets.getText('webform/expose.html')
 
   let form = (channel.details||{}).form || {}
-  let successMessage = null
-  let successUrl = null
+
+  const { successMessage, successUrl } = channel.config
+
   form = JSON.stringify(form)
 
   const html = Handlebars.compile(content)({
