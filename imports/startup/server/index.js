@@ -39,6 +39,9 @@ import '/imports/modules/verify/server'
 import '/imports/modules/channels/both'
 import '/imports/modules/channels/server'
 
+import '/imports/modules/dashboard/both'
+import '/imports/modules/dashboard/server'
+
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/server'
 
@@ -85,3 +88,5 @@ import '/imports/services/_root/both'
 import '/imports/services/_root/server'
 
 import '/imports/queue/server'
+
+import './fake'

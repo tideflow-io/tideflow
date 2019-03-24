@@ -1,0 +1,6 @@
+.dashboard-execution-history:hover h4 span {
+  display: inline-table;
+}
+.dashboard-execution-history h4 span {
+  display: none;
+}

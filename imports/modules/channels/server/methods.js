@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor'
-import SimpleSchema from "simpl-schema"
+import SimpleSchema from 'simpl-schema'
 
 import { Channels } from '../both/collection'
-import { ValidatedMethod } from "meteor/mdg:validated-method"
+import { ValidatedMethod } from 'meteor/mdg:validated-method'
 
 import { channels as channelsHooks } from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'

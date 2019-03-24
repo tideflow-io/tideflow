@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import i18n from 'meteor/universe:i18n'
 
+import { Flows } from '/imports/modules/flows/both/collection.js'
 import { Channels } from '/imports/modules/channels/both/collection.js'
 import { servicesAvailable } from '/imports/services/_root/client'
 import { checkRole } from '/imports/helpers/both/roles'
@@ -16,11 +17,16 @@ Template.registerHelper('flowViewerTriggerTitle', function() {
   try {
     return i18n.__(
       servicesAvailable
-      .find(sa => sa.name === this.type).events.find(e => e.name === this.event).viewerTitle
+        .find(sa => sa.name === this.type).events.find(e => e.name === this.event).viewerTitle
     )
   } catch (ex) {
     return null
   }
+})
+
+Template.registerHelper('flowDoc', function(_id, property) {
+  let r = Flows.findOne({ _id })
+  return r ? property ? r[property] : r : null
 })
 
 Template.registerHelper('flowViewerStepTitle', function() {
