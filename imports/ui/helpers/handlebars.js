@@ -15,6 +15,9 @@ Template.registerHelper('debug', (a) => console.log(a))
 Template.registerHelper('sessEq', (name, val) => Session.get(name) ? Session.get(name) === val : false)
 
 Template.registerHelper('simpleDate', (date) => moment(date).format('D MMMM'))
+Template.registerHelper('executionHappened', (date) => {
+  return moment(date).format('YYYY.MM.DD HH:mm:ss')
+})
 
 Template.registerHelper('arrayIsEmpty', (i) => i.length === 0)
 Template.registerHelper('cursorIsEmpty', (i) => i.count() === 0)

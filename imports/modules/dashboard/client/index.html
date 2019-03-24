@@ -9,13 +9,64 @@
         </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        {{#each executions}}
-         li
-        {{/each}}
+    
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h3>
+            {{__ "dashboard.executions.title"}}
+        </h3>
+      </div>
+      <div class="col-md-6">
+        <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+          <label class="btn btn-secondary" id="execution-filter-month">
+            <input type="radio" name="options" value="lastMonth" autocomplete="off">
+            {{__ "dashboard.executions.filters.lastMonth"}}
+          </label>
+          <label class="btn btn-secondary" id="execution-filter-week">
+            <input type="radio" name="options" value="lastWeek" autocomplete="off">
+            {{__ "dashboard.executions.filters.lastWeek"}}
+          </label>
+          <label class="btn btn-secondary active" id="execution-filter-day">
+            <input type="radio" name="options" value="last24Hours" autocomplete="off" checked>
+            {{__ "dashboard.executions.filters.last24Hours"}}
+          </label>
+        </div>
       </div>
     </div>
+    
+    {{#each executions}}
+    <div class="row dashboard-execution-history">
+      <div class="col-md-12">
+        {{> dashboardExecutionHeader}}
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <div class="card-list card-list-dots">
+          {{#each list}}
+            <a href="{{pathFor 'flows.one.executionDetails' _id=flow executionId=_id}}" data-toggle="tooltip" data-placement="top" title="{{executionHappened createdAt}} - {{fromNow createdAt}}">
+              {{#if isEq status 'started'}}
+                <i class="fas fa-square text-warning"></i>
+              {{else if isEq status 'finished'}}
+                <i class="fas fa-square text-success"></i>
+              {{else if isEq status 'error'}}
+                <i class="fas fa-square text-danger"></i>
+              {{else}}
+                <i class="fas fa-square text-gray"></i>
+              {{/if}}
+            </a>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    {{/each}}
   </div>
 </template> 
+
+<template name="dashboardExecutionHeader">
+  <h4>
+    {{flowDoc flow 'title'}}
+    <span class="small">
+      <a href="{{pathFor 'flows.one' _id=flow}}"><i class="fas fa-link"></i></a>
+    </span>
+  </h4>
+</template>
