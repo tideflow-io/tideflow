@@ -29,6 +29,7 @@
     "cron-converter": "0.0.12",
     "debug": "^4.1.1",
     "dlv": "^1.1.2",
+    "faker": "^4.1.0",
     "handlebars": "^4.1.0",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.24.0",

@@ -12,14 +12,9 @@
 
     <div class="row">
       <div class="col-md-12">
-        <p>
-          {{__ "dashboard.humansWorking"}}
-        </p>
-        <p>
-            {{__ "dashboard.meanwhile"}}
-          <u><a href="{{pathFor 'channels.index'}}">{{__ "dashboard.yourChannels"}}</a></u> and
-          <u><a href="{{pathFor 'flows.index'}}">{{__ "dashboard.yourFlows"}}</a></u>.
-        </p>
+        {{#each executions}}
+         li
+        {{/each}}
       </div>
     </div>
   </div>
