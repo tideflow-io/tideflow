@@ -4,11 +4,11 @@ import { Executions } from '/imports/modules/executions/both/collection'
  * 
  * @param {*} execution 
  */
-const create = (channel, flow, status) => {
+const create = (service, flow, status) => {
   return Executions.insert({
     user: flow.user,
-    channel: channel._id ? channel._id : null,
-    fullChannel: channel,
+    service: service._id ? service._id : null,
+    fullService: service,
     flow: flow._id,
     fullFlow: flow,
     status: status || 'started'

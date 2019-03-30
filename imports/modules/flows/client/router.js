@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
 import { Flows } from '/imports/modules/flows/both/collection.js'
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 import { Executions } from '/imports/modules/executions/both/collection.js'
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection.js'
 
@@ -47,13 +47,13 @@ Router.route('/flows/new', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('channels.all', {})
+      Meteor.subscribe('services.all', {})
     ]
   },
   data: function() {
     if (this.ready) {
       return {
-        channels: Channels.find({})
+        services: Services.find({})
       }
     } 
   },
@@ -199,7 +199,7 @@ Router.route('/flows/:_id/edit', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('channels.all', {})
+      Meteor.subscribe('services.all', {})
     ]
   },
   data: function() {
@@ -208,7 +208,7 @@ Router.route('/flows/:_id/edit', function () {
         flow: Flows.findOne({
           _id: this.params._id
         }),
-        channels: Channels.find({})
+        services: Services.find({})
       }
     }
   },

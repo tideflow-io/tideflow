@@ -15,10 +15,10 @@ const service = {
   hooks: {
     // step: {},
     // trigger: {}
-    channel: {
+    service: {
       create: {
-        pre: (channel) => {
-          return Object.assign(channel, {
+        pre: (service) => {
+          return Object.assign(service, {
             config: { endpoint: uuidv4() }
           }) 
         }
@@ -31,8 +31,8 @@ const service = {
         }
       },
       delete: {
-        pre: (channel) => {
-          return channel
+        pre: (service) => {
+          return service
         }
       }
     }
@@ -42,7 +42,7 @@ const service = {
       name: 'called',
       humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         cb(null, {
           result: stepData(executionLogs, 'last'),
           next: true,

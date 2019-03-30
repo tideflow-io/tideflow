@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
 
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 
 Template.registerHelper('sAgentReportStatusDot', function() {
   try {
@@ -22,7 +22,7 @@ Template.registerHelper('sAgentReportStatus', function() {
     return this ? this.details.online ?
       `` :
       `
-        ${i18n.__('s-agent.channel.status.lastSeen')}
+        ${i18n.__('s-agent.service.status.lastSeen')}
         ${moment(this.details.lastSeen).fromNow() || '-'}
       ` :
       ''
@@ -34,7 +34,7 @@ Template.registerHelper('sAgentReportStatus', function() {
 
 Template.servicesAgentExecuteConfig.helpers({
   registeredAgents: () => {
-    return Channels.find({type: 'agent'}).map(a => {
+    return Services.find({type: 'agent'}).map(a => {
       return {
         _id: a._id,
         title: a.title

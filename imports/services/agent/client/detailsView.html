@@ -1,9 +1,9 @@
 <template name="servicesAgentDetailsView">
   <p><strong>{{__ "s-agent.token"}}</strong></p>
-  <pre class="code"><code>{{channel.config.token}}</code></pre>
+  <pre class="code"><code>{{service.config.token}}</code></pre>
 
   <p><strong>{{__ "s-agent.launch"}}</strong></p>
-  <pre class="code"><code>npx @tideflowio/tideflow-agent -t {{channel.config.token}}</code></pre>
+  <pre class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}}</code></pre>
 
   <p>
     {{__ "s-agent.moreDetails"}}

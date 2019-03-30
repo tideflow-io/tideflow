@@ -13,7 +13,7 @@ const service = {
   templates: {
   },
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },

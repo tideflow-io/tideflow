@@ -140,13 +140,13 @@ module.exports.logUpdate = logUpdate
 
 /**
  * 
- * @param {*} channel 
+ * @param {*} service 
  * @param {*} user 
  * @param {*} flowsQuery 
  * @param {*} data [{type: String, data: {}}]
  * @param {*} flows
  */
-const triggerFlows = (channel, user, flowsQuery, originalTriggerData, flows) => {
+const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
   console.log(`triggerFlows`)
 
   // Security check
@@ -154,8 +154,8 @@ const triggerFlows = (channel, user, flowsQuery, originalTriggerData, flows) => 
     throw new Error('Security issue: user services attached on triggerFlows.')
   }
 
-  let service = servicesAvailable.find(service => service.name === channel.type)
-  if (!service) throw new Error('Service not found @ triggerFlows')
+  let serviceWorker = servicesAvailable.find(service => service.name === service.type)
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows')
 
   if (!flows) {
     if (typeof flowsQuery.status !== 'string') {
@@ -172,7 +172,7 @@ const triggerFlows = (channel, user, flowsQuery, originalTriggerData, flows) => 
   }
 
   (flows || Flows.find(flowsQuery)).map(flow => {
-    let event = service.events.find(e => e.name === flow.trigger.event)
+    let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
       console.log('No service')
       return null
@@ -186,7 +186,7 @@ const triggerFlows = (channel, user, flowsQuery, originalTriggerData, flows) => 
       step._id = Random.id()
     })
 
-    let executionId = executions.create(channel, flow)
+    let executionId = executions.create(service, flow)
 
     jobs.run('workflow-start', {originalTriggerData, executionId})
   })
@@ -261,13 +261,13 @@ jobs.register('workflow-start', function(jobData) {
   }
 
   const flow = execution.fullFlow
-  const channel = execution.fullChannel
+  const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
 
-  let service = servicesAvailable.find(service => service.name === channel.type)
-  if (!service) throw new Error('Service not found @ triggerFlows')
+  let serviceWorker = servicesAvailable.find(service => service.name === service.type)
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows')
 
-  let event = service.events.find(e => e.name === flow.trigger.event)
+  let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
   if (!event) {
     instance.success()
     return null
@@ -289,10 +289,10 @@ jobs.register('workflow-start', function(jobData) {
 
   let triggerEvent = Meteor.wrapAsync((cb) => {
     event.callback(
-      channel,
+      service,
       flow,
       user,
-      Object.assign(flow.trigger, channel),
+      Object.assign(flow.trigger, service),
       [
         {
           stepResults: originalTriggerData,
@@ -377,7 +377,7 @@ jobs.register('workflow-step', function(jobData) {
   }
 
   const flow = execution.fullFlow
-  const channel = execution.fullChannel
+  const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
   const previousSteps = previousStepId ?
     [executionsSteps.get(executionId, previousStepId)] : 
@@ -388,7 +388,7 @@ jobs.register('workflow-step', function(jobData) {
   if (!stepEvent || !stepEvent.callback) return null
   
   let callEvent = Meteor.wrapAsync((cb) => {
-    stepEvent.callback(channel, flow, user, currentStep, previousSteps, executionId, logId, cb)
+    stepEvent.callback(service, flow, user, currentStep, previousSteps, executionId, logId, cb)
   })
 
   let eventCallback = callEvent()

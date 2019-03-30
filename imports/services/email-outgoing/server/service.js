@@ -10,14 +10,14 @@ const service = {
   stepable: true,
   ownable: false,
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },
   events: [{
     name: 'to-me',
     visibe: true,
-    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+    callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const lastData = stepData(executionLogs, 'last')
       const to = commonEmailHelper.userEmail(user)
@@ -72,7 +72,7 @@ const service = {
   {
     name: 'to-others',
     visibe: true,
-    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+    callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const lastData = stepData(executionLogs, 'last')
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []

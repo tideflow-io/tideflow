@@ -12,15 +12,15 @@ const service = {
   hooks: {
     // step: {},
     // trigger: {}
-    channel: {
+    service: {
       create: {
-        pre: (channel) => {
-          return channel
+        pre: (service) => {
+          return service
         }
       },
       delete: {
-        pre: (channel) => {
-          return channel
+        pre: (service) => {
+          return service
         }
       }
     }
@@ -28,7 +28,7 @@ const service = {
   events: [
     {
       name: 'scrape',
-      callback: async (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const yml = currentStep.config.yml
         let scrapingResult = await webparsy.init({string:yml})
         cb(null, {

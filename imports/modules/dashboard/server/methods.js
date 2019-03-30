@@ -25,11 +25,11 @@ Meteor.methods({
     }
 
     dbQuery.createdAt = { $gt: time }
-    console.log({dbQuery})
+
     options = Object.assign({
       fileds: {
         createdAt: 1,
-        channel: 1,
+        service: 1,
         flow: 1,
         status: 1
       },

@@ -18,7 +18,7 @@ const service = {
     updateFormPre: 'servicesRssUpdateFormPre'
   },
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },

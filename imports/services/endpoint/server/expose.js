@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
-import { Channels } from '/imports/modules/channels/both/collection'
+import { Services } from '/imports/modules/services/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
@@ -9,12 +9,12 @@ Router.route('/endpoint/:uuid', function () {
   const req = this.request
   const res = this.response
   const uuid = this.params.uuid
-  const channel = Channels.findOne({
+  const service = Services.findOne({
     type: 'endpoint',
     'config.endpoint': uuid
   })
 
-  if (!channel) {
+  if (!service) {
     res.writeHead(404)
     res.end()
     return
@@ -22,7 +22,7 @@ Router.route('/endpoint/:uuid', function () {
 
   res.end('queued')
 
-  let user = Meteor.users.findOne({_id: channel.user}, {
+  let user = Meteor.users.findOne({_id: service.user}, {
     fields: { services: false }
   })
 
@@ -44,10 +44,10 @@ Router.route('/endpoint/:uuid', function () {
   })
 
   triggerFlows(
-    channel,
+    service,
     user,
     {
-      'trigger._id': channel._id,
+      'trigger._id': service._id,
       'trigger.event': 'called'
     },
     data

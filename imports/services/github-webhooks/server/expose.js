@@ -1,22 +1,22 @@
 import { Router } from 'meteor/iron:router'
 import { buildLinks } from '/imports/queue/server/helpers/links'
 
-import { Channels } from '/imports/modules/channels/both/collection'
+import { Services } from '/imports/modules/services/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
 const crypto = require('crypto')
 
 /**
- * Compares the request's x-hub-signature against the channel's webhook secret.
+ * Compares the request's x-hub-signature against the service's webhook secret.
  * See https://developer.github.com/webhooks/securing/
  * 
- * @param {Object} channel Channel document from the database
+ * @param {Object} service Service document from the database
  * @param {Object} req Original iron router's server side request
  */
-const validateSignature = (channel, req) => {
+const validateSignature = (service, req) => {
   try {
-    const hmac = crypto.createHmac('sha1', channel.config.secret)
+    const hmac = crypto.createHmac('sha1', service.config.secret)
     hmac.update(JSON.stringify(req.body), 'utf-8')
     return req.headers['x-hub-signature'] === `sha1=${hmac.digest('hex')}`
   } catch (ex) { return false }
@@ -35,21 +35,21 @@ Router.route('/ghwebhook/:uuid', function () {
   const res = this.response;
   const uuid = this.params.uuid
 
-  // Find channels using this GH's webhook endpoint
-  const channel = Channels.findOne({
+  // Find services using this GH's webhook endpoint
+  const service = Services.findOne({
     type: 'gh-webhooks',
     'config.endpoint': uuid
   })
 
-  // Ignore request that don't resolve to a channel
-  if (!channel) {
+  // Ignore request that don't resolve to a service
+  if (!service) {
     res.writeHead(404)
     res.end()
     return
   }
 
   // Validate the request secret with the one stored in the DB
-  if (!validateSignature(channel, req)) {
+  if (!validateSignature(service, req)) {
     res.writeHead(401)
     res.end()
     return
@@ -58,8 +58,8 @@ Router.route('/ghwebhook/:uuid', function () {
   // Send a response back to the client
   res.end('queued')
 
-  // Grab the user who created the channel
-  let user = Meteor.users.findOne({_id: channel.user}, {
+  // Grab the user who created the service
+  let user = Meteor.users.findOne({_id: service.user}, {
     fields: { services: false }
   })
 
@@ -68,8 +68,8 @@ Router.route('/ghwebhook/:uuid', function () {
     return null
   }
 
-  // Get the workflows using this endpoint's channel
-  const flowsQuery = {status: 'enabled', 'trigger._id': channel._id}
+  // Get the workflows using this endpoint's service
+  const flowsQuery = {status: 'enabled', 'trigger._id': service._id}
 
   let data = []
 
@@ -104,10 +104,10 @@ Router.route('/ghwebhook/:uuid', function () {
 
   // Trigger flows
   triggerFlows(
-    channel,
+    service,
     user,
     {
-      'trigger._id': channel._id,
+      'trigger._id': service._id,
       'trigger.event': 'called'
     },
     data

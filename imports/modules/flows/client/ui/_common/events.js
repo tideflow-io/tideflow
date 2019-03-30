@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 import { Flows } from '/imports/modules/flows/both/collection.js'
 import { servicesAvailable } from '/imports/services/_root/client'
 
@@ -39,8 +39,8 @@ const stepEventSelectorChanged = function(index, type) {
 
 Template.flowEditor.events({
   'change [name="triggerSelector"]': (event, template) => {
-    const selectedChannelDoc = Channels.findOne({ _id: event.currentTarget.value })
-    if (selectedChannelDoc) {
+    const selectedServiceDoc = Services.findOne({ _id: event.currentTarget.value })
+    if (selectedServiceDoc) {
       Session.set('fe-triggerIdSelected', event.currentTarget.value)
     }
     else {

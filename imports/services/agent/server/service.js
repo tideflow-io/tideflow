@@ -1,6 +1,6 @@
 import i18n from 'meteor/universe:i18n'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Services } from "/imports/modules/services/both/collection.js"
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
@@ -25,10 +25,10 @@ const service = {
   hooks: {
     // step: {},
     // trigger: {}
-    channel: {
+    service: {
       create: {
-        pre: (channel) => {
-          return Object.assign(channel, {
+        pre: (service) => {
+          return Object.assign(service, {
             config: { token: uuidv4() }
           }) 
         }
@@ -41,8 +41,8 @@ const service = {
         }
       },
       delete: {
-        pre: (channel) => {
-          return channel
+        pre: (service) => {
+          return service
         }
       }
     }
@@ -52,7 +52,7 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const lastData = stepData(executionLogs, 'last')
 
@@ -64,7 +64,7 @@ const service = {
           agentDoc = agent
         }
         else {
-          agentDoc = Channels.findOne({_id: agent})
+          agentDoc = Services.findOne({_id: agent})
         }
 
         let commandSent = ioTo(agentDoc, {

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor'
 
 Meteor.startup( function() {
   Meteor.subscribe('settings.public.all')
-  Meteor.subscribe('channels.all', {})
+  Meteor.subscribe('services.all', {})
   Meteor.subscribe('flows.all', {
   }, {
     fields: {

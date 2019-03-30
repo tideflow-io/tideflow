@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema"
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Services } from "/imports/modules/services/both/collection.js"
 import { list as statusList } from '/imports/modules/flows/both/list'
 
 const FlowSchema = new SimpleSchema({

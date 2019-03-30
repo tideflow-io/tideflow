@@ -40,7 +40,7 @@ const service = {
   stepable: false,
   ownable: false,
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {}
     trigger: {
       create: {
@@ -205,7 +205,7 @@ const service = {
     name: 'called',
     humanName: i18n.__('s-cron.events.called.name'),
     visibe: true,
-    callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+    callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       cb(null, {
         result: [],
         next: true

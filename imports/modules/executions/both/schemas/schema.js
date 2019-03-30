@@ -15,15 +15,15 @@ const ExecutionSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
-  channel: {
+  service: {
     type: String,
-    label: 'Channel',
+    label: 'Service',
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
-  fullChannel: {
+  fullService: {
     type: Object,
-    label: 'Full channel',
+    label: 'Full service',
     optional: true,
     blackbox: true
   },

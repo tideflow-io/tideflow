@@ -1,17 +1,17 @@
 import { Template } from 'meteor/templating'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Services } from "/imports/modules/services/both/collection.js"
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-Template['channels.one.edit'].helpers({
-  Channels: function () {
-    return Channels
+Template['services.one.edit'].helpers({
+  Services: function () {
+    return Services
   },
-  channelUpdateForm: function() {
+  serviceUpdateForm: function() {
     return servicesAvailable.find(s => s.name === this.type).templates.updateForm
   },
-  channelUpdateFormPre: function() {
+  serviceUpdateFormPre: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.updateFormPre
     }
@@ -19,7 +19,7 @@ Template['channels.one.edit'].helpers({
       return null
     }
   },
-  channelUpdateFormAfter: function() {
+  serviceUpdateFormAfter: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.updateFormAfter
     }
@@ -27,8 +27,8 @@ Template['channels.one.edit'].helpers({
       return null
     }
   },
-  channelService: function () {
-    if (!this.channel) return
-    return servicesAvailable.find(sa => sa.name === this.channel.type)
+  serviceService: function () {
+    if (!this.service) return
+    return servicesAvailable.find(sa => sa.name === this.service.type)
   }
 })

@@ -1,7 +1,8 @@
+import { Template } from 'meteor/templating'
 import { AutoForm } from "meteor/aldeed:autoform"
 import { Router } from 'meteor/iron:router'
 
-AutoForm.addHooks(['updateChannelForm'], {
+AutoForm.addHooks(['insertServiceForm'], {
   before: {
     method: function (doc) {
       (Object.keys(window.editorViewDetailsHooks)||[]).map(k => {
@@ -10,6 +11,11 @@ AutoForm.addHooks(['updateChannelForm'], {
         doc = Object.assign({}, {details:p}, doc)
       })
       this.result(doc)
+    }
+  },
+  after: {
+    method: (error, result) => {
+      Router.go('services.one.edit', result)
     }
   }
 })

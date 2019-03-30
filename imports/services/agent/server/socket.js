@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor'
 import http from 'http'
 import socket_io from 'socket.io'
 
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 
 import { logUpdate, executeNextStep, executionError } from '/imports/queue/server'
 import { pick } from '/imports/helpers/both/objects'
@@ -16,7 +16,7 @@ Meteor.startup(() => {
   // middleware
   io.use(async (socket, next) => {
     let token = socket.handshake.query.token
-    let c = await Channels.findOne({
+    let c = await Services.findOne({
       type: 'agent',
       'config.token': token
     })
@@ -36,7 +36,7 @@ Meteor.startup(() => {
   // New client
   io.on('connection', async (socket) => {
     let auth = socket.tf
-    await Channels.update(
+    await Services.update(
       { _id: auth._id },
       { 
         $set: {
@@ -96,7 +96,7 @@ Meteor.startup(() => {
     })
     
     socket.on('disconnect', async socket => {
-      await Channels.update(
+      await Services.update(
         { _id: auth._id },
         {
           $set: {

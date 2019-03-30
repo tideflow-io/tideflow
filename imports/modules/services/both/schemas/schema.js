@@ -4,7 +4,7 @@ import SimpleSchema from "simpl-schema"
 // Document schema
 // ***************************************************************
 
-const ChannelSchema = new SimpleSchema({
+const ServiceSchema = new SimpleSchema({
   _id: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -70,4 +70,4 @@ const ChannelSchema = new SimpleSchema({
   }
 })
 
-export default ChannelSchema
+export default ServiceSchema

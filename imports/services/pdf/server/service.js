@@ -40,7 +40,7 @@ const service = {
   stepable: true,
   ownable: false,
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },
@@ -48,7 +48,7 @@ const service = {
     {
       name: 'build-pdf',
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const filesData = stepData(executionLogs, 'last').filter(data => data.type === 'object')
 
         const pdfType = (currentStep.config || {}).type || null

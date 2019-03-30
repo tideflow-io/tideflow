@@ -15,7 +15,7 @@ const service = {
     {
       name: 'new-content',
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         cb(null, stepData(executionLogs, 'last'))
       },
       conditions: [

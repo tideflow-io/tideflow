@@ -1,30 +1,30 @@
-<template name="channels.index">
+<template name="services.index">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="page-header mb-4">
           <h2>
-            {{__ "channels.index.title"}}
+            {{__ "services.index.title"}}
           </h2>
-          <p class="lead">{{__ "channels.index.subtitle"}}</p>
+          <p class="lead">{{__ "services.index.subtitle"}}</p>
         </div>
-        {{#if cursorIsEmpty channels}}
-          <p>{{__ "channels.index.emptyListDescription"}}</p>
+        {{#if cursorIsEmpty services}}
+          <p>{{__ "services.index.emptyListDescription"}}</p>
           <p>
             <u>
-              <a class="btn btn-dark" href="{{pathFor 'channels.new'}}">
-                {{__ "channels.index.emptyListCreateFirst"}}</a>
+              <a class="btn btn-dark" href="{{pathFor 'services.new'}}">
+                {{__ "services.index.emptyListCreateFirst"}}</a>
             </u>
           </p>
         {{else}}
-          <a href="{{pathFor 'channels.new'}}" class="btn btn-dark mb-4">{{__ "channels.index.connectNew"}}</a>
+          <a href="{{pathFor 'services.new'}}" class="btn btn-dark mb-4">{{__ "services.index.connectNew"}}</a>
           <div class="card-list">
             <!-- <div class="card-list-head">
-              <h6>Channels</h6>
+              <h6>Services</h6>
             </div> -->
             <div class="card-list-body">
-              {{#each channels}}
-                {{> channelsIndexTableChannel}}
+              {{#each services}}
+                {{> servicesIndexTableService}}
               {{/each}}
             </div>
           </div>
@@ -34,14 +34,14 @@
   </div>
 </template>
 
-<template name="channelsIndexTableChannel">
+<template name="servicesIndexTableService">
   <div class="card clickable card-task">
     <div class="card-body">
       <div class="mr-3 card-image card-mini-icon text-center">
         <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
       </div>
       <div class="card-title mr-auto">
-        <a href="{{pathFor 'channels.one.edit' type=type _id=_id}}">
+        <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
           <h6>
             {{#if isEq this.type 'agent'}}
               {{{sAgentReportStatusDot}}}
@@ -62,8 +62,8 @@
         </span>
       </div>
       <div class="card-meta">
-        <a href="{{pathFor 'channels.one.edit' type=type _id=_id}}" class="btn btn-outline-primary">
-          {{__ "channels.index.itemView"}}
+        <a href="{{pathFor 'services.one.edit' type=type _id=_id}}" class="btn btn-outline-primary">
+          {{__ "services.index.itemView"}}
         </a>
       </div>
     </div>

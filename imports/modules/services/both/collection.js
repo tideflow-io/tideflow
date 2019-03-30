@@ -1,11 +1,11 @@
 import { Mongo } from "meteor/mongo"
 
-import ChannelSchema from "./schemas/schema"
+import ServiceSchema from "./schemas/schema"
 
-export const Channels = new Mongo.Collection('channels')
+export const Services = new Mongo.Collection('services')
 
 // We use explicit methods, so deny everything
-Channels.allow({
+Services.allow({
   insert() {
     return false
   },
@@ -17,7 +17,7 @@ Channels.allow({
   }
 })
 
-Channels.deny({
+Services.deny({
   insert() {
     return true
   },
@@ -30,4 +30,4 @@ Channels.deny({
 })
 
 // Must remember to attach the schema to the collection
-Channels.attachSchema(ChannelSchema)
+Services.attachSchema(ServiceSchema)

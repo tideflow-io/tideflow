@@ -1,6 +1,6 @@
 _namespace: s-rss
 name: RSS
 description: Execute workflows when new content is available on RSS feeds
-create.channelUrl: Channel URL
+create.serviceUrl: Service URL
 events.new-content.name: New content available
 events.new-content.viewer.title: When there's new content available on RSS

@@ -2,7 +2,7 @@ let servicesAvailable = []
 //calculateUsage
 module.exports.servicesAvailable = servicesAvailable
 
-const executeChannelHook = (service, hook, crud, stage, data, treat) => {
+const executeServiceHook = (service, hook, crud, stage, data, treat) => {
   if (!service) throw new Error('Service not specified')
   const returnableData = treat === 'original' ? data[0] : treat === 'new' ? data[1] : data[0]
   if (!service.hooks) return returnableData
@@ -23,31 +23,31 @@ const executeFlowHook = (service, hook, crud, stage, data, treat) => {
   return service.hooks[hook][crud][stage](data[0], data[1], treat)
 }
 
-const channels = {
+const services = {
   create: {
-    pre: (newChannel) => {
-      let service = servicesAvailable.find(service => service.name === newChannel.type)
+    pre: (newService) => {
+      let service = servicesAvailable.find(service => service.name === newService.type)
       if (!service) throw new Error('Service not found')
 
-      return executeChannelHook(service, 'channel', 'create', 'pre', [newChannel], 'original')
+      return executeServiceHook(service, 'service', 'create', 'pre', [newService], 'original')
     },
-    post: (newChannel) => {
-      let service = servicesAvailable.find(service => service.name === newChannel.type)
+    post: (newService) => {
+      let service = servicesAvailable.find(service => service.name === newService.type)
       if (!service) throw new Error('Service not found')
-      return executeChannelHook(service, 'channel', 'create', 'post', [newChannel], 'original')
+      return executeServiceHook(service, 'service', 'create', 'post', [newService], 'original')
     }
   },
   update: {
-    pre: (originalChannel, newChannel) => {
-      let service = servicesAvailable.find(service => service.name === newChannel.type)
+    pre: (originalService, newService) => {
+      let service = servicesAvailable.find(service => service.name === newService.type)
       if (!service) throw new Error('Service not found')
-      return executeChannelHook(service, 'channel', 'update', 'pre', [originalChannel, newChannel], 'new')
+      return executeServiceHook(service, 'service', 'update', 'pre', [originalService, newService], 'new')
     },
-    post: (originalChannel, newChannel) => {
-      let service = servicesAvailable.find(service => service.name === newChannel.type)
+    post: (originalService, newService) => {
+      let service = servicesAvailable.find(service => service.name === newService.type)
       if (!service) throw new Error('Service not found')
 
-      return executeChannelHook(service, 'channel', 'update', 'post', [originalChannel, newChannel], 'new')
+      return executeServiceHook(service, 'service', 'update', 'post', [originalService, newService], 'new')
     }
   },
   delete: {
@@ -55,17 +55,17 @@ const channels = {
       let service = servicesAvailable.find(service => service.name === toDelete.type)
       if (!service) throw new Error('Service not found')
 
-      return executeChannelHook(service, 'channel', 'delete', 'pre', [toDelete], 'original')
+      return executeServiceHook(service, 'service', 'delete', 'pre', [toDelete], 'original')
     },
     post: (deleted) => {
       let service = servicesAvailable.find(service => service.name === deleted.type)
       if (!service) throw new Error('Service not found')
-      return executeChannelHook(service, 'channel', 'delete', 'post', [deleted], 'original')
+      return executeServiceHook(service, 'service', 'delete', 'post', [deleted], 'original')
     }
   }
 }
 
-module.exports.channels = channels
+module.exports.services = services
 
 const flows = {
   create: {

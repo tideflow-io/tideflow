@@ -4,14 +4,14 @@ import { Template } from 'meteor/templating'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
 import i18n from 'meteor/universe:i18n'
 
-Template['channels.one.edit'].events({
-  'click .delete-channel': (event, template) => {
+Template['services.one.edit'].events({
+  'click .delete-service': (event, template) => {
     event.preventDefault()
     event.stopPropagation()
 
     swal({
-      title: i18n.__('channels.delete.title'),
-      text: i18n.__('channels.delete.text'),
+      title: i18n.__('services.delete.title'),
+      text: i18n.__('services.delete.text'),
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -19,15 +19,15 @@ Template['channels.one.edit'].events({
     })
       .then(accepted => {
         if (accepted) {
-          Meteor.call('channels.delete', {
-            _id: template.data.channel._id
+          Meteor.call('services.delete', {
+            _id: template.data.service._id
           }, (error) => {
             if (error) {
-              sAlert.error(i18n.__('channels.delete.error'))
+              sAlert.error(i18n.__('services.delete.error'))
               return
             }
-            sAlert.success(i18n.__('channels.delete.success'))
-            Router.go('channels.index')
+            sAlert.success(i18n.__('services.delete.success'))
+            Router.go('services.index')
           })
         } 
       })

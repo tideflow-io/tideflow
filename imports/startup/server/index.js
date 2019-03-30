@@ -36,8 +36,8 @@ import '/imports/services/email-outgoing/server'
 import '/imports/modules/verify/both'
 import '/imports/modules/verify/server'
 
-import '/imports/modules/channels/both'
-import '/imports/modules/channels/server'
+import '/imports/modules/services/both'
+import '/imports/modules/services/server'
 
 import '/imports/modules/dashboard/both'
 import '/imports/modules/dashboard/server'

@@ -20,7 +20,7 @@ const service = {
     updateFormPre: 'servicesWebformUpdateFormPre'
   },
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },

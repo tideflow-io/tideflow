@@ -1,22 +1,22 @@
-<template name="channels.new.type">
+<template name="services.new.type">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="page-header mb-4">
           <h2>
-            {{__ channel.humanName}}
+            {{__ service.humanName}}
           </h2>
-          <p class="lead">{{__ "channels.newType.subtitle"}}</p>
+          <p class="lead">{{__ "services.newType.subtitle"}}</p>
         </div>
       </div>
     </div>
 
-    {{#autoForm collection=Channels id="insertChannelForm" type="method" meteormethod="channels.create"}}
+    {{#autoForm collection=Services id="insertServiceForm" type="method" meteormethod="services.create"}}
 
-    {{#if channelCreationFormPre}}
+    {{#if serviceCreationFormPre}}
     <div class="row">
       <div class="col-md-12">
-        {{> Template.dynamic template=channelCreationFormPre}}
+        {{> Template.dynamic template=serviceCreationFormPre}}
       </div>
     </div>
     {{/if}}
@@ -29,7 +29,7 @@
             <div class="card">
               <div class="card-body">
                 {{> afQuickField name='title'}}
-                {{> Template.dynamic template=channelCreationForm}}
+                {{> Template.dynamic template=serviceCreationForm}}
               </div>
             </div>
           </div>
@@ -39,18 +39,18 @@
         <div class="card">
           <div class="card-body">
             {{> afQuickField name='description' type='textarea'}}
-            <button type="submit" class="btn btn-outline-primary">{{__ "channels.newType.submit"}}</button>
+            <button type="submit" class="btn btn-outline-primary">{{__ "services.newType.submit"}}</button>
           </div>
         </div>
       </div>
     </div>
 
-    {{#if channelCreationFormAfter}}
+    {{#if serviceCreationFormAfter}}
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            {{> Template.dynamic template=channelCreationFormAfter}}
+            {{> Template.dynamic template=serviceCreationFormAfter}}
           </div>
         </div>
       </div>

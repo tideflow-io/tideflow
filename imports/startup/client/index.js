@@ -43,8 +43,8 @@ import '/imports/modules/verify/client'
 import '/imports/modules/dashboard/both'
 import '/imports/modules/dashboard/client'
 
-import '/imports/modules/channels/both'
-import '/imports/modules/channels/client'
+import '/imports/modules/services/both'
+import '/imports/modules/services/client'
 
 import '/imports/modules/executions/both'
 import '/imports/modules/executions/client'

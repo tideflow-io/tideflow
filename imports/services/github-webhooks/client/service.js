@@ -14,7 +14,7 @@ const service = {
     updateFormPre: 'servicesGhWebhooksUpdateFormPre'
   },
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },

@@ -13,9 +13,9 @@ event.execute.command: Command to execute
 event.execute.selectAgent: Which agent must be used
 event.execute.anyAgent: Any agent available
 event.execute.nodeJs: Code to execute
-channel.status.lastSeen: Last seen
-channel.status.offline: Offline
-channel.status.online: Online
+service.status.lastSeen: Last seen
+service.status.offline: Offline
+service.status.online: Online
 log.execute_sent: Command reported to the agent
 log.execute_notsent: The command could not be delivered
 event.common.attachPreviousStepOutput: Attach the output from the previous step

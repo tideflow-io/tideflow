@@ -1,14 +1,14 @@
-<template name="channels.new">
+<template name="services.new">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="page-header mb-4">
           <h2>
-            {{__ "channels.new.title"}}
+            {{__ "services.new.title"}}
           </h2>
-          <p class="lead">{{__ "channels.new.subtitle"}}</p>
+          <p class="lead">{{__ "services.new.subtitle"}}</p>
         </div>
-        <div class="mb-3 channels-new-selector">
+        <div class="mb-3 services-new-selector">
           {{#each servicesAvailable}}
           <div class="card card-task">
             <div class="card-body">
@@ -16,11 +16,11 @@
                 <i class="{{this.icon}}" style="color: {{this.iconColor}}"></i>
               </div>
               <div class="card-title mr-auto">
-                <a href="{{pathFor 'channels.one.edit' type=type _id=_id}}">
+                <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
                   <h6>
                     {{__ this.humanName}}
                     {{#if this.website}}
-                      <a title="{{__ "channels.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
+                      <a title="{{__ "services.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
                         <i class="fa fa-info-circle"></i>
                       </a>
                     {{/if}}
@@ -29,8 +29,8 @@
                 <span class="text-small">{{__ this.description}}</span>
               </div>
               <div class="card-meta">
-                <a href="{{pathFor 'channels.new.type' type=this.name}}" class="btn btn-outline-primary">
-                  {{__ "channels.new.select"}}
+                <a href="{{pathFor 'services.new.type' type=this.name}}" class="btn btn-outline-primary">
+                  {{__ "services.new.select"}}
                 </a>
               </div>
             </div>

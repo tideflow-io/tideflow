@@ -1,14 +1,14 @@
-<template name="channels.one.edit">
+<template name="services.one.edit">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="page-header mb-4">
           <h2>
-            {{channel.title}}
+            {{service.title}}
           </h2>
           <p class="lead">
-            {{#if channel.description}}
-              {{channel.description}}
+            {{#if service.description}}
+              {{service.description}}
             {{else}}
               -
             {{/if}}
@@ -17,34 +17,34 @@
       </div>
     </div>
 
-    {{#autoForm collection=Channels id="updateChannelForm" type="method" doc=channel meteormethod="channels.update"}}
+    {{#autoForm collection=Services id="updateServiceForm" type="method" doc=service meteormethod="services.update"}}
 
-    {{> afQuickField name='_id' type='hidden' value=channel._id}}
-    {{> afQuickField name='type' type='hidden' value=channel.type}}
+    {{> afQuickField name='_id' type='hidden' value=service._id}}
+    {{> afQuickField name='type' type='hidden' value=service.type}}
     <div class="row">
       <div class="col-md-8">
-        {{#if channelUpdateFormPre}}
+        {{#if serviceUpdateFormPre}}
           <div class="row">
             <div class="col-md-12">
-              {{> Template.dynamic template=channelUpdateFormPre}}
+              {{> Template.dynamic template=serviceUpdateFormPre}}
             </div>
           </div>
         {{/if}}
 
-        {{#if channelService.templates.detailsView}}
+        {{#if serviceService.templates.detailsView}}
           <div class="row">
             <div class="col-12">
-              {{> Template.dynamic template=channelService.templates.detailsView}}
+              {{> Template.dynamic template=serviceService.templates.detailsView}}
             </div>
           </div>
         {{/if}}
     
-        {{#if channelUpdateForm}}
+        {{#if serviceUpdateForm}}
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
-                  {{> Template.dynamic template=channelUpdateForm}}
+                  {{> Template.dynamic template=serviceUpdateForm}}
                 </div>
               </div>
             </div>
@@ -56,19 +56,19 @@
           <div class="card-body">
             {{> afQuickField name='title'}}
             {{> afQuickField name='description' type='textarea'}}
-            <button type="submit" class="btn btn-outline-primary">{{__ "channels.edit.submit"}}</button>
+            <button type="submit" class="btn btn-outline-primary">{{__ "services.edit.submit"}}</button>
           </div>
         </div>
-        <button class="btn btn-sm btn-outline-danger delete-channel float-right">{{__ "channels.one.remove"}}</button>
+        <button class="btn btn-sm btn-outline-danger delete-service float-right">{{__ "services.one.remove"}}</button>
       </div>
     </div>
 
-    {{#if channelUpdateFormAfter}}
+    {{#if serviceUpdateFormAfter}}
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            {{> Template.dynamic template=channelUpdateFormAfter}}
+            {{> Template.dynamic template=serviceUpdateFormAfter}}
           </div>
         </div>
       </div>

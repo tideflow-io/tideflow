@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating'
 import i18n from 'meteor/universe:i18n'
 
 import { Flows } from '/imports/modules/flows/both/collection.js'
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 import { servicesAvailable } from '/imports/services/_root/client'
 import { checkRole } from '/imports/helpers/both/roles'
 
@@ -164,7 +164,7 @@ Template.flowEditor.helpers({
       })
     })
 
-    Channels.find().map((c) => {
+    Services.find().map((c) => {
       let sa = servicesAvailable.find(s => s.name === c.type)
       if (!sa.events.find(e => e.inputable)) return;
       chs.push({
@@ -183,17 +183,17 @@ Template.flowEditor.helpers({
     if (!_id) {
       const type = Session.get('fe-triggerTypeSelected')
       if (!type) return null
-      let selectedChannel = servicesAvailable.find(sa => sa.name === type)
-      if (!selectedChannel) return null
-      return selectedChannel
+      let selectedService = servicesAvailable.find(sa => sa.name === type)
+      if (!selectedService) return null
+      return selectedService
     }
 
-    const selectedChannelDoc = Channels.findOne({ _id })
-    let selectedChannel = servicesAvailable.find(sa => sa.name === selectedChannelDoc.type)
+    const selectedServiceDoc = Services.findOne({ _id })
+    let selectedService = servicesAvailable.find(sa => sa.name === selectedServiceDoc.type)
     
-    if (!selectedChannel) return null
-    Session.set('fe-triggerTypeSelected', selectedChannel.name)
-    return selectedChannel
+    if (!selectedService) return null
+    Session.set('fe-triggerTypeSelected', selectedService.name)
+    return selectedService
   },
 
   isSelectedTrigger(d, t) {

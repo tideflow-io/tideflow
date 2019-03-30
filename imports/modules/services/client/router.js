@@ -3,19 +3,19 @@ import { Router } from 'meteor/iron:router'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Services } from "/imports/modules/services/both/collection.js"
 
 import './ui/index'
 import './ui/new'
 import './ui/newType'
 import './ui/edit'
 
-Router.route('/channels', function () {
-  this.render('channels.index')
+Router.route('/services', function () {
+  this.render('services.index')
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('channels.all', {}, {
+      Meteor.subscribe('services.all', {}, {
         sort: {
           createdAt: -1
         }
@@ -25,7 +25,7 @@ Router.route('/channels', function () {
   data: function() {
     if (this.ready) {
       return {
-        channels: Channels.find({}, {
+        services: Services.find({}, {
           sort: {
             createdAt: -1
           }
@@ -33,22 +33,22 @@ Router.route('/channels', function () {
       }
     } 
   },
-  name: 'channels.index',
-  title: 'Channels',
+  name: 'services.index',
+  title: 'Services',
   parent: 'home'
 })
 
-Router.route('/channels/new', function () {
-  this.render('channels.new')
+Router.route('/services/new', function () {
+  this.render('services.new')
 }, {
-  name: 'channels.new',
+  name: 'services.new',
   title: 'New',
-  parent: 'channels.index'
+  parent: 'services.index'
 })
 
-Router.route('/channels/new/:type', function () {
+Router.route('/services/new/:type', function () {
   window.editorViewDetailsHooks = []
-  this.render('channels.new.type')
+  this.render('services.new.type')
 }, {
   data: function() {
     if (this.ready) {
@@ -57,7 +57,7 @@ Router.route('/channels/new/:type', function () {
       }
     } 
   },
-  name: 'channels.new.type',
+  name: 'services.new.type',
   title: function() {
     try {
       return i18n.__(
@@ -68,16 +68,16 @@ Router.route('/channels/new/:type', function () {
       return null
     }
   },
-  parent: 'channels.new'
+  parent: 'services.new'
 })
 
-Router.route('/channels/:type/:_id/edit', function () {
+Router.route('/services/:type/:_id/edit', function () {
   window.editorViewDetailsHooks = []
-  this.render('channels.one.edit')
+  this.render('services.one.edit')
 }, {
   waitOn: function () {
     return [
-      Meteor.subscribe('channels.single', {
+      Meteor.subscribe('services.single', {
         _id: this.params._id
       })
     ]
@@ -86,17 +86,17 @@ Router.route('/channels/:type/:_id/edit', function () {
     if (this.ready) {
       return {
         type: this.params.type,
-        channel: Channels.findOne({
+        service: Services.findOne({
           _id: this.params._id
         })
       }
     } 
   },
-  name: 'channels.one.edit',
+  name: 'services.one.edit',
   title: function() {
     try {
-      return this.data().channel.title
+      return this.data().service.title
     } catch (ex) {}
   },
-  parent: 'channels.index'
+  parent: 'services.index'
 })

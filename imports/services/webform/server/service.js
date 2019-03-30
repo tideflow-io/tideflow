@@ -13,11 +13,11 @@ const service = {
   stepable: false,
   ownable: true,
   hooks: {
-    channel: {
+    service: {
       create: {
-        pre: (channel) => {
-          const config = Object.assign(channel.config || {}, {endpoint: uuidv4()})
-          return Object.assign(channel, { config }) 
+        pre: (service) => {
+          const config = Object.assign(service.config || {}, {endpoint: uuidv4()})
+          return Object.assign(service, { config }) 
         }
       },
       update: {
@@ -34,7 +34,7 @@ const service = {
       name: 'submitted',
       humanName: i18n.__('s-webform.events.submitted.name'),
       visibe: true,
-      callback: (channel, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         cb(null, {
           result: stepData(executionLogs, 'last'),
           next: true,

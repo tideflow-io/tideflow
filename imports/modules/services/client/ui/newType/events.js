@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
 
-Template['channels.new.type'].events({
+Template['services.new.type'].events({
 
 })

@@ -2,16 +2,16 @@ import { Template } from 'meteor/templating'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { Channels } from "/imports/modules/channels/both/collection.js"
+import { Services } from "/imports/modules/services/both/collection.js"
 
-Template['channels.new.type'].helpers({
-  channel: function() {
+Template['services.new.type'].helpers({
+  service: function() {
     return servicesAvailable.find(s => s.name === this.type)
   },
-  channelCreationForm: function() {
+  serviceCreationForm: function() {
     return servicesAvailable.find(s => s.name === this.type).templates.createForm
   },
-  channelCreationFormAfter: function() {
+  serviceCreationFormAfter: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.createFormAfter
     }
@@ -19,7 +19,7 @@ Template['channels.new.type'].helpers({
       return null
     }
   },
-  channelCreationFormPre: function() {
+  serviceCreationFormPre: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.createFormPre
     }
@@ -27,5 +27,5 @@ Template['channels.new.type'].helpers({
       return null
     }
   },
-  Channels
+  Services
 })

@@ -17,7 +17,7 @@ const service = {
     updateFormPre: 'servicesAgentUpdateFormPre'
   },
   hooks: {
-    // channel: {},
+    // service: {},
     // step: {},
     // trigger: {}
   },

@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { Channels } from '/imports/modules/channels/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection.js'
 
 const editorDefaults = {
   dataType: 'json',
@@ -17,10 +17,10 @@ Template.servicesWebformCreateFormAfter.onRendered(function() {
 
 Template.servicesWebformUpdateFormAfter.onRendered(function() {
   let _id = Router.current().params._id
-  let channel = Channels.findOne({ _id })
+  let service = Services.findOne({ _id })
   this.webformEditor = $('#webform-editor').formBuilder(
     Object.assign({}, editorDefaults, {
-      formData: (channel.details||{}).form || []
+      formData: (service.details||{}).form || []
     })
   )
   window.editorViewDetailsHooks = {

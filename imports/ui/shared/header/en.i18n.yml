@@ -1,6 +1,6 @@
 _namespace: header
 dashboard: Dashboard
-channels: Channels
+services: Services
 flows: Workflows
 myaccount.admin: Management
 myaccount.profile: Profile
