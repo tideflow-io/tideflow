@@ -34,6 +34,11 @@
       </div>
     </div>
     
+    {{#if executions}}
+    1
+    {{else}}
+    0
+    {{/if}}
     {{#each executions}}
     <div class="row dashboard-execution-history">
       <div class="col-md-12">

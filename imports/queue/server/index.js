@@ -154,8 +154,8 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
     throw new Error('Security issue: user services attached on triggerFlows.')
   }
 
-  let serviceWorker = servicesAvailable.find(service => service.name === service.type)
-  if (!serviceWorker) throw new Error('Service not found @ triggerFlows')
+  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #1')
 
   if (!flows) {
     if (typeof flowsQuery.status !== 'string') {
@@ -264,8 +264,8 @@ jobs.register('workflow-start', function(jobData) {
   const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
 
-  let serviceWorker = servicesAvailable.find(service => service.name === service.type)
-  if (!serviceWorker) throw new Error('Service not found @ triggerFlows')
+  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
 
   let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
   if (!event) {
