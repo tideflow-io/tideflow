@@ -8,7 +8,10 @@ Template.dashboard.helpers({
       .groupBy('flow')
       .map((list, flow) => ({ list, flow }))
       .value()
-    console.log({r})
     return r
+  },
+  'executionsLoaded': function () {
+    console.log(Template.instance().executionsLoaded)
+    return Template.instance().executionsLoaded.get()
   }
 })

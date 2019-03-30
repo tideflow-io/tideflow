@@ -6,6 +6,7 @@ Template.dashboard.onCreated(function() {
 
   this.executionsTime = new ReactiveVar('last24Hours')
   this.executions = new ReactiveVar(null)
+  this.executionsLoaded = new ReactiveVar(false)
 
   this.autorun(function () {
     self.executions.set([])
@@ -14,9 +15,11 @@ Template.dashboard.onCreated(function() {
     }, {
       limit: 0
     }, (error, result) => {
+      console.log('loaded')
       if (!error) {
         self.executions.set(result)
       }
+      self.executionsLoaded.set(true)
     })
   })
 
