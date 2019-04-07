@@ -1,7 +1,7 @@
 _namespace: s-gh-webhooks
 name: Github webhooks
 description: Listen for events from Github.
-createFormPreNote: Once you create this webhook, Tideflow will assign it an URL that you can use on github.com
+createFormPreNote: Once you create this webhook, Tideflow will assign it an URL that you can use on github.com.
 webhookUrl: Webhook url
 webhookSecret: Secret
 updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.

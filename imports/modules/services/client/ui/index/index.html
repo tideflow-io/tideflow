@@ -1,27 +1,24 @@
 <template name="services.index">
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-9">
         <div class="page-header mb-4">
           <h2>
             {{__ "services.index.title"}}
           </h2>
           <p class="lead">{{__ "services.index.subtitle"}}</p>
         </div>
+      </div>
+      <div class="col-md-3">
+        <a href="{{pathFor 'services.new'}}" class="float-right btn btn-success mt-5 mb-4">{{__ "services.index.connectNew"}}</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center mt-5">
         {{#if cursorIsEmpty services}}
           <p>{{__ "services.index.emptyListDescription"}}</p>
-          <p>
-            <u>
-              <a class="btn btn-dark" href="{{pathFor 'services.new'}}">
-                {{__ "services.index.emptyListCreateFirst"}}</a>
-            </u>
-          </p>
         {{else}}
-          <a href="{{pathFor 'services.new'}}" class="btn btn-dark mb-4">{{__ "services.index.connectNew"}}</a>
           <div class="card-list">
-            <!-- <div class="card-list-head">
-              <h6>Services</h6>
-            </div> -->
             <div class="card-list-body">
               {{#each services}}
                 {{> servicesIndexTableService}}

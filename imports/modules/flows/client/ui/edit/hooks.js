@@ -4,7 +4,7 @@ import { Router } from 'meteor/iron:router'
 AutoForm.addHooks(['updateFlowForm'], {
   after: {
     method: (error, result) => {
-      
+      Router.go('flows.one', result)
     }
   }
 })

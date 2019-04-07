@@ -121,7 +121,8 @@ export const updateFlow = new ValidatedMethod({
     )
 
     // Given the original flow and the new one, perform post hooks methods
-    return flowsHooks.update.post(originalFlow, set)
+    flowsHooks.update.post(originalFlow, set)
+    return flow
   }
 })
 

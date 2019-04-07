@@ -6,30 +6,32 @@
           <h2>
             {{flow.title}}
           </h2>
-          {{#if flow.description}}
-            <p class="lead">
-              {{flow.description}}
-            </p>
-          {{/if}}
         </div>
       </div>
     </div>
     {{#autoForm collection=Flows id="updateFlowForm" type="method" doc=flow meteormethod="flows.update"}}
     {{> afQuickField name='_id' value=flow._id type='hidden'}}
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-8">
+        {{> afQuickField name='title'}}
+      </div>
+      <div class="col-3">
+        {{> afQuickField name='status'}}
+      </div>
+      <div class="col-1">
+        <div class="form-group">
+          <label class="control-label">&nbsp;</label>
+          <button type="submit" class="form-control btn btn-primary">{{__ "flows.edit.submit"}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
         {{> flowEditor}}
       </div>
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            {{> afQuickField name='title'}}
-            {{> afQuickField name='status'}}
-            {{> afQuickField name='description' type='textarea'}}
-            {{> afQuickField name='emailOnTrigger'}}
-            <button type="submit" class="btn btn-primary">{{__ "flows.edit.submit"}}</button>
-          </div>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
         <button class="btn btn-sm btn-outline-danger flows-one-delete float-right">{{__ "flows.one.remove"}}</button>
       </div>
     </div>

@@ -1,26 +1,24 @@
 <template name="flows.index">
   <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="page-header mb-4">
             <h2>
               {{__ "flows.index.title"}}
             </h2>
             <p class="lead">{{__ "flows.index.subtitle"}}</p>
           </div>
+        </div>
+        <duv class="col-md-3">
+          <a href="{{pathFor 'flows.new'}}" class="float-right btn btn-success mt-5 mb-4">{{__ "flows.index.createNew"}}</a>
+        </duv>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center mt-5">
           {{#if cursorIsEmpty flows}}
             <p>{{__ "flows.index.emptyListSubTitle"}}</p>
-            <p>
-              <u>
-                <a class="btn btn-outline-dark" href="{{pathFor 'flows.new'}}">{{__ "flows.index.emptyListCreateFirst"}}</a>
-              </u>
-            </p>
           {{else}}
-            <a href="{{pathFor 'flows.new'}}" class="btn btn-outline-dark mb-4">{{__ "flows.index.createNew"}}</a>
             <div class="card-list">
-              <!-- <div class="card-list-head">
-                <h6>Channels</h6>
-              </div> -->
               <div class="card-list-body">
                 {{#each flows}}
                   {{> flowsIndexListItem}}

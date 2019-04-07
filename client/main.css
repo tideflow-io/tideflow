@@ -3,6 +3,7 @@ html {
 }
 body {
   color: black;
+  background: #F6F8FA;
   font-family: 'Lato', sans-serif !important;
 }
 
@@ -110,18 +111,15 @@ img.h2 {
   border-color: none;
 }
 
-
 @media (min-width: 992px) {
   .nav-tabs .nav-link {
     padding: .5rem 2.5rem;
   }
 }
 
-
 .nav-tabs .nav-link:not(.active) {
   color: rgba(33, 37, 41, 0.5);
 }
-
 
 .nav-tabs .nav-link {
   font-size: .875rem;
@@ -132,6 +130,7 @@ img.h2 {
 }
 
 .app .navbar {
+  background: #24292E !important;
   border-bottom: 1px solid #E9EEF2;
   min-height: 30px;
   padding: 0.3em 0.6em;
@@ -146,3 +145,4 @@ img.h2 {
     min-width: 100px;
   }
 }
+

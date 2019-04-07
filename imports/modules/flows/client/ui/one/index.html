@@ -6,53 +6,44 @@
           <h2>
             {{flow.title}}
           </h2>
-          <p class="lead">
-            {{#if flow.description}}
-              {{flow.description}}
-            {{/if}}
-          </p>
         </div>
       </div>
       <div class="col-2">
         <a class="btn btn-outline-primary float-right" href="{{pathFor 'flows.one.edit' _id=flow._id}}">{{__ "flows.one.edit"}}</a>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-7">
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <h4>{{__ "flows.one.viewer.trigger"}}</h4>
-            <div class="flow-viewer mb-3">
-              {{#with flow.trigger}}
-              <div class="card flow-trigger flow-trigger-{{type}} flow-trigger-{{type}}-{{event}}">
-                <div class="card-body">
-                  {{flowViewerTriggerTitle}}
-                </div>
+      <div class="col-12">
+        <h4>{{__ "flows.one.recentExecutions"}}</h4>
+        {{> flowOneExecutionSmallCardsHorizontal flow=flow executions=executions}}
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card-list flow-viewer">
+          {{#with flow.trigger}}
+          <div class="card flow-trigger flow-trigger-{{type}} flow-trigger-{{type}}-{{event}}">
+            <div class="card-body">
+              {{__ "flows.one.viewer.trigger"}}: {{flowViewerTriggerTitle}}
+            </div>
+          </div>
+          {{/with}}
+          {{#each flow.steps}}
+            <div class="card flow-step flow-step-{{type}} flow-step-{{type}}-{{event}}">
+              <div class="card-body">
+                {{{flowViewerStepTitle}}}
               </div>
-              {{/with}}
             </div>
-            <h4>{{__ "flows.one.viewer.steps"}}</h4>
-            <div class="card-list flow-viewer">
-              {{#each flow.steps}}
-                <div class="card flow-step flow-step-{{type}} flow-step-{{type}}-{{event}}">
-                  <div class="card-body">
-                    {{{flowViewerStepTitle}}}
-                  </div>
-                </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <button class="btn btn-sm btn-outline-danger flows-one-delete">{{__ "flows.one.remove"}}</button>
-          </div>
+          {{/each}}
         </div>
       </div>
-      <div class="col-5">
-        <h4>{{__ "flows.one.recentExecutions"}}</h4>
-        {{> flowOneExecutionSmallCards flow=flow executions=executions}}
-        <a class="btn btn-outline-primary btn-sm float-right" href="{{pathFor 'flowsOneExecutions' _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
+    </div>
+    
+    <div class="row">
+      <div class="col-12">
+        <button class="btn btn-sm btn-outline-danger float-right flows-one-delete">{{__ "flows.one.remove"}}</button>
       </div>
     </div>
   </div>
@@ -68,6 +59,45 @@
       {{#each executions}}
         {{> flowOneExecutionSmallCardsCard flow=../flow execution=this}}
       {{/each}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="flowOneExecutionSmallCardsHorizontal">
+  <div class="card-list">
+    <div class="row">
+      {{#if cursorIsEmpty executions}}
+        <div class="col-12">
+          <p class="text-muted mb-0">
+            {{__ "flows.one.recentExecutionsEmpty"}}
+          </p>
+        </div>
+      {{else}}
+        {{#each executions}}
+          <div class="col-2">
+            {{> flowOneExecutionSmallCardsCardHorizontal flow=../flow execution=this}}
+          </div>
+        {{/each}}
+        <div class="col-2">
+          <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+<template name="flowOneExecutionSmallCardsCardHorizontal">
+  <div class="btn btn-block btn-sm btn-{{#if isEq execution.status 'started'}}warning{{else if isEq execution.status 'finished'}}success{{else if isEq execution.status 'error'}}danger{{else}}secondary{{/if}}">
+    <b>{{execution.id}}</b>
+    {{#if isEq execution.status 'started'}}
+      <i class="fa fa-spinner fa-spin fa-fw"></i>
+      <span>
+        {{__ "flows.status.running"}}
+      </span>
+    {{else if isEq execution.status 'finished'}}
+      {{fromNow execution.updatedAt}}
+    {{else}}
+      {{fromNow execution.createdAt}}
     {{/if}}
   </div>
 </template>
@@ -101,7 +131,6 @@
           <span class="float-right">
             {{fromNow execution.createdAt}}
           </span>
-          
         {{else if isEq execution.status 'finished'}}
           {{fromNow execution.updatedAt}}
         {{else}}

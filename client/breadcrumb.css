@@ -1,0 +1,21 @@
+.breadcrumb {
+  background:inherit;
+  font-size: 0.8em;
+  border-radius: 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.breadcrumb a {
+  color: #737373;
+}
+
+.breadcrumb li:not(:first-child):before {
+  content: '>';
+  height: 1rem;
+  position: relative;
+  display: inline-block;
+  padding-right: 0.25rem;
+  padding-left: 0.45rem;
+  color: #adb5bd;
+}

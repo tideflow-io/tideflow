@@ -1,50 +1,45 @@
 <template name="flowEditor">
   <div class="row">
-    <div class="col-md-12" id="trigger-creator">
-      <div class="trigger-container">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{__ "flows.editor.trigger.title"}}</h5>
-            <div class="form-group">
-              <select class="form-control" name="triggerSelector">
-                <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
-                {{#each triggers}}
-                  <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
-                {{/each}}
-              </select>
-            </div>
-            {{#if triggerSelected.events}}
-            <div class="form-group">
-              <select class="form-control" name="triggerEventSelector">
-                <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
-                {{#each triggerSelected.events}}
-                  {{#if inputable}}
-                    <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
-                  {{/if}}
-                {{/each}}
-              </select>
-            </div>
-
-            {{#if triggerEditorEventForm}}
-              {{> Template.dynamic template=triggerEditorEventForm}}
-            {{/if}}
-            
-            {{/if}}
-            {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
-            {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
-            {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br>
-  <div class="row">
     <div class="col-md-12" id="steps-creator">
       <h4>
         {{__ "flows.editor.steps.title"}}
       </h4>
-      <div class="steps-container card-list mb-5">
+      <div class="steps-container card-list mb-3">
+        <div class="trigger-container mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{__ "flows.editor.trigger.title"}}</h5>
+              <div class="form-group">
+                <select class="form-control" name="triggerSelector">
+                  <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
+                  {{#each triggers}}
+                    <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              {{#if triggerSelected.events}}
+              <div class="form-group">
+                <select class="form-control" name="triggerEventSelector">
+                  <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
+                  {{#each triggerSelected.events}}
+                    {{#if inputable}}
+                      <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
+                    {{/if}}
+                  {{/each}}
+                </select>
+              </div>
+  
+              {{#if triggerEditorEventForm}}
+                {{> Template.dynamic template=triggerEditorEventForm}}
+              {{/if}}
+              
+              {{/if}}
+              {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
+              {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
+              {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
+            </div>
+          </div>
+        </div>
         {{#afEachArrayItem name="steps"}}
         <div class="card mb-4" data-step="{{this.index}}">
           <div class="card-body">

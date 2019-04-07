@@ -8,11 +8,10 @@ delete.success: Service removed
 delete.ok: Service deleted
 edit.submit: Update
 index.title: Services
-index.subtitle: Connect your services to trigger workflows.
+index.subtitle: Connect your services to trigger flows.
 index.connectNew: Connect a new service
 index.emptyListTitle: There are no services registered under your account
 index.emptyListDescription: It seems you haven't created any service yet.
-index.emptyListCreateFirst: Connect your first service
 index.itemView: View
 newType.submit: Insert
 new.select: Select
