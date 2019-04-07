@@ -10,6 +10,8 @@ const service = {
   icon: 'fas fa-save',
   iconColor: '#3498DB',
   ownable: false,
+  inputable: false,
+  stepable: true,
   templates: {
   },
   hooks: {

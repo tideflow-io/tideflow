@@ -1,10 +1,6 @@
 _namespace: flows
 status.running: Running...
 status.finished: Finished
-breadcrumb.title.index: Workflows
-breadcrumb.title.new: New
-breadcrumb.title.executions: Executions
-breadcrumb.title.edit: Edit
 create.ok: Flow created
 create.error: There was a problem creating the flow
 update.ok: Flow updated

@@ -1,3 +1,6 @@
+.steps-container .card-footer {
+  background: white;
+}
 
 .trigger-container .form-group:last-of-type {
   margin-bottom: 0 !important;
@@ -9,9 +12,9 @@
 
 .card-list {
   margin-bottom: 0.75rem;
-  border-radius: 0.1rem;
-  padding: 0.4rem;
-  background: #323B50;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #E9EEF2;
 }
 
 .card-list-dots {
@@ -40,18 +43,16 @@
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #252C3C;
+  background-color: #fff;
   background-clip: border-box;
-  border: 1px solid #323B50;
+  border: 1px solid #E9EEF2;
   margin-bottom: 0.75rem;
-  border-radius: 0.1rem;
+  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
+  border-radius: 0.5rem;
 }
 
 .card.clickable:hover {
   box-shadow: 0 0.2875rem 0.475rem rgba(33, 37, 41, 0.15) !important;
-}
-
-.card-footer {
 }
 
 .card.clickable a {
@@ -69,7 +70,7 @@
 }
 
 .card-status {
-  border-radius: 0rem 0.1rem 0.1rem 0;
+  border-radius: 0rem 0.5rem 0.5rem 0;
 }
 
 .card-status-success {
@@ -90,6 +91,10 @@
   }
 }
 
+.card .card-title {
+  max-width: 90%;
+}
+
 .card-title {
   margin-bottom: 1.5rem;
 }
@@ -99,7 +104,7 @@
 }
 
 .card-title a {
-  color: inherit;
+  color: black;
 }
 
 .card-title .text-small {
@@ -131,8 +136,7 @@
 }
 
 .card-note {
-  background: inherit !important;
-  border-radius: 6px;
+  background: #fff7dd !important;
   border-color: #fff1c9 !important;
 }
 

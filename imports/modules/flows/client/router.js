@@ -33,8 +33,7 @@ Router.route('/flows', function () {
     } 
   },
   name: 'flows.index',
-  parent: 'home',
-  title: i18n.__('flows.breadcrumb.title.index')
+  parent: 'home'
 })
 
 Router.route('/flows/new', function () {
@@ -58,8 +57,7 @@ Router.route('/flows/new', function () {
     } 
   },
   name: 'flows.new',
-  parent: 'flows.index',
-  title: i18n.__('flows.breadcrumb.title.new')
+  parent: 'flows.index'
 })
 
 Router.route('/flows/:_id', function () {
@@ -141,8 +139,7 @@ Router.route('/flows/:_id/executions', function () {
     } 
   },
   name: 'flowsOneExecutions',
-  parent: 'flows.one',
-  title: i18n.__('flows.breadcrumb.title.executions')
+  parent: 'flows.one'
 })
 
 Router.route('/flows/:_id/executions/:executionId', function () {
@@ -213,6 +210,5 @@ Router.route('/flows/:_id/edit', function () {
     }
   },
   name: 'flows.one.edit',
-  parent: 'flows.one',
-  title: i18n.__('flows.breadcrumb.title.edit')
+  parent: 'flows.one'
 })
