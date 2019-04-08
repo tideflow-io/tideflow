@@ -1,3 +1,4 @@
+import { Router } from 'meteor/iron:router'
 import { Template } from 'meteor/templating'
 
 import { Services } from '/imports/modules/services/both/collection.js'
@@ -70,7 +71,7 @@ Template.flowEditor.onRendered(function() {
 
   instance.__flowEditorRendered = false
 
-  jsPlumb.setContainer($("#flow-editor"));
+  jsPlumb.setContainer($("#flow-editor"))
 
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
@@ -89,7 +90,7 @@ Template.flowEditor.onRendered(function() {
       let flow = Flows.findOne({
         _id: Router.current().params._id
       })
-      if (!flow) return null;
+      if (!flow) return null
 
       if (flow.trigger._id) {
         $('select[name="triggerSelector"]').val(flow.trigger._id).change()
@@ -107,24 +108,20 @@ Template.flowEditor.onRendered(function() {
 
  
       if (!instance.__flowEditorRendered) {
-
-        console.log('drag ready');
-        alert('1')
-        
         jsPlumb.draggable($('.card.flow-step'), {
           containment: '#flow-editor'
-        });
+        })
 
-        jsPlumb.makeTarget($(".connector-out.connector-inbound"), {
-          anchor: "Continuous"
-        });
+        jsPlumb.makeTarget($('.connector-out.connector-inbound'), {
+          anchor: 'Continuous'
+        })
 
-        jsPlumb.makeSource($(".connector-out.connector-outbound"), {
+        jsPlumb.makeSource($('.connector-out.connector-outbound'), {
           parent: '.card',
-          anchor: "Continuous"
-        });
+          anchor: 'Continuous'
+        })
 
-        if (!Array.isArray(flow.steps) || !flow.steps.length) return;
+        if (!Array.isArray(flow.steps) || !flow.steps.length) return
 
         flow.steps.map((step, index) => {
           $(`.step-type-selector.form-control[data-step="${index}"]`).val(step.type).change()

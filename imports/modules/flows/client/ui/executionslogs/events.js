@@ -1,3 +1,4 @@
+import { Session } from 'meteor/session'
 import { Template } from 'meteor/templating'
 
 Template.flowsOneExecutionsOneDetails.events({
