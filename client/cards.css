@@ -1,11 +1,3 @@
-.steps-container .card-footer {
-  background: white;
-}
-
-.trigger-container .form-group:last-of-type {
-  margin-bottom: 0 !important;
-}
-
 .card p:last-child {
   margin-bottom: 0;
 }

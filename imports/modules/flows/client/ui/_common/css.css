@@ -1,0 +1,88 @@
+#flow-editor {
+  padding: 0;
+  background: gray;
+  position: absolute;
+  height: calc(100vh - 303px);
+}
+
+#flow-editor .card {
+  width: 350px;
+  position: absolute;
+  border-radius: 6px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+#flow-editor .card .delete {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 40%;
+  min-width: 0;
+  background-color: black;
+  border: 1px solid #E9EEF2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
+}
+
+#flow-editor .card .connector-out {
+  top: 25px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  min-width: 0;
+  background-color: white;
+  color: white;
+  cursor: pointer;
+}
+
+#flow-editor .flow-step {
+  cursor: move;
+}
+
+#flow-editor .card .connector-out.connector-inbound {
+  left: -14px;
+}
+
+#flow-editor .card .connector-out.connector-inbound:after {
+  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
+  border: 1px solid #E9EEF2;
+  z-index: 1;
+}
+
+#flow-editor .card .connector-out.connector-outbound {
+  right: -14px;
+}
+
+#flow-editor .card .connector-out.connector-outbound:after {
+  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
+  border: 1px solid #E9EEF2;
+  z-index: 1;
+}
+
+#flow-editor .card .hover {
+  display: none;
+}
+
+#flow-editor .card:hover .hover {
+  display: table;
+}
+
+#flow-editor .card select:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+#flow-editor .card .form-group:last-child {
+  margin-bottom: 0px;
+}
+
+.autoform-add-item {
+  top: 10px;
+  position: absolute;
+  right: 10px;
+}

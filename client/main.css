@@ -1,10 +1,18 @@
 html {
   touch-action: manipulation;
 }
+
 body {
   color: black;
-  background: #F6F8FA;
   font-family: 'Lato', sans-serif !important;
+}
+
+.container.greyed, .container-fluid.greyed {
+  background: #F6F8FA;
+}
+
+.container.greyed.separator, .container-fluid.greyed.separator {
+  border-bottom: 2px solid #E6E9EC;
 }
 
 .clickable {

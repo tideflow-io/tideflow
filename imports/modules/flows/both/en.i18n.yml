@@ -15,8 +15,6 @@ delete.ok: Flow deleted
 delete.error: There was a problem deleting the flow
 delete.success: Your flow was deleted
 editor.title: Workflow editor
-editor.trigger.title: Trigger
-editor.steps.title: Steps
 editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.type.selectOneOption: Select an option

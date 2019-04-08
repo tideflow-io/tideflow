@@ -70,6 +70,8 @@ Template.flowEditor.onRendered(function() {
 
   instance.__flowEditorRendered = false
 
+  jsPlumb.setContainer($("#flow-editor"));
+
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
   Session.set('fe-stepSelected', '')
@@ -83,6 +85,7 @@ Template.flowEditor.onRendered(function() {
     })
 
     if (subscription.ready()) {
+
       let flow = Flows.findOne({
         _id: Router.current().params._id
       })
@@ -102,9 +105,27 @@ Template.flowEditor.onRendered(function() {
         Session.set('fe-triggerEventSelected', flow.trigger.event)
       }
 
+ 
       if (!instance.__flowEditorRendered) {
-        if (!Array.isArray(flow.steps) || !flow.steps.length) return
+
+        console.log('drag ready');
+        alert('1')
         
+        jsPlumb.draggable($('.card.flow-step'), {
+          containment: '#flow-editor'
+        });
+
+        jsPlumb.makeTarget($(".connector-out.connector-inbound"), {
+          anchor: "Continuous"
+        });
+
+        jsPlumb.makeSource($(".connector-out.connector-outbound"), {
+          parent: '.card',
+          anchor: "Continuous"
+        });
+
+        if (!Array.isArray(flow.steps) || !flow.steps.length) return;
+
         flow.steps.map((step, index) => {
           $(`.step-type-selector.form-control[data-step="${index}"]`).val(step.type).change()
           $(`.step-event-selector.form-control[data-step="${index}"]`).val(step.type).change()

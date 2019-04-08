@@ -1,37 +1,42 @@
 <template name="flows.new">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="page-header mb-4">
-          <h2>
-            {{__ 'flows.editor.title'}}
-          </h2>
+  {{> breadcrumbContainerGray}}
+  {{#autoForm collection=Flows id="insertFlowForm" type="method" meteormethod="flows.create"}}
+    <div class="container-fluid greyed separator pb-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="page-header mb-4">
+              <h2>
+                {{__ 'flows.editor.title'}}
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            {{> afQuickField name='title'}}
+          </div>
+          <div class="col-5">
+            {{> afQuickField name='description'}}
+          </div>
+          <div class="col-2">
+            {{> afQuickField name='status'}}
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label class="control-label">&nbsp;</label>
+              <button type="submit" class="form-control btn btn-primary">{{__ "flows.new.submit"}}</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    {{#autoForm collection=Flows id="insertFlowForm" type="method" meteormethod="flows.create"}}
-    <div class="row">
-      <div class="col-3">
-        {{> afQuickField name='title'}}
-      </div>
-      <div class="col-5">
-        {{> afQuickField name='description'}}
-      </div>
-      <div class="col-2">
-        {{> afQuickField name='status'}}
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-          <label class="control-label">&nbsp;</label>
-          <button type="submit" class="form-control btn btn-primary">{{__ "flows.new.submit"}}</button>
+    <div class="container-fluid" id="flow-editor">
+      <div class="row">
+        <div class="col-12">
+          {{> flowEditor}}
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        {{> flowEditor}}
-      </div>
-    </div>
-    {{/autoForm}}
-  </div>
+  {{/autoForm}}
 </template>
