@@ -15,7 +15,6 @@ Template.dashboard.onCreated(function() {
     }, {
       limit: 0
     }, (error, result) => {
-      console.log('loaded')
       if (!error) {
         self.executions.set(result)
       }

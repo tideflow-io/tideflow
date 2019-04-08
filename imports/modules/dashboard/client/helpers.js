@@ -11,7 +11,6 @@ Template.dashboard.helpers({
     return r
   },
   'executionsLoaded': function () {
-    console.log(Template.instance().executionsLoaded)
     return Template.instance().executionsLoaded.get()
   }
 })
