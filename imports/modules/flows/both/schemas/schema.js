@@ -67,6 +67,16 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     blackbox: true
   },
+  'trigger.x': {
+    optional: true,
+    type: Number,
+    defaultValue: 0
+  },
+  'trigger.y': {
+    optional: true,
+    type: Number,
+    defaultValue: 0
+  },
   steps: {
     type: Array,
     optional: true
@@ -74,6 +84,14 @@ const FlowSchema = new SimpleSchema({
   'steps.$': {
     type: Object,
     optional: true
+  },
+  'steps.$.x': {
+    type: Number,
+    defaultValue: 0
+  },
+  'steps.$.y': {
+    type: Number,
+    defaultValue: 0
   },
   'steps.$.type': {
     type: String

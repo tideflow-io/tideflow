@@ -11,8 +11,8 @@ import { checkRole } from '/imports/helpers/both/roles'
 // The native sort modifies the array in place. `_.orderBy` and `_.sortBy` do not, so we use `.concat()` to
 // copy the array, then sort.
 const sortBy = (key) => {
-  return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
-};
+  return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0)
+}
 
 Template.registerHelper('flowViewerTriggerTitle', function() {
   try {

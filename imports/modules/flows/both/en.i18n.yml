@@ -7,8 +7,6 @@ breadcrumb.title.executions: Executions
 breadcrumb.title.edit: Edit
 create.ok: Flow created
 create.error: There was a problem creating the flow
-update.ok: Flow updated
-update.error: There was a problem updating the flow
 delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover this.
 delete.ok: Flow deleted
@@ -41,8 +39,8 @@ one.remove: Delete
 one.allExecutions: Browse all executions
 one.recentExecutionsEmpty: This flow hasn't been executed.
 one.recentExecutions: Most recent executions for this flow
-status.update.error: There was a problem updating the status
-status.update.success: Status updated
+status.update.ok: Flow updated
+status.update.error: There was a problem updating the flow
 emailOnTrigger.title: Workflow executed
 emailOnTrigger.subtitle: The flow <i>{$name}</i> is being executed.
 emailOnTrigger.message: You are receiving this message because you opt-in for

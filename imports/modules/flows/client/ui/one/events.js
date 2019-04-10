@@ -26,20 +26,20 @@ Template['flows.one'].events({
       dangerMode: true,
       animation: false
     })
-    .then(accepted => {
-      if (accepted) {
-        Meteor.call('flows.delete', {
-          _id: template.data.flow._id
-        }, (error) => {
-          if (error) {
-            sAlert.error(i18n.__('flows.delete.error'))
-            return
-          }
-          sAlert.success(i18n.__('flows.delete.success'))
-          Router.go('flows.index')
-        })
-      }
-    })
+      .then(accepted => {
+        if (accepted) {
+          Meteor.call('flows.delete', {
+            _id: template.data.flow._id
+          }, (error) => {
+            if (error) {
+              sAlert.error(i18n.__('flows.delete.error'))
+              return
+            }
+            sAlert.success(i18n.__('flows.delete.success'))
+            Router.go('flows.index')
+          })
+        }
+      })
   }
 })
 

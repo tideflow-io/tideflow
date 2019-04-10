@@ -49,6 +49,7 @@ Template.flowEditor.events({
       Session.set('fe-triggerTypeSelected', event.currentTarget.value)
     }
   },
+
   'change [name="triggerEventSelector"]': (event, template) =>
     Session.set('fe-triggerEventSelected', event.currentTarget.value),
 
@@ -71,7 +72,9 @@ Template.flowEditor.onRendered(function() {
 
   instance.__flowEditorRendered = false
 
-  jsPlumb.setContainer($("#flow-editor"))
+  jsPlumb.getInstance({
+    Container: '#flow-editor'
+  })
 
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
@@ -106,14 +109,15 @@ Template.flowEditor.onRendered(function() {
         Session.set('fe-triggerEventSelected', flow.trigger.event)
       }
 
- 
       if (!instance.__flowEditorRendered) {
-        jsPlumb.draggable($('.card.flow-step'), {
+        jsPlumb.draggable($('.flow-step'), {
           containment: '#flow-editor'
         })
 
-        jsPlumb.makeTarget($('.connector-out.connector-inbound'), {
-          anchor: 'Continuous'
+        jsPlumb.bind('connection',function(info){
+          let con = info.connection
+          let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
+          if (arr.length>1) jsPlumb.deleteConnection(con)
         })
 
         jsPlumb.makeSource($('.connector-out.connector-outbound'), {
@@ -121,6 +125,11 @@ Template.flowEditor.onRendered(function() {
           anchor: 'Continuous'
         })
 
+        jsPlumb.makeTarget($('.connector-out.connector-inbound'), {
+          parent: '.card',
+          anchor: 'Continuous'
+        })
+        
         if (!Array.isArray(flow.steps) || !flow.steps.length) return
 
         flow.steps.map((step, index) => {
@@ -131,7 +140,6 @@ Template.flowEditor.onRendered(function() {
         })
         instance.__flowEditorRendered = true
       }
-
     }
   })
 })
