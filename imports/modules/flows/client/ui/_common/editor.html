@@ -1,13 +1,4 @@
 <template name="flowEditor">
-  <div class="container-fluid" id="flow-editor">
-    <div class="sidebar p-3">
-      <section> 
-        <h1>Sidebar</h1>
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, </p>
-      </section>
-    </div> 
-    {{> afQuickField name='trigger.x' type='hidden'}}
-    {{> afQuickField name='trigger.y' type='hidden'}}
     {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
     {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
     {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
@@ -43,9 +34,10 @@
     </div>
     {{#afEachArrayItem name="steps"}}
     <div class="card flow-step flow-step-step" data-step="{{this.index}}">
+      <div class="connector-out connector-inbound">
+        -
+      </div>
       <div class="card-body">
-        {{> afQuickField name=this.current.x type='hidden'}}
-        {{> afQuickField name=this.current.y type='hidden'}}
         {{> afFieldInput label=true name=this.current.type type='hidden'}}
         {{> afFieldInput label=true name=this.current._id type='hidden'}}
         {{> afFieldInput label=true name=this.current.event type='hidden'}}
@@ -68,12 +60,11 @@
       <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
         X
       </button>
-
-      <div class="connector-out connector-inbound">-</div>
-      <div class="connector-out connector-outbound">-</div> 
+      <div class="connector-out connector-outbound">
+        -
+      </div>
     </div>
     {{/afEachArrayItem}}
-  </div>
 </template>
 
 <template name="stepEventConfig">
