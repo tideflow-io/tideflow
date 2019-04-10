@@ -110,24 +110,23 @@ Template.flowEditor.onRendered(function() {
       }
 
       if (!instance.__flowEditorRendered) {
-        jsPlumb.draggable($('.flow-step'), {
+        jsPlumb.draggable($('.card.flow-step'), {
           containment: '#flow-editor'
-        })
+        });
+
+        jsPlumb.makeTarget($(".connector-out.connector-inbound"), {
+          anchor: "Continuous"
+        });
+
+        jsPlumb.makeSource($(".connector-out.connector-outbound"), {
+          parent: '.card',
+          anchor: "Continuous"
+        });
 
         jsPlumb.bind('connection',function(info){
           let con = info.connection
           let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
           if (arr.length>1) jsPlumb.deleteConnection(con)
-        })
-
-        jsPlumb.makeSource($('.connector-out.connector-outbound'), {
-          parent: '.card',
-          anchor: 'Continuous'
-        })
-
-        jsPlumb.makeTarget($('.connector-out.connector-inbound'), {
-          parent: '.card',
-          anchor: 'Continuous'
         })
         
         if (!Array.isArray(flow.steps) || !flow.steps.length) return
