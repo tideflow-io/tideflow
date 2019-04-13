@@ -1,7 +1,5 @@
 <template name="flows.one.edit">
-
   {{> breadcrumbContainerGray}}
-
   {{#autoForm collection=Flows id="updateFlowForm" type="method" doc=flow meteormethod="flows.update"}}
     {{> afQuickField name='_id' value=flow._id type='hidden'}}
     <div class="container-fluid greyed separator pb-3">
@@ -9,20 +7,13 @@
         <div class="row">
           <div class="col-12">
             <div class="page-header mb-4">
-              <h2>
-                {{flow.title}}
-              </h2>
+              <h2> {{flow.title}} </h2>
             </div>
           </div>
         </div>
-
         <div class="row">
-          <div class="col-7">
-            {{> afQuickField name='title'}}
-          </div>
-          <div class="col-3">
-            {{> afQuickField name='status'}}
-          </div>
+          <div class="col-7"> {{> afQuickField name='title'}} </div>
+          <div class="col-3"> {{> afQuickField name='status'}} </div>
           <div class="col-1">
             <div class="form-group">
               <label class="control-label">&nbsp;</label>
@@ -35,12 +26,9 @@
               <button class="form-control btn btn-outline-danger flows-one-delete float-right">{{__ "flows.one.remove"}}</button>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
-    <div class="container-fluid" id="flow-editor">
-      {{> flowEditor}}
-    </div>
+    {{> flowEditor}}
   {{/autoForm}}
 </template>

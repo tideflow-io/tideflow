@@ -67,14 +67,40 @@ Template.flowEditor.events({
   }
 })
 
+const setJsPlumb = () => {
+  jsPlumb.getInstance({
+    Container: '#flow-editor'
+  })
+
+  jsPlumb.ready(function() {
+    console.log('setup draggable')
+    jsPlumb.draggable($('.card.flow-step'), {
+      containment: '#flow-editor'
+    });
+    console.log('setup targets')
+    jsPlumb.makeTarget($(".connector-inbound"), {
+      anchor: "Continuous"
+    });
+
+    console.log('setup sources')
+    jsPlumb.makeSource($(".connector-outbound"), {
+      parent: '.card',
+      anchor: "Continuous"
+    });
+
+    console.log('setup 1 connection limit')
+    jsPlumb.bind('connection',function(info){
+      let con = info.connection
+      let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
+      if (arr.length>1) jsPlumb.deleteConnection(con)
+    })
+  })
+}
+
 Template.flowEditor.onRendered(function() {
   const instance = this
 
   instance.__flowEditorRendered = false
-
-  jsPlumb.getInstance({
-    Container: '#flow-editor'
-  })
 
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
@@ -82,6 +108,7 @@ Template.flowEditor.onRendered(function() {
 
   instance.autorun(function () {
     if (!Router.current().params._id) {
+      setJsPlumb()
       return
     }
     let subscription = instance.subscribe('flows.single', {
@@ -89,11 +116,13 @@ Template.flowEditor.onRendered(function() {
     })
 
     if (subscription.ready()) {
-
       let flow = Flows.findOne({
         _id: Router.current().params._id
       })
-      if (!flow) return null
+      if (!flow) {
+        setJsPlumb()
+        return null
+      }
 
       if (flow.trigger._id) {
         $('select[name="triggerSelector"]').val(flow.trigger._id).change()
@@ -110,24 +139,8 @@ Template.flowEditor.onRendered(function() {
       }
 
       if (!instance.__flowEditorRendered) {
-        jsPlumb.draggable($('.card.flow-step'), {
-          containment: '#flow-editor'
-        });
 
-        jsPlumb.makeTarget($(".connector-out.connector-inbound"), {
-          anchor: "Continuous"
-        });
-
-        jsPlumb.makeSource($(".connector-out.connector-outbound"), {
-          parent: '.card',
-          anchor: "Continuous"
-        });
-
-        jsPlumb.bind('connection',function(info){
-          let con = info.connection
-          let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
-          if (arr.length>1) jsPlumb.deleteConnection(con)
-        })
+        setJsPlumb()
         
         if (!Array.isArray(flow.steps) || !flow.steps.length) return
 

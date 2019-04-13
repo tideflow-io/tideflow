@@ -5,7 +5,13 @@
   height: calc(100vh - 303px);
 }
 
-#flow-editor .sidebar {
+#flow-editor .autoform-add-item {
+  top: 10px;
+  position: absolute;
+  right: 10px;
+}
+
+/* #flow-editor .sidebar {
   height: 100%;
   position: absolute;
   z-index: 1000;
@@ -16,7 +22,7 @@
   z-index: 1000;
   border-left: 1px solid rgba(33, 37, 41, 0.3);
   box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
-}
+} */
 
 #flow-editor .card {
   width: 350px;
@@ -93,10 +99,4 @@
 
 #flow-editor .card .form-group:last-child {
   margin-bottom: 0px;
-}
-
-.autoform-add-item {
-  top: 10px;
-  position: absolute;
-  right: 10px;
 }
