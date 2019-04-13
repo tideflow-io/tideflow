@@ -85,6 +85,20 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
+  'steps.$.id': {
+    type: String,
+  },
+  'steps.$.outputs': {
+    type: Array,
+    optional: true
+  },
+  'steps.$.outputs.$': {
+    type: Object,
+    optional: true
+  },
+  'steps.$.outputs.$.id': {
+    type: String
+  },
   'steps.$.x': {
     type: Number,
     defaultValue: 0
