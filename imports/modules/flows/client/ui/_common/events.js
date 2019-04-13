@@ -8,8 +8,8 @@ import { servicesAvailable } from '/imports/services/_root/client'
 /**
  * Step TYPE selector changed its value
  * 
- * @param {*} index 
- * @param {*} type 
+ * @param {Number} index 
+ * @param {String} type 
  */
 const stepTypeSelectorChanged = (index, type) => {
   if (index === null) { return null }
@@ -67,28 +67,34 @@ Template.flowEditor.events({
   }
 })
 
+/**
+ * Initialize the JSPlumb logic to make the flow editor work
+ */
 const setJsPlumb = () => {
   jsPlumb.getInstance({
     Container: '#flow-editor'
   })
 
   jsPlumb.ready(function() {
-    console.log('setup draggable')
+
+    // Make all cards draggable
     jsPlumb.draggable($('.card.flow-step'), {
       containment: '#flow-editor'
     });
-    console.log('setup targets')
+    
+    // Setup target cards
     jsPlumb.makeTarget($(".connector-inbound"), {
       anchor: "Continuous"
     });
 
-    console.log('setup sources')
+    // Setup source cards
     jsPlumb.makeSource($(".connector-outbound"), {
       parent: '.card',
       anchor: "Continuous"
     });
 
-    console.log('setup 1 connection limit')
+    // Prevent having multiple connections from the same source to the
+    // same target
     jsPlumb.bind('connection',function(info){
       let con = info.connection
       let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
@@ -107,23 +113,34 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-stepSelected', '')
 
   instance.autorun(function () {
+
+    // The URL doesn't contains a flow _id, therefore, the user is viewing
+    // the flow's editor to create a brand new flow
     if (!Router.current().params._id) {
       setJsPlumb()
       return
     }
+
+    // Subscribe to the flow.
     let subscription = instance.subscribe('flows.single', {
       _id: Router.current().params._id
     })
 
+    // Whenever Meteor has subscriber to flows.single...
     if (subscription.ready()) {
+
+      // Grab the flow we want to work with
       let flow = Flows.findOne({
         _id: Router.current().params._id
       })
+
+      // Woops! Flow not found. Load the editor anyway
       if (!flow) {
         setJsPlumb()
         return null
       }
 
+      // Setup the selected trigger
       if (flow.trigger._id) {
         $('select[name="triggerSelector"]').val(flow.trigger._id).change()
         Session.set('fe-triggerIdSelected', flow.trigger._id)
@@ -138,6 +155,7 @@ Template.flowEditor.onRendered(function() {
         Session.set('fe-triggerEventSelected', flow.trigger.event)
       }
 
+      // At this point, all has been setup.
       if (!instance.__flowEditorRendered) {
 
         setJsPlumb()
