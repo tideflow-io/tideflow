@@ -29,13 +29,13 @@
           {{/if}}
         {{/if}}
       </div>
-      <div class="connector-out connector-outbound">
+      <div class="connector-out connector-outbound" data-step="trigger">
         -
       </div>
     </div>
     {{#afEachArrayItem name="steps"}}
     <div class="card flow-step flow-step-step" data-step="{{this.index}}">
-      <div class="connector-out connector-inbound">
+      <div class="connector-out connector-inbound" data-step="{{this.index}}">
         -
       </div>
       <div class="card-body">
@@ -61,7 +61,7 @@
       <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
         X
       </button>
-      <div class="connector-out connector-outbound">
+      <div class="connector-out connector-outbound" data-step="{{this.index}}">
         -
       </div>
     </div>
