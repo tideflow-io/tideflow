@@ -71,9 +71,7 @@ Template.flowEditor.events({
  * Initialize the JSPlumb logic to make the flow editor work
  */
 const setJsPlumb = () => {
-  jsPlumb.getInstance({
-    Container: '#flow-editor'
-  })
+  jsPlumb.setContainer($("#flow-editor"))
 
   jsPlumb.ready(function() {
 
