@@ -35,12 +35,18 @@ AutoForm.addHooks(['updateFlowForm'], {
           doc.steps[sourceIndex].outputs.push({id:targetIndex})
         }
       })
-      console.log(JSON.stringify(doc, ' ', 2))
+
       return doc
     }
   },
   after: {
     method: (error, result) => {
+
+      jsPlumb.ready(function() {
+        $('#flow-editor .card').remove()
+        jsPlumb.deleteEveryConnection()
+      })
+
       Router.go('flows.one', result)
     }
   }

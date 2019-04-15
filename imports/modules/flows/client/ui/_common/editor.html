@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-dark autoform-add-item" data-autoform-field="steps">
       {{__ "flows.editor.step.addOne"}}
     </button>
-    <div class="card flow-step flow-step-trigger">
+    <div class="card flow-step flow-step-trigger" data-step="trigger">
       <div class="card-body">
         <select class="form-control" name="triggerSelector">
           <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
@@ -34,37 +34,37 @@
       </div>
     </div>
     {{#afEachArrayItem name="steps"}}
-    <div class="card flow-step flow-step-step" data-step="{{this.index}}">
-      <div class="connector-out connector-inbound" data-step="{{this.index}}">
-        -
-      </div>
-      <div class="card-body">
-        {{> afFieldInput label=true name=this.current.type type='hidden'}}
-        {{> afFieldInput label=true name=this.current._id type='hidden'}}
-        {{> afFieldInput label=true name=this.current.event type='hidden'}}
-        <select class="step-type-selector form-control" data-step="{{this.index}}">
-          <option>{{__ "flows.editor.step.type.selectOneOption"}}</option>
-          {{#each stepsAvailable}}
-            <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-          {{/each}}
-        </select>
-        {{#if stepSelectedEvents ../../flow ../index this.name}}
-          <select class="step-event-selector form-control" data-step="{{this.index}}">
-            <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-            {{#each stepSelectedEvents}}
-              <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+      <div class="card flow-step flow-step-step" data-step="{{this.index}}">
+        <div class="connector-out connector-inbound" data-step="{{this.index}}">
+          -
+        </div>
+        <div class="card-body">
+          {{> afFieldInput label=true name=this.current.type type='hidden'}}
+          {{> afFieldInput label=true name=this.current._id type='hidden'}}
+          {{> afFieldInput label=true name=this.current.event type='hidden'}}
+          <select class="step-type-selector form-control" data-step="{{this.index}}">
+            <option>{{__ "flows.editor.step.type.selectOneOption"}}</option>
+            {{#each stepsAvailable}}
+              <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
             {{/each}}
           </select>
-        {{/if}}
-        {{> stepEventConfig steps=../flow.steps index=this.index}}
+          {{#if stepSelectedEvents ../../flow ../index this.name}}
+            <select class="step-event-selector form-control" data-step="{{this.index}}">
+              <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+              {{#each stepSelectedEvents}}
+                <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+              {{/each}}
+            </select>
+          {{/if}}
+          {{> stepEventConfig steps=../flow.steps index=this.index}}
+        </div>
+        <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
+          X
+        </button>
+        <div class="connector-out connector-outbound" data-step="{{this.index}}">
+          -
+        </div>
       </div>
-      <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
-        X
-      </button>
-      <div class="connector-out connector-outbound" data-step="{{this.index}}">
-        -
-      </div>
-    </div>
     {{/afEachArrayItem}}
   </div>
 </template>

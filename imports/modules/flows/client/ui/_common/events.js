@@ -59,6 +59,15 @@ Template.flowEditor.events({
     stepTypeSelectorChanged(stepIndex, event.currentTarget.value)
   },
 
+  'click .autoform-remove-item': function(event, template) {
+    const card = $(event.target).parent('.card')
+    const cardId = card.id
+    const step = card.data('step')
+    console.log(card.find('.connector-inbound'))
+    jsPlumb.remove(card.find('.connector-inbound'))
+    jsPlumb.remove(card.find('.connector-outbound'))
+  },
+
   'change .step-event-selector': function(event, template) {
     const newValue = event.currentTarget.value
     let stepIndex = event.currentTarget.dataset.step
@@ -67,44 +76,96 @@ Template.flowEditor.events({
   }
 })
 
+const createConnection = (from, to) => {
+  jsPlumb.connect({
+    source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
+    target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
+    anchor: 'Continuous'
+  })
+}
+
 /**
  * Initialize the JSPlumb logic to make the flow editor work
+ * 
+ * @param {object} flow Flow's doc - as from MongoDB
  */
-const setJsPlumb = () => {
-  jsPlumb.setContainer($("#flow-editor"))
+const setJsPlumb = (flow) => {
 
   jsPlumb.ready(function() {
+
+    jsPlumb.setContainer($("#flow-editor"))
 
     // Make all cards draggable
     jsPlumb.draggable($('.card.flow-step'), {
       containment: '#flow-editor'
     });
-    
+
     // Setup target cards
-    jsPlumb.makeTarget($(".connector-inbound"), {
+    jsPlumb.makeTarget($('.connector-inbound'), {
       anchor: "Continuous"
-    });
+    })
 
     // Setup source cards
-    jsPlumb.makeSource($(".connector-outbound"), {
+    jsPlumb.makeSource($('.connector-outbound'), {
       parent: '.card',
       anchor: "Continuous"
-    });
-
-    // Prevent having multiple connections from the same source to the
-    // same target
-    jsPlumb.bind('connection',function(info){
-      let con = info.connection
-      let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
-      if (arr.length>1) jsPlumb.deleteConnection(con)
     })
+    
+    // now and when they are created / added to the dom
+    $('body').on('DOMNodeInserted', '.card', function () {
+      jsPlumb.draggable($(this), {
+        containment: '#flow-editor'
+      })
+
+      // Setup target cards
+      jsPlumb.makeTarget($(this).find('.connector-inbound'), {
+        anchor: "Continuous"
+      })
+
+      // Setup source cards
+      jsPlumb.makeSource($(this).find('.connector-outbound'), {
+        parent: '.card',
+        anchor: "Continuous"
+      })
+
+      // Prevent having multiple connections from the same source to the
+      // same target
+      jsPlumb.bind('connection',function(info){
+        let con = info.connection
+        let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
+        if (arr.length>1) jsPlumb.deleteConnection(con)
+      })
+    })
+    
+    if (!flow) return
+    $('#flow-editor .flow-step-trigger').css('left', flow.trigger.x)
+    $('#flow-editor .flow-step-trigger').css('top', flow.trigger.y)
+
+    flow.steps.map((step, index) => {
+      let stepCard = $(`#flow-editor .flow-step-step:eq(${index})`)
+      stepCard.css('left', step.x)
+      stepCard.css('top', step.y)
+    })
+
+    // Trigger connectors
+    flow.trigger.outputs.map(out => {
+      createConnection('trigger', out.id)
+    })
+
+    // Trigger connectors
+    flow.steps.map((step, index) => {
+      step.outputs.map(out => {
+        createConnection(index, out.id)
+      })
+    })
+
   })
 }
 
 Template.flowEditor.onRendered(function() {
   const instance = this
 
-  instance.__flowEditorRendered = false
+  instance.flowEditorRendered = false
 
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
@@ -154,10 +215,7 @@ Template.flowEditor.onRendered(function() {
       }
 
       // At this point, all has been setup.
-      if (!instance.__flowEditorRendered) {
-
-        setJsPlumb()
-        
+      if (!instance.flowEditorRendered) {
         if (!Array.isArray(flow.steps) || !flow.steps.length) return
 
         flow.steps.map((step, index) => {
@@ -166,7 +224,11 @@ Template.flowEditor.onRendered(function() {
           stepTypeSelectorChanged(index, step.type)
           stepEventSelectorChanged(index, step.event)
         })
-        instance.__flowEditorRendered = true
+
+        window.setTimeout(() => {
+          setJsPlumb(flow)
+          instance.flowEditorRendered = true
+        }, 1000)
       }
     }
   })
