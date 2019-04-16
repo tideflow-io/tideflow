@@ -30,6 +30,9 @@ import '/imports/services/agent/server'
 import '/imports/services/cron/both'
 import '/imports/services/cron/server'
 
+import '/imports/services/debug/both'
+import '/imports/services/debug/server'
+
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/server'
 

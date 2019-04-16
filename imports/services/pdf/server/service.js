@@ -49,7 +49,7 @@ const service = {
       name: 'build-pdf',
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const filesData = stepData(executionLogs, 'last').filter(data => data.type === 'object')
+        const filesData = stepData(executionLogs, 'previous').filter(data => data.type === 'object')
 
         const pdfType = (currentStep.config || {}).type || null
 

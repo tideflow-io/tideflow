@@ -103,6 +103,9 @@ const step = (steps, index) => {
   else if (index === 0) {
     return steps[0]
   }
+  else if (index === 'previous') {
+    return steps[0]
+  }
   else if (parseInt(index)) {
     return steps[index]
   }
@@ -207,18 +210,22 @@ const executeNextStep = (context) => {
 
   // Get current step position in the list
   const currentStepIndex = flow.steps.findIndex(s => s._id === context.step)
-  const nextStep = flow.steps[currentStepIndex + 1]
+  const currentStep = flow.steps.find(s => s._id === context.step)
 
-  if (nextStep) {
+  const nextSteps = currentStep.outputs || []
+
+  if (!nextSteps.length) return;
+
+  nextSteps.map(nextStep => {
     jobs.run('workflow-step', {
       currentStep: nextStep,
       previousStepId: context.step,
       executionId: context.execution
     })
-  }
-  else {
-    executions.end(context.execution)
-  }
+  })
+
+  // TODO
+  executions.end(context.execution)
 }
 
 module.exports.executeNextStep = executeNextStep
@@ -241,6 +248,9 @@ const executionError = (context) => {
 
 module.exports.executionError = executionError
 
+/**
+ * workflow-start launches a flow execution
+ **/
 jobs.register('workflow-start', function(jobData) {
   let instance = this
 
@@ -327,10 +337,24 @@ jobs.register('workflow-start', function(jobData) {
     return
   }
 
-  const currentStep = flow.steps[0]
+  // Get and schedule steps without an input
+  let targetedSteps = flow.trigger.outputs.map(o => o.id) || []
+  const allSteps = flow.steps.map((s,i)=>i)
+  flow.steps.map(s => targetedSteps = targetedSteps.concat(s.outputs.map(o => o.id) || []))
+  const lists = [allSteps, targetedSteps]
+  console.log(JSON.stringify(lists, ' ', 2))
+  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
 
-  jobs.run('workflow-step', {currentStep, previousStepId: 'trigger', executionId})
+  // Schedule excution of cards without preceding steps
+  cardsWithoutInbound.map(stepId => {
+    jobs.run('workflow-step', {currentStep: flow.steps[stepId], previousStepId: undefined, executionId})
+  })
 
+  // Schedule excution of cards connected from the trigger
+  flow.trigger.outputs.map(step => {
+    jobs.run('workflow-step', {currentStep: flow.steps[step.id], previousStepId: 'trigger', executionId})
+  })
+  
   instance.success()
 })
 
@@ -393,8 +417,6 @@ jobs.register('workflow-step', function(jobData) {
 
   let eventCallback = callEvent()
 
-  console.log(JSON.stringify({eventCallback}, ' ', 2))
-  
   eventCallback.result.map(r => {
     if (r.type === 'file') {
 
@@ -441,17 +463,21 @@ jobs.register('workflow-step', function(jobData) {
 
     // Get current step position in the list
     const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
-    const nextStep = flow.steps[currentStepIndex + 1]
-    if (nextStep) {
+
+    const nextSteps = currentStep.outputs || []
+
+    if (!nextSteps.length) return;
+
+    nextSteps.map(nextStep => {
       jobs.run('workflow-step', {
         currentStep: nextStep,
         previousStepId: currentStep._id,
         executionId
       })
-    }
-    else {
-      executions.end(executionId)
-    }
+    })
+
+    // TODO
+    // executions.end(executionId)
   }
 
   instance.success()

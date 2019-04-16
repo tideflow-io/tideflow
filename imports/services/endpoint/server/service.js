@@ -44,7 +44,7 @@ const service = {
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         cb(null, {
-          result: stepData(executionLogs, 'last'),
+          result: stepData(executionLogs, 'previous'),
           next: true,
           msgs: [
             {

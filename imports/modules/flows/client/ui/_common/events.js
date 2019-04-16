@@ -63,7 +63,6 @@ Template.flowEditor.events({
     const card = $(event.target).parent('.card')
     const cardId = card.id
     const step = card.data('step')
-    console.log(card.find('.connector-inbound'))
     jsPlumb.remove(card.find('.connector-inbound'))
     jsPlumb.remove(card.find('.connector-outbound'))
   },

@@ -29,6 +29,9 @@ import '/imports/services/cron/client'
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/client'
 
+import '/imports/services/debug/both'
+import '/imports/services/debug/client'
+
 // Main templates
 import '/imports/ui/layouts/layout'
 import '/imports/ui/shared/header'

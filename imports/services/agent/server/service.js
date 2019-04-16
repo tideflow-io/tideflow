@@ -54,7 +54,7 @@ const service = {
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-        const lastData = stepData(executionLogs, 'last')
+        const lastData = stepData(executionLogs, 'previous')
 
         const agent = currentStep.config.agent
 

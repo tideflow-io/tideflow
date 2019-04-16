@@ -49,7 +49,7 @@ Meteor.startup(() => {
     
     socket.emit('tf.authz', auth)
 
-    // An angent is reporting std/err output.
+    // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.command.progress', async message => {
       let err = !!(message.stderr && message.stderr.length)
@@ -61,7 +61,7 @@ Meteor.startup(() => {
       )
     })
 
-    // An angent is reporting std/err and the exit code
+    // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.command.res', async message => {
       let msgs = message.stdout || message.stderr
@@ -82,7 +82,7 @@ Meteor.startup(() => {
       // Once reported, check if the Workflow have more steps to execute
     })
 
-    // An angent is reporting an exception when executing the command
+    // An agent is reporting an exception when executing the command
     socket.on('tf.command.exception', async message => {
       await logUpdate(
         message.execution,

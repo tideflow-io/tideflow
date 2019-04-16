@@ -19,7 +19,7 @@ const service = {
     visibe: true,
     callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = stepData(executionLogs, 'last')
+      const lastData = stepData(executionLogs, 'previous')
       const to = commonEmailHelper.userEmail(user)
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
 
@@ -74,7 +74,7 @@ const service = {
     visibe: true,
     callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = stepData(executionLogs, 'last')
+      const lastData = stepData(executionLogs, 'previous')
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = emailHelper.userEmail(user)

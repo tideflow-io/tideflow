@@ -21,12 +21,22 @@ AutoForm.addHooks(['updateFlowForm'], {
       })
 
       // Get steps connection details
-      jsPlumb.getConnections().map(connection => {
+      jsPlumb.getConnections().map((connection, index) => {
         const source = $(`#${connection.sourceId}`)
         const target = $(`#${connection.targetId}`)
         const fromTrigger = source.data('step') === 'trigger'
         const targetIndex = Number(target.data('step'))
         const sourceIndex = Number(source.data('step'))
+
+        console.log({
+          connection,
+          index,
+          source,
+          target,
+          fromTrigger,
+          targetIndex, 
+          sourceIndex
+        })
 
         if (fromTrigger) {
           doc.trigger.outputs.push({id:targetIndex})
