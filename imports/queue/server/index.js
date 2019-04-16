@@ -15,6 +15,52 @@ import * as executions from './helpers/executions'
 import * as executionsSteps from './helpers/executionsSteps'
 
 /**
+ * Returns an object as:
+ * 
+ * {
+ *  0: ['trigger']
+ *  1: [0, 2],
+ *  3: [1],
+ *  4: [1, 3]
+ * }
+ * 
+ * being the array the list of IDs where each step is called from.
+ * 
+ * Param example:
+ * 
+ * {
+ *  "trigger" : { "outputs" : [  { "id" : 0 } ] },
+ *  "steps" : [
+ *   { "outputs" : [ { "id" : 1 } ] },
+ *   { "outputs" : [ { "id" : 3 }, { "id" : 4 } ] },
+ *   { "outputs" : [ { "id" : 1 } ] },
+ *   { "outputs" : [ { "id" : 4 } ] }
+ *  ]
+ * }
+ * 
+ * @param {*} flow 
+ */
+const calledFrom = (flow) => {
+  let c = {} // 
+
+  flow.steps.map((step, index) => {
+    step.outputs.map(output => {
+      let outputId = output.id
+      if (!c[outputId]) c[outputId] = []
+      c[outputId].push(index)
+    })
+  })
+
+  flow.trigger.outputs.map(step => {
+    let outputId = step.id
+    if (!c[outputId]) c[outputId] = []
+    c[outputId].push('trigger')
+  })
+
+  return c
+}
+
+/**
  * 
  */
 const jobs = {
@@ -90,44 +136,6 @@ const jobs = {
 
 module.exports.jobs = jobs
 
-/**
- * 
- * @param {Array} steps 
- * @param {Integer} index 
- */
-const step = (steps, index) => {
-  console.log(`step ${index}`)
-  if (index === 'last') {
-    return steps[steps.length - 1]
-  }
-  else if (index === 0) {
-    return steps[0]
-  }
-  else if (index === 'previous') {
-    return steps[0]
-  }
-  else if (parseInt(index)) {
-    return steps[index]
-  }
-  else {
-    throw new Error('Invalid step index')
-  }
-}
-
-module.exports.step = step
-
-/**
- * 
- * @param {*} steps 
- * @param {*} index 
- */
-const stepData = (executionLogs, index) => {
-  console.log(`stepData ${index}`)
-  return step(executionLogs, index).stepResults
-}
-
-module.exports.stepData = stepData
-
 const logUpdate = (executionId, logId, messages, set) => {
   return executionsSteps.update(executionId, logId, {
     $set: set || {},
@@ -142,12 +150,13 @@ const logUpdate = (executionId, logId, messages, set) => {
 module.exports.logUpdate = logUpdate
 
 /**
+ * Given a channel details, searches all flows using it as a trigger
  * 
- * @param {*} service 
- * @param {*} user 
- * @param {*} flowsQuery 
- * @param {*} data [{type: String, data: {}}]
- * @param {*} flows
+ * @param {Object} service 
+ * @param {Object} user 
+ * @param {Object} flowsQuery 
+ * @param {Object} data [{type: String, data: {}}]
+ * @param {Array} flows
  */
 const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
   console.log(`triggerFlows`)
@@ -231,7 +240,6 @@ const executeNextStep = (context) => {
 module.exports.executeNextStep = executeNextStep
 
 const executionError = (context) => {
-  console.log('executionError')
   check(context, {
     flow: String,
     execution: String
@@ -297,6 +305,7 @@ jobs.register('workflow-start', function(jobData) {
     // stderr
   })
 
+  // Trigger is executed
   let triggerEvent = Meteor.wrapAsync((cb) => {
     event.callback(
       service,
@@ -315,7 +324,7 @@ jobs.register('workflow-start', function(jobData) {
     )
   })
 
-  let triggerResult = triggerEvent()
+  const triggerResult = triggerEvent()
 
   {
     let updateReq = {
@@ -337,12 +346,11 @@ jobs.register('workflow-start', function(jobData) {
     return
   }
 
-  // Get and schedule steps without an input
+  // Steps WITHOUT preceding steps are executed
   let targetedSteps = flow.trigger.outputs.map(o => o.id) || []
   const allSteps = flow.steps.map((s,i)=>i)
   flow.steps.map(s => targetedSteps = targetedSteps.concat(s.outputs.map(o => o.id) || []))
   const lists = [allSteps, targetedSteps]
-  console.log(JSON.stringify(lists, ' ', 2))
   const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
 
   // Schedule excution of cards without preceding steps
@@ -358,6 +366,11 @@ jobs.register('workflow-start', function(jobData) {
   instance.success()
 })
 
+/**
+ * Execute non-trigger flow step
+ * 
+ * @param {Object} jobData
+ */
 jobs.register('workflow-step', function(jobData) {
   let lapseStart = new Date()
 
@@ -376,6 +389,9 @@ jobs.register('workflow-step', function(jobData) {
     throw new Error(`Execution ${executionId} not found`)
   }
 
+  /**
+   * Store execution in db.
+   */
   let logId = executionsSteps.create({
     execution: executionId,
     flow: execution.flow,
@@ -390,6 +406,7 @@ jobs.register('workflow-step', function(jobData) {
     // status
   })
 
+  // If the execution was stopped, do not execute anything else
   if (execution.status === 'stopped') {
     executionsSteps.update(executionId, logId, {
       $set: {
@@ -401,14 +418,16 @@ jobs.register('workflow-step', function(jobData) {
   }
 
   const flow = execution.fullFlow
+  const listOfCalls = calledFrom(flow)
   const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
-  const previousSteps = previousStepId ?
-    [executionsSteps.get(executionId, previousStepId)] : 
-    []
 
-  let stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
-  let stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
+  // TODO Get result(s) from previous step(s)
+  const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
+  const previousSteps = executionsSteps.get(executionId, listOfCalls[currentStepIndex] || [])
+
+  const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
+  const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
   if (!stepEvent || !stepEvent.callback) return null
   
   let callEvent = Meteor.wrapAsync((cb) => {
@@ -417,31 +436,31 @@ jobs.register('workflow-step', function(jobData) {
 
   let eventCallback = callEvent()
 
+  // Process files that may have been returned from the step execution
   eventCallback.result.map(r => {
-    if (r.type === 'file') {
+    if (r.type !== 'file') return;
 
-      if (!r.data.data) {
-        console.error('File have no data attached')
-        return
-      }
-
-      let getFile = Meteor.wrapAsync((cb) => {
-        let bufferChunks = []
-        if (Buffer.isBuffer(r.data.data)) {
-          return cb(null, r.data.data)
-        }
-        r.data.data.on('readable', () => {
-          // Store buffer chunk to array
-          let i = r.data.data.read()
-          if (!i) return
-          bufferChunks.push(i)
-        })
-        r.data.data.on('end', () => {
-          cb(null, Buffer.concat(bufferChunks))
-        })
-      })
-      r.data.data = getFile()
+    if (!r.data.data) {
+      console.error('File have no data attached')
+      return
     }
+
+    let getFile = Meteor.wrapAsync((cb) => {
+      let bufferChunks = []
+      if (Buffer.isBuffer(r.data.data)) {
+        return cb(null, r.data.data)
+      }
+      r.data.data.on('readable', () => {
+        // Store buffer chunk to array
+        let i = r.data.data.read()
+        if (!i) return
+        bufferChunks.push(i)
+      })
+      r.data.data.on('end', () => {
+        cb(null, Buffer.concat(bufferChunks))
+      })
+    })
+    r.data.data = getFile()
   })
 
   {
@@ -461,23 +480,31 @@ jobs.register('workflow-step', function(jobData) {
   // The service asked the queue to inmediately execute the next step on the flow 
   if (eventCallback.next) {
 
-    // Get current step position in the list
-    const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
-
     const nextSteps = currentStep.outputs || []
-
-    if (!nextSteps.length) return;
+    if (!nextSteps.length) {
+      // TODO flag execution as finished
+      // executions.end(executionId)
+    }
 
     nextSteps.map(nextStep => {
-      jobs.run('workflow-step', {
-        currentStep: nextStep,
-        previousStepId: currentStep._id,
-        executionId
-      })
-    })
+      const nextStepId = nextStep.id
+      const nextStepFull = flow.steps[nextStepId]
 
-    // TODO
-    // executions.end(executionId)
+      // next step have multiple inputs?
+      const stepInputsCount = listOfCalls[nextStepId] ? listOfCalls[nextStepId].length : 0
+
+      if (stepInputsCount > 1) {
+         // All previous steps are executed?
+      }
+      else {
+        // Schedule execution
+        jobs.run('workflow-step', {
+          currentStep: nextStepFull,
+          previousStepId: currentStep._id,
+          executionId
+        })
+      }
+    })
   }
 
   instance.success()

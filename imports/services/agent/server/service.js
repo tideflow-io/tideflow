@@ -4,8 +4,6 @@ import { Services } from "/imports/modules/services/both/collection.js"
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { stepData } from '/imports/queue/server'
-
 import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
@@ -54,7 +52,7 @@ const service = {
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-        const lastData = stepData(executionLogs, 'previous')
+        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
 
         const agent = currentStep.config.agent
 

@@ -17,26 +17,28 @@ const update = (execution, log, update) => {
 module.exports.update = update
 
 /**
- * 
+ * @todo do not use fetch
  * @param {String} execution 
- * @param {String} step 
+ * @param {Array} steps 
  */
-const get = (execution, step) => {
-  if (step) {
-    return ExecutionsLogs.findOne({
-      execution,
-      step
-    })
-  }
-  else {
+const get = (execution, steps) => {
+  if (!steps) {
     return ExecutionsLogs.find({
       execution
     }, {
       sort: {
         createdAt: -1
       }
-    })
+    }).fetch()
   }
+
+  if (!Array.isArray(steps)) throw new Error('steps must be an array')
+  if (!steps.length) return []
+
+  return ExecutionsLogs.find({
+    execution,
+    step: { $in: steps }
+  }).fetch()
 }
 
 module.exports.get = get

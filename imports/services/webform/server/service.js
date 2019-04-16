@@ -2,8 +2,6 @@ import i18n from 'meteor/universe:i18n'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { stepData } from '/imports/queue/server'
-
 const uuidv4 = require('uuid/v4')
 
 const service = {
@@ -35,8 +33,10 @@ const service = {
       humanName: i18n.__('s-webform.events.submitted.name'),
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
+
         cb(null, {
-          result: stepData(executionLogs, 'previous'),
+          result: lastData,
           next: true,
           msgs: [
             {

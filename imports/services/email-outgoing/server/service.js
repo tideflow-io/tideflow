@@ -2,8 +2,6 @@ import * as commonEmailHelper from '/imports/helpers/both/emails'
 import * as emailHelper from '/imports/helpers/server/emails'
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { step, stepData } from '/imports/queue/server'
-
 const service = {
   name: 'email-outgoing',
   inputable: false,
@@ -19,7 +17,7 @@ const service = {
     visibe: true,
     callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = stepData(executionLogs, 'previous')
+      const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
       const to = commonEmailHelper.userEmail(user)
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
 
@@ -74,7 +72,7 @@ const service = {
     visibe: true,
     callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = stepData(executionLogs, 'previous')
+      const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = emailHelper.userEmail(user)

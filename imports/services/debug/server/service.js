@@ -1,11 +1,4 @@
-const Handlebars = require('handlebars')
-import { moment } from 'meteor/momentjs:moment'
-
 import { servicesAvailable } from '/imports/services/_root/server'
-
-import { step, stepData } from '/imports/queue/server'
-
-const puppeteer = require('puppeteer')
 
 const service = {
   name: 'debug',
@@ -17,8 +10,7 @@ const service = {
       name: 'e1',
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const filesData = stepData(executionLogs, 'previous').filter(data => data.type === 'object')
-
+        // const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
         cb(null, {
           result: [{
             type: 'object',

@@ -1,7 +1,5 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { step, stepData } from '/imports/queue/server'
-
 const uuidv4 = require('uuid/v4')
 
 const service = {
@@ -43,8 +41,10 @@ const service = {
       humanName: 's-gh-webhooks.events.called.name',
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
+
         cb(null, {
-          result: stepData(executionLogs, 'previous'),
+          result: lastData,
           next: true,
           msgs: [
             {

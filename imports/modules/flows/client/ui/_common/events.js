@@ -76,6 +76,7 @@ Template.flowEditor.events({
 })
 
 const createConnection = (from, to) => {
+  console.log({from, to})
   jsPlumb.connect({
     source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
     target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
@@ -140,14 +141,17 @@ const setJsPlumb = (flow) => {
     $('#flow-editor .flow-step-trigger').css('left', flow.trigger.x)
     $('#flow-editor .flow-step-trigger').css('top', flow.trigger.y)
 
-    flow.steps.map((step, index) => {
+    // TODO (flow.steps.map not a function chrome 73.0.3683.103 (Build oficial win/10) (64 bits))
+    for (let i = 0; i<flow.steps.length; i++) {
+      let step = flow.steps[i]
+      let index = i
       let stepCard = $(`#flow-editor .flow-step-step:eq(${index})`)
       stepCard.css('left', step.x)
       stepCard.css('top', step.y)
-    })
+    }
 
     // Trigger connectors
-    flow.trigger.outputs.map(out => {
+    (flow.trigger.outputs || []).map(out => {
       createConnection('trigger', out.id)
     })
 
