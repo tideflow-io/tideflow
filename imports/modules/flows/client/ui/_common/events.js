@@ -152,13 +152,13 @@ const setJsPlumb = (flow) => {
 
     // Trigger connectors
     (flow.trigger.outputs || []).map(out => {
-      createConnection('trigger', out.id)
+      createConnection('trigger', out.stepIndex)
     })
 
     // Trigger connectors
     flow.steps.map((step, index) => {
       step.outputs.map(out => {
-        createConnection(index, out.id)
+        createConnection(index, out.stepIndex)
       })
     })
 

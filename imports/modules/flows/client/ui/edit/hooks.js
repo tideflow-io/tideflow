@@ -39,10 +39,10 @@ AutoForm.addHooks(['updateFlowForm'], {
         })
 
         if (fromTrigger) {
-          doc.trigger.outputs.push({id:targetIndex})
+          doc.trigger.outputs.push({stepIndex:targetIndex})
         }
         else {
-          doc.steps[sourceIndex].outputs.push({id:targetIndex})
+          doc.steps[sourceIndex].outputs.push({stepIndex:targetIndex})
         }
       })
 

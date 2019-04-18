@@ -28,13 +28,13 @@ const get = (query) => {
 module.exports.get = get
 
 /**
- * 
- * @param {*} execution 
+ * @param {String} _id Execution id
+ * @param {String} execution 
  */
-const end = (_id) => {
+const end = (_id, status) => {
   return Executions.update(
     { _id },
-    { $set: { status: 'finished' } }
+    { $set: { status: status || 'finished' } }
   )
 }
 

@@ -1,10 +1,10 @@
 
 console.log(calledFrom({
-  "trigger" : { "outputs" : [  { "id" : 0 } ] },
+  "trigger" : { "outputs" : [  { "stepIndex" : 0 } ] },
   "steps" : [
-    { "outputs" : [ { "id" : 1 } ] },
-    { "outputs" : [ { "id" : 3 }, { "id" : 4 } ] },
-    { "outputs" : [ { "id" : 1 } ] },
-    { "outputs" : [ { "id" : 4 } ] }
+    { "outputs" : [ { "stepIndex" : 1 } ] },
+    { "outputs" : [ { "stepIndex" : 3 }, { "stepIndex" : 4 } ] },
+    { "outputs" : [ { "stepIndex" : 1 } ] },
+    { "outputs" : [ { "stepIndex" : 4 } ] }
   ]
 }))

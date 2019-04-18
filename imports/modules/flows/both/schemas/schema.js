@@ -85,8 +85,8 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
-  'trigger.outputs.$.id': {
-    label: 'Trigger output id',
+  'trigger.outputs.$.stepIndex': {
+    label: 'Trigger output steps index',
     type: Number
   },
   steps: {
@@ -105,8 +105,8 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
-  'steps.$.outputs.$.id': {
-    label: 'Step output id',
+  'steps.$.outputs.$.stepIndex': {
+    label: 'Step output steps index',
     type: Number
   },
   'steps.$.x': {

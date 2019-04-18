@@ -10,9 +10,13 @@ const create = (logData) => {
 
 module.exports.create = create
 
-const update = (execution, log, update) => {
-  return ExecutionsLogs.update({_id: log, execution}, update)
-}
+/**
+ * 
+ * @param {String} execution 
+ * @param {String} log 
+ * @param {Object} update 
+ */
+const update = (execution, log, update) => ExecutionsLogs.update({_id: log, execution}, update)
 
 module.exports.update = update
 
@@ -42,3 +46,25 @@ const get = (execution, steps) => {
 }
 
 module.exports.get = get
+
+/**
+ * Get the number of executed steps for a given execution id.
+ * 
+ * @param {String} execution The execution's id to check against.
+ * @param {Array} stepIndexes 
+ * @param {Array} statuses 
+ */
+const countForExecution = (executionId, stepIndexes, statuses) => {
+  if (!executionId) throw new Error('Execution ID not provided')
+
+  let query = {
+    execution: executionId
+  }
+
+  if (stepIndexes) query.stepIndex = {$in: Array.isArray(stepIndexes) ? stepIndexes : [stepIndexes] }
+  if (statuses) query.status = {$in: Array.isArray(statuses) ? statuses : [statuses] }
+
+  return ExecutionsLogs.count(query)
+}
+
+module.exports.countForExecution = countForExecution

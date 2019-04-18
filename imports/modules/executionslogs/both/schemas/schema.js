@@ -37,6 +37,12 @@ const ExecutionlogSchema = new SimpleSchema({
     // regEx: SimpleSchema.RegEx.Id,
     optional: false
   },
+  stepIndex: {
+    type: Number,
+    label: 'Step index',
+    // regEx: SimpleSchema.RegEx.Id,
+    optional: false
+  },
   status: { // success error stopped
     type: String,
     label: 'Status',
