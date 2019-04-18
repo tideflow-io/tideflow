@@ -422,7 +422,6 @@ jobs.register('workflow-step', function(jobData) {
   const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
 
-  // TODO Get result(s) from previous step(s)
   const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
   const previousSteps = executionsSteps.get(executionId, listOfCalls[currentStepIndex] || [])
 
