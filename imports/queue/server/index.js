@@ -298,6 +298,7 @@ jobs.register('workflow-start', function(jobData) {
     flow: execution.flow,
     user: execution.user,
     step: 'trigger',
+    stepIndex: 'trigger',
     msgs: [],
     createdAt: lapseStart,
     status: 'success'
@@ -382,10 +383,9 @@ jobs.register('workflow-step', function(jobData) {
    * @param {String} executionId 
    */
   let { currentStep, previousStepId, executionId } = jobData
-  const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
-
   const execution = executions.get({_id: executionId})
   const flow = execution.fullFlow
+  const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
 
   if (!execution) {
     throw new Error(`Execution ${executionId} not found`)
@@ -488,21 +488,21 @@ jobs.register('workflow-step', function(jobData) {
   if (eventCallback.next) {
 
     // Does the current step have any output?
-    const nextSteps = currentStep.outputs || []
+    const outputs = currentStep.outputs || []
 
     // If no, it could mean that we should stop the flow's execution
-    if (!nextSteps.length) {
+    if (!outputs.length) {
       // Get the number of executed steps in the current execution ...
       const executedSteps = executionsSteps.countForExecution(executionId)
       // and compare it against the number of steps in the executed flow (+ trigger).
       // If the number matches, flag the execution as finished
-      if (executedSteps === flow.steps + 1) {
+      if (executedSteps === flow.steps.length + 1) {
         executions.end(executionId)
       }
     }
 
-    nextSteps.map(nextStep => {
-      const nextStepId = nextStep.id
+    outputs.map(output => {
+      const nextStepId = output.stepIndex
       const nextStepFull = flow.steps[nextStepId]
 
       // next step have multiple inputs?

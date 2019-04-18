@@ -64,7 +64,7 @@ const countForExecution = (executionId, stepIndexes, statuses) => {
   if (stepIndexes) query.stepIndex = {$in: Array.isArray(stepIndexes) ? stepIndexes : [stepIndexes] }
   if (statuses) query.status = {$in: Array.isArray(statuses) ? statuses : [statuses] }
 
-  return ExecutionsLogs.count(query)
+  return ExecutionsLogs.find(query).count()
 }
 
 module.exports.countForExecution = countForExecution

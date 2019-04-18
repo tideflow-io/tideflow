@@ -1,4 +1,4 @@
-import SimpleSchema from "simpl-schema"
+import SimpleSchema from 'simpl-schema'
 
 const SettingsSchema = new SimpleSchema({
   _id: {

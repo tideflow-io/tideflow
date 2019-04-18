@@ -1,4 +1,4 @@
-import SimpleSchema from "simpl-schema"
+import SimpleSchema from 'simpl-schema'
 
 import { Services } from "/imports/modules/services/both/collection.js"
 import { list as statusList } from '/imports/modules/flows/both/list'

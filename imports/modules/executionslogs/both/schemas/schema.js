@@ -1,4 +1,4 @@
-import SimpleSchema from "simpl-schema"
+import SimpleSchema from 'simpl-schema'
 
 const ExecutionlogSchema = new SimpleSchema({
   _id: {
@@ -37,12 +37,19 @@ const ExecutionlogSchema = new SimpleSchema({
     // regEx: SimpleSchema.RegEx.Id,
     optional: false
   },
-  stepIndex: {
-    type: Number,
-    label: 'Step index',
-    // regEx: SimpleSchema.RegEx.Id,
-    optional: false
-  },
+  stepIndex: SimpleSchema.oneOf(
+    {
+      type: Number,
+      label: 'Step index',
+      // regEx: SimpleSchema.RegEx.Id,
+      optional: false
+    },
+    {
+      type: String,
+      label: 'Step index',
+      optional: false
+    }
+  ),
   status: { // success error stopped
     type: String,
     label: 'Status',
