@@ -41,22 +41,19 @@ import * as executionsSteps from './helpers/executionsSteps'
  * 
  * @param {*} flow 
  */
-const calledFrom = (flow) => {
-  let c = {} // 
+const calledFrom = flow => {
+  let c = {} //
 
-  flow.steps.map((step, index) => {
-    step.outputs.map(output => {
+  const processOutputs = (outputs, index) => {
+    outputs.map(output => {
       let outputId = output.stepIndex
       if (!c[outputId]) c[outputId] = []
       c[outputId].push(index)
     })
-  })
+  }
 
-  flow.trigger.outputs.map(step => {
-    let outputId = step.stepIndex
-    if (!c[outputId]) c[outputId] = []
-    c[outputId].push('trigger')
-  })
+  flow.steps.map((step, index) => processOutputs(step.outputs, index))
+  processOutputs(flow.trigger.outputs, 'trigger')
 
   return c
 }
@@ -160,8 +157,6 @@ module.exports.logUpdate = logUpdate
  * @param {Array} flows
  */
 const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
-  console.log(`triggerFlows`)
-
   // Security check
   if (user.services) {
     throw new Error('Security issue: user services attached on triggerFlows.')
@@ -215,26 +210,50 @@ const executeNextStep = (context) => {
     step: String
   })
 
-  const execution = executions.get({_id: context.execution})
+  const executionId = context.execution
+  const execution = executions.get({_id: executionId})
   const flow = execution.fullFlow
+  const listOfCalls = calledFrom(flow)
+
+  // If the execution was stopped, do not execute anything else
+  if (execution.status === 'stopped') { return }
 
   // Get current step position in the list
   const currentStep = flow.steps.find(s => s._id === context.step)
 
-  const nextSteps = currentStep.outputs || []
+  // Does the current step have any output?
+  const outputs = currentStep.outputs || []
 
-  if (!nextSteps.length) return
+  // If no, it could mean that we should stop the flow's execution
+  if (!outputs.length) {
+    // Get the number of executed steps in the current execution ...
+    const executedSteps = executionsSteps.countForExecution(executionId)
+    // and compare it against the number of steps in the executed flow (+ trigger).
+    // If the number matches, flag the execution as finished
+    if (executedSteps === flow.steps.length + 1) {
+      executions.end(executionId)
+    }
+  }
 
-  nextSteps.map(nextStep => {
-    jobs.run('workflow-step', {
-      currentStep: nextStep,
-      previousStepId: context.step,
-      executionId: context.execution
-    })
+  outputs.map(output => {
+    const nextStepId = output.stepIndex
+    const nextStepFull = flow.steps[nextStepId]
+
+    // next step have multiple inputs?
+    const stepInputsCount = listOfCalls[nextStepId] ? listOfCalls[nextStepId].length : 0
+
+    if (stepInputsCount > 1) {
+      const nextStepsCalledFrom = calledFrom[nextStepId]
+      // All previous steps are executed?
+      const successSteps = executionsSteps.countForExecution(executionId, nextStepsCalledFrom, 'success')
+
+      // If so, continue. Otherwise, don't do anything.
+      if (successSteps !== nextStepsCalledFrom.length) return
+    }
+
+    // Schedule execution
+    jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
   })
-
-  // TODO
-  // executions.end(context.execution)
 }
 
 module.exports.executeNextStep = executeNextStep
@@ -350,18 +369,19 @@ jobs.register('workflow-start', function(jobData) {
   // Steps WITHOUT preceding steps are executed
   let targetedSteps = flow.trigger.outputs.map(o => o.stepIndex) || []
   const allSteps = flow.steps.map((s,i)=>i)
+
   flow.steps.map(s => targetedSteps = targetedSteps.concat(s.outputs.map(output => output.stepIndex) || []))
   const lists = [allSteps, targetedSteps]
   const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
 
   // Schedule excution of cards without preceding steps
   cardsWithoutInbound.map(stepId => {
-    jobs.run('workflow-step', {currentStep: flow.steps[stepId], previousStepId: undefined, executionId})
+    jobs.run('workflow-step', {currentStep: flow.steps[stepId], executionId})
   })
 
   // Schedule excution of cards connected from the trigger
   flow.trigger.outputs.map(output => {
-    jobs.run('workflow-step', {currentStep: flow.steps[output.stepIndex], previousStepId: 'trigger', executionId})
+    jobs.run('workflow-step', {currentStep: flow.steps[output.stepIndex], executionId})
   })
   
   instance.success()
@@ -377,12 +397,7 @@ jobs.register('workflow-step', function(jobData) {
 
   let instance = this
 
-  /**
-   * @param {*} currentStep 
-   * @param {String} previousStepId
-   * @param {String} executionId 
-   */
-  let { currentStep, previousStepId, executionId } = jobData
+  let { currentStep, executionId } = jobData
   const execution = executions.get({_id: executionId})
   const flow = execution.fullFlow
   const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
@@ -447,18 +462,14 @@ jobs.register('workflow-step', function(jobData) {
 
     let getFile = Meteor.wrapAsync((cb) => {
       let bufferChunks = []
-      if (Buffer.isBuffer(r.data.data)) {
-        return cb(null, r.data.data)
-      }
+      if (Buffer.isBuffer(r.data.data)) cb(null, r.data.data)
       r.data.data.on('readable', () => {
         // Store buffer chunk to array
         let i = r.data.data.read()
         if (!i) return
         bufferChunks.push(i)
       })
-      r.data.data.on('end', () => {
-        cb(null, Buffer.concat(bufferChunks))
-      })
+      r.data.data.on('end', () => cb(null, Buffer.concat(bufferChunks)))
     })
     r.data.data = getFile()
   })
@@ -521,11 +532,7 @@ jobs.register('workflow-step', function(jobData) {
       }
 
       // Schedule execution
-      jobs.run('workflow-step', {
-        currentStep: nextStepFull,
-        previousStepId: currentStep._id,
-        executionId
-      })
+      jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
     })
   }
 
