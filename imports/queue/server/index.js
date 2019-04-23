@@ -520,7 +520,7 @@ jobs.register('workflow-step', function(jobData) {
       const stepInputsCount = listOfCalls[nextStepId] ? listOfCalls[nextStepId].length : 0
 
       if (stepInputsCount > 1) {
-        const nextStepsCalledFrom = calledFrom[nextStepId]
+        const nextStepsCalledFrom = listOfCalls[nextStepId]
         // All previous steps are executed?
         const successSteps = executionsSteps.countForExecution(executionId, nextStepsCalledFrom, 'success')
 

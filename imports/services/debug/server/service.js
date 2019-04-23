@@ -1,12 +1,12 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
-const executionCb = (cb, name) => {
-  console.log({name})
+const executionCb = (cb, executionLogs, name) => {
+  //console.log(JSON.stringify({name, executionLogs}, ' ', 2))
   cb(null, {
     result: [{
       type: 'object',
       data: {
-        a: 1
+        a: name
       }
     }],
     next: true,
@@ -29,42 +29,42 @@ const service = {
     {
       name: 'e1',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e1')
+        executionCb(cb, executionLogs, 'e1')
     },
     {
       name: 'e2',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e2')
+        executionCb(cb, executionLogs, 'e2')
     },
     {
       name: 'e3',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e3')
+        executionCb(cb, executionLogs, 'e3')
     },
     {
       name: 'e4',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e4')
+        executionCb(cb, executionLogs, 'e4')
     },
     {
       name: 'e5',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e5')
+        executionCb(cb, executionLogs, 'e5')
     },
     {
       name: 'e6',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e6')
+        executionCb(cb, executionLogs, 'e6')
     },
     {
       name: 'e7',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e7')
+        executionCb(cb, executionLogs, 'e7')
     },
     {
       name: 'e8',
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
-        executionCb(cb, 'e8')
+        executionCb(cb, executionLogs, 'e8')
     }
   ]
 }

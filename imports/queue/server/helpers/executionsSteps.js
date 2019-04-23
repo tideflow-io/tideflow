@@ -41,7 +41,7 @@ const get = (execution, steps) => {
 
   return ExecutionsLogs.find({
     execution,
-    step: { $in: steps }
+    stepIndex: { $in: steps }
   }).fetch()
 }
 
