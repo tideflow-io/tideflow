@@ -1,22 +1,25 @@
 {
-  "name": "Tideflow",
-  "addons": [
-    "mongolab"
-  ],
+  "name": "Tideflow.io",
+  "logo": "https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg",
+  "keywords": ["workflow", "automation", "meteorjs", "realtime", "mongodb", "javascript"],
+  "repository": "https://github.com/tideflow-io/tideflow",
   "buildpacks": [
     {
       "url": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
     }
   ],
   "env": {
-    "MONGO_URL": {
-      "required": true
-    },
     "ROOT_URL": {
       "required": true
     },
-    "SMTP_URL": {
+    "MONGO_URL": {
       "required": true
+    },
+    "MONGO_OPLOG_URL": {
+      "required": false
+    },
+    "MAIL_URL": {
+      "required": false
     }
   },
   "formation": {
