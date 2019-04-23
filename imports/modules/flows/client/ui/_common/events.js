@@ -1,3 +1,4 @@
+import { Session } from 'meteor/session'
 import { Router } from 'meteor/iron:router'
 import { Template } from 'meteor/templating'
 
@@ -76,7 +77,6 @@ Template.flowEditor.events({
 })
 
 const createConnection = (from, to) => {
-  console.log({from, to})
   jsPlumb.connect({
     source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
     target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
@@ -90,12 +90,11 @@ const createConnection = (from, to) => {
  * @param {object} flow Flow's doc - as from MongoDB
  */
 const setJsPlumb = (flow) => {
-
+  
   jsPlumb.ready(function() {
-
     jsPlumb.setContainer($("#flow-editor"))
 
-    // Make all cards draggable
+      // Make all cards draggable
     jsPlumb.draggable($('.card.flow-step'), {
       containment: '#flow-editor'
     });
@@ -162,6 +161,7 @@ const setJsPlumb = (flow) => {
       })
     })
 
+    jsPlumb.repaintEverything()
   })
 }
 
@@ -169,7 +169,7 @@ Template.flowEditor.onRendered(function() {
   const instance = this
 
   instance.flowEditorRendered = false
-
+  
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
   Session.set('fe-stepSelected', '')

@@ -4,6 +4,10 @@ import { sAlert } from 'meteor/juliancwirko:s-alert'
 import i18n from 'meteor/universe:i18n'
 
 Template['flows.one'].events({
+  'click .flow-editor-link': (event) => {
+    event.stopPropagation()
+    document.location.reload(true)
+  },
   'change #updateFlowStatus select[name="status"]': (event, tpl) => {
     tpl.data.flow.status = event.target.value
     Meteor.call('flows.update', tpl.data.flow, (error, result) => {

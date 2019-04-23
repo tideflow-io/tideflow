@@ -129,7 +129,7 @@ Template.stepEventConfig.helpers({
       })
     }
     return event
-  },
+  }
 })
 
 Template.flowEditor.helpers({

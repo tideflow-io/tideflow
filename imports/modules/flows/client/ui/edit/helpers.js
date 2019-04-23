@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 
-import { Flows } from "/imports/modules/flows/both/collection.js"
+import { Flows } from '/imports/modules/flows/both/collection.js'
 
 Template['flows.one.edit'].helpers({
   Flows: function () {
