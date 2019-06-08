@@ -11,25 +11,11 @@
   right: 10px;
 }
 
-/* #flow-editor .sidebar {
-  height: 100%;
-  position: absolute;
-  z-index: 1000;
-  right: 0;
-  background: white;
-  overflow-x: hidden;
-  width: 450px;
-  z-index: 1000;
-  border-left: 1px solid rgba(33, 37, 41, 0.3);
-  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
-} */
-
 #flow-editor .card {
   width: 350px;
   position: absolute;
   border-radius: 6px;
   border: 1px solid rgba(33, 37, 41, 0.3);
-  z-index: 100;
   box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.05);
 }
 
@@ -98,5 +84,10 @@
 }
 
 #flow-editor .card .form-group:last-child {
+  margin-bottom: 0px;
+}
+
+#flow-editor .card .form-group:last-child,
+#flow-editor .card .form-group:last-child select {
   margin-bottom: 0px;
 }

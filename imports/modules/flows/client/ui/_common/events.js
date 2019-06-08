@@ -92,22 +92,21 @@ const createConnection = (from, to) => {
 const setJsPlumb = (flow) => {
   
   jsPlumb.ready(function() {
-    jsPlumb.setContainer($("#flow-editor"))
+    jsPlumb.setContainer($('#flow-editor'))
 
-      // Make all cards draggable
     jsPlumb.draggable($('.card.flow-step'), {
       containment: '#flow-editor'
     });
 
     // Setup target cards
     jsPlumb.makeTarget($('.connector-inbound'), {
-      anchor: "Continuous"
+      anchor: 'Continuous'
     })
 
     // Setup source cards
     jsPlumb.makeSource($('.connector-outbound'), {
       parent: '.card',
-      anchor: "Continuous"
+      anchor: 'Continuous'
     })
     
     // now and when they are created / added to the dom
@@ -132,7 +131,7 @@ const setJsPlumb = (flow) => {
       jsPlumb.bind('connection',function(info){
         let con = info.connection
         let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
-        if (arr.length>1) jsPlumb.deleteConnection(con)
+        if (arr.length > 1) jsPlumb.deleteConnection(con)
       })
     })
     
@@ -141,7 +140,7 @@ const setJsPlumb = (flow) => {
     $('#flow-editor .flow-step-trigger').css('top', flow.trigger.y)
 
     // TODO (flow.steps.map not a function chrome 73.0.3683.103 (Build oficial win/10) (64 bits))
-    for (let i = 0; i<flow.steps.length; i++) {
+    for (let i = 0; i < flow.steps.length; i++) {
       let step = flow.steps[i]
       let index = i
       let stepCard = $(`#flow-editor .flow-step-step:eq(${index})`)
@@ -162,6 +161,28 @@ const setJsPlumb = (flow) => {
     })
 
     jsPlumb.repaintEverything()
+
+    let dragCheck = false
+
+    $('.card').draggable({
+      drag: function () {
+        // On drag set that flag to true
+        dragCheck = true
+      },
+      stop: function () {
+        // On stop of dragging reset the flag back to false
+        dragCheck = false
+      }
+    })
+
+    // Then instead of using click use mouseup, and on mouseup only fire if the flag is set to false
+    $('.card').bind('mouseup', function (event) {
+      if ($(event.target).hasClass('delete')) return
+      if (dragCheck === false) {
+        $('#sidebar').removeClass('d-none')
+        $('#sidebar-content').html($('.card-body .content', this).html())
+      }
+    })
   })
 }
 
