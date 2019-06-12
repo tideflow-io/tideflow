@@ -2,7 +2,7 @@
   background: url(/images/bground.svg);
   padding: 0;
   position: relative;
-  height: calc(100vh - 303px);
+  height: calc(100vh - 216px);
 }
 
 #flow-editor .autoform-add-item {
