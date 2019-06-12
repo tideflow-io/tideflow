@@ -62,10 +62,18 @@ Template.flowEditor.events({
 
   'click .autoform-remove-item': function(event, template) {
     const card = $(event.target).parent('.card')
-    const cardId = card.id
-    const step = card.data('step')
+    const step = card.attr('data-step')
     jsPlumb.remove(card.find('.connector-inbound'))
     jsPlumb.remove(card.find('.connector-outbound'))
+
+    $('.flow-step-step').each(function() {
+      const currentStepNumber = $( this ).attr('data-step')
+      if (currentStepNumber > step) {
+        const newStepNumber = currentStepNumber-1
+        $( this ).attr('data-step', newStepNumber)
+        $( '.connector-out', this ).attr('data-step', newStepNumber)
+      }
+    })
   },
 
   'change .step-event-selector': function(event, template) {

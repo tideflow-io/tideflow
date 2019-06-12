@@ -291,8 +291,11 @@ jobs.register('workflow-start', function(jobData) {
     // throw new Error('Trying to trigger flows without an array of originalTriggerData')
   }
 
+  // Get the current execution
   const execution = executions.get({_id: executionId})
 
+  // If something, or the user, cancelled the execution,
+  // stop now and don't continue.
   if (execution.status === 'stopped') {
     instance.success()
     return
@@ -302,15 +305,19 @@ jobs.register('workflow-start', function(jobData) {
   const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user})
 
+  // Service triggering the execution
   let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
   if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
 
+  // For the service triggering the execution, get the event
   let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
+  // Woop! The event triggered can't be found
   if (!event) {
     instance.success()
     return null
   }
 
+  // Log the trigger execution
   let logId = executionsSteps.create({
     execution: executionId,
     type: flow.trigger.type,
@@ -326,8 +333,8 @@ jobs.register('workflow-start', function(jobData) {
     // stderr
   })
 
-  // Trigger is executed
-  let triggerEvent = Meteor.wrapAsync((cb) => {
+  // Execute the actual trigger
+  let triggerResult = Meteor.wrapAsync((cb) => {
     event.callback(
       service,
       flow,
@@ -343,10 +350,9 @@ jobs.register('workflow-start', function(jobData) {
       logId,
       cb
     )
-  })
+  })()
 
-  const triggerResult = triggerEvent()
-
+  // For the trigger log, update it with the results
   {
     let updateReq = {
       $set: {
@@ -361,19 +367,44 @@ jobs.register('workflow-start', function(jobData) {
     executionsSteps.update(executionId, logId, updateReq)
   }
 
+  // If the flow have no more steps, stop here
   if (!flow.steps || !flow.steps.length) {
     executions.end(executionId)
     instance.success()
     return
   }
 
-  // Steps WITHOUT preceding steps are executed
-  let targetedSteps = flow.trigger.outputs.map(o => o.stepIndex) || []
+  // Now that the trigger has been executed, we need to know what should we do
+  // next. We have to do two things:
+  //
+  // 1. Execute the steps that don't have preceding steps
+  // 2. Execute the steps that are directly conneted to the trigger, and DONT
+  //    have any other preceding step.
+
+  // Build a list with all the steps indexes (0, 1, 2, 3, 4...)
+  // for the flow [ [trigger]->[1] ], value is [1]
   const allSteps = flow.steps.map((s,i)=>i)
 
-  flow.steps.map(s => targetedSteps = targetedSteps.concat(s.outputs.map(output => output.stepIndex) || []))
-  const lists = [allSteps, targetedSteps]
+  // List of steps indexes that are connected to the trigger
+  // for the flow [ [trigger]->[1] ], value is [1]
+  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex) || []
+
+  console.log('workflow-start 1', {triggerNextSteps})
+
+  flow.steps.map(flowStep => {
+    triggerNextSteps = triggerNextSteps.concat(flowStep.outputs.map(output => output.stepIndex) || [])
+  })
+
+  console.log('workflow-start 2', {triggerNextSteps})
+
+  const lists = [allSteps, triggerNextSteps]
+
+  console.log('workflow-start 3', {lists})
+
   const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
+  
+  console.log('workflow-start 4', JSON.stringify({cardsWithoutInbound}, ' ', 2))
+  console.log('workflow-start 5', JSON.stringify({triggerOutputs:flow.trigger.outputs}, ' ', 2))
 
   // Schedule excution of cards without preceding steps
   cardsWithoutInbound.map(stepId => {
@@ -401,7 +432,8 @@ jobs.register('workflow-step', function(jobData) {
   let { currentStep, executionId } = jobData
   const execution = executions.get({_id: executionId})
   const flow = execution.fullFlow
-  const currentStepIndex = flow.steps.findIndex(s => s._id === currentStep._id)
+
+  const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
 
   if (!execution) {
     throw new Error(`Execution ${executionId} not found`)
