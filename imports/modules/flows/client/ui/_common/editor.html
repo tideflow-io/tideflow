@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-dark autoform-add-item" data-autoform-field="steps">
       {{__ "flows.editor.step.addOne"}}
     </button>
-    <div class="card flow-step flow-step-trigger" data-step="trigger">
+    <div class="card flow-step flow-step-trigger" data-step="trigger" style="left: 20px; top: 20px;">
       <div class="card-body">
         <select class="form-control" name="triggerSelector">
           <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
@@ -34,7 +34,7 @@
       </div>
     </div>
     {{#afEachArrayItem name="steps"}}
-      <div class="card flow-step flow-step-step" data-step="{{this.index}}">
+      <div class="card flow-step flow-step-step" data-step="{{this.index}}"  style="left: 450px; top: 20px;">
         <div class="connector-out connector-inbound" data-step="{{this.index}}">
           -
         </div>
