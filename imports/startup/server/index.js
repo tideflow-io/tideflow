@@ -84,11 +84,17 @@ import '/imports/modules/profileEdit/server'
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/server'
 
+import '/imports/modules/profileNotifications/both'
+import '/imports/modules/profileNotifications/server'
+
 import '/imports/modules/management/both'
 import '/imports/modules/management/server'
 
 import '/imports/services/_root/both'
 import '/imports/services/_root/server'
+
+import '/imports/services/_executionLogs/both'
+import '/imports/services/_executionLogs/server'
 
 import '/imports/queue/server'
 

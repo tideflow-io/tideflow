@@ -2,6 +2,26 @@ import SimpleSchema from 'simpl-schema'
 
 let Schema = {}
 
+Schema.NotificationsMyExecutions = new SimpleSchema({
+   schedule: {
+        type: String,
+        defaultValue: 'daily',
+        optional: false,
+        custom: function() {
+            if (['weekly', 'daily', 'none'].indexOf(this.value) < 0)
+                throw new Meteor.Error('Invalid schedule value')
+            return true
+        }
+    }
+})
+
+Schema.Notifications = new SimpleSchema({
+   myExecutions:{
+        type: Schema.NotificationsMyExecutions,
+        optional: false
+    }
+})
+
 Schema.UserProfile = new SimpleSchema({
    firstName:{
         type: String,
@@ -14,6 +34,10 @@ Schema.UserProfile = new SimpleSchema({
         label: "Last Name",
         max: 80,
         optional: true
+    },
+    notifications:{
+        type: Schema.Notifications,
+        optional: false
     }
 })
 

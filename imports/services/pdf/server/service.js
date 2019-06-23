@@ -47,15 +47,15 @@ const service = {
       name: 'build-pdf',
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
+        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : {}
 
         const filesData = lastData.filter(data => data.type === 'object')
 
-        const pdfType = (currentStep.config || {}).type || null
+        const pdfType = (currentStep.config || {}).type || 'simple'
 
         let results = []
 
-        filesData.map(fileData => {
+        (filesData || []).map(fileData => {
           let total = 0
 
           fileData.data.date = moment().format('LL')

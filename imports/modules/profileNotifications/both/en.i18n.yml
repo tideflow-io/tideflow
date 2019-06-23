@@ -1,0 +1,9 @@
+_namespace: profileNotifications
+title: Notifications
+scheduleTitle: Receive execution logs into my inbox
+weekly.label: Weekly
+daily.label: Daily
+none.label: Do not send me execution logs
+submit.button: Update preferences
+update.error: There was a problem updating your preferences
+update.success: Preferences updated
