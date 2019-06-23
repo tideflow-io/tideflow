@@ -2,6 +2,13 @@ import { Template } from 'meteor/templating'
 
 import { Flows } from "/imports/modules/flows/both/collection.js"
 
+Template['flows.index'].events({
+  'click .flow-editor-link': (event) => {
+    event.stopPropagation()
+    document.location.reload(true)
+  }
+})
+
 Template.flowsIndexListItem.events({
   'click .flow-toggle': (event, template) => {
     event.preventDefault()

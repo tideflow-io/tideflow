@@ -9,7 +9,6 @@ AutoForm.addHooks(['insertFlowForm'], {
   },
   before: {
     insert: function (insertDoc) {
-      console.log(insertDoc)
       this.done()
     }
   }

@@ -5,7 +5,7 @@ AutoForm.addHooks(['updateFlowForm'], {
   before: {
     method: function (doc) {
       // Append outputs to each step
-      doc.steps.map(s => s.outputs = [])
+      (doc.steps||[]).map(s => s.outputs = [])
 
       // Get trigger position details
       const tc = $('#flow-editor .flow-step-trigger')
@@ -24,19 +24,9 @@ AutoForm.addHooks(['updateFlowForm'], {
       jsPlumb.getConnections().map((connection, index) => {
         const source = $(`#${connection.sourceId}`)
         const target = $(`#${connection.targetId}`)
-        const fromTrigger = source.data('step') === 'trigger'
-        const targetIndex = Number(target.data('step'))
-        const sourceIndex = Number(source.data('step'))
-
-        console.log({
-          connection,
-          index,
-          source,
-          target,
-          fromTrigger,
-          targetIndex, 
-          sourceIndex
-        })
+        const fromTrigger = source.attr('data-step') === 'trigger'
+        const targetIndex = Number(target.attr('data-step'))
+        const sourceIndex = Number(source.attr('data-step'))
 
         if (fromTrigger) {
           doc.trigger.outputs.push({stepIndex:targetIndex})

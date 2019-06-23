@@ -15,8 +15,6 @@ Template['management.index'].events({
           errorMessage = 'mngmnt.site.title.empty'
         }
 
-        console.log({errorMessage})
-
         sAlert.error(i18n.__(errorMessage))
       }
       else {
