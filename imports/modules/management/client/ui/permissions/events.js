@@ -11,7 +11,7 @@ Template['management.permissions'].events({
 
     if (signupsType === 'domain') {
       if (!signupsDomain || signupsDomain.trim() === '') {
-        sAlert.error(i18n.__('mngmnt.permissions.submit.invalidDomain'))
+        sAlert.error(i18n.__('management.permissions.submit.invalidDomain'))
         return;
       }
     }
@@ -21,10 +21,10 @@ Template['management.permissions'].events({
       signupsDomain
     }, (error, result) => {
       if (error) {
-        sAlert.error(i18n.__('mngmnt.permissions.submit.error'))
+        sAlert.error(i18n.__('management.permissions.submit.error'))
       }
       else {
-        sAlert.success(i18n.__('mngmnt.permissions.submit.ok'))
+        sAlert.success(i18n.__('management.permissions.submit.ok'))
       }
     })
   }

@@ -1,5 +1,4 @@
 _namespace: managementShared
 title: Management
 menu.general: Home
-menu.users: Users
 menu.permissions: Permissions

@@ -9,16 +9,16 @@ Template['management.index'].events({
     let title = event.target.title.value
     Meteor.call('site-settings', { title }, (error, result) => {
       if (error) {
-        let errorMessage = 'mngmnt.site.error'
+        let errorMessage = 'management.site.error'
         
         if (error.error === 'title-empty') {
-          errorMessage = 'mngmnt.site.title.empty'
+          errorMessage = 'management.site.title.empty'
         }
 
         sAlert.error(i18n.__(errorMessage))
       }
       else {
-        sAlert.success(i18n.__('mngmnt.site.ok'))
+        sAlert.success(i18n.__('management.site.ok'))
       }
     })
   }
