@@ -47,7 +47,7 @@ const calledFrom = flow => {
   let c = {} //
 
   const processOutputs = (outputs, index) => {
-    outputs.map(output => {
+    (outputs || []).map(output => {
       let outputId = output.stepIndex
       if (!c[outputId]) c[outputId] = []
       c[outputId].push(index)
@@ -184,7 +184,6 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
   (flows || Flows.find(flowsQuery)).map(flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
-      debug('No service')
       return null
     }
 
@@ -386,39 +385,32 @@ jobs.register('workflow-start', function(jobData) {
   // Build a list with all the steps indexes (0, 1, 2, 3, 4...)
   // for the flow [ [trigger]->[1] ], value is [1]
   const allSteps = flow.steps.map((s,i)=>i)
-
+  
   // List of steps indexes that are connected to the trigger
   // for the flow [ [trigger]->[1] ], value is [1]
-  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex) || []
-
-  debug('workflow-start 1', {triggerNextSteps})
+  let triggerNextSteps = (flow.trigger.outputs || []).map(o => o.stepIndex) || [];
 
   flow.steps.map(flowStep => {
-    triggerNextSteps = triggerNextSteps.concat(flowStep.outputs.map(output => output.stepIndex) || [])
-  })
+    triggerNextSteps = triggerNextSteps.concat((flowStep.outputs || []).map(output => output.stepIndex) || [])
+  });
 
-  debug('workflow-start 2', {triggerNextSteps})
+  const lists = [allSteps, triggerNextSteps];
 
-  const lists = [allSteps, triggerNextSteps]
-
-  debug('workflow-start 3', {lists})
-
-  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
-  
-  debug('workflow-start 4', JSON.stringify({cardsWithoutInbound}, ' ', 2))
-  debug('workflow-start 5', JSON.stringify({triggerOutputs:flow.trigger.outputs}, ' ', 2))
+  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)));
 
   // Schedule excution of cards without preceding steps
-  cardsWithoutInbound.map(stepId => {
+  let loop = function(stepId) {
     jobs.run('workflow-step', {currentStep: flow.steps[stepId], executionId})
-  })
+  };
+
+  (cardsWithoutInbound || []).map(loop);
 
   // Schedule excution of cards connected from the trigger
-  flow.trigger.outputs.map(output => {
+  (flow.trigger.outputs || []).map(function(output) {
     jobs.run('workflow-step', {currentStep: flow.steps[output.stepIndex], executionId})
-  })
+  });
   
-  instance.success()
+  instance.success();
 })
 
 /**
