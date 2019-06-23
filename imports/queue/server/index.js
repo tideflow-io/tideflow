@@ -15,6 +15,8 @@ import * as emailHelper from '/imports/helpers/both/emails'
 import * as executions from './helpers/executions'
 import * as executionsSteps from './helpers/executionsSteps'
 
+const debug = require('debug')('queue')
+
 /**
  * Returns an object as:
  * 
@@ -67,7 +69,7 @@ const jobs = {
    * registers a job that can be executed later on
    */
   register: (name, method, options, cb) => {
-    console.log(`jobs.register ${name}`)
+    debug(`jobs.register ${name}`)
     let jobs = {}
     jobs[name] = method
     return Queue.register(jobs)
@@ -77,26 +79,26 @@ const jobs = {
    * 
    */
   create: (name, data, options) => {
-    console.log(`jobs.create ${name}`)
+    debug(`jobs.create ${name}`)
     if (!data) data = {}
     return Queue.run(name, data, options)
   },
 
   run: (name, data, options) => {
-    console.log(`jobs.run ${name}`)
+    debug(`jobs.run ${name}`)
     if (!data) data = {}
     return Queue.run(name, data, options)
   },
 
   schedule: (name, data, options) => {
-    console.log(`jobs.schedule ${name}`)
+    debug(`jobs.schedule ${name}`)
     if (!data) data = {}
     if (!options.date) throw new Error('Schedule with no date')
     return Queue.run(name, data, options)
   },
 
   reschedule: (name, data, options) => {
-    console.log(`jobs.reschedule ${name}`)
+    debug(`jobs.reschedule ${name}`)
     if (!data) data = {}
     if (!options.date) throw new Error('Schedule with no date')
 
@@ -117,7 +119,7 @@ const jobs = {
   },
 
   deschedule: (name, data, options, reason) => {
-    console.log(`jobs.deschedule ${name}`)
+    debug(`jobs.deschedule ${name}`)
     const query = {
       name: 's-cron-runOne',
       state: 'pending'
@@ -182,7 +184,7 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
   (flows || Flows.find(flowsQuery)).map(flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
-      console.log('No service')
+      debug('No service')
       return null
     }
 
@@ -389,22 +391,22 @@ jobs.register('workflow-start', function(jobData) {
   // for the flow [ [trigger]->[1] ], value is [1]
   let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex) || []
 
-  console.log('workflow-start 1', {triggerNextSteps})
+  debug('workflow-start 1', {triggerNextSteps})
 
   flow.steps.map(flowStep => {
     triggerNextSteps = triggerNextSteps.concat(flowStep.outputs.map(output => output.stepIndex) || [])
   })
 
-  console.log('workflow-start 2', {triggerNextSteps})
+  debug('workflow-start 2', {triggerNextSteps})
 
   const lists = [allSteps, triggerNextSteps]
 
-  console.log('workflow-start 3', {lists})
+  debug('workflow-start 3', {lists})
 
   const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
   
-  console.log('workflow-start 4', JSON.stringify({cardsWithoutInbound}, ' ', 2))
-  console.log('workflow-start 5', JSON.stringify({triggerOutputs:flow.trigger.outputs}, ' ', 2))
+  debug('workflow-start 4', JSON.stringify({cardsWithoutInbound}, ' ', 2))
+  debug('workflow-start 5', JSON.stringify({triggerOutputs:flow.trigger.outputs}, ' ', 2))
 
   // Schedule excution of cards without preceding steps
   cardsWithoutInbound.map(stepId => {
