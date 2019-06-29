@@ -40,9 +40,9 @@ Template['membership.profile.password'].events({
 
     Meteor.call('profile.password.recover', (error) => {
       if (error) {
-        sAlert.error(i18n.__('password.recover.error'))
+        sAlert.error(i18n.__('profilePassword.recover.error'))
       } else {
-        sAlert.success(i18n.__('password.recover.success'))
+        sAlert.success(i18n.__('profilePassword.recover.success'))
       }
     })
   }
