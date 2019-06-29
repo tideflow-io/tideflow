@@ -1,11 +1,11 @@
 _namespace: signup
 title: Sign up
-section.title: Sign up
-section.yourEmailPlaceholder: Your email
-section.yourPasswordPlaceholder: Your password
-section.yourNamePlaceholder: Your name
-section.submit: Sign up
-section.login: Log in to my existing account
+section.title: Create your account now
+section.yourEmailPlaceholder: Email
+section.yourPasswordPlaceholder: Password
+section.yourNamePlaceholder: Full name
+section.submit: Create your account
+section.login: Already have an account? Sign in.
 password.length: The password must have at least 6 characters
 email.alreadyExists: The email address is already registered
 error: There was an error creating your account

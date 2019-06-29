@@ -4,6 +4,6 @@ index.title: Log in
 index.emailPlaceholder: Email
 index.passwordPlaceholder: Password
 index.submit: Log in
-index.createNewAccount: Create Account
-index.recoverMyPassword: Lost password?
+index.createNewAccount: Sign up
+index.recoverMyPassword: Forgot your password?
 index.notverified: You must verify the email address

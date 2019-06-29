@@ -11,13 +11,16 @@
               </div>
               <div class="form-group">
                 <input type="password" id="password" name="password" class="form-control form-lastinput" placeholder="{{__ "login.index.passwordPlaceholder"}}" required>
+                
               </div>
-              <button class="btn btn-lg btn-primary btn-block" type="submit">{{__ "login.index.submit"}}</button>
-              <hr class="my-4">
+              <div class="form-group text-right">
+                <a href="{{pathFor 'membership.lostpassword'}}">{{__ "login.index.recoverMyPassword"}}</a>
+              </div>
+              <button class="btn btn-primary btn-block" type="submit">{{__ "login.index.submit"}}</button>
               {{#if showSignup}}
+                <hr class="my-4">
                 <a class="btn btn-xs btn-block" href="{{pathFor 'membership.signup'}}">{{__ "login.index.createNewAccount"}}</a>
               {{/if}}
-              <a class="btn btn-xs btn-block" href="{{pathFor 'membership.lostpassword'}}">{{__ "login.index.recoverMyPassword"}}</a>
             </form>
           </div>
         </div>
