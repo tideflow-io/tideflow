@@ -5,7 +5,7 @@ import { Services } from '/imports/modules/services/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
-Router.route('/endpoint/:uuid', function () {
+Router.route('/service/endpoint/:uuid', function () {
   const req = this.request
   const res = this.response
   const uuid = this.params.uuid

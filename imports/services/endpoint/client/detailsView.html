@@ -1,6 +1,6 @@
 <template name="servicesEndpointDetailsView">
     <p><strong>{{__ "s-endpoint.url"}}</strong></p>
-    <pre class="code"><code>{{absoluteUrl}}endpoint/{{service.config.endpoint}}</code></pre>
+    <pre class="code"><code>{{absoluteUrl}}service/endpoint/{{service.config.endpoint}}</code></pre>
 
     <p><strong>{{__ "s-endpoint.code"}}</strong></p>
     <pre class="code"><code>curl -d '{"greeting":"hello"}' -H "Content-Type: application/json" -X POST {{absoluteUrl}}endpoint/{{service.config.endpoint}}</code></pre>
