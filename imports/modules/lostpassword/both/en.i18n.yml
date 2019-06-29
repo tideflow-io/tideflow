@@ -1,7 +1,8 @@
 _namespace: lostpassword
-title: 'Recover account'
+title: Recover account
 sectionTitle: Reset Password
 emailPlaceholder: Email address
 submitButton: Reset Password
+login: Login
 result.error: Error recovering the password
 result.ok: We've sent an email to reset your password
