@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor'
 import nodemailer from 'nodemailer'
 import url from 'url'
 
+import { Settings } from '/imports/modules/management/both/collection'
+
 /**
  * Get the email sending config for Nodemailer
  */
@@ -55,19 +57,29 @@ let transporter = mailConfing ? nodemailer.createTransport(getMailConfig()) :
 
 /**
  * 
- * @param {*} to 
+ * @param {Array} to List of email addresses
  * @param {*} emailDetails 
- * @param {*} tplVars 
- * @param {*} tplName 
+ * @param {Object} tplVars 
+ * @param {String} tplName 
  */
 const data = (to, emailDetails, tplVars, tplName) => {
+  // Validate target email addresses
   to = to.filter(t => /^[A-Z0-9'.1234z_%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(t))
 
+  // Add common contents to the template variables
+  const siteSettings = Settings.findOne({type: 'siteSettings'})
+  const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
+
+  tplVars.tideflow = {
+    appUrl: '',
+    name: siteName
+  }
+
   return {
-    from: 'Tideflow.io <no-reply@service.tideflow.io>',
+    from: `${siteName} <no-reply@service.tideflow.io>`,
     to: Array.isArray(to) ? to.join(' ') : to,
-    subject: emailDetails.config ? emailDetails.config.subject || 'Tideflow.io' : 'Tideflow.io',
-    text: emailDetails.config ? `Tideflow.io: ${emailDetails.config.body}` : 'Tideflow.io',
+    subject: emailDetails.config ? emailDetails.config.subject || siteName : siteName,
+    text: emailDetails.config ? `${siteName}: ${emailDetails.config.body}` : siteName,
     html: SSR.render(`emailTemplate${tplName}`, tplVars),
     attachments: []
   }
