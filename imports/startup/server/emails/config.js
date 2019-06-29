@@ -8,6 +8,10 @@ Accounts.emailTemplates.from = 'Tideflow.io <no-reply@service.tideflow.io>'
 SSR.compileTemplate('emailFooter', Assets.getText('emails/footer.html'))
 SSR.compileTemplate('emailHeader', Assets.getText('emails/header.html'))
 SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'));
+
+SSR.compileTemplate('emailTemplateExecutionLogs_weekly', Assets.getText('emails/executionLogs-weekly.html'));
+SSR.compileTemplate('emailTemplateExecutionLogs_daily', Assets.getText('emails/executionLogs-daily.html'));
+
 SSR.compileTemplate('emailTemplateflowEmailOnTriggered', Assets.getText('emails/flowEmailOnTriggered.html'));
 SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))

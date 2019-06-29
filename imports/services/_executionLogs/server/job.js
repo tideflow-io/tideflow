@@ -102,7 +102,7 @@ tfQueue.jobs.register('_executionLogsRun', function(service) {
   const instance = this
 
   // Is it Sunday ? 
-  const runWeekly = new Date().getDay() === 0
+  const runWeekly = true // new Date().getDay() === 0
 
   if (runWeekly) {
     let users = getTargetedUsers('weekly')
@@ -118,13 +118,16 @@ tfQueue.jobs.register('_executionLogsRun', function(service) {
 })
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
-  let data = emailHelper.data([emailData.to], {}, emailData, `executionLogs-${emailData.type}`)
+  console.log({emailData})
+  let data = emailHelper.data([emailData.to], {}, emailData, `ExecutionLogs_${emailData.type}`)
+  console.log(JSON.stringify(data, ' ', 2))
   emailHelper.send(data)
   this.success()
 })
 
 Meteor.startup(() => {
   tfQueue.jobs.run('_executionLogsRun', null, {
+    
     // on: { hour: 0, minute: 0 },
     priority: 9999999999,
     singular: true
