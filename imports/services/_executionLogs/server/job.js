@@ -126,13 +126,11 @@ tfQueue.jobs.register('_executionLogsRun', function() {
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
   let data = emailHelper.data([emailData.to], {}, emailData, 'ExecutionLogs')
-  // console.log(JSON.stringify(data, ' ', 2))
   emailHelper.send(data)
   this.success()
 })
 
 Meteor.startup(() => {
-  console.log('schedule _executionLogsRun')
   tfQueue.jobs.run('_executionLogsRun', null, {
     on: { hour: 0, minute: 0 },
     priority: 9999999999,
