@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { servicesAvailable } from '/imports/services/_root/client'
+import { Router } from 'meteor/iron:router'
 
 Template.servicesIndexTableService.events({
   'click': (event, template) => {

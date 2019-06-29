@@ -1,5 +1,5 @@
 #flow-editor {
-  background: url(/images/bground.svg);
+  background: url(/images/bground.svg) white;
   padding: 0;
   position: relative;
   height: calc(100vh - 216px);
