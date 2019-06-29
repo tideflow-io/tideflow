@@ -51,8 +51,8 @@ let getTargetedUsers = (type) => {
  * @param {Object} user 
  * @param {String} type 
  */
-let buildAndScheduleEmail = (user, type) => {
-  const start = moment().startOf( type === 'weekly' ? 'week' : 'day' );
+let buildAndScheduleEmail = (user, options) => {
+  const start = moment().startOf( options.weekly ? 'week' : 'day' )
 
   // Get the user executions since the start of day/week
   const executions = Executions.find({
@@ -66,10 +66,11 @@ let buildAndScheduleEmail = (user, type) => {
 
   // Build the email's basic data
   let email = {
-    type,
+    type: options.weekly ? 'weekly' : 'daily',
     name: `${user.profile.firstName || ''} ${user.profile.lastName || ''}`.trim(),
     to: user.emails[0].address,
-    flows: []
+    flows: [],
+    messageTitle: `${options.weekly ? 'Weekly' : 'Daily'} summary of executions`
   }
 
   // Attach flows executions to the email's data
@@ -82,23 +83,29 @@ let buildAndScheduleEmail = (user, type) => {
         href: fullFlow._id,
         executions: list.map(execution => {
           let { _id, status, createdAt, updatedAt } = execution
-          return {
+          let result = {
             title: _id.substr(0, 3),
             href: _id,
             status,
             createdAt,
             updatedAt
           }
+          result.isStarted = status === 'started'
+          result.isFinished = status === 'finished'
+          result.isErrored = status === 'error'
+          return result
         })
       })
     })
     .value()
 
-  tfQueue.jobs.run('_executionLogsSendEmail', email)
+  if (email.flows && email.flows.length)
+    tfQueue.jobs.run('_executionLogsSendEmail', email)
+  
   return email
 }
 
-tfQueue.jobs.register('_executionLogsRun', function(service) {
+tfQueue.jobs.register('_executionLogsRun', function() {
   const instance = this
 
   // Is it Sunday ? 
@@ -106,29 +113,28 @@ tfQueue.jobs.register('_executionLogsRun', function(service) {
 
   if (runWeekly) {
     let users = getTargetedUsers('weekly')
-    users.map(async (u) => buildAndScheduleEmail(u, 'weekly'))
+    users.forEach(async (u) => buildAndScheduleEmail(u, {weekly: true}))
   }
 
   {
     let users = getTargetedUsers('daily')
-    users.map(async (u) => buildAndScheduleEmail(u, 'daily'))
+    users.forEach(async (u) => buildAndScheduleEmail(u, {daily: true}))
   }
 
   instance.success()
 })
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
-  console.log({emailData})
-  let data = emailHelper.data([emailData.to], {}, emailData, `ExecutionLogs_${emailData.type}`)
-  console.log(JSON.stringify(data, ' ', 2))
+  let data = emailHelper.data([emailData.to], {}, emailData, 'ExecutionLogs')
+  // console.log(JSON.stringify(data, ' ', 2))
   emailHelper.send(data)
   this.success()
 })
 
 Meteor.startup(() => {
+  console.log('schedule _executionLogsRun')
   tfQueue.jobs.run('_executionLogsRun', null, {
-    
-    // on: { hour: 0, minute: 0 },
+    on: { hour: 0, minute: 0 },
     priority: 9999999999,
     singular: true
   })
