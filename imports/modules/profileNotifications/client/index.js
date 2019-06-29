@@ -1,5 +1,5 @@
 import './index.html'
 
-import './index.css'
-import './helpers'
+import './router'
 import './events'
+import './helpers'

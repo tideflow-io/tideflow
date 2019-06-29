@@ -87,8 +87,14 @@ import '/imports/modules/profileEdit/client'
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/client'
 
+import '/imports/modules/profileNotifications/both'
+import '/imports/modules/profileNotifications/client'
+
 import '/imports/modules/management/both'
 import '/imports/modules/management/client'
+
+import '/imports/services/_executionLogs/both'
+import '/imports/services/_executionLogs/client'
 
 import '/imports/services/_root/both'
 import '/imports/services/_root/client'

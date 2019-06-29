@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
 import i18n from 'meteor/universe:i18n'

@@ -1,24 +1,35 @@
+import { Meteor } from 'meteor/meteor'
+import { Accounts } from 'meteor/accounts-base'
+import { Settings } from '/imports/modules/management/both/collection'
+
+import i18n from 'meteor/universe:i18n'
+
+const siteSettings = Settings.findOne({type: 'siteSettings'})
+const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
+
 Accounts.urls.resetPassword = function(token) {
   return Meteor.absoluteUrl('resetpassword/' + token)
 }
 
-Accounts.emailTemplates.siteName = 'Tideflow.io'
-Accounts.emailTemplates.from = 'Tideflow.io <no-reply@service.tideflow.io>'
+Accounts.emailTemplates.siteName = siteName
+Accounts.emailTemplates.from = `${siteName} <no-reply@service.tideflow.io>`
 
 SSR.compileTemplate('emailFooter', Assets.getText('emails/footer.html'))
 SSR.compileTemplate('emailHeader', Assets.getText('emails/header.html'))
 SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'));
+
+SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'));
+
 SSR.compileTemplate('emailTemplateflowEmailOnTriggered', Assets.getText('emails/flowEmailOnTriggered.html'));
 SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
 
 Accounts.emailTemplates.resetPassword = {
   subject(user) {
-    return `Reset your password`
+    return 'Reset your password'
   },
   text(user, url) {
-    return 'You have been selected to participate in building a better future!'
-    + ' To activate your account, simply click the link below:\n\n'
+    return 'To reset your password, simply click the link below:\n\n'
     + url
   },
   html(user, url) {
@@ -34,17 +45,13 @@ Accounts.emailTemplates.resetPassword = {
 }
 
 Accounts.emailTemplates.verifyEmail = {
-   subject(user) {
-      return `Activate your account now!`
-   },
-   text(user, url) {
-    const data = {
-      user,
-      url
-    }
-    return `Hey ${data.user}! Verify your e-mail by following this link: ${data.url}`
-   },
-   html(user, url) {
+  subject() {
+    return 'Verify your email'
+  },
+  text(user, url) {
+    return 'To verify yuor email address, simply click the link below:\n\n' + url
+  },
+  html(user, url) {
     const urlParts = url.split('/')
     const token = urlParts[urlParts.length - 1]
     const data = {

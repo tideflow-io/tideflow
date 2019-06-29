@@ -6,10 +6,8 @@ import { Services } from '/imports/modules/services/both/collection.js'
 Template.registerHelper('sAgentReportStatusDot', function() {
   try {
     return this ? this.details.online ?
-      `<div class="s-agent-status-dot online"></div>` :
-      `
-        <div class="s-agent-status-dot offline"></div>
-      ` :
+      '<div class="s-agent-status-dot online"></div>' :
+      '<div class="s-agent-status-dot offline"></div>' :
       ''
   }
   catch (ex) {
@@ -20,7 +18,7 @@ Template.registerHelper('sAgentReportStatusDot', function() {
 Template.registerHelper('sAgentReportStatus', function() {
   try {
     return this ? this.details.online ?
-      `` :
+      '' :
       `
         ${i18n.__('s-agent.service.status.lastSeen')}
         ${moment(this.details.lastSeen).fromNow() || '-'}
