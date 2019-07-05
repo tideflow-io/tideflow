@@ -8,3 +8,4 @@ update.successUrl: Redirect the user on success to the following URL
 description: Create custom forms you can share with others
 events.submitted.name: When it's submitted
 events.submitted.viewer.title: When an form it's submitted
+log.submitted_input_parsed: Submitted form readed

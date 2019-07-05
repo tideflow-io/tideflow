@@ -18,18 +18,29 @@ import * as executionsSteps from './helpers/executionsSteps'
 const debug = require('debug')('queue')
 
 /**
- * Returns an object as:
+ * Returns the list steps indexes each step is called from.
+ * 
+ * +----------------------------+
+ * | +-------+      +-+     +-+ |
+ * | |Trigger|----->|0|  +->|4| |
+ * | +-------+      +++  |  +-+ |
+ * |                 |   |   ^  |
+ * |                 v   |   |  |
+ * |       +-+      +-   |  +-+ |
+ * |       |2|----->|1|--+->|3| |
+ * |       +-+      +-+     +-+ |
+ * +----------------------------+
+ * 
+ * An example output is: 
  * 
  * {
- *  0: ['trigger']
- *  1: [0, 2],
- *  3: [1],
- *  4: [1, 3]
+ *  0: ['trigger']    // Step is 0 is called from the trigger
+ *  1: [0, 2],        // Step 1 is called from 0 and 2
+ *  3: [1],           // Step 3 is called from 1
+ *  4: [1, 3]         // Step 4 is called from 1 and 3
  * }
  * 
- * being the array the list of steps indexes where each step is called from.
- * 
- * Param example:
+ * The previous result example is for a flow like this:
  * 
  * {
  *  "trigger" : { "outputs" : [  { "stepIndex" : 0 } ] },
@@ -155,7 +166,7 @@ module.exports.logUpdate = logUpdate
  * @param {Object} service 
  * @param {Object} user 
  * @param {Object} flowsQuery 
- * @param {Object} data [{type: String, data: {}}]
+ * @param {Array} data [{type: String, data: {}}]
  * @param {Array} flows
  */
 const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
@@ -277,65 +288,8 @@ const executionError = (context) => {
 
 module.exports.executionError = executionError
 
-/**
- * workflow-start launches a flow execution
- **/
-jobs.register('workflow-start', function(jobData) {
-  let instance = this
-
-  let lapseStart = new Date()
-
-  let { originalTriggerData, executionId } = jobData
-
-  if (!Array.isArray(originalTriggerData)) {
-    originalTriggerData = []
-    // throw new Error('Trying to trigger flows without an array of originalTriggerData')
-  }
-
-  // Get the current execution
-  const execution = executions.get({_id: executionId})
-
-  // If something, or the user, cancelled the execution,
-  // stop now and don't continue.
-  if (execution.status === 'stopped') {
-    instance.success()
-    return
-  }
-
-  const flow = execution.fullFlow
-  const service = execution.fullService
-  const user = Meteor.users.findOne({_id:execution.user})
-
-  // Service triggering the execution
-  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
-  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
-
-  // For the service triggering the execution, get the event
-  let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
-  // Woop! The event triggered can't be found
-  if (!event) {
-    instance.success()
-    return null
-  }
-
-  // Log the trigger execution
-  let logId = executionsSteps.create({
-    execution: executionId,
-    type: flow.trigger.type,
-    event: flow.trigger.event,
-    flow: execution.flow,
-    user: execution.user,
-    step: 'trigger',
-    stepIndex: 'trigger',
-    msgs: [],
-    createdAt: lapseStart,
-    status: 'success'
-    // stdout
-    // stderr
-  })
-
-  // Execute the actual trigger
-  let triggerResult = Meteor.wrapAsync((cb) => {
+const executeTrigger = (service, event, flow, user, originalTriggerData, execution, logId) => {
+  return Meteor.wrapAsync((cb) => {
     event.callback(
       service,
       flow,
@@ -347,70 +301,183 @@ jobs.register('workflow-start', function(jobData) {
           next: true
         }
       ],
-      executionId,
+      execution._id,
       logId,
       cb
     )
   })()
+}
+
+/**
+ * 
+ * For the flow:
+ * +--------------------+
+ * | +-------+          |
+ * | |Trigger|------v   |
+ * | +-------+     +-+  |
+ * |               |1|  |
+ * |    +-+        +-+  |
+ * |    |0|---------^   |
+ * |    +-+             |
+ * +--------------------+
+ * 
+ * @param {Object} flow 
+ */
+const guessStepsWithoutPreceding = (flow) => {
+  // Build a list with all the steps indexes.
+  // [0, 1]
+  const allSteps = flow.steps.map((s,i)=>i);
+  // List of steps indexes that are connected to the trigger
+  // The result is [1]
+  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex);
+  // The result is [1, 1]
+  flow.steps.map(flowStep => {
+    triggerNextSteps = triggerNextSteps.concat(flowStep.outputs || []).map(output => output)
+  });
+  // The result is [ [0,1], [1,1] ]
+  const lists = [allSteps, triggerNextSteps];
+  // The result is [ 0 ]
+  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)));
+  return cardsWithoutInbound || []
+}
+
+/**
+ * 
+ * For the flow:
+ * +--------------------+
+ * | +-------+      +-+ |
+ * | |Trigger|----->|1| |
+ * | +-------+      +-+ |
+ * |                    |
+ * |    +-+    +-+      |
+ * |    |2|--->|3|      |
+ * |    +-+    +-+      |
+ * +--------------------+
+ * Result is [1]
+ * 
+ * @param {Object} flow 
+ */
+const guessTriggerSingleChilds = (flow) => {
+  const listOfCalls = calledFrom(flow)
+  let result = []
+  Object.keys(listOfCalls).map(stepIndex => {
+    if (listOfCalls[stepIndex] === ['trigger']) {
+      result.push(stepIndex)
+    }
+  })
+  return result
+}
+
+/**
+ * workflow-start launches a flow execution
+ **/
+jobs.register('workflow-start', function(jobData) {
+  check(jobData, {
+    originalTriggerData: Array,
+    executionId: String,
+  });
+
+  let createdAt = new Date();
+
+  if (!Array.isArray(jobData.originalTriggerData)) {
+    jobData.originalTriggerData = [];
+    // throw new Error('Trying to trigger flows without an array of originalTriggerData')
+  }
+
+  // Get the current execution
+  const execution = executions.get({_id: jobData.executionId});
+
+  // If the execution is stopped, halt here and don't continue.
+  if (execution.status === 'stopped') {
+    return this.success();
+  }
+
+  const flow = execution.fullFlow;
+  const service = execution.fullService;
+  const user = Meteor.users.findOne({_id:execution.user}, {
+    fields: { services: false }
+  });
+
+  // Service triggering the execution
+  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type);
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2');
+
+  // For the service triggering the execution, get the event
+  let event = serviceWorker.events.find(e => e.name === flow.trigger.event);
+  // Woop! The event triggered can't be found
+  if (!event) {
+    return this.success();
+  }
+
+  // Log the trigger execution
+  let logId = executionsSteps.create({
+    execution: execution._id,
+    type: flow.trigger.type,
+    event: flow.trigger.event,
+    flow: execution.flow,
+    user: execution.user,
+    step: 'trigger',
+    stepIndex: 'trigger',
+    msgs: [],
+    createdAt,
+    status: 'success'
+  });
+
+  // Execute the actual trigger
+  const triggerResult = executeTrigger(service, event, flow, user, jobData.originalTriggerData, execution, logId);
 
   // For the trigger log, update it with the results
-  {
-    let updateReq = {
-      $set: {
-        stepResults: triggerResult.result,
-        next: triggerResult.next
-        // status: # already set
-      }
+  let stepUpdate = {
+    $set: {
+      stepResults: triggerResult.result,
+      next: triggerResult.next
+      // status: # already set
     }
-    if (triggerResult.msgs) {
-      updateReq['$push'] = { msgs: { $each: triggerResult.msgs } }
-    }
-    executionsSteps.update(executionId, logId, updateReq)
   }
-
-  // If the flow have no more steps, stop here
-  if (!flow.steps || !flow.steps.length) {
-    executions.end(executionId)
-    instance.success()
-    return
+  if (triggerResult.msgs) {
+    stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } };
   }
+  executionsSteps.update(jobData.executionId, logId, stepUpdate);
 
-  // Now that the trigger has been executed, we need to know what should we do
-  // next. We have to do two things:
-  //
-  // 1. Execute the steps that don't have preceding steps
-  // 2. Execute the steps that are directly conneted to the trigger, and DONT
+  // Now that the trigger has been executed, we need to know which steps we
+  // need to execute next. To do this
+  // 
+  // 1. Determine if there's anything to execute
+  // 2. Determine the steps that don't have preceding steps
+  // 3. Determine the steps that are directly conneted to the trigger, and DONT
   //    have any other preceding step.
+  // 4. Launch
 
-  // Build a list with all the steps indexes (0, 1, 2, 3, 4...)
-  // for the flow [ [trigger]->[1] ], value is [1]
-  const allSteps = flow.steps.map((s,i)=>i)
+  // ===========================================================================
+  // 1. Determine if there's anything to execute
+
+  if (!flow.steps || !flow.steps.length) {
+    executions.end(jobData.executionId);
+    this.success();
+    return;
+  }
+
+  // ===========================================================================
+  // 2. Determine the steps that don't have preceding steps
+
+  const stepsWithoutPreceding = guessStepsWithoutPreceding(flow)
+
+  // ===========================================================================
+  // 3. Determine the steps that are directly conneted to the trigger, and DONT
+  //    have any other preceding step.
+  const triggerSingleChilds = guessTriggerSingleChilds(flow)
   
-  // List of steps indexes that are connected to the trigger
-  // for the flow [ [trigger]->[1] ], value is [1]
-  let triggerNextSteps = (flow.trigger.outputs || []).map(o => o.stepIndex) || [];
+  // ===========================================================================
+  // 4. launch
 
-  flow.steps.map(flowStep => {
-    triggerNextSteps = triggerNextSteps.concat((flowStep.outputs || []).map(output => output.stepIndex) || [])
+  stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
+    jobs.run('workflow-step', {
+      currentStep: flow.steps[stepIndex],
+      executionId: jobData.executionId
+    })
   });
 
-  const lists = [allSteps, triggerNextSteps];
-
-  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)));
-
-  // Schedule excution of cards without preceding steps
-  let loop = function(stepId) {
-    jobs.run('workflow-step', {currentStep: flow.steps[stepId], executionId})
-  };
-
-  (cardsWithoutInbound || []).map(loop);
-
-  // Schedule excution of cards connected from the trigger
-  (flow.trigger.outputs || []).map(function(output) {
-    jobs.run('workflow-step', {currentStep: flow.steps[output.stepIndex], executionId})
-  });
-  
-  instance.success();
+  this.success();
 })
 
 /**
@@ -419,11 +486,12 @@ jobs.register('workflow-start', function(jobData) {
  * @param {Object} jobData
  */
 jobs.register('workflow-step', function(jobData) {
-  let lapseStart = new Date()
+  let createdAt = new Date()
 
   let instance = this
 
   let { currentStep, executionId } = jobData
+
   const execution = executions.get({_id: executionId})
   const flow = execution.fullFlow
 
@@ -445,7 +513,7 @@ jobs.register('workflow-step', function(jobData) {
     type: currentStep.type,
     event: currentStep.event,
     msgs: [],
-    createdAt: lapseStart
+    createdAt
     // stdout
     // stderr
     // status
@@ -464,7 +532,9 @@ jobs.register('workflow-step', function(jobData) {
 
   const listOfCalls = calledFrom(flow)
   const service = execution.fullService
-  const user = Meteor.users.findOne({_id:execution.user})
+  const user = Meteor.users.findOne({_id:execution.user}, {
+    fields: { services: false }
+  })
 
   const previousSteps = executionsSteps.get(executionId, listOfCalls[currentStepIndex] || [])
 
@@ -472,11 +542,9 @@ jobs.register('workflow-step', function(jobData) {
   const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
   if (!stepEvent || !stepEvent.callback) return null
   
-  let callEvent = Meteor.wrapAsync((cb) => {
+  let eventCallback = Meteor.wrapAsync(cb => {
     stepEvent.callback(service, flow, user, currentStep, previousSteps, executionId, logId, cb)
-  })
-
-  let eventCallback = callEvent()
+  })()
 
   // Process files that may have been returned from the step execution
   eventCallback.result.map(r => {

@@ -52,26 +52,18 @@ const service = {
       visibe: true,
       callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
 
         const agent = currentStep.config.agent
-
-        let agentDoc
-
-        if (agent === 'any') {
-          agentDoc = agent
-        }
-        else {
-          agentDoc = Services.findOne({_id: agent})
-        }
-
-        let commandSent = ioTo(agentDoc, {
+        const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const commandSent = ioTo(agentDoc, {
           flow: flow._id,
           execution: executionId,
           log: logId,
           step: currentStep._id,
           command: currentStep.config.command,
-          previous: attachPrevious ? JSON.stringify(lastData) : null
+          previous: attachPrevious ? JSON.stringify(
+            _.map(executionLogs || [], 'stepResults')
+          ) : null
         })
 
         let callParameters = [currentStep.config.command]
