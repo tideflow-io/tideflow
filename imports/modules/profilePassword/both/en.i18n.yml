@@ -1,8 +1,8 @@
 _namespace: profilePassword
-title: 'Password'
+title: Password
 currentPassword: Your current password
 currentPasswordPlaceholder: Your password
-canNotRemember: Can not remember your password? Click here
+canNotRemember: Can''t remember your password? Click here
 yourNewPassword: New password
 yourNewPasswordPlaceholder: Your new password
 repeatNewPassword: Repeat the new password

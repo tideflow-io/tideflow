@@ -13,11 +13,10 @@ index.connectNew: Connect a new service
 index.emptyListTitle: There are no services registered under your account
 index.emptyListDescription: It seems you haven't created any service yet.
 index.itemView: View
-newType.submit: Insert
+newType.submit: Create service
 new.select: Select
 one.edit: Edit
 one.remove: Detele
 new.title: Connect a new service
 new.subtitle: Select the kind of service you want to connect
-newType.subtitle: Fill in all the details
 new.moreInfo: More info about this

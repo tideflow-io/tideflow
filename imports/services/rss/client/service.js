@@ -8,7 +8,7 @@ const service = {
   iconColor: '#FFA200',
   humanName: 's-rss.name',
   description: 's-rss.description',
-  website: 'https://docs.tideflow.io/docs/services-rss',
+  website: 'https://tideflow.io/docs/services-rss',
   ownable: true,
   templates: {
     detailsView: 'servicesRssDetailsView',
