@@ -456,7 +456,7 @@ jobs.register('workflow-start', function(jobData) {
   }
   ExecutionsLogs.update({
     _id: logId,
-    execution: executionId
+    execution: jobData.executionId
   }, stepUpdate);
 
   // Now that the trigger has been executed, we need to know which steps we
