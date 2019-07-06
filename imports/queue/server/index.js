@@ -6,16 +6,22 @@ import { Random } from 'meteor/random'
 import { check } from 'meteor/check'
 
 import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Executions } from '/imports/modules/executions/both/collection'
+import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
 import * as serverEmailHelper from '/imports/helpers/server/emails'
 import * as emailHelper from '/imports/helpers/both/emails'
 
-import * as executions from './helpers/executions'
-import * as executionsSteps from './helpers/executionsSteps'
-
 const debug = require('debug')('queue')
+
+const endExecution = (_id, status) => {
+  return Executions.update(
+    { _id },
+    { $set: { status: status || 'finished' } }
+  )
+}
 
 /**
  * Returns the list steps indexes each step is called from.
@@ -147,8 +153,8 @@ const jobs = {
 
 module.exports.jobs = jobs
 
-const logUpdate = (executionId, logId, messages, set) => {
-  return executionsSteps.update(executionId, logId, {
+const logUpdate = (execution, logId, messages, set) => {
+  return ExecutionsLogs.update({_id: logId, execution}, {
     $set: set || {},
     $push: {
       msgs: {
@@ -206,7 +212,14 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
       step._id = Random.id()
     })
 
-    let executionId = executions.create(service, flow)
+    let executionId = Executions.insert({
+      user: flow.user,
+      service: service._id ? service._id : null,
+      fullService: service,
+      flow: flow._id,
+      fullFlow: flow,
+      status: 'started'
+    })
 
     jobs.run('workflow-start', {originalTriggerData, executionId})
   })
@@ -223,7 +236,7 @@ const executeNextStep = (context) => {
   })
 
   const executionId = context.execution
-  const execution = executions.get({_id: executionId})
+  const execution = Executions.findOne({_id: executionId})
   const flow = execution.fullFlow
   const listOfCalls = calledFrom(flow)
 
@@ -239,11 +252,11 @@ const executeNextStep = (context) => {
   // If no, it could mean that we should stop the flow's execution
   if (!outputs.length) {
     // Get the number of executed steps in the current execution ...
-    const executedSteps = executionsSteps.countForExecution(executionId)
+    const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
     // and compare it against the number of steps in the executed flow (+ trigger).
     // If the number matches, flag the execution as finished
     if (executedSteps === flow.steps.length + 1) {
-      executions.end(executionId)
+      endExecution(executionId)
     }
   }
 
@@ -258,7 +271,11 @@ const executeNextStep = (context) => {
       const nextStepsCalledFrom = listOfCalls[nextStepId] || []
 
       // All previous steps are executed?
-      const successSteps = executionsSteps.countForExecution(executionId, nextStepsCalledFrom, 'success')
+      const successSteps = ExecutionsLogs.find({
+        execution: executionId,
+        stepIndex: { $in: nextStepsCalledFrom },
+        status: { $in: ['success'] }
+      }).count()
 
       // If so, continue. Otherwise, don't do anything.
       if (successSteps !== nextStepsCalledFrom.length) return
@@ -276,7 +293,7 @@ const executionError = (context) => {
     flow: String,
     execution: String
   })
-  executions.update({
+  Executions.update({
     _id: context.execution,
     flow: context.flow
   }, {
@@ -385,7 +402,7 @@ jobs.register('workflow-start', function(jobData) {
   }
 
   // Get the current execution
-  const execution = executions.get({_id: jobData.executionId});
+  const execution = Executions.findOne({_id: jobData.executionId});
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
@@ -410,7 +427,7 @@ jobs.register('workflow-start', function(jobData) {
   }
 
   // Log the trigger execution
-  let logId = executionsSteps.create({
+  let logId = ExecutionsLogs.insert({
     execution: execution._id,
     type: flow.trigger.type,
     event: flow.trigger.event,
@@ -437,7 +454,10 @@ jobs.register('workflow-start', function(jobData) {
   if (triggerResult.msgs) {
     stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } };
   }
-  executionsSteps.update(jobData.executionId, logId, stepUpdate);
+  ExecutionsLogs.update({
+    _id: logId,
+    execution: executionId
+  }, stepUpdate);
 
   // Now that the trigger has been executed, we need to know which steps we
   // need to execute next. To do this
@@ -452,7 +472,7 @@ jobs.register('workflow-start', function(jobData) {
   // 1. Determine if there's anything to execute
 
   if (!flow.steps || !flow.steps.length) {
-    executions.end(jobData.executionId);
+    endExecution(jobData.executionId);
     this.success();
     return;
   }
@@ -492,7 +512,7 @@ jobs.register('workflow-step', function(jobData) {
 
   let { currentStep, executionId } = jobData
 
-  const execution = executions.get({_id: executionId})
+  const execution = Executions.findOne({_id: executionId})
   const flow = execution.fullFlow
 
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
@@ -504,7 +524,7 @@ jobs.register('workflow-step', function(jobData) {
   /**
    * Store execution in db.
    */
-  let logId = executionsSteps.create({
+  let logId = ExecutionsLogs.insert({
     execution: executionId,
     flow: execution.flow,
     user: execution.user,
@@ -521,7 +541,7 @@ jobs.register('workflow-step', function(jobData) {
 
   // If the execution was stopped, do not execute anything else
   if (execution.status === 'stopped') {
-    executionsSteps.update(executionId, logId, {
+    ExecutionsLogs.update({_id: logId, execution: executionId}, {
       $set: {
         status: 'stopped'
       }
@@ -536,7 +556,15 @@ jobs.register('workflow-step', function(jobData) {
     fields: { services: false }
   })
 
-  const previousSteps = executionsSteps.get(executionId, listOfCalls[currentStepIndex] || [])
+  const previousStepsIndexes = listOfCalls[currentStepIndex] || []
+  const previousSteps = previousStepsIndexes.length ? ExecutionsLogs.find({
+    execution: executionId,
+    stepIndex: { $in: previousStepsIndexes }
+  }, {
+    sort: {
+      createdAt: -1
+    }
+  }).fetch() : []
 
   const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
   const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
@@ -582,11 +610,11 @@ jobs.register('workflow-step', function(jobData) {
     if (eventCallback.msgs) {
       updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
     }
-    executionsSteps.update(executionId, logId, updateReq)
+    ExecutionsLogs.update({_id: logId, execution: executionId}, updateReq)
   }
 
   if (eventCallback.error) {
-    executions.end(executionId, 'error')
+    endExecution(executionId, 'error')
     instance.success()
     return
   }
@@ -600,11 +628,11 @@ jobs.register('workflow-step', function(jobData) {
     // If no, it could mean that we should stop the flow's execution
     if (!outputs.length) {
       // Get the number of executed steps in the current execution ...
-      const executedSteps = executionsSteps.countForExecution(executionId)
+      const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
       // and compare it against the number of steps in the executed flow (+ trigger).
       // If the number matches, flag the execution as finished
       if (executedSteps === flow.steps.length + 1) {
-        executions.end(executionId)
+        endExecution(executionId)
       }
     }
 
@@ -617,8 +645,13 @@ jobs.register('workflow-step', function(jobData) {
 
       if (stepInputsCount > 1) {
         const nextStepsCalledFrom = listOfCalls[nextStepId]
+
         // All previous steps are executed?
-        const successSteps = executionsSteps.countForExecution(executionId, nextStepsCalledFrom, 'success')
+        const successSteps = ExecutionsLogs.find({
+          execution: executionId,
+          stepIndex: { $in: nextStepsCalledFrom },
+          status: { $in: ['success'] }
+        }).count()
 
         // If so, continue. Otherwise, don't do anything.
         if (successSteps !== nextStepsCalledFrom.length) {
