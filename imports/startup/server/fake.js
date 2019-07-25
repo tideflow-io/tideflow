@@ -8,16 +8,15 @@ import { servicesAvailable } from '/imports/services/_root/server'
 
 return
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   return
 }
 
 const faker = require('faker')
 
 // Prepare context variables for the documents to be inserted
-const servicesNames = servicesAvailable.map(sa => sa.name)
 const flowsStatus = ['enabled', 'disabled']
-const executionsStatus = ['finished', 'error']
+const executionsStatus = ['started', 'finished', 'error']
 const user = Meteor.users.findOne()
 
 if (!user) {
@@ -35,7 +34,7 @@ for (let i = 0; i < NUMBER_OF_CHANNELS; i++) {
 
   Services.insert({
     details : {},
-    type : faker.random.arrayElement(servicesNames),
+    type : faker.random.arrayElement(servicesAvailable.filter(s => !!s.ownable).map(s => s.name)),
     title,
     config : { },
     description,
