@@ -9,7 +9,8 @@ const service = {
   humanName: 's-rss.name',
   description: 's-rss.description',
   website: 'https://tideflow.io/docs/services-rss',
-  ownable: true,
+  ownable: false,
+  trigger: true,
   templates: {
     detailsView: 'servicesRssDetailsView',
     createForm: 'servicesRssCreateForm',
@@ -29,6 +30,9 @@ const service = {
       viewerTitle: 's-rss.events.new-content.viewer.title',
       inputable: true,
       stepable: false,
+      templates: {
+        triggerEditor: 'triggerEditorRssEventNewContent'
+      },
       callback: () => {},
       conditions: [
         // {}

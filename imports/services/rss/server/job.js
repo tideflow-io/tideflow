@@ -2,35 +2,35 @@ import { Meteor } from 'meteor/meteor'
 import * as tfQueue from '/imports/queue/server'
 import { buildLinks } from '/imports/queue/server/helpers/links'
 
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection.js'
 import { triggerFlows } from '/imports/queue/server'
 
 let Parser = require('rss-parser')
 let parser = new Parser()
 
-tfQueue.jobs.register('s-rss-runOne', function(service) {
+tfQueue.jobs.register('s-rss-runOne', function(flow) {
   let instance = this
-  let getfeed = Meteor.wrapAsync((cb) => {
-    parser.parseURL(service.config.serviceUrl, (err, feed) => {
+
+  let feed = Meteor.wrapAsync((cb) => {
+    parser.parseURL(flow.trigger.config.serviceUrl, (err, feed) => {
       cb(err, feed)
     })
-  })
+  })()
 
-  let feed = getfeed()
   let rssGuids = feed.items.map(i => { return i.guid })
-  let arrays = [rssGuids, (service.details || {}).guids || []]
+  let arrays = [rssGuids, (flow.trigger.secrets || {}).guids || []]
 
   // _.difference
   let diffs = arrays.reduce((a, b) => a.filter(c => !b.includes(c)))
 
   if (diffs.length) {
-    let user = Meteor.users.findOne({_id: service.user}, {
+    let user = Meteor.users.findOne({_id: flow.user}, {
       fields: { services: false }
     })
     
-    Services.update(
-      { _id: service._id },
-      { $addToSet: {'details.guids':{$each: diffs}} }
+    Flows.update(
+      { _id: flow._id },
+      { $addToSet: {'trigger.secrets.guids': {$each: diffs}} }
     )
 
     let newRssElements = feed.items.filter(i => {
@@ -38,10 +38,10 @@ tfQueue.jobs.register('s-rss-runOne', function(service) {
     })
 
     triggerFlows(
-      service,
+      flow.trigger,
       user,
       {
-        'trigger._id': service._id,
+        'trigger._id': flow._id,
         'trigger.event': 'new-content'
       },
       buildLinks(newRssElements).map(element => {
@@ -70,27 +70,30 @@ tfQueue.jobs.register('s-rss-schedule', function() {
     instance.success()
   }
 
-  const services = Services.find({
-    type: 'rss'
+  const flows = Flows.find({
+    'trigger.type': 'rss',
+    'trigger.event': 'new-content',
+    status: 'enabled'
   })
 
-  if (!services || !services.count()) {
+  if (!flows || !flows.count()) {
     finishJob()
     return
   }
 
-  services.map(service => {
-    tfQueue.jobs.create('s-rss-runOne', service, {
+  flows.map(flow => {
+    tfQueue.jobs.create('s-rss-runOne', flow, {
       singular: true
     })
   })
 
   finishJob()
-  return
 })
 
 Meteor.startup(() => {
+  console.log('schedule rss')
   tfQueue.jobs.run('s-rss-schedule', null, {
     singular: true
   })
 })
+
