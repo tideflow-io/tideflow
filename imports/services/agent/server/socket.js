@@ -12,7 +12,20 @@ import { pick } from '/imports/helpers/both/objects'
 const server = http.createServer()
 const io = socket_io(server)
 
-Meteor.startup(() => {
+Meteor.startup(async () => {
+  await Services.update(
+    {
+      type: 'agent'
+    },
+    { 
+      $set: {
+        'details.online': false,
+      },
+      $unset: { 'secrets.socketId': '' }
+    },
+    { multi: true }
+  )
+  
   // middleware
   io.use(async (socket, next) => {
     let token = socket.handshake.query.token
