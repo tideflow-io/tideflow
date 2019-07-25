@@ -61,10 +61,14 @@ Template.registerHelper('fromNow', (date) => {
 })
 
 Template.registerHelper('userEmail', function(user) {
+  if (!user && !Meteor.user()) { return false }
+  
   return emailHelper.userEmail(user || Meteor.user())
 })
 
 Template.registerHelper('userName', function(user) {
+  if (!user && !Meteor.user()) { return false }
+
   let fn = (user || Meteor.user()).profile ? (user || Meteor.user()).profile.firstName : ''
   if (!fn || fn.trim() === '') {
     return false
