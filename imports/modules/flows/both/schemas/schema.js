@@ -27,12 +27,7 @@ const FlowSchema = new SimpleSchema({
       options: statusList
     },
     allowedValues: statusList.map(sl => sl.value),
-    optional: true,
-    autoValue: function () {
-      if (!this.isSet) {
-        return 'disabled'
-      }
-    }
+    optional: false
   },
   title: {
     type: String,
@@ -88,6 +83,11 @@ const FlowSchema = new SimpleSchema({
   'trigger.outputs.$.stepIndex': {
     label: 'Trigger output steps index',
     type: Number
+  },
+  'trigger.secrets': {
+    optional: true,
+    type: Object,
+    blackbox: true
   },
   steps: {
     type: Array,
