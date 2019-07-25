@@ -9,11 +9,9 @@ const service = {
   website: 'https://tideflow.io/docs/services-endpoints',
   icon: 'fa fa-server',
   iconColor: '#563D7C',
-  ownable: true,
+  ownable: false,
+  trigger: true,
   templates: {
-    detailsView: 'servicesEndpointDetailsView',
-    createFormPre: 'servicesEndpointCreateFormPre',
-    updateFormPre: 'servicesEndpointUpdateFormPre'
   },
   hooks: {
     // service: {},
@@ -27,6 +25,9 @@ const service = {
       viewerTitle: 's-endpoint.events.called.viewer.title',
       inputable: true,
       stepable: false,
+      templates: {
+        triggerEditor: 'triggerEditorEndpointEventNewContent'
+      },
       callback: () => {},
       conditions: [
         // {}

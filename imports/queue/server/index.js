@@ -176,7 +176,7 @@ module.exports.logUpdate = logUpdate
  * @param {Array} flows
  */
 const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
-  // Security check
+  console.log({service, user, flowsQuery, originalTriggerData, flows})
   if (user.services) {
     throw new Error('Security issue: user services attached on triggerFlows.')
   }
@@ -389,6 +389,7 @@ const guessTriggerSingleChilds = (flow) => {
  * workflow-start launches a flow execution
  **/
 jobs.register('workflow-start', function(jobData) {
+  console.log(JSON.stringify(jobData, ' ', 2))
   check(jobData, {
     originalTriggerData: Array,
     executionId: String,

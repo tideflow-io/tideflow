@@ -1,5 +1,3 @@
-import './createFormPre.html'
-import './updateFormPre.html'
-import './detailsView.html'
-
+import './triggerEditorEndpointEventNewContent.html'
+import './events'
 import './service'

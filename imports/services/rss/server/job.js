@@ -40,16 +40,14 @@ tfQueue.jobs.register('s-rss-runOne', function(flow) {
     triggerFlows(
       flow.trigger,
       user,
-      {
-        'trigger._id': flow._id,
-        'trigger.event': 'new-content'
-      },
+      null,
       buildLinks(newRssElements).map(element => {
         return {
           type: 'link',
           data: element
         }
-      })
+      }),
+      [flow]
     )
   }
   instance.success()
@@ -96,4 +94,5 @@ Meteor.startup(() => {
     singular: true
   })
 })
+
 

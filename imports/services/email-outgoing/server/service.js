@@ -16,6 +16,7 @@ const service = {
     name: 'to-me',
     visibe: true,
     callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      console.log('to me')
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
       const to = commonEmailHelper.userEmail(user)
