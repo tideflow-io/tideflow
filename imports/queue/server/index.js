@@ -583,7 +583,7 @@ jobs.register('workflow-step', function(jobData) {
       return
     }
 
-    let getFile = Meteor.wrapAsync((cb) => {
+    r.data.data = Meteor.wrapAsync((cb) => {
       let bufferChunks = []
       if (Buffer.isBuffer(r.data.data)) return cb(null, r.data.data)
 
@@ -594,8 +594,7 @@ jobs.register('workflow-step', function(jobData) {
         bufferChunks.push(i)
       })
       r.data.data.data.data.on('end', () => cb(null, Buffer.concat(bufferChunks)))
-    })
-    r.data.data = getFile()
+    })()
   })
 
   {
