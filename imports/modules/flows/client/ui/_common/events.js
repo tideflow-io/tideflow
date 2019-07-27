@@ -22,6 +22,7 @@ const stepTypeSelectorChanged = (index, type) => {
 
   Session.set(`fe-step-${index}`, selectedStepService || null)
   Session.set(`fe-step-${index}-event`, null)
+  Session.set(`fe-editMode`, index)
 }
 
 /**
@@ -45,10 +46,10 @@ Template.flowEditorStepAvailable.events({
     const formSchema = AutoForm.getFormSchema(formId);
     AutoForm.arrayTracker.addOneToField(formId, 'steps', formSchema)
     setTimeout(() => {
-      let selector = $('.flow-step:last .step-type-selector').val(template.data.name)
+      let selector = $('.flow-step:last .step-type-selector').last().val(template.data.name)
       let stepIndex = selector.data().step
       stepIndex = stepIndex ? parseInt(stepIndex) : null
-      stepTypeSelectorChanged(stepIndex, selector.val())
+      stepTypeSelectorChanged(stepIndex, template.data.name)
     }, 100)
   }
 })
@@ -248,6 +249,7 @@ Template.flowEditor.onRendered(function() {
     // the flow's editor to create a brand new flow
     if (!Router.current().params._id) {
       setJsPlumb()
+      stepTypeSelectorChanged(0, servicesAvailable.find(sa => !!sa.stepable).name)
       return
     }
 

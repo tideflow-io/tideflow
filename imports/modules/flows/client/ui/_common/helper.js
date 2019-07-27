@@ -240,13 +240,13 @@ Template.flowEditor.helpers({
 
   stepsAvailable() {
     return servicesAvailable.filter(sa => {
-      return sa.events.find(e => e.stepable)
+      return sa.events.find(e => e.step)
     })
   },
 
   stepsAvailableSidebar() {
     return servicesAvailable.filter(sa => {
-      return !sa.ownable
+      return !!sa.stepable
     })
   },
 

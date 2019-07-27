@@ -8,6 +8,7 @@ const service = {
   description: 's-email-outgoing.description',
   icon: 'far fa-envelope',
   ownable: false,
+  stepable: true,
   templates: {
   },
   hooks: {

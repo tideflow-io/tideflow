@@ -9,6 +9,7 @@ const service = {
   icon: 'far fa-file-pdf',
   iconColor: '#ff0000',
   ownable: false,
+  stepable: true,
   templates: {
   },
   hooks: {

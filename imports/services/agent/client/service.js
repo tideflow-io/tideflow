@@ -10,6 +10,7 @@ const service = {
   icon: 'fas fa-save',
   iconColor: '#3498DB',
   ownable: true,
+  stepable: true,
   templates: {
     detailsView: 'servicesAgentDetailsView',
     createMini: 'servicesAgentCreateMini',

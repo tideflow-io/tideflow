@@ -5,6 +5,7 @@ const service = {
   description: 's-debug.description',
   humanName: 's-debug.name',
   ownable: false,
+  stepable: true,
   icon: 'far fa-file-code',
   templates: {
   },

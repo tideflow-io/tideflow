@@ -12,7 +12,7 @@
       </div>
 
       <div class="p-3 pt-0" id="flow-sidebar-steps">
-        {{#each stepsAvailable}}
+        {{#each stepsAvailableSidebar}}
           {{> flowEditorStepAvailable}}
         {{/each}}
       </div>
@@ -72,6 +72,7 @@
                 <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
               {{/each}}
             </select>
+            {{debug triggerSelected}}
             {{#if triggerSelected.events}}
               <select class="form-control" name="triggerEventSelector">
                 <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
