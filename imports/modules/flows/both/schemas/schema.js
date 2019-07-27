@@ -91,7 +91,9 @@ const FlowSchema = new SimpleSchema({
   },
   steps: {
     type: Array,
-    optional: true
+    optional: true,
+    minCount: 0,
+    defaultValue: []
   },
   'steps.$': {
     type: Object,

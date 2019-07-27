@@ -13,7 +13,7 @@ const service = {
   hooks: {
     // step: {},
     // trigger: {}
-    service: {
+    /* service: {
       create: {
         pre: (service) => {
           return Object.assign(service, {
@@ -33,7 +33,7 @@ const service = {
           return service
         }
       }
-    }
+    } */
   },
   events: [
     {

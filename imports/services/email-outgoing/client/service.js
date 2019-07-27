@@ -5,6 +5,8 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'email-outgoing',
   humanName: 's-email-outgoing.name',
+  description: 's-email-outgoing.description',
+  icon: 'far fa-envelope',
   ownable: false,
   templates: {
   },

@@ -1,5 +1,6 @@
 _namespace: s-email-outgoing
 name: Outgoing emails
+description: Send emails to you or others
 events.tome.name: Send me an email
 events.tome.viewer.title: Send me an email
 events.toother.name: Send an email to an email address 

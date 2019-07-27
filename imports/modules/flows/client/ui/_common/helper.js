@@ -133,6 +133,36 @@ Template.stepEventConfig.helpers({
 })
 
 Template.flowEditor.helpers({
+
+  editMode: function() {
+    return Session.get('fe-editMode') === this.index
+  },
+
+  cardText: function() {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    if (!selectedService) return;
+    const selectedEventVal = $(`.step-event-selector[data-step="${this.index}"]`).val()
+    if (!selectedEventVal) return i18n.__('flows.editor.trigger.notSet')
+    const selectedEvent = selectedService.events.find(e => e.name === selectedEventVal)
+    return selectedEvent ? i18n.__(selectedEvent.humanName) : i18n.__('flows.editor.trigger.notSet')
+  },
+
+  cardTitle: function() {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    return selectedService ? `${i18n.__(selectedService.humanName)}` : null
+  },
+
+  cardIcon: function() {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    return selectedService ? selectedService.icon : null
+  },
+
+  cardIconColor: function() {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    if (!selectedService) return;
+    return selectedService.iconColor
+  },
+
   stepSelectedEvents() {
     const selectedService = Session.get(`fe-step-${this.index}`)
     return selectedService ? selectedService.events.filter(e => e.stepable) || false : false
@@ -211,6 +241,12 @@ Template.flowEditor.helpers({
   stepsAvailable() {
     return servicesAvailable.filter(sa => {
       return sa.events.find(e => e.stepable)
+    })
+  },
+
+  stepsAvailableSidebar() {
+    return servicesAvailable.filter(sa => {
+      return !sa.ownable
     })
   },
 

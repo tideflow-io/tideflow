@@ -1,5 +1,6 @@
 _namespace: s-pdf
 name: PDF
+description: Generate and fill PDF files
 event.build.type.text: Text
 event.build.type.bill: Simple bill
 event.build.type.selectOne: Select a template

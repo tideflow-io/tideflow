@@ -2,8 +2,10 @@ import { servicesAvailable } from '/imports/services/_root/client'
 
 const service = {
   name: 'debug',
+  description: 's-debug.description',
   humanName: 's-debug.name',
   ownable: false,
+  icon: 'far fa-file-code',
   templates: {
   },
   hooks: {

@@ -39,7 +39,44 @@ const stepEventSelectorChanged = function(index, type) {
   Session.set(`fe-step-${index}-event`, selectedStepEvent || null)
 }
 
+Template.flowEditorStepAvailable.events({
+  'click .card': async (event, template) => {
+    const formId = $('#page > form')[0].id
+    const formSchema = AutoForm.getFormSchema(formId);
+    AutoForm.arrayTracker.addOneToField(formId, 'steps', formSchema)
+    setTimeout(() => {
+      let selector = $('.flow-step:last .step-type-selector').val(template.data.name)
+      let stepIndex = selector.data().step
+      stepIndex = stepIndex ? parseInt(stepIndex) : null
+      stepTypeSelectorChanged(stepIndex, selector.val())
+    }, 100)
+  }
+})
+
 Template.flowEditor.events({
+
+  'click .edit-mode-enter': (event, template) => {
+    const stepIndex = $(event.target).data('step')
+    Session.set('fe-editMode', stepIndex)
+  },
+
+  'click .edit-mode-leave': (event, template) => {
+    Session.set('fe-editMode', '')
+  },
+
+  'input #flow-sidebar-step-search input': (event, template) => {
+    var scope = event.target;
+    if (!scope.value || scope.value == '') {
+      $('#flow-sidebar-steps .card').show();
+      return;
+    }
+  
+    $('#flow-sidebar-steps .card').each(function(i, div) {
+      var $div = $(div);
+      $div.toggle($div.text().toLowerCase().indexOf(scope.value.toLowerCase()) > -1);
+    })
+  },
+
   'change [name="triggerSelector"]': (event, template) => {
     const selectedServiceDoc = Services.findOne({ _id: event.currentTarget.value })
     if (selectedServiceDoc) {
@@ -74,6 +111,7 @@ Template.flowEditor.events({
         $( '.connector-out', this ).attr('data-step', newStepNumber)
       }
     })
+    Session.set('fe-editMode', '')
   },
 
   'change .step-event-selector': function(event, template) {
@@ -202,6 +240,7 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-triggerIdSelected', '')
   Session.set('fe-triggerEventSelected', '')
   Session.set('fe-stepSelected', '')
+  Session.set('fe-editMode', '')
 
   instance.autorun(function () {
 
