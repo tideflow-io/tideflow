@@ -2,8 +2,6 @@
 
 > Realtime, open source workflows execution web application.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 Tideflow integrates with:
 
 [Tideflow's agent tool](https://github.com/tideflow-io/tideflow-agent), [Github Webhooks](https://tideflow.io/docs/services-gh-webhooks), [RSS Channels](https://tideflow.io/docs/services-rss), [Inbound Endpoints](https://tideflow.io/docs/services-endpoints), [Cron Based Triggers](https://tideflow.io/docs/services-cron), [PDF Creation](https://tideflow.io/docs/services-pdf), [Email Sending](https://tideflow.io/docs/services-email-outgoing), [Webforms](https://tideflow.io/docs/services-webforms), [Webscraping](https://tideflow.io/docs/services-webparsy), many more to come
