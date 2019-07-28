@@ -2,18 +2,25 @@
   {{> breadcrumbContainer}}
   <div class="container">
     
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "dashboard.title"}}
+          </h2>
+          {{#if executionsLoaded}}
+            {{#if executions}}
+            {{else}}
+              <p>{{__ "dashboard.wellcome.message.thispage"}}</p>
+              <p>{{__ "dashboard.wellcome.message.help"}}</p>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
     {{#if executionsLoaded}}
       {{#if executions}}
-        <div class="row">
-          <div class="col-md-12">
-            <div class="page-header mb-4">
-              <h2>
-                {{__ "dashboard.title"}}
-              </h2>
-            </div>
-          </div>
-        </div>
-
         <div class="row mb-4">
           <div class="col-md-6">
             <h3>
@@ -37,11 +44,15 @@
             </div>
           </div>
         </div>
-        
         {{#each executions}}
           <div class="row dashboard-execution-history">
             <div class="col-md-12">
-              {{> dashboardExecutionHeader}}
+              <h4>
+                {{flowDoc flow 'title'}}
+                <span class="small">
+                  <a href="{{pathFor 'flows.one' _id=flow}}"><i class="fas fa-link"></i></a>
+                </span>
+              </h4>
             </div>
 
             <div class="col-md-12 mb-3">
@@ -63,8 +74,6 @@
             </div>
           </div>
         {{/each}}
-      {{else}}
-        {{> dashboardWelcome}}
       {{/if}}
     {{else}}
       {{> loading}}
@@ -72,24 +81,3 @@
     
   </div>
 </template> 
-
-<template name="dashboardExecutionHeader">
-  <h4>
-    {{flowDoc flow 'title'}}
-    <span class="small">
-      <a href="{{pathFor 'flows.one' _id=flow}}"><i class="fas fa-link"></i></a>
-    </span>
-  </h4>
-</template>
-
-<template name="dashboardWelcome">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="page-header mb-4">
-        <h2>{{__ "dashboard.wellcome.title"}}</h2>
-        <p>{{__ "dashboard.wellcome.message.thispage"}}</p>
-        <p>{{__ "dashboard.wellcome.message.help"}}</p>
-      </div>
-    </div>
-  </div>
-</template>

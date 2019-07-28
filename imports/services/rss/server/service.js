@@ -4,7 +4,7 @@ const service = {
   name: 'rss',
   inputable: true,
   stepable: false,
-  ownable: true,
+  ownable: false,
   hooks: {
   },
   events: [
