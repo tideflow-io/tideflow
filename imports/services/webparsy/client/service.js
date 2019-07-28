@@ -8,7 +8,7 @@ const service = {
   description: 's-webparsy.description',
   website: 'https://tideflow.io/docs/services-webparsy',
   icon: 'fa fa-spider',
-  iconColor: '#3498DB',
+  iconColor: '#627F89',
   ownable: false,
   inputable: false,
   stepable: true,
