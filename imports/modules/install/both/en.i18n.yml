@@ -10,5 +10,7 @@ home.emailAddress: Email address
 home.password: Password
 home.finishSetup: Finish setup
 sunmit.error: There was an error installing Tideflow
+install.finished: Installation complete
+install.submit.error: There was an error
 finished.title: Installation complete
 finished.content: All set up now! Log in to start using Tideflow.
