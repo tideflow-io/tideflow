@@ -37,7 +37,7 @@ Schema.UserProfile = new SimpleSchema({
     },
     notifications:{
         type: Schema.Notifications,
-        optional: false
+        optional: true
     }
 })
 
