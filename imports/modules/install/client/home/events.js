@@ -24,6 +24,7 @@ Template['install.index'].events({
 
     Meteor.call('install-platform', installationDetails, (error, result) => {
       if (error) {
+        console.error(error)
         sAlert.error(i18n.__('install.submit.error'))
         return
       }
