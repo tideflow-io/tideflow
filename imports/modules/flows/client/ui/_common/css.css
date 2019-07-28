@@ -2,7 +2,6 @@
 /*
  * Sidebar
  */
-
 #flow-sidebar {
   position: fixed;
   overflow-y: scroll;
@@ -19,6 +18,25 @@
   text-decoration: underline;
   color: #007bff;
   cursor: pointer !important;
+}
+
+#flow-sidebar-right {
+  position: fixed;
+  overflow-y: none;
+  -webkit-overflow-scrolling: touch;
+  top: 49px;
+  bottom: 0;
+  right: 0;
+  width: 420px;
+  z-index: 100; /* Behind the navbar */
+  padding: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+#flow-sidebar-right iframe {
+  width: 100%;
+  height: calc(100vh - 103px);
+  border: none;
 }
 
 #flow-sidebar-sticky {

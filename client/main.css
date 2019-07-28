@@ -8,8 +8,12 @@ body {
   font-family: 'Lato', sans-serif !important;
 }
 
-.greyed-separator {
+.greyed-separator-b {
   border-bottom: 2px solid #E6E9EC;
+}
+
+.greyed-separator-l {
+  border-left: 2px solid #E6E9EC;
 }
 
 .clickable {
