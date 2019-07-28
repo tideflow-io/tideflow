@@ -57,12 +57,12 @@ tfQueue.jobs.register('s-rss-schedule', function() {
   let instance = this
 
   const finishJob = () => {
-    //instance.replicate({ in: { seconds: 5 } })
     instance.replicate({
       singular: true,
       in: {
         hours: 1
-      }
+      },
+      date: instance.document.due
     })
 
     instance.success()

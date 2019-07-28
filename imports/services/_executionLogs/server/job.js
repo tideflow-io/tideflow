@@ -121,18 +121,32 @@ tfQueue.jobs.register('_executionLogsRun', function() {
     users.forEach(async (u) => buildAndScheduleEmail(u, {daily: true}))
   }
 
+  instance.replicate({
+    in: {
+      hours: 24
+    },
+    date: instance.document.due
+  })
+
   instance.success()
 })
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
+  return this.success()
   let data = emailHelper.data([emailData.to], {}, emailData, 'ExecutionLogs')
   emailHelper.send(data)
   this.success()
 })
 
+
 Meteor.startup(() => {
   tfQueue.jobs.run('_executionLogsRun', null, {
-    on: { hour: 0, minute: 0 },
+    on: {
+      hour: 23,
+      minute: 59,
+      second: 59,
+      milliseconds: 0
+    },
     priority: 9999999999,
     singular: true
   })
