@@ -13,7 +13,7 @@ delete.ok: Flow deleted
 delete.error: There was a problem deleting the flow
 delete.success: Your flow was deleted
 editor.trigger.notSet: Not defined
-editor.trigger.title: Which event will fire this workflow?
+editor.trigger.title: Which source will fire this workflow?
 editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.event.selectOneOption: Select an option

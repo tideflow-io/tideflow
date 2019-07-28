@@ -15,7 +15,7 @@
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-#flow-editor .edit-mode {
+#flow-editor .edit-mode-link {
   text-decoration: underline;
   color: #007bff;
   cursor: pointer !important;

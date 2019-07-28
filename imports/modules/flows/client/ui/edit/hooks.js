@@ -36,6 +36,8 @@ AutoForm.addHooks(['updateFlowForm'], {
         }
       })
 
+      console.log(JSON.stringify(doc, ' ', 2))
+
       return doc
     }
   },
@@ -47,7 +49,8 @@ AutoForm.addHooks(['updateFlowForm'], {
         jsPlumb.deleteEveryConnection()
       })
 
-      Router.go('flows.one', result)
+      // Router.go('flows.one', result)
+      location.reload();
     }
   }
 })

@@ -127,7 +127,8 @@ const createConnection = (from, to) => {
   jsPlumb.connect({
     source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
     target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
-    anchor: 'Continuous'
+    anchor: 'Continuous',
+    paintStyle: {stroke: '#10D8A1', strokeWidth: 4},
   })
 }
 
@@ -182,7 +183,12 @@ const setJsPlumb = (flow) => {
       })
     })
     
-    if (!flow) return
+    if (!flow) {
+      
+      $('#flow-editor .flow-step-trigger').css('left', 20)
+      $('#flow-editor .flow-step-trigger').css('top', 20)
+      return
+    }
     $('#flow-editor .flow-step-trigger').css('left', flow.trigger.x)
     $('#flow-editor .flow-step-trigger').css('top', flow.trigger.y)
 
@@ -211,7 +217,7 @@ const setJsPlumb = (flow) => {
 
     let dragCheck = false
 
-    $('.card').draggable({
+    $('#flow-editor .card').draggable({
       drag: function () {
         // On drag set that flag to true
         dragCheck = true

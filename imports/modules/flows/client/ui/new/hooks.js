@@ -1,5 +1,6 @@
 import { AutoForm } from 'meteor/aldeed:autoform'
 import { Router } from 'meteor/iron:router'
+import { doesNotReject } from 'assert';
 
 AutoForm.addHooks(['insertFlowForm'], {
   before: {
@@ -9,6 +10,11 @@ AutoForm.addHooks(['insertFlowForm'], {
 
       // Get trigger position details
       const tc = $('#flow-editor .flow-step-trigger')
+      
+      if (!doc.trigger) {
+        throw new Meteor.Error('no-trigger')
+      }
+
       doc.trigger.x = parseInt(tc.css('left'), 10)
       doc.trigger.y = parseInt(tc.css('top'), 10)
       doc.trigger.outputs = []

@@ -3,7 +3,7 @@ name: Cron
 description: Trigger flows at fixed times, dates, or intervals
 events.called.name: "When cron's time is meet"
 events.called.title: "When cron's time is meet"
-cron.schedule.value: Cron
+cron.schedule.value: Cron expression
 validation.cron.wait: Validating value...
 validation.cron.ok: Valid value
 validation.cron.error: Invalid cron value. The flow will be set to inactive on save.
