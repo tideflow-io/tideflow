@@ -4,7 +4,7 @@ import { Settings } from '/imports/modules/management/both/collection'
 
 import i18n from 'meteor/universe:i18n'
 
-const siteSettings = Settings.findOne({type: 'siteSettings'})
+const siteSettings = Settings.findOne({type: 'siteSettings'}) || {}
 const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
 
 Accounts.urls.resetPassword = function(token) {
