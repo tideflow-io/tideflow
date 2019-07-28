@@ -1,7 +1,13 @@
 <template name="flowEditor">
+  <!-- <div id="flow-sidebar-right" class="sidebar bg-light greyed-separator-l">
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center p-3 mb-0 text-muted greyed-separator-b">
+      <span>Help sidebar</span>
+    </h6>
+    <iframe src="https://tideflow.io/docs/services-email-outgoing"></iframe>
+  </div> -->
   <nav class="col-md-2 d-none d-md-block bg-light" id="flow-sidebar">
     <div class="sidebar-sticky">
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted autoform-add-item">
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
         <span>{{__ "flows.editor.step.addOne"}}</span>
       </h6>
 
@@ -30,13 +36,13 @@
       </ul>
     </div>
   </nav>
-  <div class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+  <div class="col-md-9 ml-sm-auto col-lg-10 pt-2 px-4">
     <div class="row">
       <div class="col-12">
         {{> breadcrumb}}
       </div>
     </div>
-    <div class="row greyed-separator">
+    <div class="row greyed-separator-b">
       <div class="col-7"> {{> afQuickField name='title'}} </div>
       <div class="col-3"> {{> afQuickField name='status'}} </div>
       <div class="col-2">
