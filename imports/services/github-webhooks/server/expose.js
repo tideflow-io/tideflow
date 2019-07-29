@@ -68,9 +68,6 @@ Router.route('/ghwebhook/:uuid', function () {
     return null
   }
 
-  // Get the flows using this endpoint's service
-  const flowsQuery = {status: 'enabled', 'trigger._id': service._id}
-
   let data = []
 
   // Ignore requests checking the endpoint
