@@ -1,6 +1,7 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
 const executionCb = (cb, executionLogs, name) => {
+  console.log(executionLogs, {name})
   cb(null, {
     result: [{
       type: 'object',
