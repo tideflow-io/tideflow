@@ -6,5 +6,6 @@
     "**/.svn": true,
     "**/CVS": true
   },
-  "eslint.enable": true
+  "eslint.enable": true,
+  "workbench.colorCustomizations": {}
 }
