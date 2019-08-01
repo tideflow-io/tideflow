@@ -359,6 +359,17 @@ const guessStepsWithoutPreceding = (flow) => {
 
 /**
  * 
+ * @param {*} arr1 
+ * @param {*} arr2 
+ */
+const compareArrays = (arr1, arr2) => {
+    return arr1.sort()
+          .join() === arr2.sort()
+                        .join();
+}
+
+/**
+ * 
  * For the flow:
  * +--------------------+
  * | +-------+      +-+ |
@@ -377,7 +388,7 @@ const guessTriggerSingleChilds = (flow) => {
   const listOfCalls = calledFrom(flow)
   let result = []
   Object.keys(listOfCalls).map(stepIndex => {
-    if (listOfCalls[stepIndex] === ['trigger']) {
+    if (compareArrays(listOfCalls[stepIndex], ['trigger'])) {
       result.push(stepIndex)
     }
   })
@@ -405,6 +416,7 @@ jobs.register('workflow-start', function(jobData) {
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
+    console.log('execution is stopped')
     return this.success();
   }
 
@@ -471,6 +483,7 @@ jobs.register('workflow-start', function(jobData) {
   // 1. Determine if there's anything to execute
 
   if (!flow.steps || !flow.steps.length) {
+    console.log('no flow steps')
     endExecution(jobData.executionId);
     this.success();
     return;
