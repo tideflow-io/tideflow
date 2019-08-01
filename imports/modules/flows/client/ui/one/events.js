@@ -55,3 +55,13 @@ Template.flowOneExecutionSmallCardsCard.events({
     })
   }
 })
+
+Template.flowOneExecutionSmallCardsCardHorizontal.events({
+  'click': (event, template) => {
+    Router.go('flows.one.executionDetails', {
+      _id: template.data.flow._id,
+      executionId: template.data.execution._id
+    })
+  }
+})
+
