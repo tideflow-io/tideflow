@@ -6,7 +6,7 @@ const service = {
   description: 's-bb-webhooks.description',
   website: 'https://tideflow.io/docs/services-bb-webhooks',
   icon: 'fab fa-bitbucket',
-  iconColor: '#CCC',
+  iconColor: 'rgb(7, 71, 166)',
   inputable: true,
   stepable: false,
   ownable: true,
