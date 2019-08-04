@@ -1,0 +1,7 @@
+.copy-clipboard {
+  cursor: pointer;
+  font-style: italic;
+}
+.copy-clipboard:hover {
+  text-decoration: underline;
+}

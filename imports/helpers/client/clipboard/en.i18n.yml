@@ -1,0 +1,4 @@
+_namespace: clipboard
+text: Copy to clipboard
+textCopied: Text copied to clipboard.
+unableToCopy: Could not copy to clipboard

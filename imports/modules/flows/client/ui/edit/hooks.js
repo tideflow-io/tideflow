@@ -36,8 +36,6 @@ AutoForm.addHooks(['updateFlowForm'], {
         }
       })
 
-      console.log(JSON.stringify(doc, ' ', 2))
-
       return doc
     }
   },

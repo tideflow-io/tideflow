@@ -2,4 +2,6 @@
     <p><strong>{{__ "s-endpoint.url"}}</strong></p>
     <p>{{absoluteUrl}}service/endpoint/</p>
     <input class="form-control" value="{{triggerConfigValue 'endpoint'}}" data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
+
+    {{> clipboardBtnSmall prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
 </template>

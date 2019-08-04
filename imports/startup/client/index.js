@@ -104,3 +104,4 @@ import '/imports/services/_root/client'
 
 // Helpers
 import '/imports/ui/helpers/handlebars'
+import '/imports/helpers/client/clipboard'
