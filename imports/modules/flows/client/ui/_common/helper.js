@@ -139,9 +139,15 @@ Template.flowEditor.helpers({
   },
 
   cardText: function() {
+    const getFromDoc = () => {
+      const docStep = Flows.findOne({}).steps[this.index]
+      return docStep.event
+    }
+
     const selectedService = Session.get(`fe-step-${this.index}`)
     if (!selectedService) return;
-    const selectedEventVal = $(`.step-event-selector[data-step="${this.index}"]`).val()
+    let selectedEventVal = $(`[name="steps.${this.index}.event"]`).val()
+    if (!selectedEventVal) selectedEventVal = getFromDoc()
     if (!selectedEventVal) return i18n.__('flows.editor.trigger.notSet')
     const selectedEvent = selectedService.events.find(e => e.name === selectedEventVal)
     return selectedEvent ? i18n.__(selectedEvent.humanName) : i18n.__('flows.editor.trigger.notSet')
