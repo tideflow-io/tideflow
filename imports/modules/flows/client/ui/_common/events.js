@@ -127,8 +127,7 @@ const createConnection = (from, to) => {
   jsPlumb.connect({
     source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
     target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
-    anchor: 'Continuous',
-    paintStyle: {stroke: '#10D8A1', strokeWidth: 4},
+    anchor: 'Continuous'
   })
 }
 
@@ -165,13 +164,13 @@ const setJsPlumb = (flow) => {
 
       // Setup target cards
       jsPlumb.makeTarget($(this).find('.connector-inbound'), {
-        anchor: "Continuous"
+        anchor: 'Continuous'
       })
 
       // Setup source cards
       jsPlumb.makeSource($(this).find('.connector-outbound'), {
         parent: '.card',
-        anchor: "Continuous"
+        anchor: 'Continuous'
       })
 
       // Prevent having multiple connections from the same source to the
@@ -184,11 +183,11 @@ const setJsPlumb = (flow) => {
     })
     
     if (!flow) {
-      
       $('#flow-editor .flow-step-trigger').css('left', 20)
       $('#flow-editor .flow-step-trigger').css('top', 20)
       return
     }
+
     $('#flow-editor .flow-step-trigger').css('left', flow.trigger.x)
     $('#flow-editor .flow-step-trigger').css('top', flow.trigger.y)
 
