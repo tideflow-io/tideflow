@@ -17,9 +17,11 @@ import * as emailHelper from '/imports/helpers/both/emails'
 const debug = require('debug')('queue')
 
 const endExecution = (_id, status) => {
+  status = status || 'finished'
+  debug(`End execution ${_id} with ${status}`)
   return Executions.update(
     { _id },
-    { $set: { status: status || 'finished' } }
+    { $set: { status } }
   )
 }
 
@@ -227,6 +229,7 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
 module.exports.triggerFlows = triggerFlows
 
 const executeNextStep = (context) => {
+  debug('executeNextStep')
   check(context, {
     flow: String,
     execution: String,
@@ -281,6 +284,7 @@ const executeNextStep = (context) => {
     }
 
     // Schedule execution
+    debug('executeNextStep is scheduling', nextStepFull.type)
     jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
   })
 }
@@ -348,7 +352,7 @@ const guessStepsWithoutPreceding = (flow) => {
   let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex);
   // The result is [1, 1]
   flow.steps.map(flowStep => {
-    triggerNextSteps = triggerNextSteps.concat(flowStep.outputs || []).map(output => output)
+    triggerNextSteps = triggerNextSteps.concat( (flowStep.outputs || []).map(s => s.stepIndex) )
   });
   // The result is [ [0,1], [1,1] ]
   const lists = [allSteps, triggerNextSteps];
@@ -416,7 +420,7 @@ jobs.register('workflow-start', function(jobData) {
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
-    console.log('execution is stopped')
+    debug('execution is stopped')
     return this.success();
   }
 
@@ -483,7 +487,7 @@ jobs.register('workflow-start', function(jobData) {
   // 1. Determine if there's anything to execute
 
   if (!flow.steps || !flow.steps.length) {
-    console.log('no flow steps')
+    debug('no flow steps')
     endExecution(jobData.executionId);
     this.success();
     return;
@@ -502,7 +506,11 @@ jobs.register('workflow-start', function(jobData) {
   // ===========================================================================
   // 4. launch
 
+  debug(`stepsWithoutPreceding ${JSON.stringify(stepsWithoutPreceding)}`)
+  debug(`triggerSingleChilds ${JSON.stringify(triggerSingleChilds)}`)
+
   stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
+    debug(`workflow-start triggered step [${flow.steps[stepIndex].type}]`)
     jobs.run('workflow-step', {
       currentStep: flow.steps[stepIndex],
       executionId: jobData.executionId
@@ -634,12 +642,19 @@ jobs.register('workflow-step', function(jobData) {
   if (eventCallback.next) {
 
     // Does the current step have any output?
-    const outputs = currentStep.outputs || []
+    const numberOfOutputs = (currentStep.outputs || []).length
+
+    // if (currentStep.type === 'debug')
+    // console.log({numberOfOutputs, currentStep})
 
     // If no, it could mean that we should stop the flow's execution
-    if (!outputs.length) {
+    if (!numberOfOutputs) {
       // Get the number of executed steps in the current execution ...
       const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
+
+      // if (currentStep.type === 'debug')
+      // console.log({executedSteps, length: flow.steps.length})
+
       // and compare it against the number of steps in the executed flow (+ trigger).
       // If the number matches, flag the execution as finished
       if (executedSteps === flow.steps.length + 1) {
@@ -647,7 +662,7 @@ jobs.register('workflow-step', function(jobData) {
       }
     }
 
-    outputs.map(output => {
+    currentStep.outputs.map(output => {
       const nextStepId = output.stepIndex
       const nextStepFull = flow.steps[nextStepId]
 
@@ -672,8 +687,23 @@ jobs.register('workflow-step', function(jobData) {
       }
 
       // Schedule execution
+      console.log('#3', nextStepFull)
       jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
     })
+  }
+  else { // The current step doesn't derives in other tasks. 
+         // this means that the flow might be fully executed.
+
+      // Get the total number of steps in the current flow
+      const numberOfTotalSteps = flow.steps.length
+
+      // Get the number of executed steps in the current execution
+      const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
+      
+      // If the number matches, flag the execution as finished
+      if (executedSteps === numberOfTotalSteps + 1 /* include trigger as step */) {
+        endExecution(executionId)
+      }
   }
 
   instance.success()

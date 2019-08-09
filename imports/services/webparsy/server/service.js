@@ -29,13 +29,18 @@ const service = {
     {
       name: 'scrape',
       callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const yml = currentStep.config.yml
-        let scrapingResult = await webparsy.init({string:yml})
+
+        const string = currentStep.config.yml
+
+        const flags = _.chain(executionLogs).map('stepResults').flattenDeep().filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
+
+        let result = [{
+          type: 'object',
+          data: await webparsy.init({string, flags})
+        }]
+
         cb(null, {
-          result: [{
-            type: 'object',
-            data: scrapingResult
-          }],
+          result,
           next: true,
           error: false,
           msgs: [

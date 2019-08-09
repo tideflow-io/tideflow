@@ -1,7 +1,7 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
 const executionCb = (cb, executionLogs, name) => {
-  console.log(executionLogs, {name})
+  // console.log(JSON.stringify({executionLogs}, ' ', 2), {name})
   cb(null, {
     result: [{
       type: 'object',
