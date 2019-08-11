@@ -1,0 +1,9 @@
+_namespace: s-code
+name: Run code snippet
+description: Run code snippet
+events.run.code: Code to run
+events.run.name: Run snippet
+events.run.title: Run snippet
+log.run.title: Run code snippet
+event.build.language.selectOne: Select the language
+event.build.language.nodejs: NodeJS via nodesfc

@@ -14,6 +14,9 @@ import '/imports/services/webform/client'
 import '/imports/services/github-webhooks/both'
 import '/imports/services/github-webhooks/client'
 
+import '/imports/services/code/both'
+import '/imports/services/code/client'
+
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/client'
 

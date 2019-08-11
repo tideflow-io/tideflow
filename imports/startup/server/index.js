@@ -9,6 +9,9 @@ import './accounts'
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
 
+import '/imports/services/code/both'
+import '/imports/services/code/server'
+
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/server'
 
