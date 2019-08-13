@@ -11,7 +11,7 @@ Router.route('/login', function () {
   if (s.ready()) {
     let one = Settings.findOne()
     if (!one) {
-      return Router.go('install.index')
+      return Router.go('install.pre')
     }
   }
   if (Meteor.user()) {

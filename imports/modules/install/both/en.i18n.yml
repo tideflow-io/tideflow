@@ -1,9 +1,6 @@
 _namespace: install
-home.title: Install
-home.content: Welcome to your Tideflow.
+home.content: Welcome to Tideflow. Before continue, we need you to provide some details. We will use this to pre-fill the database as well as for creating your first user.
 home.contentHelp: Need help? Visit the official documentation
-home.detailsNeeded: Information needed
-home.detailsNeededHelp: Provide the following information. You can change this details later.
 home.userName: Your name
 home.siteName: Site name
 home.emailAddress: Email address

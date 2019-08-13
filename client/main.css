@@ -5,7 +5,7 @@ html {
 body {
   background: #F8F9FA;
   color: black;
-  font-family: 'Lato', sans-serif !important;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 
 .greyed-separator-b {
@@ -35,12 +35,6 @@ body .navbar-dark .navbar-brand {
 
 p.lead {
   color: #6c757d !important;
-}
-
-.material-icons {
-  font-size: 2.5rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
