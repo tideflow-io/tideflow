@@ -141,7 +141,7 @@ Template.flowEditor.helpers({
   cardText: function() {
     const getFromDoc = () => {
       const flow = Flows.findOne({})
-      if (!flow || !this.index) return null
+      if (!flow || !this.index || !flow.steps) return null
       const docStep = flow.steps[this.index]
       return docStep ? docStep.event : null
     }
