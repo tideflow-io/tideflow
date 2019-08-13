@@ -69,7 +69,9 @@
           </div>
         {{/each}}
       {{else}}
-        {{__ "dashboard.executions.empty"}}
+        <p class="text-center mt-5">
+          {{__ "dashboard.executions.empty"}}
+        </p>
       {{/if}}
     {{else}}
       {{> loading}}
