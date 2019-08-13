@@ -1,4 +1,4 @@
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, processableResults } from '/imports/services/_root/server'
 
 const _ = require('lodash')
 const nodesfc = require('nodesfc')
@@ -32,7 +32,8 @@ const service = {
         fs.writeFileSync(tmpFileName, code)
 
         let tmpResultsFile = `${tmpFileName}-previous-results`
-        let previousResults = _.map(executionLogs || [], 'stepResults')
+        let previousResults = processableResults(executionLogs, false)
+        console.log(JSON.stringify(previousResults, ' ', 2))
         fs.writeFileSync(tmpResultsFile, JSON.stringify(previousResults))
 
         try {
@@ -44,9 +45,12 @@ const service = {
           })
         }
         catch (ex) {
-          console.log({ex})
           result = {stdLines: [], code: 999}
           errored = true
+        }
+        finally {
+          fs.unlinkSync(tmpFileName)
+          fs.unlinkSync(tmpResultsFile)
         }
 
         let messages = [{

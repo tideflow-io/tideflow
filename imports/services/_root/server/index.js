@@ -1,3 +1,7 @@
+const os = require('os')
+const fs = require('fs')
+const path = require('path')
+
 let servicesAvailable = []
 //calculateUsage
 module.exports.servicesAvailable = servicesAvailable
@@ -162,3 +166,39 @@ const flows = {
 }
 
 module.exports.flows = flows
+
+/**
+ * Given execution logs (as in database) return them in a format that can be
+ * passed to services like `code` or `agent`, so they get only the necessary
+ * data and its files that they can retrieve.
+ * 
+ * @param {array} executionLogs 
+ * @param {boolean} external The system requires files to be accesible via
+ * an url. This is useful for the agent service, as its executed in a 3rd party
+ * server. If the files needs to be accesed within the same server, for example
+ * in the `code` service, files are stored as tmp files.
+ */
+const processableResults = (executionLogs, external) => {
+  if (!executionLogs || !executionLogs.length) return []
+
+  return (executionLogs || []).map(el => {
+    let { _id, stepIndex, type, event, createdAt, updatedAt, stepResults } = el
+
+    stepResults.map(sr => {
+      if (!external && sr.type === 'file') { // Store files locally
+        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${sr.data.fileName}`
+        fs.writeFileSync(tmpFileName, sr.data.data)
+        sr.path = tmpFileName
+        sr.fileName = sr.data.fileName
+        sr.data = 'truncated'
+      }
+      else if (external && sr.type === 'file') {
+        
+      }
+    })
+
+    return { _id, stepIndex, type, event, createdAt, updatedAt, stepResults }
+  }) // external ? 'external' : 'internal'
+}
+
+module.exports.processableResults = processableResults
