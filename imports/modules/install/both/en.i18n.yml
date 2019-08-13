@@ -9,5 +9,6 @@ home.finishSetup: Finish setup
 sunmit.error: There was an error installing Tideflow
 install.finished: Installation complete
 install.submit.error: There was an error
-finished.title: Installation complete
-finished.content: All set up now! Log in to start using Tideflow.
+finished.title: Success!
+finished.login: Login
+finished.content: Tideflow has been installed. Go ahead and....
