@@ -48,6 +48,10 @@ Template.clipboardBtnSmall.events({
     if (template.data['subfix-val']) {
       str += $(template.data['subfix-val']).val()
     }
+  
+    if (template.data['subfix-text']) {
+      str += template.data['subfix-text']
+    }
 
     copyTextToClipboard(str)
   }
