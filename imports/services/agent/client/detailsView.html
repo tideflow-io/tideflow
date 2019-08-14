@@ -1,12 +1,22 @@
 <template name="servicesAgentDetailsView">
-  <p><strong>{{__ "s-agent.token"}}</strong></p>
-  <pre class="code"><code>{{service.config.token}}</code></pre>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group" data-required="true">
+        <label class="control-label">{{__ "s-agent.token"}}</label>
+        <input type="text" class="form-control" value="{{service.config.token}}" disabled>
+        {{> clipboardBtnSmall text=service.config.token}}
+      </div>
+      
+      <div class="form-group" data-required="true">
+        <label class="control-label">{{__ "s-agent.launch"}}</label>
+        <pre class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}}</code></pre>
+        {{> clipboardBtnSmall prefix-text="npx @tideflowio/tideflow-agent -t " text=service.config.token}}
+      </div>
 
-  <p><strong>{{__ "s-agent.launch"}}</strong></p>
-  <pre class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}}</code></pre>
-
-  <p>
-    {{__ "s-agent.moreDetails"}}
-    <a target="_blank" href="https://github.com/tideflow-io/tideflow-agent">tideflow-io/tideflow-agent @ Github</a>.
-  </p>
+      <p>
+        {{__ "s-agent.moreDetails"}}
+        <a target="_blank" href="https://github.com/tideflow-io/tideflow-agent">tideflow-io/tideflow-agent @ Github</a>.
+      </p>
+    </div>
+  </div>
 </template>

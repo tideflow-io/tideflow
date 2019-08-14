@@ -1,4 +1,11 @@
 <template name="servicesBbWebhooksDetailsView">
-    <p><strong>{{__ "s-bb-webhooks.webhookUrl"}}</strong></p>
-    <pre class="code"><code>{{absoluteUrl}}bbwebhook/{{service.config.endpoint}}</code></pre>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group" data-required="true">
+        <label class="control-label">{{__ "s-bb-webhooks.webhookUrl"}}</label>
+        <input type="text" class="form-control" value="{{absoluteUrl}}bbwebhook/{{service.config.endpoint}}" disabled>
+        {{> clipboardBtnSmall prefix-text=absoluteUrl text="bbwebhook/" subfix-text=service.config.endpoint}}
+      </div>
+    </div>
+  </div>
 </template>

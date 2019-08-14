@@ -1,7 +1,17 @@
 <template name="servicesGhWebhooksDetailsView">
-    <p><strong>{{__ "s-gh-webhooks.webhookUrl"}}</strong></p>
-    <pre class="code"><code>{{absoluteUrl}}ghwebhook/{{service.config.endpoint}}</code></pre>
-
-    <p><strong>{{__ "s-gh-webhooks.webhookSecret"}}</strong></p>
-    <pre class="code"><code>{{service.config.secret}}</code></pre>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group" data-required="true">
+        <label class="control-label">{{__ "s-gh-webhooks.webhookUrl"}}</label>
+        <input type="text" class="form-control" value="{{absoluteUrl}}ghwebhook/{{service.config.endpoint}}" disabled>
+        {{> clipboardBtnSmall prefix-text=absoluteUrl text="ghwebhook/" subfix-text=service.config.endpoint}}
+      </div>
+      
+      <div class="form-group" data-required="true">
+        <label class="control-label">{{__ "s-gh-webhooks.webhookSecret"}}</label>
+        <input type="text" class="form-control" value="{{service.config.secret}}" disabled>
+        {{> clipboardBtnSmall text=service.config.secret}}
+      </div>
+    </div>
+  </div>
 </template>
