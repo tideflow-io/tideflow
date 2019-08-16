@@ -13,7 +13,6 @@ const service = {
   stepable: true,
   templates: {
     detailsView: 'servicesAgentDetailsView',
-    createMini: 'servicesAgentCreateMini',
     createFormPre: 'servicesAgentCreateFormPre',
     updateFormPre: 'servicesAgentUpdateFormPre'
   },
@@ -33,9 +32,6 @@ const service = {
       templates: {
         eventConfig: 'servicesAgentExecuteConfig'
       },
-      conditions: [
-        // {}
-      ]
     },
     /*{
       name: 'nodejs',
@@ -46,9 +42,6 @@ const service = {
       templates: {
         eventConfig: 'servicesAgentNodejsConfig'
       },
-      conditions: [
-        // {}
-      ]
     }*/
   ]
 }

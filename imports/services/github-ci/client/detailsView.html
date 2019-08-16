@@ -1,0 +1,32 @@
+<template name="servicesGhCiDetailsView">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.ciUrl"}}</label>
+              <input type="text" class="form-control" value="{{absoluteUrl}}ghci/{{service.config.endpoint}}" disabled>
+              {{> clipboardBtnSmall prefix-text=absoluteUrl text="ghci/" subfix-text=service.config.endpoint}}
+            </div>
+            
+            <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.ciSecret"}}</label>
+              <input type="text" class="form-control" value="{{service.config.secret}}" disabled>
+              {{> clipboardBtnSmall text=service.config.secret}}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr>
+            {{#if service.details.created}}
+              {{__ "s-gh-ci.github.status.created.true"}}
+            {{else}}
+              {{__ "s-gh-ci.github.status.created.waiting"}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+</template>

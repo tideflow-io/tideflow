@@ -22,10 +22,8 @@ Template['services.new.type'].helpers({
   serviceCreationFormPre: function() {
     try {
       return servicesAvailable.find(s => s.name === this.type).templates.createFormPre
-    }
-    catch (ex) {
-      return null
-    }
+    } catch (ex) { return null }
   },
+
   Services
 })

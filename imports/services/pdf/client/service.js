@@ -27,10 +27,7 @@ const service = {
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesPdfBuildPdfConfig'
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }

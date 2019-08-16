@@ -32,6 +32,9 @@ import '/imports/services/agent/client'
 import '/imports/services/cron/both'
 import '/imports/services/cron/client'
 
+import '/imports/services/github-ci/both'
+import '/imports/services/github-ci/client'
+
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/client'
 

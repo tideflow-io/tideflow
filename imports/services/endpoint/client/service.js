@@ -28,10 +28,7 @@ const service = {
       templates: {
         triggerEditor: 'triggerEditorEndpointEventNewContent'
       },
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }
   ]
 }

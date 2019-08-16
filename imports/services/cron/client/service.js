@@ -24,10 +24,7 @@ const service = {
       templates: {
         triggerEditor: 'triggerEditorCronEventCalled'
       },
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }
   ]
 }

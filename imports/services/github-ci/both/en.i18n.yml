@@ -1,0 +1,30 @@
+_namespace: s-gh-ci
+name: Github CI server
+description: Build and deploy from Github
+trigger.repository.name: Repository name
+trigger.repository.any: Any repository
+createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application once you create the service.
+ciUrl: Webhook URL
+ciSecret: Webhook secret (mandatory)
+updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
+
+events.general.cmd.selectAgent: Which agent
+events.general.cmd.anyAgent: Any agent
+
+events.pull_request.name: Pull request created
+events.pull_request.viewer.title: When a pull request gets created
+
+events.push.name: Pushed code
+events.push.viewer.title: When pushed commits
+
+events.build_cmd.name: Build by commands
+events.build_cmd.viewer.title: Run a build procress
+
+events.deploy_cmd.name: Deploy by commands
+events.deploy_cmd.viewer.title: Run a deploy procress
+
+log.called_input_parsed: Request's input parsed
+github.status.created.true: Application has been created and validated
+github.status.created.waiting: Tideflow is waiting for the application to be created on Github
+
+events.general.cmd.title: Command to run

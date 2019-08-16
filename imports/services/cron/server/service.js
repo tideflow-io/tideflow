@@ -210,10 +210,7 @@ const service = {
         result: [],
         next: true
       })
-    },
-    conditions: [
-      // {}
-    ]
+    }
   }]
 }
 

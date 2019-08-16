@@ -1,0 +1,68 @@
+import { servicesAvailable } from '/imports/services/_root/client'
+
+const service = {
+  name: 'gh-ci',
+  humanName: 's-gh-ci.name',
+  description: 's-gh-ci.description',
+  website: 'https://tideflow.io/docs/services-gh-ci',
+  icon: 'fab fa-github',
+  iconColor: '#CCC',
+  inputable: true,
+  stepable: true,
+  ownable: true,
+  templates: {
+    detailsView: 'servicesGhCiDetailsView',
+    createForm: 'servicesGhCiCreateForm',
+    triggerEditorPre: 'servicesGhCiTriggerEditorPre',
+    triggerEditorPost: 'servicesGhCiTriggerEditorPost'
+  },
+  hooks: {
+    // service: {},
+    // step: {},
+    // trigger: {}
+  },
+  events: [
+    {
+      name: 'pull_request',
+      humanName: 's-gh-ci.events.pull_request.name',
+      viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
+      inputable: true,
+      stepable: false,
+      callback: () => {}
+    },
+    {
+      name: 'push',
+      humanName: 's-gh-ci.events.push.name',
+      viewerTitle: 's-gh-ci.events.push.viewer.title',
+      inputable: true,
+      stepable: false,
+      callback: () => {}
+    },
+    {
+      name: 'build_cmd',
+      humanName: 's-gh-ci.events.build_cmd.name',
+      viewerTitle: 's-gh-ci.events.build_cmd.viewer.title',
+      inputable: false,
+      stepable: true,
+      templates: {
+        eventConfig: 'servicesGithubCiBasicStep'
+      },
+      callback: () => {}
+    },
+    {
+      name: 'deploy_cmd',
+      humanName: 's-gh-ci.events.deploy_cmd.name',
+      viewerTitle: 's-gh-ci.events.deploy_cmd.viewer.title',
+      inputable: false,
+      stepable: true,
+      templates: {
+        eventConfig: 'servicesGithubCiBasicStep'
+      },
+      callback: () => {}
+    }
+  ]
+}
+
+module.exports.service = service
+
+servicesAvailable.push(service)

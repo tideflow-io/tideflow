@@ -135,19 +135,6 @@ const FlowSchema = new SimpleSchema({
     optional: true,
     blackbox: true
   },
-  'steps.$.conditions': {
-    type: Array,
-    optional: true
-  },
-  'steps.$.conditions.$': {
-    type: Object
-  },
-  'steps.$.conditions.$.type': {
-    type: String
-  },
-  'steps.$.conditions.$.value': {
-    type: String
-  },
   createdAt: {
     type: Date,
     optional: true,

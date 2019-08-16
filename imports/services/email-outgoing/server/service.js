@@ -62,10 +62,7 @@ const service = {
         result: [],
         next: true
       })
-    },
-    conditions: [
-      // {}
-    ]
+    }
   },
   {
     name: 'to-others',
@@ -116,10 +113,7 @@ const service = {
         result: [],
         next: true
       })
-    },
-    conditions: [
-      // {}
-    ]
+    }
   }]
 }
 

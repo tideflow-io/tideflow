@@ -29,10 +29,7 @@ const service = {
       callback: () => {},
       templates: {
         eventConfig: 'servicesCodeConfig'
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }

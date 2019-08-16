@@ -33,10 +33,7 @@ const service = {
       templates: {
         triggerEditor: 'triggerEditorRssEventNewContent'
       },
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }
   ]
 }

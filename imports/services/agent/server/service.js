@@ -14,12 +14,7 @@ const service = {
   inputable: false,
   stepable: true,
   ownable: true,
-  templates: {
-    detailsView: 'servicesAgentDetailsView',
-    createMini: 'servicesAgentCreateMini',
-    createFormPre: 'servicesAgentCreateFormPre',
-    updateFormPre: 'servicesAgentUpdateFormPre'
-  },
+  templates: {},
   hooks: {
     // step: {},
     // trigger: {}
@@ -85,19 +80,13 @@ const service = {
             }
           ]
         })
-      },
-      conditions: [
-        // {}
-      ]
+      }
     },
     /*{
       name: 'nodejs',
       humanName: i18n.__('s-agent.events.nodejs.name'),
       visibe: true,
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }*/
   ]
 }

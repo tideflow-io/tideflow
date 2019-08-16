@@ -54,10 +54,7 @@ const service = {
             }
           ]
         })
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }

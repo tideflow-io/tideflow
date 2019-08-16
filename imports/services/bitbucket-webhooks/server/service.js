@@ -53,10 +53,7 @@ const service = {
             }
           ]
         })
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }
