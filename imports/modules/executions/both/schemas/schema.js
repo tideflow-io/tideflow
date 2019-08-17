@@ -33,6 +33,15 @@ const ExecutionSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false
   },
+  triggerData: {
+    type: Array,
+    optional: true
+  },
+  'triggerData.$': {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   fullFlow: {
     type: Object,
     label: 'Full flow',

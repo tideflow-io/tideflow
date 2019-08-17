@@ -2,12 +2,12 @@ import { Flows } from '/imports/modules/flows/both/collection.js'
 
 import { triggerFlows } from '/imports/queue/server'
 
-const opened = (service, body) => {
+const requested = (service, body) => {
   // Get flows
   const flows = Flows.find({
     'trigger.type': 'gh-ci',
-    'trigger.event': 'pull_request',
-    'trigger.config.repository': body.pull_request.head.repo.id.toString(),
+    'trigger.event': 'push',
+    'trigger.config.repository': body.repository.id.toString(),
     status: 'enabled'
   })
 
@@ -40,8 +40,8 @@ const opened = (service, body) => {
 }
 
 const run = (service, body) => {
-  if (['opened', 'synchronize'].includes(body.action)) {
-    opened(service, body)
+  if (body.action === 'requested') {
+    requested(service, body)
     return;
   }
 }

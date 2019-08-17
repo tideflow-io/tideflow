@@ -28,42 +28,42 @@ const service = {
   events: [
     {
       name: 'e1',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e1')
     },
     {
       name: 'e2',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e2')
     },
     {
       name: 'e3',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e3')
     },
     {
       name: 'e4',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e4')
     },
     {
       name: 'e5',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e5')
     },
     {
       name: 'e6',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e6')
     },
     {
       name: 'e7',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e7')
     },
     {
       name: 'e8',
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => 
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => 
         executionCb(cb, executionLogs, 'e8')
     }
   ]

@@ -177,7 +177,7 @@ module.exports.logUpdate = logUpdate
  * @param {Array} data [{type: String, data: {}}]
  * @param {Array} flows
  */
-const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => {
+const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
   if (user.services) {
     throw new Error('Security issue: user services attached on triggerFlows.')
   }
@@ -215,6 +215,7 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
 
     let executionId = Executions.insert({
       user: flow.user,
+      triggerData,
       service: service._id ? service._id : null,
       fullService: service,
       flow: flow._id,
@@ -222,7 +223,7 @@ const triggerFlows = (service, user, flowsQuery, originalTriggerData, flows) => 
       status: 'started'
     })
 
-    jobs.run('workflow-start', {originalTriggerData, executionId})
+    jobs.run('workflow-start', {executionId})
   })
 }
 
@@ -246,7 +247,7 @@ const executeNextStep = (context) => {
   if (execution.status === 'stopped') { return }
 
   // Get current step position in the list
-  const currentStep = flow.steps.find(s => s._id === context.step)
+  const currentStep = context.step === flow.trigger._id ? flow.trigger : flow.steps.find(s => s._id === context.step)
 
   // Does the current step have any output?
   const outputs = currentStep.outputs || []
@@ -308,16 +309,17 @@ const executionError = (context) => {
 
 module.exports.executionError = executionError
 
-const executeTrigger = (service, event, flow, user, originalTriggerData, execution, logId) => {
+const executeTrigger = (service, event, flow, user, triggerData, execution, logId) => {
   return Meteor.wrapAsync((cb) => {
     event.callback(
       service,
       flow,
+      triggerData,
       user,
-      Object.assign(flow.trigger, service),
+      flow.trigger,
       [
         {
-          stepResults: originalTriggerData,
+          stepResults: triggerData,
           next: true
         }
       ],
@@ -404,16 +406,10 @@ const guessTriggerSingleChilds = (flow) => {
  **/
 jobs.register('workflow-start', function(jobData) {
   check(jobData, {
-    originalTriggerData: Array,
     executionId: String,
   });
 
   let createdAt = new Date();
-
-  if (!Array.isArray(jobData.originalTriggerData)) {
-    jobData.originalTriggerData = [];
-    // throw new Error('Trying to trigger flows without an array of originalTriggerData')
-  }
 
   // Get the current execution
   const execution = Executions.findOne({_id: jobData.executionId});
@@ -424,11 +420,12 @@ jobs.register('workflow-start', function(jobData) {
     return this.success();
   }
 
+  const triggerData = execution.triggerData
   const flow = execution.fullFlow;
   const service = execution.fullService;
   const user = Meteor.users.findOne({_id:execution.user}, {
     fields: { services: false }
-  });
+  })
 
   // Service triggering the execution
   let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type);
@@ -451,19 +448,18 @@ jobs.register('workflow-start', function(jobData) {
     step: 'trigger',
     stepIndex: 'trigger',
     msgs: [],
-    createdAt,
-    status: 'success'
+    createdAt
   });
 
   // Execute the actual trigger
-  const triggerResult = executeTrigger(service, event, flow, user, jobData.originalTriggerData, execution, logId);
+  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, logId);
 
   // For the trigger log, update it with the results
   let stepUpdate = {
     $set: {
       stepResults: triggerResult.result,
-      next: triggerResult.next
-      // status: # already set
+      next: triggerResult.next,
+      // status: triggerResult.error ? 'error' : 'success'
     }
   }
   if (triggerResult.msgs) {
@@ -473,6 +469,19 @@ jobs.register('workflow-start', function(jobData) {
     _id: logId,
     execution: jobData.executionId
   }, stepUpdate);
+
+  if (triggerResult.error) {
+    endExecution(jobData.executionId, 'error')
+    this.success()
+    return
+  }
+
+  if (!triggerResult.next) {
+    console.log('no more atm')
+    debug('No next step atm')
+    this.success();
+    return;
+  }
 
   // Now that the trigger has been executed, we need to know which steps we
   // need to execute next. To do this
@@ -534,6 +543,7 @@ jobs.register('workflow-step', function(jobData) {
 
   const execution = Executions.findOne({_id: executionId})
   const flow = execution.fullFlow
+  const triggerData = execution.triggerData
 
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
 
@@ -591,7 +601,7 @@ jobs.register('workflow-step', function(jobData) {
   if (!stepEvent || !stepEvent.callback) return null
   
   let eventCallback = Meteor.wrapAsync(cb => {
-    stepEvent.callback(service, flow, user, currentStep, previousSteps, executionId, logId, cb)
+    stepEvent.callback(service, flow, triggerData, user, currentStep, previousSteps, executionId, logId, cb)
   })()
 
   // Process files that may have been returned from the step execution
@@ -621,9 +631,12 @@ jobs.register('workflow-step', function(jobData) {
     let updateReq = {
       $set: {
         stepResults: eventCallback.result,
-        status: eventCallback.error ? 'error' : 'success',
         next: eventCallback.next
       }
+    }
+
+    if (eventCallback.next) {
+      updateReq.$set.status = eventCallback.error ? 'error' : 'success'
     }
 
     if (eventCallback.msgs) {
@@ -691,21 +704,7 @@ jobs.register('workflow-step', function(jobData) {
       jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
     })
   }
-  else { // The current step doesn't derives in other tasks. 
-         // this means that the flow might be fully executed.
-
-      // Get the total number of steps in the current flow
-      const numberOfTotalSteps = flow.steps.length
-
-      // Get the number of executed steps in the current execution
-      const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
-      
-      // If the number matches, flag the execution as finished
-      if (executedSteps === numberOfTotalSteps + 1 /* include trigger as step */) {
-        endExecution(executionId)
-      }
-  }
-
+  
   instance.success()
 })
 

@@ -6,30 +6,14 @@ import { Services } from "/imports/modules/services/both/collection.js"
 
 const uuidv4 = require('uuid/v4')
 
-const sendGithubWebhookToAgent = async (service, flow, user, triggerService, executionLogs, executionId, logId, cb) => {
-  const agent = triggerService.config.agent
-  const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
-  const commandSent = ioTo(agentDoc, {
+const sendAgent = (agentId, flow, executionId, logId, currentStep, topic, data) => {
+  const agentDoc = agentId === 'any' ? 'any' : Services.findOne({_id: agentId})
+  return ioTo(agentDoc, Object.assign( {
     flow: flow._id,
     execution: executionId,
     log: logId,
-    triggerService,
-    webhook: executionLogs[0].stepResults[0].data
-  }, 's-gh-ci-pull_request')
-
-  cb(null, {
-    result: [],
-    next: false,
-    error: !commandSent,
-    msgs: [
-      {
-        m: commandSent ? 's-gh-ci.events.pull_request.agent.sent.success' : 's-gh-ci.events.pull_request.agent.sent.error',
-        err: !commandSent,
-        // p: callParameters,
-        d: new Date()
-      }
-    ]
-  })
+    step: currentStep._id
+  }, data || {}), topic)
 }
 
 const service = {
@@ -66,48 +50,104 @@ const service = {
     }
   },
   events: [
-    {
-      name: 'pull_request',
-      humanName: 's-gh-ci.events.pull_request.name',
-      viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
-      inputable: true,
-      stepable: false,
-      callback: sendGithubWebhookToAgent
-    },
+    // {
+    //   name: 'pull_request',
+    //   humanName: 's-gh-ci.events.pull_request.name',
+    //   viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
+    //   inputable: true,
+    //   stepable: false,
+    //   callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+    //   const agent = currentStep.config.agent
+    //   const commandSent = sendAgent(agent, flow, executionId, logId, currentStep, 'tf.githubCi.pullRequest', {
+    //     triggerService: currentStep,
+    //     webhook: executionLogs[0].stepResults[0].data
+    //   })
+
+    //   cb(null, {
+    //     result: [],
+    //     next: false,
+    //     error: !commandSent,
+    //     msgs: [
+    //       {
+    //         m: commandSent ? 's-gh-ci.events.pull_request.agent.sent.success' : 's-gh-ci.events.pull_request.agent.sent.error',
+    //         err: !commandSent,
+    //         d: new Date()
+    //       }
+    //     ]
+    //   })
+    // },
     {
       name: 'push',
       humanName: 's-gh-ci.events.push.name',
       viewerTitle: 's-gh-ci.events.push.viewer.title',
       inputable: true,
       stepable: false,
-      callback: sendGithubWebhookToAgent
-    },
-    {
-      name: 'build_cmd',
-      humanName: 's-gh-ci.events.build_cmd.name',
-      viewerTitle: 's-gh-ci.events.build_cmd.viewer.title',
-      inputable: false,
-      stepable: true,
-      templates: {
-        eventConfig: 'servicesGithubCiBasicStep'
-      },
-      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const cmd = currentStep.config.cmd
-        
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const agentId = flow.trigger.config.agent
+        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.push', {
+          triggerService: service,
+          webhook: executionLogs[0].stepResults[0].data
+        })
+
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-gh-ci.events.push.agent.sent.success' : 's-gh-ci.events.push.agent.sent.error',
+              err: !commandSent,
+              d: new Date()
+            }
+          ]
+        })
       }
     },
     {
-      name: 'deploy_cmd',
-      humanName: 's-gh-ci.events.deploy_cmd.name',
-      viewerTitle: 's-gh-ci.events.deploy_cmd.viewer.title',
+      name: 'test_cmd',
+      humanName: 's-gh-ci.events.test_cmd.name',
+      viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
       inputable: false,
       stepable: true,
       templates: {
         eventConfig: 'servicesGithubCiBasicStep'
       },
-      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      
+      /**
+       * @param {object} service Flow's trigger, including secrets, etc.
+       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
+       * @param {array} triggerData Data which triggered the .
+       * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
+       * @param {object} currentStep The flow's current step object
+       * @param {array} executionLogs
+       * @param {string} executionId
+       * @param {string} logId
+       * @param {function} cb
+       */
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const agentId = flow.trigger.config.agent
         const cmd = currentStep.config.cmd
-        
+        const webhook = triggerData[0].data
+
+        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.test_cmd', {
+          cmd,
+          webhook,
+          currentStep
+        })
+          
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-gh-ci.events.test_cmd.agent.sent.success' : 's-gh-ci.events.test_cmd.agent.sent.error',
+              err: !commandSent,
+              // p: callParameters,
+              d: new Date()
+            }
+          ]
+        })
       }
     }
   ]

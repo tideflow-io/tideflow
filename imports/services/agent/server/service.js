@@ -45,7 +45,7 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
         const agent = currentStep.config.agent
@@ -59,7 +59,7 @@ const service = {
           previous: attachPrevious ? JSON.stringify(
             _.map(executionLogs || [], 'stepResults')
           ) : null
-        })
+        }, 'tf.agent.execute')
 
         let callParameters = [currentStep.config.command]
 

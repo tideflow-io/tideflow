@@ -17,8 +17,16 @@ events.pull_request.viewer.title: When a pull request gets created
 events.push.name: Pushed code
 events.push.viewer.title: When pushed commits
 
-events.build_cmd.name: Build by commands
-events.build_cmd.viewer.title: Run a build procress
+events.pull_request.agent.sent.success: PULL REQUEST event sent to the agent
+events.pull_request.agent.sent.error: Error contacting the agent when notifying the PULL REQUEST event
+events.push.agent.sent.success: PUSH event sent to the agent
+events.push.agent.sent.error: Error contacting the agent when notifying the PUSH event
+
+events.test_cmd.agent.sent.success: Test suite sent to the agent
+events.test_cmd.agent.sent.error: Error contacting the agent when notifying the test suite
+
+events.test_cmd.name: Run test suite
+events.test_cmd.viewer.title: Run test suite
 
 events.deploy_cmd.name: Deploy by commands
 events.deploy_cmd.viewer.title: Run a deploy procress

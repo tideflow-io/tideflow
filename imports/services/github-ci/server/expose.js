@@ -59,7 +59,7 @@ Router.route('/ghci/:uuid', function () {
   // Validate the request secret with the one stored in the DB
   if (!validateReqSignature(service, req)) {
     res.writeHead(401)
-    res.end()
+    res.end('x-hub-signature validation failed')
     return
   }
 
@@ -73,8 +73,6 @@ Router.route('/ghci/:uuid', function () {
 
   // Ignore the execution if for some reason the owner is not found
   if (!user) return null
-
-  let data = []
 
   // Ignore requests checking the endpoint
   if (body.zen) {
@@ -95,16 +93,9 @@ Router.route('/ghci/:uuid', function () {
     case 'pull_request':
       return webhooks.pullRequest.run(service, body)
       break;
+    case 'check_suite':
+      return webhooks.checkSuite.run(service, body)
+      break;
   }
 
-  // Trigger flows
-  triggerFlows(
-    service,
-    user,
-    {
-      'trigger._id': service._id,
-      'trigger.event': 'called'
-    },
-    data
-  )
 }, {where: 'server'})

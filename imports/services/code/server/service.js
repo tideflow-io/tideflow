@@ -32,7 +32,7 @@ const service = {
   events: [
     {
       name: 'run',
-      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
 
         const language = currentStep.config.language
         const code = currentStep.config.code
@@ -51,8 +51,6 @@ const service = {
           result = {stdLines: []}
           errored = true
         }
-
-        console.log({code, file, result})
 
         let messages = [{
           m: 's-code.log.run.title',
