@@ -28,6 +28,9 @@ events.push.agent.sent.error: Error contacting the agent when notifying the PUSH
 events.test_cmd.agent.sent.success: Test suite sent to the agent
 events.test_cmd.agent.sent.error: Error contacting the agent when notifying the test suite
 
+events.run_cmd.agent.sent.success: The commands was sent to the agent
+events.run_cmd.agent.sent.error: The commands couldn't be sent to the agent
+
 events.test_cmd.name: Run test suite
 events.test_cmd.viewer.title: Run test suite
 

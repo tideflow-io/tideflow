@@ -73,7 +73,7 @@ const service = {
           error: !commandSent,
           msgs: [
             {
-              m: commandSent ? 's-agent.log.execute_sent' : 's-agent.log.execute_notsent',
+              m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
               err: !commandSent,
               p: callParameters,
               d: new Date()
