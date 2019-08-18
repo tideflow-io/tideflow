@@ -21,8 +21,7 @@ const service = {
       viewerTitle: 's-debug.events.e1.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e2',
@@ -30,8 +29,7 @@ const service = {
       viewerTitle: 's-debug.events.e2.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e3',
@@ -39,8 +37,7 @@ const service = {
       viewerTitle: 's-debug.events.e3.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e4',
@@ -48,8 +45,7 @@ const service = {
       viewerTitle: 's-debug.events.e4.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e5',
@@ -57,8 +53,7 @@ const service = {
       viewerTitle: 's-debug.events.e5.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e6',
@@ -66,8 +61,7 @@ const service = {
       viewerTitle: 's-debug.events.e6.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e7',
@@ -75,8 +69,7 @@ const service = {
       viewerTitle: 's-debug.events.e7.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     },
     {
       name: 'e8',
@@ -84,8 +77,7 @@ const service = {
       viewerTitle: 's-debug.events.e8.title',
       inputable: false,
       stepable: true,
-      callback: () => { return {} },
-      conditions: []
+      callback: () => { return {} }
     }
   ]
 }

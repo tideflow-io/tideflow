@@ -64,21 +64,50 @@ Meteor.startup(async () => {
 
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
-    socket.on('tf.command.progress', async message => {
+    socket.on('tf.notify.progress', async message => {
+      let date = message.date || new Date()
       let err = !!(message.stderr && message.stderr.length)
       let msgs = err ? message.stderr : message.stdout
       await logUpdate(
         message.execution,
         message.log,
-        msgs.map(msg => { return { m: msg, p: null, err, d: new Date() } })
+        msgs.map(msg => { return { m: msg, p: null, err, d: date } })
       )
+    })
+
+    // An agent is reporting std/err output.
+    // Add this to the list of messages for the workflow's execution step.
+    socket.on('tf.notify.finishBulk', async message => {
+      console.log('tf.notify.finishBulk', message)
+      let err = !!message.code
+
+      await logUpdate(
+        message.execution,
+        message.log,
+        message.stdLines.map(line => { return { 
+          m: line.output,
+          p: null,
+          err: line.err,
+          d: line.date
+        } }),
+        { status: err ? 'error' : 'success' }
+      )
+
+      if (err) {
+        executionError(pick(message, ['flow', 'execution']))
+      }
+      else {
+        executeNextStep(pick(message, ['flow', 'execution', 'log', 'step']))
+      }
     })
 
     // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
-    socket.on('tf.command.res', async message => {
+    socket.on('tf.notify.finish', async message => {
+      console.log('tf.notify.finish', message)
       let msgs = message.stdout || message.stderr
       let err = !!(message.stderr && message.stderr.length)
+
       await logUpdate(
         message.execution,
         message.log,
@@ -96,7 +125,8 @@ Meteor.startup(async () => {
     })
 
     // An agent is reporting an exception when executing the command
-    socket.on('tf.command.exception', async message => {
+    socket.on('tf.notify.exception', async message => {
+      console.log('tf.notify.exception', message)
       await logUpdate(
         message.execution,
         message.log,
@@ -139,7 +169,7 @@ Meteor.startup(async () => {
  */
 const ioTo = (agent, message, topic) => {
   if (agent === 'any') {
-    // Select the most recent-online agent and send it the message.
+    // TODO Select the most recent-online agent and send it the message.
     // If not agents found, set the execution and the step as failed.
   }
   else {
@@ -147,9 +177,10 @@ const ioTo = (agent, message, topic) => {
       if (!agent.secrets.socketId) throw new Error('agent-not-connected')
       return io
         .to(agent.secrets.socketId)
-        .emit(topic || 'tf.command', message)
+        .emit(topic, message)
       }
     catch (ex) {
+      console.error({ex})
       executionError(pick(message, ['flow', 'execution']))
       return null
     }

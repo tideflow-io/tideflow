@@ -1,0 +1,17 @@
+<template name="servicesGhCiTriggerEditorPost">
+  <div class="form-group">
+    <label class="control-label">{{__ "s-gh-ci.events.general.cmd.selectAgent"}}</label>
+    <select class="form-control" data-schema-key="{{triggerConfigName 'agent'}}" name="{{triggerConfigName 'agent'}}">
+      <option value="any" {{triggerConfigValueSelected 'agent' 'any'}}>{{__ "s-gh-ci.events.general.cmd.anyAgent"}}</option>
+      {{#each registeredAgents}}
+        <option value="{{_id}}" {{selectedAgent _id}}>{{title}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-gh-ci.events.general.branch.filter"}}</label>
+    <input type="text" class="form-control" data-schema-key="{{triggerConfigName 'branch'}}" name="{{triggerConfigName 'branch'}}" value="{{triggerConfigValue 'branch'}}">
+    <small id="branchHelp" class="form-text text-muted">{{__ "s-gh-ci.events.general.branch.filterHelp"}}</small>
+  </div>
+</template>

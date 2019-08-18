@@ -27,10 +27,7 @@ const service = {
       viewerTitle: 's-gh-webhooks.events.called.viewer.title',
       inputable: true,
       stepable: false,
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }
   ]
 }

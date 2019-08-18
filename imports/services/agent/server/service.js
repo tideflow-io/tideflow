@@ -14,12 +14,7 @@ const service = {
   inputable: false,
   stepable: true,
   ownable: true,
-  templates: {
-    detailsView: 'servicesAgentDetailsView',
-    createMini: 'servicesAgentCreateMini',
-    createFormPre: 'servicesAgentCreateFormPre',
-    updateFormPre: 'servicesAgentUpdateFormPre'
-  },
+  templates: {},
   hooks: {
     // step: {},
     // trigger: {}
@@ -50,7 +45,7 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
         const agent = currentStep.config.agent
@@ -64,7 +59,7 @@ const service = {
           previous: attachPrevious ? JSON.stringify(
             processableResults(executionLogs, true)
           ) : null
-        })
+        }, 'tf.agent.execute')
 
         let callParameters = [currentStep.config.command]
 
@@ -78,27 +73,49 @@ const service = {
           error: !commandSent,
           msgs: [
             {
-              m: commandSent ? 's-agent.log.execute_sent' : 's-agent.log.execute_notsent',
+              m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
               err: !commandSent,
               p: callParameters,
               d: new Date()
             }
           ]
         })
-      },
-      conditions: [
-        // {}
-      ]
+      }
     },
-    /*{
-      name: 'nodejs',
-      humanName: i18n.__('s-agent.events.nodejs.name'),
-      visibe: true,
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
-    }*/
+    
+    {
+      name: 'code_nodesfc',
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
+
+        const agent = currentStep.config.agent
+        const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const commandSent = ioTo(agentDoc, {
+          flow: flow._id,
+          execution: executionId,
+          log: logId,
+          step: currentStep._id,
+          code: currentStep.config.command,
+          previous: attachPrevious ? JSON.stringify(
+            _.map(executionLogs || [], 'stepResults')
+          ) : null
+        }, 'tf.agent.code_nodesfc')
+
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-agent.log.code_nodesfc.sent.success' : 's-agent.log.code_nodesfc.sent.error',
+              err: !commandSent,
+              p: [agentDoc._id || agentDoc],
+              d: new Date()
+            }
+          ]
+        })
+      }
+    }
   ]
 }
 

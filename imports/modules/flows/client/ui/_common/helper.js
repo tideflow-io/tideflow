@@ -103,6 +103,11 @@ Template.registerHelper('stepConfigValueSelected', function(setting, compare) {
   return s === compare ? 'selected' : ''
 })
 
+Template.registerHelper('triggerConfigValueSelected', function(setting, compare) {
+  if (!this || !this.trigger || !this.trigger.config) return
+  return this.trigger.config[setting] === compare ? 'selected' : ''
+})
+
 Template.registerHelper('stepConfigValueChecked', function(setting) {
   if (!this || !this.steps || !this.steps[this.index]) return
   const s = this.steps[this.index].config ? this.steps[this.index].config[setting] || '' : ''

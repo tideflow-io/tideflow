@@ -31,10 +31,7 @@ const service = {
       viewerTitle: 's-webform.events.submitted.viewer.title',
       inputable: true,
       stepable: false,
-      callback: () => {},
-      conditions: [
-        // {}
-      ]
+      callback: () => {}
     }
   ]
 }

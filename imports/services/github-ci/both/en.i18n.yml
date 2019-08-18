@@ -1,0 +1,44 @@
+_namespace: s-gh-ci
+name: Github CI server (preview)
+description: Build and deploy from Github
+trigger.repository.name: Repository name
+trigger.repository.any: Any repository
+createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application once you create the service.
+ciUrl: Webhook URL
+ciSecret: Webhook secret (mandatory)
+updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
+
+events.general.cmd.selectAgent: Which agent?
+events.general.cmd.anyAgent: Any agent
+
+events.general.branch.filter: Which branch?
+events.general.branch.filterHelp: Use "*" for any branch
+
+events.pull_request.name: Pull request created
+events.pull_request.viewer.title: When a pull request gets created
+
+events.push.name: Pushed code
+events.push.viewer.title: When pushed commits
+
+events.pull_request.agent.sent.success: PULL REQUEST event sent to the agent
+events.pull_request.agent.sent.error: Error contacting the agent when notifying the PULL REQUEST event
+events.push.agent.sent.success: PUSH event sent to the agent
+events.push.agent.sent.error: Error contacting the agent when notifying the PUSH event
+
+events.test_cmd.agent.sent.success: Test suite sent to the agent
+events.test_cmd.agent.sent.error: Error contacting the agent when notifying the test suite
+
+events.run_cmd.agent.sent.success: The commands was sent to the agent
+events.run_cmd.agent.sent.error: The commands couldn't be sent to the agent
+
+events.test_cmd.name: Run test suite
+events.test_cmd.viewer.title: Run test suite
+
+events.deploy_cmd.name: Deploy by commands
+events.deploy_cmd.viewer.title: Run a deploy procress
+
+log.called_input_parsed: Request's input parsed
+github.status.created.true: Application has been created and validated
+github.status.created.waiting: Tideflow is waiting for the application to be created on Github
+
+events.general.cmd.title: Command to run

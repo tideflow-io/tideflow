@@ -2,8 +2,8 @@ _namespace: s-bb-webhooks
 name: Bitbucket webhooks
 description: Listen for Bitbucket's events from your repositories.
 createFormPreNote: Once you create this webhook, Tideflow will assign it an URL that you can use on bitbucket.org.
-webhookUrl: Webhook url
+webhookUrl: Webhook URL
 updateFormPre: Bitbucket's webhook URLs are inmutable over time. You can safely update the details on this page.
 events.called.name: When it's called
-events.called.viewer.title: When this webhook url is called
+events.called.viewer.title: When this webhook URL is called
 log.called_input_parsed: Request's input parsed

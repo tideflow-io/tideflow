@@ -13,7 +13,6 @@ const service = {
   stepable: true,
   templates: {
     detailsView: 'servicesAgentDetailsView',
-    createMini: 'servicesAgentCreateMini',
     createFormPre: 'servicesAgentCreateFormPre',
     updateFormPre: 'servicesAgentUpdateFormPre'
   },
@@ -31,25 +30,20 @@ const service = {
       stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentExecuteConfig'
-      },
-      conditions: [
-        // {}
-      ]
+        eventConfig: 'servicesAgentCommonConfig'
+      }
     },
-    /*{
-      name: 'nodejs',
-      humanName: 's-agent.events.nodejs.name',
-      viewerTitle: 's-agent.events.nodejs.title',
-      visibe: true,
+    {
+      name: 'code_nodesfc',
+      humanName: 's-agent.events.code_nodesfc.name',
+      viewerTitle: 's-agent.events.code_nodesfc.title',
+      inputable: false,
+      stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentNodejsConfig'
-      },
-      conditions: [
-        // {}
-      ]
-    }*/
+        eventConfig: 'servicesAgentCommonConfig'
+      }
+    }
   ]
 }
 

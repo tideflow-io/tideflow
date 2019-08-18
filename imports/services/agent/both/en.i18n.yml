@@ -6,9 +6,9 @@ launch: Ensure you have Node.js version 8+ installed. Then run the following
 token: Authentication token
 moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
-events.nodejs.name: Execute a single-file-code
 events.command.title: Execute a command in my agent.
-events.nodejs.title: Execute a single-file-code
+events.code_nodesfc.name: Execute a single-file-code
+events.code_nodesfc.title: Execute a single-file-code
 event.execute.command: Command to execute
 event.execute.selectAgent: Which agent must be used
 event.execute.anyAgent: Any agent available
@@ -16,8 +16,10 @@ event.execute.nodeJs: Code to execute
 service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
-log.execute_sent: Command reported to the agent
-log.execute_notsent: The command could not be delivered
+log.execute.sent.success: Command reported to the agent
+log.execute.sent.error: The command could not be delivered
+log.code_nodesfc.sent.success: NodeJS script reported to the agent
+log.code_nodesfc.sent.error: NodeJS script could not be delivered
 event.common.attachPreviousStepOutput: Attach the output from the previous step
 event.common.attachPreviousStepOutputYes: Yes
 event.common.attachPreviousStepOutputNo: No

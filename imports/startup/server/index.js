@@ -9,9 +9,6 @@ import './accounts'
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
 
-import '/imports/services/code/both'
-import '/imports/services/code/server'
-
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/server'
 
@@ -38,6 +35,9 @@ import '/imports/services/cron/server'
 
 import '/imports/services/debug/both'
 import '/imports/services/debug/server'
+
+import '/imports/services/github-ci/both'
+import '/imports/services/github-ci/server'
 
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/server'

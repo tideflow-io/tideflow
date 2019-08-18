@@ -14,9 +14,6 @@ import '/imports/services/webform/client'
 import '/imports/services/github-webhooks/both'
 import '/imports/services/github-webhooks/client'
 
-import '/imports/services/code/both'
-import '/imports/services/code/client'
-
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/client'
 
@@ -31,6 +28,9 @@ import '/imports/services/agent/client'
 
 import '/imports/services/cron/both'
 import '/imports/services/cron/client'
+
+import '/imports/services/github-ci/both'
+import '/imports/services/github-ci/client'
 
 import '/imports/services/email-outgoing/both'
 import '/imports/services/email-outgoing/client'

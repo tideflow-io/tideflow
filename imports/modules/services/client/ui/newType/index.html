@@ -13,13 +13,7 @@
 
     {{#autoForm collection=Services id="insertServiceForm" type="method" meteormethod="services.create"}}
 
-    {{#if serviceCreationFormPre}}
-    <div class="row">
-      <div class="col-md-12">
-        {{> Template.dynamic template=serviceCreationFormPre}}
-      </div>
-    </div>
-    {{/if}}
+   
 
     {{> afQuickField name='type' value=this.type type='hidden'}}
     <div class="row">
@@ -28,6 +22,10 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-body">
+                {{#if serviceCreationFormPre}}
+                  {{> Template.dynamic template=serviceCreationFormPre}}
+                {{/if}}
+
                 {{> afQuickField name='title'}}
                 {{> Template.dynamic template=serviceCreationForm}}
               </div>

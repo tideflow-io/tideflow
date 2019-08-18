@@ -28,7 +28,7 @@ const service = {
   events: [
     {
       name: 'scrape',
-      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
 
         const string = currentStep.config.yml
 
@@ -51,10 +51,7 @@ const service = {
             }
           ]
         })
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }

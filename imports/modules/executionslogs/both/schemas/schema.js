@@ -53,7 +53,8 @@ const ExecutionlogSchema = new SimpleSchema({
   status: { // success error stopped
     type: String,
     label: 'Status',
-    optional: true
+    defaultValue: 'pending',
+    optional: false
   },
   stepResults: {
     type: Array,

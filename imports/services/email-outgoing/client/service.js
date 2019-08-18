@@ -26,10 +26,7 @@ const service = {
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesEmailOutgoingToMeConfig'
-      },
-      conditions: [
-        // {}
-      ]
+      }
     },
     {
       name: 'to-others',
@@ -40,10 +37,7 @@ const service = {
       callback: () => { return {} },
       templates: {
         eventConfig: 'servicesEmailOutgoingToOthersConfig'
-      },
-      conditions: [
-        // {}
-      ]
+      }
     }
   ]
 }
