@@ -1,9 +1,9 @@
 _namespace: dashboard
 title: Dashboard
+subtitle: History of your flows executions.
+executions.empty: It seems you haven't executed any flow yet.
 executions.title: Executions history
 executions.filters.last24Hours: Last 24 hours
 executions.filters.lastWeek: Last week
 executions.filters.lastMonth: Last month
 wellcome.title: Wellcome to Tideflow
-wellcome.message.thispage: This page will show a graphical history of your flows executions.
-wellcome.message.help: Contact Tideflow's team or visit the docummentation portal if you have any questions.

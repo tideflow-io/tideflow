@@ -1,6 +1,6 @@
-import { servicesAvailable } from '/imports/services/_root/server'
-import { fstat } from 'fs';
+import { servicesAvailable, processableResults } from '/imports/services/_root/server'
 
+const _ = require('lodash')
 const nodesfc = require('nodesfc')
 const os = require('os')
 const path = require('path')
@@ -10,49 +10,48 @@ const service = {
   name: 'code',
   inputable: false,
   stepable: true,
-  ownable: true,
-  templates: {
-  },
+  ownable: false,
+  templates: {},
   hooks: {
     // step: {},
     // trigger: {}
-    service: {
-      create: {
-        pre: (service) => {
-          return service
-        }
-      },
-      delete: {
-        pre: (service) => {
-          return service
-        }
-      }
-    }
+    // service: {}
   },
   events: [
     {
       name: 'run',
       callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
 
-        const language = currentStep.config.language
+        const language = currentStep.config.language // not used atm
         const code = currentStep.config.code
-
-        const file = `${os.tmpdir}${path.sep}${new Date().getTime()}`
-        fs.writeFileSync(file, code)
+        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}`
 
         let errored = false
         let result = null
 
+        fs.writeFileSync(tmpFileName, code)
+
+        let tmpResultsFile = `${tmpFileName}-previous-results`
+        let previousResults = processableResults(executionLogs, false)
+        console.log(JSON.stringify(previousResults, ' ', 2))
+        fs.writeFileSync(tmpResultsFile, JSON.stringify(previousResults))
+
         try {
-          result = await nodesfc.init({file})
+          result = await nodesfc.init({
+            file: tmpFileName,
+            env: {
+              TF_PREVIOUS_STEPS: tmpResultsFile
+            }
+          })
         }
         catch (ex) {
-          console.log({ex})
-          result = {stdLines: []}
+          result = {stdLines: [], code: 999}
           errored = true
         }
-
-        console.log({code, file, result})
+        finally {
+          fs.unlinkSync(tmpFileName)
+          fs.unlinkSync(tmpResultsFile)
+        }
 
         let messages = [{
           m: 's-code.log.run.title',
@@ -68,7 +67,7 @@ const service = {
             data: result
           }] : [],
           next: true,
-          error: errored,
+          error: errored || !!result.code,
           msgs: messages
         })
       },

@@ -36,7 +36,7 @@
     "moment": "^2.24.0",
     "mongodb": "^3.2.7",
     "nodemailer": "^5.1.1",
-    "nodesfc": "^0.7.0",
+    "nodesfc": "^0.7.1",
     "puppeteer": "^1.19.0",
     "rss-parser": "^3.7.2",
     "simpl-schema": "^1.5.5",

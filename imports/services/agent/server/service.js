@@ -1,8 +1,8 @@
 import i18n from 'meteor/universe:i18n'
 
-import { Services } from "/imports/modules/services/both/collection.js"
+import { Services } from '/imports/modules/services/both/collection.js'
 
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, processableResults } from '/imports/services/_root/server'
 
 import { ioTo } from './socket'
 
@@ -62,7 +62,7 @@ const service = {
           step: currentStep._id,
           command: currentStep.config.command,
           previous: attachPrevious ? JSON.stringify(
-            _.map(executionLogs || [], 'stepResults')
+            processableResults(executionLogs, true)
           ) : null
         })
 

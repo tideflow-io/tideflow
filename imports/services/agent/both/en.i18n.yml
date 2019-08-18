@@ -1,6 +1,6 @@
 _namespace: s-agent
-name: Tideflow agent
-description: Allows to execute commands and code in your own infrastructure.
+name: Tideflow's agent
+description: Execute commands and code in your own machines.
 createFormPreNote: Once you create the agent, Tideflow.io will assign it a token you need to use.
 launch: Ensure you have Node.js version 8+ installed. Then run the following
 token: Authentication token

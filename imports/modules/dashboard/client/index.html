@@ -8,13 +8,7 @@
           <h2>
             {{__ "dashboard.title"}}
           </h2>
-          {{#if executionsLoaded}}
-            {{#if executions}}
-            {{else}}
-              <p>{{__ "dashboard.wellcome.message.thispage"}}</p>
-              <p>{{__ "dashboard.wellcome.message.help"}}</p>
-            {{/if}}
-          {{/if}}
+          <p class="lead">{{__ "dashboard.subtitle"}}</p>
         </div>
       </div>
     </div>
@@ -74,6 +68,10 @@
             </div>
           </div>
         {{/each}}
+      {{else}}
+        <p class="text-center mt-5">
+          {{__ "dashboard.executions.empty"}}
+        </p>
       {{/if}}
     {{else}}
       {{> loading}}

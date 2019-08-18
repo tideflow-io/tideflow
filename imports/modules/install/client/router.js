@@ -6,6 +6,17 @@ const mayGoHome = () => {
   if (Meteor.user()) { Router.go('dashboard') }
 }
 
+Router.route('/install/previous', function () {
+  mayGoHome()
+  this.render('install.pre')
+}, {
+  subscriptions: function () {
+    return []
+  },
+  name: 'install.pre',
+  title: i18n.__('install.pre')
+})
+
 Router.route('/install', function () {
   mayGoHome()
   this.render('install.index')

@@ -8,7 +8,7 @@ const service = {
   description: 's-code.description',
   website: 'https://tideflow.io/docs/services-code',
   icon: 'fa fa-code',
-  iconColor: '#627F89',
+  iconColor: '#001628',
   ownable: false,
   inputable: false,
   stepable: true,
