@@ -65,13 +65,40 @@ Meteor.startup(async () => {
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.progress', async message => {
+      let date = message.date || new Date()
       let err = !!(message.stderr && message.stderr.length)
       let msgs = err ? message.stderr : message.stdout
       await logUpdate(
         message.execution,
         message.log,
-        msgs.map(msg => { return { m: msg, p: null, err, d: new Date() } })
+        msgs.map(msg => { return { m: msg, p: null, err, d: date } })
       )
+    })
+
+    // An agent is reporting std/err output.
+    // Add this to the list of messages for the workflow's execution step.
+    socket.on('tf.notify.finishBulk', async message => {
+      console.log('tf.notify.finishBulk', message)
+      let err = !!message.code
+
+      await logUpdate(
+        message.execution,
+        message.log,
+        message.stdLines.map(line => { return { 
+          m: line.output,
+          p: null,
+          err: line.err,
+          d: line.date
+        } }),
+        { status: err ? 'error' : 'success' }
+      )
+
+      if (err) {
+        executionError(pick(message, ['flow', 'execution']))
+      }
+      else {
+        executeNextStep(pick(message, ['flow', 'execution', 'log', 'step']))
+      }
     })
 
     // An agent is reporting std/err and the exit code

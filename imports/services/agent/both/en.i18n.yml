@@ -6,9 +6,9 @@ launch: Ensure you have Node.js version 8+ installed. Then run the following
 token: Authentication token
 moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
-events.nodejs.name: Execute a single-file-code
 events.command.title: Execute a command in my agent.
-events.nodejs.title: Execute a single-file-code
+events.code_nodesfc.name: Execute a single-file-code
+events.code_nodesfc.title: Execute a single-file-code
 event.execute.command: Command to execute
 event.execute.selectAgent: Which agent must be used
 event.execute.anyAgent: Any agent available

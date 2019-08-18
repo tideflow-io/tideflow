@@ -30,7 +30,7 @@ Template.registerHelper('sAgentReportStatus', function() {
   }
 })
 
-Template.servicesAgentExecuteConfig.helpers({
+Template.servicesAgentCommonConfig.helpers({
   registeredAgents: () => {
     return Services.find({type: 'agent'}).map(a => {
       return {

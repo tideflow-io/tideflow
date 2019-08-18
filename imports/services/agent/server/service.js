@@ -82,12 +82,40 @@ const service = {
         })
       }
     },
-    /*{
-      name: 'nodejs',
-      humanName: i18n.__('s-agent.events.nodejs.name'),
-      visibe: true,
-      callback: () => {}
-    }*/
+    
+    {
+      name: 'code_nodesfc',
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
+
+        const agent = currentStep.config.agent
+        const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const commandSent = ioTo(agentDoc, {
+          flow: flow._id,
+          execution: executionId,
+          log: logId,
+          step: currentStep._id,
+          code: currentStep.config.command,
+          previous: attachPrevious ? JSON.stringify(
+            _.map(executionLogs || [], 'stepResults')
+          ) : null
+        }, 'tf.agent.code_nodesfc')
+
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-agent.log.code_nodesfc.sent.success' : 's-agent.log.code_nodesfc.sent.error',
+              err: !commandSent,
+              p: [agentDoc._id || agentDoc],
+              d: new Date()
+            }
+          ]
+        })
+      }
+    }
   ]
 }
 

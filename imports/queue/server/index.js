@@ -749,8 +749,10 @@ jobs.register('workflow-execution-finished', function(jobData) {
 
   const stepService = servicesAvailable.find(sa => sa.name === trigger.type)
   const stepEvent = stepService.events.find(sse => sse.name === trigger.event)
+
   if (!stepEvent || !stepEvent.executionFinished) {
     instance.success()
+    return
   }
 
   Meteor.wrapAsync(cb => {
