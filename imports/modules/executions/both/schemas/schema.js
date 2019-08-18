@@ -53,6 +53,11 @@ const ExecutionSchema = new SimpleSchema({
     label: 'Status',
     optional: false
   },
+  extras: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   createdAt: {
     type: Date,
     optional: true,

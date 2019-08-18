@@ -1,5 +1,5 @@
 _namespace: s-gh-ci
-name: Github CI server
+name: Github CI server (preview)
 description: Build and deploy from Github
 trigger.repository.name: Repository name
 trigger.repository.any: Any repository
@@ -8,8 +8,11 @@ ciUrl: Webhook URL
 ciSecret: Webhook secret (mandatory)
 updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
 
-events.general.cmd.selectAgent: Which agent
+events.general.cmd.selectAgent: Which agent?
 events.general.cmd.anyAgent: Any agent
+
+events.general.branch.filter: Which branch?
+events.general.branch.filterHelp: Use "*" for any branch
 
 events.pull_request.name: Pull request created
 events.pull_request.viewer.title: When a pull request gets created

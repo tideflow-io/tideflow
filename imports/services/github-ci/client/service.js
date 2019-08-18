@@ -22,14 +22,14 @@ const service = {
     // trigger: {}
   },
   events: [
-    // {
-    //   name: 'pull_request',
-    //   humanName: 's-gh-ci.events.pull_request.name',
-    //   viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
-    //   inputable: true,
-    //   stepable: false,
-    //   callback: () => {}
-    // },
+    {
+      name: 'pull_request',
+      humanName: 's-gh-ci.events.pull_request.name',
+      viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
+      inputable: true,
+      stepable: false,
+      callback: () => {}
+    },
     {
       name: 'push',
       humanName: 's-gh-ci.events.push.name',
@@ -42,6 +42,17 @@ const service = {
       name: 'test_cmd',
       humanName: 's-gh-ci.events.test_cmd.name',
       viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
+      inputable: false,
+      stepable: true,
+      templates: {
+        eventConfig: 'servicesGithubCiBasicStep'
+      },
+      callback: () => {}
+    },
+    {
+      name: 'run_cmd',
+      humanName: 's-gh-ci.events.run_cmd.name',
+      viewerTitle: 's-gh-ci.events.run_cmd.viewer.title',
       inputable: false,
       stepable: true,
       templates: {

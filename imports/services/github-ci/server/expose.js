@@ -93,6 +93,9 @@ Router.route('/ghci/:uuid', function () {
     case 'pull_request':
       return webhooks.pullRequest.run(service, body)
       break;
+    case 'push':
+      return webhooks.push.run(service, body)
+      break;
     case 'check_suite':
       return webhooks.checkSuite.run(service, body)
       break;

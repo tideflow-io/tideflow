@@ -2,12 +2,12 @@ import { Flows } from '/imports/modules/flows/both/collection.js'
 
 import { triggerFlows } from '/imports/queue/server'
 
-const requested = (service, body) => {
-  const ghBranch = webhook.check_suite.head_branch
-
+const created = (service, body) => {
+  const ghBranch = body.ref.split('/').pop()
+  
   const flows = Flows.find({
     'trigger.type': 'gh-ci',
-    'trigger.event': 'check_suite',
+    'trigger.event': 'push',
     'trigger.config.branch': { $in: ['*', '', ghBranch] },
     'trigger.config.repository': body.repository.id.toString(),
     status: 'enabled'
@@ -42,10 +42,7 @@ const requested = (service, body) => {
 }
 
 const run = (service, body) => {
-  if (body.action === 'requested') {
-    requested(service, body)
-    return;
-  }
+  created(service, body)
 }
 
 module.exports.run = run

@@ -4,6 +4,8 @@ import { ioTo } from '/imports/services/agent/server/socket'
 
 import { Services } from "/imports/modules/services/both/collection.js"
 
+import { createCheckrun, updateCheckrun } from './ghApi'
+
 const uuidv4 = require('uuid/v4')
 
 const sendAgent = (agentId, flow, executionId, logId, currentStep, topic, data) => {
@@ -50,38 +52,65 @@ const service = {
     }
   },
   events: [
-    // {
-    //   name: 'pull_request',
-    //   humanName: 's-gh-ci.events.pull_request.name',
-    //   viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
-    //   inputable: true,
-    //   stepable: false,
-    //   callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
-    //   const agent = currentStep.config.agent
-    //   const commandSent = sendAgent(agent, flow, executionId, logId, currentStep, 'tf.githubCi.pullRequest', {
-    //     triggerService: currentStep,
-    //     webhook: executionLogs[0].stepResults[0].data
-    //   })
+    {
+      name: 'pull_request',
+      humanName: 's-gh-ci.events.pull_request.name',
+      viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
+      inputable: true,
+      stepable: false,
 
-    //   cb(null, {
-    //     result: [],
-    //     next: false,
-    //     error: !commandSent,
-    //     msgs: [
-    //       {
-    //         m: commandSent ? 's-gh-ci.events.pull_request.agent.sent.success' : 's-gh-ci.events.pull_request.agent.sent.error',
-    //         err: !commandSent,
-    //         d: new Date()
-    //       }
-    //     ]
-    //   })
-    // },
+      /**
+       * @param {object} service Flow's original trigger service, including secrets, etc.
+       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
+       * @param {array} triggerData Data which triggered the flow execution.
+       * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
+       * @param {object} currentStep The flow's current step object
+       * @param {array} executionLogs
+       * @param {string} executionId
+       * @param {string} logId
+       * @param {function} cb
+       */
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const agent = currentStep.config.agent
+        const webhook = executionLogs[0].stepResults[0].data
+
+        const commandSent = sendAgent(agent, flow, executionId, logId, currentStep, 'tf.githubCi.pullRequest', {
+          triggerService: currentStep,
+          webhook
+        })
+
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-gh-ci.events.pull_request.agent.sent.success' : 's-gh-ci.events.pull_request.agent.sent.error',
+              err: !commandSent,
+              d: new Date()
+            }
+          ]
+        })
+      }
+    },
     {
       name: 'push',
       humanName: 's-gh-ci.events.push.name',
       viewerTitle: 's-gh-ci.events.push.viewer.title',
       inputable: true,
       stepable: false,
+      
+      /**
+       * @param {object} service Flow's original trigger service, including secrets, etc.
+       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
+       * @param {array} triggerData Data which triggered the flow execution.
+       * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
+       * @param {object} currentStep The flow's current step object
+       * @param {array} executionLogs
+       * @param {string} executionId
+       * @param {string} logId
+       * @param {function} cb
+       */
       callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
         const agentId = flow.trigger.config.agent
         const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.push', {
@@ -104,9 +133,9 @@ const service = {
       }
     },
     {
-      name: 'test_cmd',
-      humanName: 's-gh-ci.events.test_cmd.name',
-      viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
+      name: 'run_cmd',
+      humanName: 's-gh-ci.events.run_cmd.name',
+      viewerTitle: 's-gh-ci.events.run_cmd.viewer.title',
       inputable: false,
       stepable: true,
       templates: {
@@ -114,9 +143,9 @@ const service = {
       },
       
       /**
-       * @param {object} service Flow's trigger, including secrets, etc.
+       * @param {object} service Flow's original trigger service, including secrets, etc.
        * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-       * @param {array} triggerData Data which triggered the .
+       * @param {array} triggerData Data which triggered the flow execution.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
@@ -129,7 +158,7 @@ const service = {
         const cmd = currentStep.config.cmd
         const webhook = triggerData[0].data
 
-        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.test_cmd', {
+        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.run_cmd', {
           cmd,
           webhook,
           currentStep
@@ -141,7 +170,7 @@ const service = {
           error: !commandSent,
           msgs: [
             {
-              m: commandSent ? 's-gh-ci.events.test_cmd.agent.sent.success' : 's-gh-ci.events.test_cmd.agent.sent.error',
+              m: commandSent ? 's-gh-ci.events.run_cmd.agent.sent.success' : 's-gh-ci.events.run_cmd.agent.sent.error',
               err: !commandSent,
               // p: callParameters,
               d: new Date()
@@ -149,7 +178,65 @@ const service = {
           ]
         })
       }
-    }
+    },
+    // {
+    //   name: 'test_cmd',
+    //   humanName: 's-gh-ci.events.test_cmd.name',
+    //   viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
+    //   inputable: false,
+    //   stepable: true,
+    //   templates: {
+    //     eventConfig: 'servicesGithubCiBasicStep'
+    //   },
+      
+    //   /**
+    //    * @param {object} service Flow's original trigger service, including secrets, etc.
+    //    * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
+    //    * @param {array} triggerData Data which triggered the flow execution.
+    //    * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
+    //    * @param {object} currentStep The flow's current step object
+    //    * @param {array} executionLogs
+    //    * @param {string} executionId
+    //    * @param {string} logId
+    //    * @param {function} cb
+    //    */
+    //   callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+    //     const agentId = flow.trigger.config.agent
+    //     const cmd = currentStep.config.cmd
+    //     const webhook = triggerData[0].data
+
+    //     let checkRun = null
+
+    //     if (webhook.check_suite) {
+    //       // post
+    //       checkRun = await createCheckrun(service, webhook.repository, webhook.check_suite, executionId, 'in_progress')
+    //     }
+
+    //     // update execution with extras
+    //     // this should run after the commands have been run, in the agent service
+    //     // await updateCheckrun(service, webhook.repository, webhook.check_suite, checkRun, executionId, 'completed', 'success')
+
+    //     const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.test_cmd', {
+    //       cmd,
+    //       webhook,
+    //       currentStep
+    //     })
+          
+    //     cb(null, {
+    //       result: [],
+    //       next: false,
+    //       error: !commandSent,
+    //       msgs: [
+    //         {
+    //           m: commandSent ? 's-gh-ci.events.test_cmd.agent.sent.success' : 's-gh-ci.events.test_cmd.agent.sent.error',
+    //           err: !commandSent,
+    //           // p: callParameters,
+    //           d: new Date()
+    //         }
+    //       ]
+    //     })
+    //   }
+    // }
   ]
 }
 

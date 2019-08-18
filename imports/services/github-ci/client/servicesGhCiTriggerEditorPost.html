@@ -8,4 +8,10 @@
       {{/each}}
     </select>
   </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-gh-ci.events.general.branch.filter"}}</label>
+    <input type="text" class="form-control" data-schema-key="{{triggerConfigName 'branch'}}" name="{{triggerConfigName 'branch'}}" value="{{triggerConfigValue 'branch'}}">
+    <small id="branchHelp" class="form-text text-muted">{{__ "s-gh-ci.events.general.branch.filterHelp"}}</small>
+  </div>
 </template>

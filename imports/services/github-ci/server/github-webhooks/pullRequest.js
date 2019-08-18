@@ -3,10 +3,12 @@ import { Flows } from '/imports/modules/flows/both/collection.js'
 import { triggerFlows } from '/imports/queue/server'
 
 const opened = (service, body) => {
-  // Get flows
+  const ghBranch = webhook.pull_request.head.ref
+
   const flows = Flows.find({
     'trigger.type': 'gh-ci',
     'trigger.event': 'pull_request',
+    'trigger.config.branch': { $in: ['*', '', ghBranch] },
     'trigger.config.repository': body.pull_request.head.repo.id.toString(),
     status: 'enabled'
   })

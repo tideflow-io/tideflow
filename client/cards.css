@@ -118,8 +118,8 @@
   }
 }
 
-.card-list .card:last-child {
-  margin-bottom: 0;
+.card-list > *:last-of-type {
+  margin-bottom: 0 !important;
 }
 
 .card-task .card-meta {
