@@ -19,10 +19,11 @@ const debug = require('debug')('queue')
 const endExecution = (_id, status) => {
   status = status || 'finished'
   debug(`End execution ${_id} with ${status}`)
-  return Executions.update(
+  Executions.update(
     { _id },
     { $set: { status } }
   )
+  jobs.run('workflow-execution-finished', { executionId: _id, status })
 }
 
 /**
@@ -547,10 +548,6 @@ jobs.register('workflow-step', function(jobData) {
 
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
 
-  if (!execution) {
-    throw new Error(`Execution ${executionId} not found`)
-  }
-
   /**
    * Store execution in db.
    */
@@ -731,6 +728,34 @@ jobs.register('workflow-execution-notify-email', function(user, flow) {
   const emailData = serverEmailHelper.data(to, emailDetails, tplVars, 'flowEmailOnTriggered')
 
   serverEmailHelper.send(emailData)
+
+  instance.success()
+})
+
+jobs.register('workflow-execution-finished', function(jobData) {
+  let instance = this
+
+  let { executionId } = jobData
+
+  const execution = Executions.findOne({_id: executionId})
+  const service = execution.fullService
+  const flow = execution.fullFlow
+  const triggerData = execution.triggerData
+  const user = Meteor.users.findOne({_id:execution.user}, {
+    fields: { services: false }
+  })
+
+  const trigger = execution.fullFlow.trigger
+
+  const stepService = servicesAvailable.find(sa => sa.name === trigger.type)
+  const stepEvent = stepService.events.find(sse => sse.name === trigger.event)
+  if (!stepEvent || !stepEvent.executionFinished) {
+    instance.success()
+  }
+
+  Meteor.wrapAsync(cb => {
+    stepEvent.executionFinished(service, flow, triggerData, user, executionId, cb)
+  })()
 
   instance.success()
 })

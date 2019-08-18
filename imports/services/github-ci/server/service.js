@@ -14,7 +14,7 @@ const sendAgent = (agentId, flow, executionId, logId, currentStep, topic, data) 
     flow: flow._id,
     execution: executionId,
     log: logId,
-    step: currentStep._id
+    step: currentStep ? currentStep._id : null
   }, data || {}), topic)
 }
 
@@ -91,6 +91,11 @@ const service = {
             }
           ]
         })
+      },
+
+      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
+        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
+        cb(!commandSent, null)
       }
     },
     {
@@ -130,6 +135,11 @@ const service = {
             }
           ]
         })
+      },
+
+      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
+        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.push.execution.finished', {})
+        cb(!commandSent, null)
       }
     },
     {
