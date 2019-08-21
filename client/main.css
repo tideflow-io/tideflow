@@ -20,7 +20,7 @@ body {
 }
 
 .navbar-nav .active {
-  font-weight: 900 !important;
+  font-weight: 600 !important;
 }
 
 body .navbar-dark .navbar-brand {

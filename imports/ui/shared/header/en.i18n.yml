@@ -1,7 +1,7 @@
 _namespace: header
 dashboard: Dashboard
 services: Services
-flows: Flows
+flows: Workflows
 myaccount.admin: Management
 myaccount.profile: Profile
 myaccount.logout: Logout

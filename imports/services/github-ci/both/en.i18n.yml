@@ -34,6 +34,9 @@ events.run_cmd.agent.sent.error: The commands couldn't be sent to the agent
 events.test_cmd.name: Run test suite
 events.test_cmd.viewer.title: Run test suite
 
+events.run_cmd.name: Run command in check'd out code
+events.run_cmd.viewer.title: Run command in check'd out code
+
 events.deploy_cmd.name: Deploy by commands
 events.deploy_cmd.viewer.title: Run a deploy procress
 

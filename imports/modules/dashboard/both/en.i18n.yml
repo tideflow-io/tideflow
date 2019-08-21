@@ -1,6 +1,6 @@
 _namespace: dashboard
 title: Dashboard
-subtitle: History of your flows executions.
+subtitle: History of your workflows executions.
 executions.empty: It seems you haven't executed any flow yet.
 executions.title: Executions history
 executions.filters.last24Hours: Last 24 hours

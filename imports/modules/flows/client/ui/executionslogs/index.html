@@ -18,6 +18,8 @@
               {{__ "flows.status.running"}}
             {{else if isEq execution.status 'finished'}}
               {{__ "flows.status.finished"}} {{fromNow execution.updatedAt}}
+            {{else if isEq execution.status 'error'}}
+              {{__ "flows.status.failed"}} {{fromNow execution.updatedAt}}
             {{else}}
               {{fromNow execution.createdAt}}
             {{/if}}

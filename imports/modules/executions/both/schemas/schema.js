@@ -53,6 +53,10 @@ const ExecutionSchema = new SimpleSchema({
     label: 'Status',
     optional: false
   },
+  lapsed: { // Seconds
+    type: Number,
+    optional: true
+  },
   extras: {
     type: Object,
     optional: true,

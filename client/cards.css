@@ -9,11 +9,10 @@
   background: #E9EEF2;
 }
 
-.card-list-dots {
-  margin-bottom: 0.75rem;
-  border-radius: 0.1rem;
-  padding: 0 0.4rem;
-  background: #323B50;
+.card-list-dots .card-header {
+  background-color: white;
+  border: none;
+  font-weight: 600;
 }
 
 .card-list .card-list-head {
@@ -23,6 +22,10 @@
 
 .card-list .card {
   border: none;
+}
+
+.card-list .card:last-child {
+  margin-bottom: 0;
 }
 
 .card.card-narrow .card-body {

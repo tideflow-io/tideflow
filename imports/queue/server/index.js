@@ -16,12 +16,18 @@ import * as emailHelper from '/imports/helpers/both/emails'
 
 const debug = require('debug')('queue')
 
-const endExecution = (_id, status) => {
+const endExecution = (execution, status) => {
   status = status || 'finished'
-  debug(`End execution ${_id} with ${status}`)
+  debug(`End execution ${execution._id} with ${status}`)
+  let now = new Date()
+  let lapsed = (now.getTime() - execution.createdAt.getTime()) / 1000
   Executions.update(
-    { _id },
-    { $set: { status } }
+    { _id: execution._id },
+    { $set: {
+      lapsed,
+      status,
+      ended: now
+    } }
   )
   jobs.run('workflow-execution-finished', { executionId: _id, status })
 }
@@ -260,7 +266,7 @@ const executeNextStep = (context) => {
     // and compare it against the number of steps in the executed flow (+ trigger).
     // If the number matches, flag the execution as finished
     if (executedSteps === flow.steps.length + 1) {
-      endExecution(executionId)
+      endExecution(execution)
     }
   }
 
@@ -460,7 +466,7 @@ jobs.register('workflow-start', function(jobData) {
     $set: {
       stepResults: triggerResult.result,
       next: triggerResult.next,
-      // status: triggerResult.error ? 'error' : 'success'
+      status: triggerResult.next ? triggerResult.error ? 'error' : 'success' : 'pending'
     }
   }
   if (triggerResult.msgs) {
@@ -472,7 +478,7 @@ jobs.register('workflow-start', function(jobData) {
   }, stepUpdate);
 
   if (triggerResult.error) {
-    endExecution(jobData.executionId, 'error')
+    endExecution(execution, 'error')
     this.success()
     return
   }
@@ -498,7 +504,7 @@ jobs.register('workflow-start', function(jobData) {
 
   if (!flow.steps || !flow.steps.length) {
     debug('no flow steps')
-    endExecution(jobData.executionId);
+    endExecution(execution);
     this.success();
     return;
   }
@@ -632,6 +638,10 @@ jobs.register('workflow-step', function(jobData) {
       }
     }
 
+    if (eventCallback.error) {
+      updateReq.$set.status = 'error'
+    }
+
     if (eventCallback.next) {
       updateReq.$set.status = eventCallback.error ? 'error' : 'success'
     }
@@ -643,7 +653,7 @@ jobs.register('workflow-step', function(jobData) {
   }
 
   if (eventCallback.error) {
-    endExecution(executionId, 'error')
+    endExecution(execution, 'error')
     instance.success()
     return
   }
@@ -668,7 +678,7 @@ jobs.register('workflow-step', function(jobData) {
       // and compare it against the number of steps in the executed flow (+ trigger).
       // If the number matches, flag the execution as finished
       if (executedSteps === flow.steps.length + 1) {
-        endExecution(executionId)
+        endExecution(execution)
       }
     }
 

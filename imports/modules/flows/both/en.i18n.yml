@@ -1,17 +1,15 @@
 _namespace: flows
-status.running: Running...
-status.finished: Finished
-breadcrumb.title.index: Flows
+breadcrumb.title.index: Workflows
 breadcrumb.title.new: New
 breadcrumb.title.executions: Executions
 breadcrumb.title.edit: Edit
-create.ok: Flow created
-create.error: There was a problem creating the flow
+create.ok: Workflow created
+create.error: There was a problem creating the workflow
 delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover this.
-delete.ok: Flow deleted
-delete.error: There was a problem deleting the flow
-delete.success: Your flow was deleted
+delete.ok: Workflow deleted
+delete.error: There was a problem deleting the workflow
+delete.success: Your workflow was deleted
 editor.trigger.notSet: Not defined
 editor.trigger.title: Which event will fire this workflow?
 editor.triggerEvent.selectOneOption: Select an option
@@ -21,12 +19,12 @@ editor.step.removeOne: Remove step
 editor.step.addOne: Add new step
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
-properties.emailOnTrigger: Send me an email when this flow is triggered
+properties.emailOnTrigger: Send me an email when this workflow is triggered
 edit.submit: Save
-index.title: Flows
-index.subtitle: Flows are lists of actions that happen upon a trigger.
-index.createNew: Create new flow
-index.emptyListSubTitle: It seems you haven't created any flow yet.
+index.title: Workflows
+index.subtitle: Workflows are lists of actions that happen upon a trigger.
+index.createNew: Create a new workflow
+index.emptyListSubTitle: It seems you haven't created any workflow yet.
 index.viewOne: View
 new.submit: Create
 executions.steps.title: "Step by step:"
@@ -39,16 +37,19 @@ one.disabled: Disabled
 one.edit: Edit
 one.remove: Delete
 one.allExecutions: Browse all executions
-one.recentExecutionsEmpty: This flow hasn't been executed.
-one.recentExecutions: Most recent executions for this flow
-status.update.ok: Flow updated
-status.update.error: There was a problem updating the flow
+one.recentExecutionsEmpty: This workflow hasn't been executed.
+one.recentExecutions: Most recent executions
+status.running: Running...
+status.finished: Finished
+status.failed: Failed
+status.update.ok: Workflow updated
+status.update.error: There was a problem updating the workflow
 emailOnTrigger.title: Workflow executed
-emailOnTrigger.subtitle: The flow <i>{$name}</i> is being executed.
+emailOnTrigger.subtitle: The workflow <i>{$name}</i> is being executed.
 emailOnTrigger.message: You are receiving this message because you opt-in for
   getting notifications for <i>{$name}</i> executions. To disable this notification
-  open the editor for this flow.
-emailOnTrigger.text: The flow named '{$name}' is being executed. To disable this notification
+  open the editor for this workflow.
+emailOnTrigger.text: The workflow named '{$name}' is being executed. To disable this notification
   open its editor.
 emailOnTrigger.subject: Workflow execution [{$name}]
-emailOnTrigger.butonText: View flow
+emailOnTrigger.butonText: View workflow

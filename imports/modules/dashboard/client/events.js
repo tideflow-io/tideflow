@@ -4,7 +4,7 @@ import { Template } from 'meteor/templating'
 Template.dashboard.onCreated(function() {
   let self = this
 
-  this.executionsTime = new ReactiveVar('last24Hours')
+  this.executionsTime = new ReactiveVar('lastMonth')
   this.executions = new ReactiveVar(null)
   this.executionsLoaded = new ReactiveVar(false)
 
@@ -33,5 +33,14 @@ Template.dashboard.events({
   },
   'click #execution-filter-day': (event, template) => {
     template.executionsTime.set('last24Hours')
+  }
+})
+
+Template.darhboardExecutionFlow.events({
+  'click .card': (event, template) => {
+    event.stopPropagation()
+    Router.go('flows.one', {
+      _id: template.data.flow,
+    })
   }
 })
