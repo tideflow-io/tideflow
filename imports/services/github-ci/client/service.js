@@ -38,17 +38,17 @@ const service = {
       stepable: false,
       callback: () => {}
     },
-    {
-      name: 'test_cmd',
-      humanName: 's-gh-ci.events.test_cmd.name',
-      viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
-      inputable: false,
-      stepable: true,
-      templates: {
-        eventConfig: 'servicesGithubCiBasicStep'
-      },
-      callback: () => {}
-    },
+    // {
+    //   name: 'test_cmd',
+    //   humanName: 's-gh-ci.events.test_cmd.name',
+    //   viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
+    //   inputable: false,
+    //   stepable: true,
+    //   templates: {
+    //     eventConfig: 'servicesGithubCiBasicStep'
+    //   },
+    //   callback: () => {}
+    // },
     {
       name: 'run_cmd',
       humanName: 's-gh-ci.events.run_cmd.name',

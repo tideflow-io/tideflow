@@ -3,7 +3,7 @@ name: Github CI server (preview)
 description: Build and deploy from Github
 trigger.repository.name: Repository name
 trigger.repository.any: Any repository
-createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application once you create the service.
+createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application after this initial step.
 ciUrl: Webhook URL
 ciSecret: Webhook secret (mandatory)
 updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
@@ -41,6 +41,8 @@ events.deploy_cmd.name: Deploy by commands
 events.deploy_cmd.viewer.title: Run a deploy procress
 
 log.called_input_parsed: Request's input parsed
+
+github.status.created.status: Status
 github.status.created.true: Application has been created and validated
 github.status.created.waiting: Tideflow is waiting for the application to be created on Github
 
