@@ -29,7 +29,7 @@ const endExecution = (execution, status) => {
       ended: now
     } }
   )
-  jobs.run('workflow-execution-finished', { executionId: _id, status })
+  jobs.run('workflow-execution-finished', { executionId: execution._id, status })
 }
 
 /**
