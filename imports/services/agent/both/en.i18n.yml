@@ -17,9 +17,9 @@ service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
 log.execute.sent.success: Command reported to the agent
-log.execute.sent.error: The command could not be delivered
-log.code_nodesfc.sent.success: NodeJS script reported to the agent
-log.code_nodesfc.sent.error: NodeJS script could not be delivered
+log.execute.sent.error: The command could not be delivered. Is the agent online?
+log.code_nodesfc.sent.success: NodeJS script reported to the agent.
+log.code_nodesfc.sent.error: NodeJS script could not be delivered. Is the agent online?
 event.common.attachPreviousStepOutput: Attach the output from the previous step
 event.common.attachPreviousStepOutputYes: Yes
 event.common.attachPreviousStepOutputNo: No
