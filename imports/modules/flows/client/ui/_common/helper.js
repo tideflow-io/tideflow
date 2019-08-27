@@ -143,9 +143,9 @@ Template.flowEditor.helpers({
     return Session.get('fe-editMode') === this.index
   },
 
-  cardText: function() {
+  cardText: function(context) {
     const getFromDoc = () => {
-      const flow = Flows.findOne({})
+      const flow = context.hash.flow
       if (!flow || !this.index || !flow.steps) return null
       const docStep = flow.steps[this.index]
       return docStep ? docStep.event : null

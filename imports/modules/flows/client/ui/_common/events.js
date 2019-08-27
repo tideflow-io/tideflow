@@ -35,7 +35,7 @@ const stepEventSelectorChanged = function(index, type) {
   if (index === null) { return null }
   let selectedStepService = Session.get(`fe-step-${index}`)
   let selectedStepEvent = (selectedStepService.events || []).find(e => e.name === type)
-
+  
   $(`[name="steps.${index}.event"]`).val(selectedStepService ? type : null)
   Session.set(`fe-step-${index}-event`, selectedStepEvent || null)
 }

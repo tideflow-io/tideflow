@@ -120,7 +120,7 @@
                 <strong>{{cardTitle}}</strong> 
               </div>
               <p>
-                {{#if editMode}}{{else}}{{cardText}}{{/if}}
+                {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
               </p>
               <div class="{{#if editMode}}{{else}}d-none{{/if}}">
                 {{#if stepSelectedEvents ../../flow ../index this.name}}
