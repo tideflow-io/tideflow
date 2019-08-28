@@ -707,7 +707,6 @@ jobs.register('workflow-step', function(jobData) {
       }
 
       // Schedule execution
-      console.log('#3', nextStepFull)
       jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
     })
   }

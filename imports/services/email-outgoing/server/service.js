@@ -16,10 +16,7 @@ const service = {
     name: 'to-me',
     visibe: true,
     callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
-      const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
       const to = commonEmailHelper.userEmail(user)
-      const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
 
       if (!to) {
         throw new Error('No emails registered')
@@ -27,8 +24,12 @@ const service = {
 
       const fullName = user.profile ? user.profile.firstName || to : to
 
-      let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
-      let objects = attachPrevious ? (lastData || []).filter(data => data.type === 'object') : []
+      const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
+      const previousStepsData = _.flatMap(executionLogs, 'stepResults')
+
+      const files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
+      let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
+      let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
 
       objects = objects.map(o => {
         return {
@@ -59,7 +60,14 @@ const service = {
 
       cb(null, {
         result: [],
-        next: true
+        next: true,
+        msgs: [
+          {
+            m: 's-email-outgoing.log.to-me.sent',
+            p: [to],
+            d: new Date()
+          }
+        ]
       })
     }
   },
@@ -68,14 +76,14 @@ const service = {
     visibe: true,
     callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
-      const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
+      const previousStepsData = _.flatMap(executionLogs, 'stepResults')
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
 
-      let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
-      let objects = attachPrevious ? (lastData || []).filter(data => data.type === 'object') : []
+      const files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
+      let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
+      let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
 
       objects = objects.map(o => {
         return {
@@ -108,7 +116,14 @@ const service = {
 
       cb(null, {
         result: [],
-        next: true
+        next: true,
+        msgs: [
+          {
+            m: 's-email-outgoing.log.to-others.sent',
+            p: to,
+            d: new Date()
+          }
+        ]
       })
     }
   }]

@@ -10,4 +10,6 @@ event.common.subject: Subject
 event.common.body: Body email
 event.common.attachPreviousStepOutput: Attach the output from the previous step
 event.common.attachPreviousStepOutputYes: Yes
+log.to-me.sent: Email sent to me
+log.to-others.sent: Email sent to others
 event.common.attachPreviousStepOutputNo: No
