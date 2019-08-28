@@ -41,7 +41,7 @@ const getMailConfig = () => {
     if (parsedUrl.hostname === 'localhost') {
       config.ignoreTLS = true
     }
-
+    
     return config
   }
 
@@ -52,7 +52,10 @@ const mailConfing = getMailConfig()
 
 let transporter = mailConfing ? nodemailer.createTransport(getMailConfig()) : 
   { sendMail: (data, cb) => {
-    console.log('Email text', data.text)
+    console.info('There is no MAIL_URL environment variable set.')
+    console.info('Therefore, Tideflow can not send emails. Please check how')
+    console.info('to solve this at https://docs.tideflow.io.\m\m')
+    console.info(`The email\'s text was: ${data.text}`)
   } }
 
 /**
@@ -76,7 +79,7 @@ const data = (to, emailDetails, tplVars, tplName) => {
   }
 
   return {
-    from: `${siteName} <no-reply@service.tideflow.io>`,
+    from: `${siteName} <${mailConfing.auth.user}>`,
     to: Array.isArray(to) ? to.join(' ') : to,
     subject: emailDetails.config ? emailDetails.config.subject || siteName : siteName,
     text: emailDetails.config ? `${siteName}: ${emailDetails.config.body}` : siteName,

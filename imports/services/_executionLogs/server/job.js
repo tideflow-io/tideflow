@@ -66,11 +66,11 @@ let buildAndScheduleEmail = (user, options) => {
 
   // Build the email's basic data
   let email = {
-    type: options.weekly ? 'weekly' : 'daily',
+    isWeekly: !!options.weekly,
+    isDaily: !options.weekly,
     name: `${user.profile.firstName || ''} ${user.profile.lastName || ''}`.trim(),
     to: user.emails[0].address,
-    flows: [],
-    messageTitle: `${options.weekly ? 'Weekly' : 'Daily'} summary of executions`
+    flows: []
   }
 
   // Attach flows executions to the email's data
@@ -132,7 +132,6 @@ tfQueue.jobs.register('_executionLogsRun', function() {
 })
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
-  return this.success()
   let data = emailHelper.data([emailData.to], {}, emailData, 'ExecutionLogs')
   emailHelper.send(data)
   this.success()

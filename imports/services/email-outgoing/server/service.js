@@ -40,11 +40,10 @@ const service = {
         messageTitle: flow.title,
         fullName,
         userEmail: to,
-        sentVia: flow.title,
         lines: (currentStep.config.body || '').split('\n'),
         links,
         objects,
-        allowReply: false
+        sentOutside: false
       }
 
       let data = emailHelper.data([to], currentStep, tplVars, 'standard')
@@ -72,7 +71,7 @@ const service = {
       const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
       const files = attachPrevious ? (lastData || []).filter(data => data.type === 'file') : []
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
-      const userEmail = emailHelper.userEmail(user)
+      const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
 
       let links = attachPrevious ? (lastData || []).filter(data => data.type === 'link') : []
@@ -88,12 +87,10 @@ const service = {
         messageTitle: flow.title,
         fullName,
         userEmail,
-        sentVia: flow.title,
         lines: currentStep.config.body.split('\n'),
         links,
         objects,
-        allowReply: true,
-        replyButtonText: `Reply to ${fullName}`
+        sentOutside: true
       }
 
       let data = emailHelper.data(to, currentStep, tplVars, 'standard')

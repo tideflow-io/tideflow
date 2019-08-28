@@ -1,5 +1,7 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
+import { buildLinks } from '/imports/queue/server/helpers/links'
+
 const service = {
   name: 'rss',
   inputable: true,
@@ -13,7 +15,25 @@ const service = {
       visibe: true,
       callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
-        cb(null, lastData)
+        
+        let result = buildLinks(lastData).map(element => {
+          return {
+            type: 'link',
+            data: element
+          }
+        })
+
+        cb(null, {
+          result: result,
+          next: true,
+          msgs: [
+            {
+              m: 's-rss.log.new-content.new-content-available',
+              p: [lastData.length],
+              d: new Date()
+            }
+          ]
+        })
       }
     }
   ]

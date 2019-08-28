@@ -14,12 +14,8 @@ Accounts.urls.resetPassword = function(token) {
 Accounts.emailTemplates.siteName = siteName
 Accounts.emailTemplates.from = `${siteName} <no-reply@service.tideflow.io>`
 
-SSR.compileTemplate('emailFooter', Assets.getText('emails/footer.html'))
-SSR.compileTemplate('emailHeader', Assets.getText('emails/header.html'))
 SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'));
-
 SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'));
-
 SSR.compileTemplate('emailTemplateflowEmailOnTriggered', Assets.getText('emails/flowEmailOnTriggered.html'));
 SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
@@ -33,7 +29,15 @@ Accounts.emailTemplates.resetPassword = {
     + url
   },
   html(user, url) {
+    // Add common contents to the template variables
+    const siteSettings = Settings.findOne({type: 'siteSettings'})
+    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
+
     const data = {
+      tideflow: {
+        appUrl: '',
+        name: siteName
+      },
       user,
       url,
       title: i18n.__('emails.resetPassword.title'),
@@ -52,9 +56,17 @@ Accounts.emailTemplates.verifyEmail = {
     return 'To verify yuor email address, simply click the link below:\n\n' + url
   },
   html(user, url) {
+    // Add common contents to the template variables
+    const siteSettings = Settings.findOne({type: 'siteSettings'})
+    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
+
     const urlParts = url.split('/')
     const token = urlParts[urlParts.length - 1]
     const data = {
+      tideflow: {
+        appUrl: '',
+        name: siteName
+      },
       user,
       url: Meteor.absoluteUrl(`/verify/${token}`),
       title: i18n.__('emails.verify.title'),

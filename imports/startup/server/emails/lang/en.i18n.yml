@@ -3,5 +3,5 @@ verify.title: Verify your email address
 verify.description: In order to continue, you need to verify your email address
 verify.button: Verify my email address and continue
 resetPassword.title: Recover your password
-resetPassword.description: No worries, we've got you
+resetPassword.description: Someone, likely you, have requested to reset your Tideflow password. Please visit the following link to recover it.
 resetPassword.button: Specify a new password

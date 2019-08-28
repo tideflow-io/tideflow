@@ -6,4 +6,4 @@ event.build.type.bill: Simple bill
 event.build.type.selectOne: Select a template
 events.buildpdf.title: Create a PDF file
 events.buildpdf.viewer.title: Create a PDF file
-log.build_pdf_files_created: Files created
+log.build_pdf.files_created: Files created

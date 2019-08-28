@@ -4,3 +4,4 @@ description: Execute flows when new content is available on RSS feeds.
 create.serviceUrl: RSS feed url
 events.new-content.name: New content available
 events.new-content.viewer.title: When there's new content available on RSS
+log.new-content.new-content-available: New content available

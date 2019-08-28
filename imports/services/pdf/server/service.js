@@ -81,7 +81,7 @@ const service = {
           next: true,
           msgs: [
             {
-              m: 's-pdf.log.build_pdf_files_created',
+              m: 's-pdf.log.build_pdf.files_created',
               p: [filesData.length],
               d: new Date()
             }

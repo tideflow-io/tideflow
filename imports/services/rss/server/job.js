@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor'
 import * as tfQueue from '/imports/queue/server'
-import { buildLinks } from '/imports/queue/server/helpers/links'
 
 import { Flows } from '/imports/modules/flows/both/collection.js'
 import { triggerFlows } from '/imports/queue/server'
@@ -41,12 +40,7 @@ tfQueue.jobs.register('s-rss-runOne', function(flow) {
       flow.trigger,
       user,
       null,
-      buildLinks(newRssElements).map(element => {
-        return {
-          type: 'link',
-          data: element
-        }
-      }),
+      newRssElements,
       [flow]
     )
   }
