@@ -27,7 +27,7 @@ const service = {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const previousStepsData = _.flatMap(executionLogs, 'stepResults')
 
-      const files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
+      let files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
       let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
       let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
 
@@ -81,7 +81,7 @@ const service = {
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
 
-      const files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
+      let files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
       let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
       let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
 
