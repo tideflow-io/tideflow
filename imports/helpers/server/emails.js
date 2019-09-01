@@ -50,11 +50,14 @@ const getMailConfig = () => {
 
 const mailConfing = getMailConfig()
 
+if (!mailConfing) {
+  console.error('There is no MAIL_URL environment variable set.')
+  console.error('Therefore, Tideflow will not send emails. Please check how')
+  console.error('to solve this at https://docs.tideflow.io')
+}
+
 let transporter = mailConfing ? nodemailer.createTransport(getMailConfig()) : 
   { sendMail: (data, cb) => {
-    console.info('There is no MAIL_URL environment variable set.')
-    console.info('Therefore, Tideflow can not send emails. Please check how')
-    console.info('to solve this at https://docs.tideflow.io.\m\m')
     console.info(`The email\'s text was: ${data.text}`)
   } }
 
@@ -79,7 +82,7 @@ const data = (to, emailDetails, tplVars, tplName) => {
   }
 
   return {
-    from: `${siteName} <${mailConfing.auth.user}>`,
+    from: `${siteName} <${mailConfing ? mailConfing.auth.user : 'noreply@localhost'}>`,
     to: Array.isArray(to) ? to.join(' ') : to,
     subject: emailDetails.config ? emailDetails.config.subject || siteName : siteName,
     text: emailDetails.config ? `${siteName}: ${emailDetails.config.body}` : siteName,
