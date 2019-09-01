@@ -26,6 +26,17 @@ AutoForm.addHooks(['insertFlowForm'], {
         doc.steps[index].y = parseInt($(card).css('top'), 10)
       })
 
+      let realPosition = (i) => {
+        let offset = count = 0
+        while(count < $(`.flow-step-step`).length) {
+          if (!$(`.flow-step-step[data-step="${count}"]`).length) {
+            offset++
+          }
+          count++
+        }
+        return i - offset
+      }
+
       // Get steps connection details
       jsPlumb.getConnections().map((connection, index) => {
         const source = $(`#${connection.sourceId}`)
@@ -33,12 +44,14 @@ AutoForm.addHooks(['insertFlowForm'], {
         const fromTrigger = source.attr('data-step') === 'trigger'
         const targetIndex = Number(target.attr('data-step'))
         const sourceIndex = Number(source.attr('data-step'))
+        const realTarget = realPosition(targetIndex)
+        const realSource = realPosition(sourceIndex)
 
         if (fromTrigger) {
-          doc.trigger.outputs.push({stepIndex:targetIndex})
+          doc.trigger.outputs.push({stepIndex:realTarget})
         }
         else {
-          doc.steps[sourceIndex].outputs.push({stepIndex:targetIndex})
+          doc.steps[realSource].outputs.push({stepIndex:realTarget})
         }
       })
 
