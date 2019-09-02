@@ -25,6 +25,8 @@
           {{#with flow.trigger}}
           <div class="card flow-trigger flow-trigger-{{type}} flow-trigger-{{type}}-{{event}}">
             <div class="card-body">
+              🌊
+              <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
               {{__ "flows.one.viewer.trigger"}}: {{flowViewerTriggerTitle}}
             </div>
           </div>
@@ -32,6 +34,7 @@
           {{#each flow.steps}}
             <div class="card flow-step flow-step-{{type}} flow-step-{{type}}-{{event}}">
               <div class="card-body">
+                  <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
                 {{{flowViewerStepTitle}}}
               </div>
             </div>

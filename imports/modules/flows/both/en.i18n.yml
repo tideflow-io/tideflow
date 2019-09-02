@@ -33,6 +33,8 @@ executions.title: Workflow's execution logs
 executiondetails.logsViewAs.console: View as console
 executiondetails.logsViewAs.cards: View as cards
 one.viewer.trigger: Trigger
+one.viewer.triggerNotDefined: Not defined
+one.viewer.stepNotDefined: Not defined
 one.disabled: Disabled
 one.edit: Edit
 one.remove: Delete

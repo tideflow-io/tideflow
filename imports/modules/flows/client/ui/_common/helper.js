@@ -16,6 +16,9 @@ const sortBy = (key) => {
 
 Template.registerHelper('flowViewerTriggerTitle', function() {
   try {
+    if (!this.type || !this.event) {
+      return i18n.__('flows.one.viewer.triggerNotDefined')
+    }
     return i18n.__(
       servicesAvailable
         .find(sa => sa.name === this.type).events.find(e => e.name === this.event).viewerTitle
@@ -32,6 +35,9 @@ Template.registerHelper('flowDoc', function(_id, property) {
 
 Template.registerHelper('flowViewerStepTitle', function() {
   try {
+    if (!this.type || !this.event) {
+      return i18n.__('flows.one.viewer.stepNotDefined')
+    }
     return i18n.__(
       servicesAvailable
         .find(sa => sa.name === this.type).events.find(e => e.name === this.event).viewerTitle,
