@@ -86,6 +86,8 @@ const calledFrom = flow => {
   return c
 }
 
+module.exports.calledFrom = calledFrom
+
 /**
  * 
  */

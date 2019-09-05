@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema'
 
-import { Services } from "/imports/modules/services/both/collection.js"
+SimpleSchema.extendOptions(['autoform'])
+
 import { list as statusList } from '/imports/modules/flows/both/list'
 
 const FlowSchema = new SimpleSchema({
@@ -22,7 +23,7 @@ const FlowSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    label: "Status",
+    label: 'Status',
     autoform: {
       options: statusList
     },
