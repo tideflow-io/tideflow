@@ -3,7 +3,7 @@
  * @param {*} user 
  */
 const userEmail = (user) => {
-  let userEmail = user.emails.find(email => email.varified)
+  let userEmail = user.emails.find(email => email.verified)
   if (!userEmail || !userEmail.address) {
     userEmail = user.emails[0]
   }
