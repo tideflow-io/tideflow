@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 
-import { Settings } from '/imports/modules/management/both/collection'
 import * as settingsHelper from '/imports/helpers/server/settings'
 
 import { check } from 'meteor/check'

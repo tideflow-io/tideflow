@@ -14,12 +14,6 @@ Accounts.urls.resetPassword = function(token) {
 Accounts.emailTemplates.siteName = siteName
 Accounts.emailTemplates.from = `${siteName} <no-reply@service.tideflow.io>`
 
-SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'));
-SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'));
-SSR.compileTemplate('emailTemplateflowEmailOnTriggered', Assets.getText('emails/flowEmailOnTriggered.html'));
-SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
-SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
-
 Accounts.emailTemplates.resetPassword = {
   subject(user) {
     return 'Reset your password'

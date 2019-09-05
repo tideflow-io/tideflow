@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor'
-
 import { Settings } from '/imports/modules/management/both/collection'
 
 module.exports.getOne = (type, setting) => {

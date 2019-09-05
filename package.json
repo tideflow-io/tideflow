@@ -26,7 +26,6 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "bcrypt": "^2.0.1",
-    "chai": "^4.2.0",
     "cron-converter": "0.0.12",
     "debug": "^4.1.1",
     "dlv": "^1.1.3",
@@ -44,5 +43,8 @@
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2",
     "webparsy": "^0.2.7"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0"
   }
 }
