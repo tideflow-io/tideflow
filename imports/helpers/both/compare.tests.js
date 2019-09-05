@@ -2,7 +2,7 @@
 import { assert } from 'chai'
 import { compare } from './compare'
 
-describe('compare', () => {
+describe('helpers/both/compare', () => {
   describe('types', () => {
     it('string vs int', () => assert.equal(compare('1', 1), false))
     it('arr vs str', () => assert.equal(compare(['1'], '1'), false))
