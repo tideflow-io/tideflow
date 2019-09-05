@@ -1,7 +1,5 @@
 import SimpleSchema from 'simpl-schema'
 
-SimpleSchema.extendOptions(['autoform'])
-
 // somewhere in the page layout (or possibly in the router?)
 function getLang () {
   return (
