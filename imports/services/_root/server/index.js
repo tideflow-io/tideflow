@@ -168,15 +168,23 @@ const flows = {
 module.exports.flows = flows
 
 /**
- * Given execution logs (as in database) return them in a format that can be
- * passed to services like `code` or `agent`, so they get only the necessary
- * data and its files that they can retrieve.
+ * Given tasks execution logs (as taken from the database) return them in a
+ * format that can be passed to services like `code` or `agent`, so this
+ * services get only the necessary data and that they can get.
+ * 
+ * For example, some workflow tasks generate files. This files can then be
+ * passed to other tasks that can be either executed locally (in the same server
+ * that is running Tideflow) or in external computers. 
+ * 
+ * This means that such files needs to be accesible externally. 
+ * 
+ * What this function does is to prepare files to they can be used locally and
+ * externally.
  * 
  * @param {array} executionLogs 
- * @param {boolean} external The system requires files to be accesible via
- * an url. This is useful for the agent service, as its executed in a 3rd party
- * server. If the files needs to be accesed within the same server, for example
- * in the `code` service, files are stored as tmp files.
+ * @param {boolean} external Indicates if the service executing the workflow
+ * task is running on an external system. This causes any files to be neede to
+ * be returned as an URL that can be reached externally.
  */
 const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
@@ -193,7 +201,7 @@ const processableResults = (executionLogs, external) => {
         sr.data = 'truncated'
       }
       else if (external && sr.type === 'file') {
-        
+        // TODO
       }
     })
 

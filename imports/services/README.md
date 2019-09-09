@@ -1,5 +1,10 @@
-Services prefixed with "_" are system only.
+# Services
 
-All other services are suiteble to be used as part of flows.
+Services are things you can connected to workflows. Either to trigger them or
+as workflow tasks.
+
+Services prefixed with "_" in this folder are system only.
+
+All other services are suiteble to be used as part of workflows.
 
 Documentation: https://docs.tideflow.io/docs/services-introduction
