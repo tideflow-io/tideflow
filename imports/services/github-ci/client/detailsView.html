@@ -17,18 +17,95 @@
           </div>
         </div>
 
+        {{#if service.details.created}}
+        {{else}}
+          <div class="row">
+            <div class="col-12">
+              <hr>
+              {{> servicesGhCiDetailsViewStatus}}
+            </div>
+          </div>
+        {{/if}}
+
+        {{> servicesGhCiDetailsViewManual}}
+
         <div class="row">
           <div class="col-12">
             <hr>
-            <b>{{__ "s-gh-ci.github.status.created.status"}}:</b>
-
-            {{#if service.details.created}}
-              {{__ "s-gh-ci.github.status.created.true"}}
-            {{else}}
-              {{__ "s-gh-ci.github.status.created.waiting"}}
-            {{/if}}
+            {{> servicesGhCiDetailsViewStatus}}
           </div>
         </div>
       </div>
     </div>
+</template>
+
+<template name="servicesGhCiDetailsViewManual">
+  <div class="row">
+    <div class="col-12">
+      <hr>
+      <h4>1. Creating a <i class="fab fa-github"></i> GitHub application.</h4>
+      <p>
+        The first step is to tell GitHub about the existence of Tideflow. Go
+        ahead and create an application by going to 
+        <a href="https://github.com/settings/apps/new" target="_blank">github.com/settings/apps/new</a>
+      </p>
+      <p>
+        Fill-in both <b>Webhook URL</b> and <b>Webhook secret</b> sections with
+        the values shown above. Specify any website as the <b>Homepage URL</b>.
+      </p>
+      <p>
+        For the <i>Repository permissions</i> section, select:
+        <ul>
+            <li>
+              <b>Checks: </b> <i>Read & write</i>
+            </li>
+            <li>
+              <b>Contents: </b> <i>Read only</i>
+            </li>
+        </ul>
+      </p>
+      <p>
+        For the <i>Subscribe to events</i> section, check:
+        <ul>
+            <li><b>Check suite</b></li>
+            <li><b>Push</b></li>
+        </ul>
+      </p>
+      <p>
+        Select <b>"Any account"</b> in the <i>"Where can this GitHub App be installed?"</i> question.
+      </p>
+      <p>The application is ready. Click on <b>Create GitHub App</b>.</p>
+
+      <h4>2. Install the application.</h4>
+      <p>
+        The next step is to install the recently created application in the
+        repositories you want to interact with from your workflows.
+      </p>
+      <p>
+        Visit the <b>Install App</b> page for the application.
+      </p>
+      <p>
+        Select the desired repositores, and click install.
+      </p>
+
+      <h4>3. Have fun with your workflows.</h4>
+      <p>
+        If everything has gone smoothly, you can use your repositories events as
+        triggers and steps.
+      </p>
+
+      <p>
+        Lear more at <a href="https://docs.tideflow.io/docs/services-github-ci" target="_blank">docs.tideflow.io/docs/services-github-ci</a>
+      </p>
+    </div>
+  </div>
+</template>
+
+<template name="servicesGhCiDetailsViewStatus">
+      <b>{{__ "s-gh-ci.github.status.created.status"}}:</b>
+      {{#if service.details.created}}
+        {{__ "s-gh-ci.github.status.created.true"}}
+      {{else}}
+        {{__ "s-gh-ci.github.status.created.waiting"}}
+      {{/if}}
 </template>
