@@ -6,7 +6,7 @@ const service = {
   name: 'code',
   humanName: 's-code.name',
   description: 's-code.description',
-  website: 'https://tideflow.io/docs/services-code',
+  website: 'https://docs.tideflow.io/docs/services-code',
   icon: 'fa fa-code',
   iconColor: '#001628',
   ownable: false,

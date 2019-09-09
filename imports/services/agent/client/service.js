@@ -6,7 +6,7 @@ const service = {
   name: 'agent',
   humanName: 's-agent.name',
   description: 's-agent.description',
-  website: 'https://tideflow.io/docs/services-agent',
+  website: 'https://docs.tideflow.io/docs/services-agent',
   icon: 'fas fa-save',
   iconColor: '#3498DB',
   ownable: true,

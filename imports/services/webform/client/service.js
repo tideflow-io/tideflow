@@ -6,7 +6,7 @@ const service = {
   name: 'webform',
   humanName: 's-webform.name',
   description: 's-webform.description',
-  website: 'https://tideflow.io/docs/services-webforms',
+  website: 'https://docs.tideflow.io/docs/services-webforms',
   icon: 'fas fa-clipboard-list',
   iconColor: '#FF3031',
   ownable: true,

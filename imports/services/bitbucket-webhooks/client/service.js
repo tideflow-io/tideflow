@@ -4,7 +4,7 @@ const service = {
   name: 'bb-webhooks',
   humanName: 's-bb-webhooks.name',
   description: 's-bb-webhooks.description',
-  website: 'https://tideflow.io/docs/services-bb-webhooks',
+  website: 'https://docs.tideflow.io/docs/services-bb-webhooks',
   icon: 'fab fa-bitbucket',
   iconColor: 'rgb(7, 71, 166)',
   inputable: true,
