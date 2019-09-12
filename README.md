@@ -30,5 +30,5 @@ GNU AFFERO GENERAL PUBLIC LICENSE
 
 ## Developer Resources
 
-- Developer guide: https://tideflow.io/docs/developers
-- Contribute: https://tideflow.io/docs/contribute
+- Documentation: https://docs.tideflow.io/docs/introduction
+- Contribute: https://docs.tideflow.io/docs/contribute
