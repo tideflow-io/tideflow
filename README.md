@@ -1,6 +1,6 @@
 # <a href='https://tideflow.io'><img src='https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg' width='260' alt='Tideflow.io'></a>
 
-> Design, automate and monintor workflows in realtime.
+> Design, automate and monitor workflows in realtime.
 
 Designing automated workflow processes is as easy as drag and drop. Create and connect tasks to create a custom workflow that replaces manual steps with automation.
 
