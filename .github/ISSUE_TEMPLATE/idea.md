@@ -1,6 +1,6 @@
 ---
 name: Idea
-about: Suggest an idea for this TideFlow
+about: I have an idea to share or a service that can be integrated
 title: "[IDEA] "
 labels: enhancement
 assignees: ''
