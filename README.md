@@ -2,7 +2,7 @@
 
 > Design, automate and monintor workflows in realtime.
 
-Tideflow comes with a set of services that will allow you to scrape website contents, automate build and deploy processes, generate PDF files, send emails and more. You can also build your own integrations.
+Designing automated workflow processes is as easy as drag and drop. Create and connect tasks to create a custom workflow that replaces manual steps with automation.
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow-website/master/website/static/img/D43dLHRXsAIwXDs.jpg" height="400" style="border:1px solid gray;">
 
