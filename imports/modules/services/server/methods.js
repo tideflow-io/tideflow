@@ -28,8 +28,7 @@ export const updateService = new ValidatedMethod({
   validate: schema.validator(),
   run(service) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-
-    const UPDATABLE_PROPERTIES = ['title', 'description', 'details', 'config']
+    const UPDATABLE_PROPERTIES = ['title', 'description', 'details', 'config', 'secrets']
 
     let originalService = Services.findOne({_id: service._id})
 
@@ -37,6 +36,7 @@ export const updateService = new ValidatedMethod({
     UPDATABLE_PROPERTIES.map(p => { newServiceProperties[p] = service[p] })
 
     let afterPreHookDoc = servicesHooks.update.pre(originalService, Object.assign({}, originalService, newServiceProperties))
+    console.log({afterPreHookDoc})
     if (!afterPreHookDoc) {
       throw new Error('Service pre-update hook failed')
     }

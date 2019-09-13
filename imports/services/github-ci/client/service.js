@@ -16,11 +16,6 @@ const service = {
     triggerEditorPre: 'servicesGhCiTriggerEditorPre',
     triggerEditorPost: 'servicesGhCiTriggerEditorPost'
   },
-  hooks: {
-    // service: {},
-    // step: {},
-    // trigger: {}
-  },
   events: [
     {
       name: 'pull_request',

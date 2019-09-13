@@ -4,7 +4,9 @@ description: Build and deploy from Github
 trigger.repository.name: Repository name
 trigger.repository.any: Any repository
 createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application after this initial step.
+
 ciUrl: Webhook URL
+ciPrivateKey: Private key
 ciSecret: Webhook secret (mandatory)
 updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
 

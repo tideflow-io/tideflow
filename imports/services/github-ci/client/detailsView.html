@@ -14,10 +14,16 @@
               <input type="text" class="form-control" value="{{service.config.secret}}" disabled>
               {{> clipboardBtnSmall text=service.config.secret}}
             </div>
+            
+            <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.ciPrivateKey"}}</label>
+              <textarea data-schema-key="config.privateKey" name="config.privateKey" class="form-control"></textarea>
+            </div>
           </div>
         </div>
 
         {{#if service.details.created}}
+
         {{else}}
           <div class="row">
             <div class="col-12">
