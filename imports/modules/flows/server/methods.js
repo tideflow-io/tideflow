@@ -8,6 +8,8 @@ import { flows as flowsHooks } from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'
 
 import { Flows } from '../both/collection'
+import { Executions } from '../../executions/both/collection'
+import { ExecutionsLogs } from '../../executionslogs/both/collection'
 
 import schema from '../both/schemas/schema.js'
 
@@ -153,8 +155,10 @@ export const deleteFlow = new ValidatedMethod({
       throw new Error('Deletion hook failed')
     }
     
-    // Execute the update in the database
+    // Execute the updates in the database
     Flows.remove(flow._id)
+    Executions.remove({flow: flow._id})
+    ExecutionsLogs.remove({flow: flow._id})
 
     // Given the original flow and the new one, perform post hooks methods
     return flowsHooks.delete.post(docToDelete)
