@@ -67,18 +67,7 @@ Router.route('/webform/:uuid/submit', function () {
     return null
   }
 
-  let data = []
-
   if (!req.body) { return }
-
-  req.body = Array.isArray(req.body) ? req.body : [req.body]
-
-  data = req.body.map(element => {
-    return {
-      type: 'object',
-      data: element
-    }
-  })
 
   triggerFlows(
     service,
@@ -87,6 +76,9 @@ Router.route('/webform/:uuid/submit', function () {
       'trigger._id': service._id,
       'trigger.event': 'submitted'
     },
-    data
+    {
+      type: 'object',
+      data: req.body
+    }
   )
 }, {where: 'server'})

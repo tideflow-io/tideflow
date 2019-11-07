@@ -23,30 +23,35 @@
   </div>
 </template>
 
-
 <template name="servicesNewTableService">
-  <div class="card clickable card-task">
-    <div class="card-body">
-      <div class="mr-3 card-image card-mini-icon text-center">
-        <i class="{{this.icon}}" style="color: {{this.iconColor}}"></i>
+  <div class="card clickable card-task p-3">
+    <div class="row">
+      <div class="col-md-1">
+        <div class="align-middle card-image card-mini-icon text-center">
+          <i class="{{this.icon}}" style="color: {{this.iconColor}}"></i>
+        </div>
       </div>
-      <div class="card-title mr-auto">
-        <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
-          <h6>
-            {{__ this.humanName}}
-            {{#if this.website}}
-              <a title="{{__ "services.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
-                <i class="fa fa-info-circle"></i>
-              </a>
-            {{/if}}
-          </h6>
-        </a>
-        <span class="text-small">{{__ this.description}}</span>
+      <div class="col-md-9">
+        <div class="card-title">
+          <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
+            <h6>
+              {{__ this.humanName}}
+              {{#if this.website}}
+                <a title="{{__ "services.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
+                  <i class="fa fa-info-circle"></i>
+                </a>
+              {{/if}}
+            </h6>
+          </a>
+          <span class="text-small">{{__ this.description}}</span>
+        </div>
       </div>
-      <div class="card-meta">
-        <a href="{{pathFor 'services.new.type' type=this.name}}" class="btn btn-outline-primary">
-          {{__ "services.new.select"}}
-        </a>
+      <div class="col-md-2">
+        <div class="float-right">
+          <a href="{{pathFor 'services.new.type' type=this.name}}" class="btn btn-outline-primary">
+            {{__ "services.new.select"}}
+          </a>
+        </div>
       </div>
     </div>
   </div>

@@ -40,7 +40,7 @@ tfQueue.jobs.register('s-rss-runOne', function(flow) {
       flow.trigger,
       user,
       null,
-      newRssElements,
+      [newRssElements],
       [flow]
     )
   }

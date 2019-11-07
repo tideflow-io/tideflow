@@ -32,7 +32,7 @@ const service = {
 
         const string = currentStep.config.yml
 
-        const flags = _.chain(executionLogs).map('stepResults').flattenDeep().filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
+        const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
 
         let result = [{
           type: 'object',

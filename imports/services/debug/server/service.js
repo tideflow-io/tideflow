@@ -1,14 +1,15 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
 const executionCb = (cb, executionLogs, name) => {
-  // console.log(JSON.stringify({executionLogs}, ' ', 2), {name})
+  console.log(JSON.stringify({executionLogs, name}, ' ', 2))
   cb(null, {
-    result: [{
+    result: {
       type: 'object',
       data: {
-        a: name
+        name,
+        random: Math.random()
       }
-    }],
+    },
     next: true,
     msgs: [
       {

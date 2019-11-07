@@ -27,7 +27,7 @@ tfQueue.jobs.register('s-cron-runOne', function(job) {
     flow.trigger,
     user,
     null,
-    [],
+    {},
     [flow]
   )
 

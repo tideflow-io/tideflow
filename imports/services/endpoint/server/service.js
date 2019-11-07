@@ -2,8 +2,6 @@ import i18n from 'meteor/universe:i18n'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-const uuidv4 = require('uuid/v4')
-
 const service = {
   name: 'endpoint',
   humanName: i18n.__('s-endpoint.name'),
@@ -41,7 +39,7 @@ const service = {
       humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
       callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
-        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResults : null
+        const lastData = executionLogs[executionLogs.length - 1].stepResult
 
         cb(null, {
           result: lastData,

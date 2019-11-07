@@ -56,6 +56,10 @@ Template.flowEditorStepAvailable.events({
 
 Template.flowEditor.events({
 
+  'click .flow-step': (event, template) => {
+    alert('123')
+  },
+
   'click .edit-mode-enter': (event, template) => {
     const stepIndex = $(event.target).data('step')
     Session.set('fe-editMode', stepIndex)

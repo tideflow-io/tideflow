@@ -25,7 +25,7 @@ const service = {
       const fullName = user.profile ? user.profile.firstName || to : to
 
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = _.flatMap(executionLogs, 'stepResults')
+      const previousStepsData = executionLogs.map(el => el.stepResult)
 
       let files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
       let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
@@ -76,7 +76,7 @@ const service = {
     visibe: true,
     callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = _.flatMap(executionLogs, 'stepResults')
+      const previousStepsData = executionLogs.map(el => el.stepResult)
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail

@@ -32,24 +32,16 @@ Router.route('/service/endpoint/:uuid', function () {
     return null
   }
 
-  let data = []
-
   if (!req.body) { return }
-
-  req.body = Array.isArray(req.body) ? req.body : [req.body]
-
-  data = req.body.map(element => {
-    return {
-      type: 'object',
-      data: element
-    }
-  })
 
   triggerFlows(
     flow.trigger,
     user,
     null,
-    data,
+    {
+      type: 'object',
+      data: req.body
+    },
     [flow]
   )
   

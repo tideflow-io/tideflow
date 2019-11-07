@@ -56,13 +56,9 @@ const ExecutionlogSchema = new SimpleSchema({
     defaultValue: 'pending',
     optional: false
   },
-  stepResults: {
-    type: Array,
-    label: 'Step results',
-    optional: true
-  },
-  'stepResults.$': {
+  stepResult: {
     type: Object,
+    optional: true,
     label: 'Step result',
     blackbox: true
   },

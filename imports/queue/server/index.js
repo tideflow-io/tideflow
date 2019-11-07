@@ -328,7 +328,7 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
       flow.trigger,
       [
         {
-          stepResults: triggerData,
+          stepResult: triggerData,
           next: true
         }
       ],
@@ -458,15 +458,15 @@ jobs.register('workflow-start', function(jobData) {
     stepIndex: 'trigger',
     msgs: [],
     createdAt
-  });
+  })
 
   // Execute the actual trigger
-  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, logId);
+  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, logId)
 
   // For the trigger log, update it with the results
   let stepUpdate = {
     $set: {
-      stepResults: triggerResult.result,
+      stepResult: triggerResult.result,
       next: triggerResult.next,
       status: triggerResult.next ? triggerResult.error ? 'error' : 'success' : 'pending'
     }
@@ -610,32 +610,30 @@ jobs.register('workflow-step', function(jobData) {
   })()
 
   // Process files that may have been returned from the step execution
-  eventCallback.result.map(r => {
-    if (r.type !== 'file') return
-
-    if (!r.data.data) {
+  if (eventCallback.result.type === 'file') {
+    if (!eventCallback.result.data.data) {
       console.error('File have no data attached')
       return
     }
-
-    r.data.data = Meteor.wrapAsync((cb) => {
+  
+    eventCallback.result.data.data = Meteor.wrapAsync((cb) => {
       let bufferChunks = []
-      if (Buffer.isBuffer(r.data.data)) return cb(null, r.data.data)
-
-      r.data.data.data.on('readable', () => {
+      if (Buffer.isBuffer(eventCallback.result.data.data)) return cb(null, eventCallback.result.data.data)
+  
+      eventCallback.result.data.data.data.on('readable', () => {
         // Store buffer chunk to array
-        let i = r.data.data.read()
+        let i = eventCallback.result.data.data.read()
         if (!i) return
         bufferChunks.push(i)
       })
-      r.data.data.data.data.on('end', () => cb(null, Buffer.concat(bufferChunks)))
+      eventCallback.result.data.data.data.data.on('end', () => cb(null, Buffer.concat(bufferChunks)))
     })()
-  })
+  }
 
   {
     let updateReq = {
       $set: {
-        stepResults: eventCallback.result,
+        stepResult: eventCallback.result,
         next: eventCallback.next
       }
     }

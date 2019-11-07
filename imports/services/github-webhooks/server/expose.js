@@ -107,6 +107,6 @@ Router.route('/ghwebhook/:uuid', function () {
       'trigger._id': service._id,
       'trigger.event': 'called'
     },
-    data
+    [data]
   )
 }, {where: 'server'})

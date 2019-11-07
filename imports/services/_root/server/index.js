@@ -190,22 +190,20 @@ const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
 
   return (executionLogs || []).map(el => {
-    let { _id, stepIndex, type, event, createdAt, updatedAt, stepResults } = el
+    let { _id, stepIndex, type, event, createdAt, updatedAt, stepResult } = el
 
-    stepResults.map(sr => {
-      if (!external && sr.type === 'file') { // Store files locally
-        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${sr.data.fileName}`
-        fs.writeFileSync(tmpFileName, sr.data.data)
-        sr.path = tmpFileName
-        sr.fileName = sr.data.fileName
-        sr.data = 'truncated'
-      }
-      else if (external && sr.type === 'file') {
-        // TODO
-      }
-    })
+    if (!external && stepResult.type === 'file') { // Store files locally
+      const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
+      fs.writeFileSync(tmpFileName, stepResult.data.data)
+      stepResult.path = tmpFileName
+      stepResult.fileName = stepResult.data.fileName
+      stepResult.data = 'truncated'
+    }
+    else if (external && stepResult.type === 'file') {
+      // TODO
+    }
 
-    return { _id, stepIndex, type, event, createdAt, updatedAt, stepResults }
+    return { _id, stepIndex, type, event, createdAt, updatedAt, stepResult }
   }) // external ? 'external' : 'internal'
 }
 

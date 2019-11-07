@@ -3,7 +3,6 @@ const crypto = require('crypto')
 import { Router } from 'meteor/iron:router'
 
 import { Services } from '/imports/modules/services/both/collection'
-import { triggerFlows } from '/imports/queue/server'
 
 const webhooks = require('./github-webhooks')
 

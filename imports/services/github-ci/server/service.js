@@ -72,7 +72,7 @@ const service = {
        */
       callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
         const agent = currentStep.config.agent
-        const webhook = executionLogs[0].stepResults[0].data
+        const webhook = executionLogs[0].stepResult.data
 
         const commandSent = sendAgent(agent, flow, executionId, logId, currentStep, 'tf.githubCi.pullRequest', {
           triggerService: currentStep,
@@ -120,7 +120,7 @@ const service = {
         const agentId = flow.trigger.config.agent
         const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.push', {
           triggerService: service,
-          webhook: executionLogs[0].stepResults[0].data
+          webhook: executionLogs[0].stepResult.data
         })
 
         cb(null, {

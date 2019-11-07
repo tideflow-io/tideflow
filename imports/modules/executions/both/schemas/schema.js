@@ -34,10 +34,6 @@ const ExecutionSchema = new SimpleSchema({
     optional: false
   },
   triggerData: {
-    type: Array,
-    optional: true
-  },
-  'triggerData.$': {
     type: Object,
     optional: true,
     blackbox: true

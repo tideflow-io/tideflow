@@ -97,7 +97,7 @@ const service = {
           step: currentStep._id,
           code: currentStep.config.command,
           previous: attachPrevious ? JSON.stringify(
-            _.map(executionLogs || [], 'stepResults')
+            _.map(executionLogs || [], 'stepResult')
           ) : null
         }, 'tf.agent.code_nodesfc')
 
