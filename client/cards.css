@@ -140,13 +140,6 @@
   margin: 0;
 }
 
-.card-mini-icon {
-  width: 50px;
-  height: 50px;
-  padding-top: 1em;
-  padding-top: 0.4em;
-}
-
 .card-mini-icon .fa,
 .card-mini-icon .fas,
 .card-mini-icon .far,
