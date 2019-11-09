@@ -42,8 +42,4 @@ events.deploy_cmd.viewer.title: Run a deploy procress
 
 log.called_input_parsed: Request's input parsed
 
-github.status.created.status: Status
-github.status.created.true: Application has been created and validated
-github.status.created.waiting: Tideflow is waiting for the application to be created on Github
-
 events.general.cmd.title: Command to run

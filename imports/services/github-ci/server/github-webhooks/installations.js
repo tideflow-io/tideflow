@@ -61,24 +61,24 @@ const processRepoDiffs = async (service, installation, repoDiffs) => {
   let query = {}
 
   if (repoDiffs.pull.length) {
-      let pullIds = repoDiffs.pull.map(r => r.id)
-      query.$pull = { 'details.installations.$.repositories': { 'id': { $in: pullIds } } }
+    let pullIds = repoDiffs.pull.map(r => r.id)
+    query.$pull = { 'details.installations.$.repositories': { 'id': { $in: pullIds } } }
   }
   
   if (repoDiffs.push.length) {
-      query.$push = { 'details.installations.$.repositories': { $each: repoDiffs.push } }
+    query.$push = { 'details.installations.$.repositories': { $each: repoDiffs.push } }
   }
 
   await Services.update({
-      _id: service._id,
-      'details.installations.id': installation.id
+    _id: service._id,
+    'details.installations.id': installation.id
   }, query)
 }
 
 const run = (service, body) => {
   if (body.action === 'created') {
     createInstall(service, body.installation, body.repositories)
-    return;
+    return
   }
   else if (body.action === 'added') {
     let currentInstallation = getCurrentInstallation(service, body.installation)
@@ -88,23 +88,23 @@ const run = (service, body) => {
       let repoDiffs = diffs(currentInstallation, body.repositories_added, [])
       processRepoDiffs(service, currentInstallation, repoDiffs)
     }
-    return;
+    return
   }
   else if (body.action === 'removed') {
     let currentInstallation = getCurrentInstallation(service, body.installation)
     if (!currentInstallation) {
       // error. trying to remove repositories from an unexisting installation
-      return;
+      return
     }
     
     const repoDiffs = diffs(currentInstallation, [], body.repositories_removed)
     processRepoDiffs(service, currentInstallation, repoDiffs)
-    return;
+    return
   }
   else if (body.action === 'deleted') {
     let currentInstallation = getCurrentInstallation(service, body.installation)
     if (!currentInstallation)
-      return;
+      return
     else { // add services
       // remove install
     }

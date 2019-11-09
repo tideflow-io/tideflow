@@ -17,24 +17,7 @@
           </div>
         </div>
 
-        {{#if service.details.created}}
-        {{else}}
-          <div class="row">
-            <div class="col-12">
-              <hr>
-              {{> servicesGhCiDetailsViewStatus}}
-            </div>
-          </div>
-        {{/if}}
-
         {{> servicesGhCiDetailsViewManual}}
-
-        <div class="row">
-          <div class="col-12">
-            <hr>
-            {{> servicesGhCiDetailsViewStatus}}
-          </div>
-        </div>
       </div>
     </div>
 </template>
@@ -99,13 +82,4 @@
       </p>
     </div>
   </div>
-</template>
-
-<template name="servicesGhCiDetailsViewStatus">
-      <b>{{__ "s-gh-ci.github.status.created.status"}}:</b>
-      {{#if service.details.created}}
-        {{__ "s-gh-ci.github.status.created.true"}}
-      {{else}}
-        {{__ "s-gh-ci.github.status.created.waiting"}}
-      {{/if}}
 </template>

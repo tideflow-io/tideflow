@@ -75,10 +75,6 @@ Router.route('/ghci/:uuid', function () {
 
   // Ignore requests checking the endpoint
   if (body.zen) {
-    Services.update(
-      { _id: service._id },
-      { $set: { 'details.created': true } }
-    )
     return
   }
 
