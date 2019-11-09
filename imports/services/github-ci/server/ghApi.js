@@ -5,7 +5,6 @@ const BASE_URL = 'https://api.github.com'
 let createCheckrun = async (service, repo, check_suite, executionId, status) => {
   const url = `${BASE_URL}/repos/${repo.full_name}/check-runs`
 
-  console.log({url})
   return new Promise((reject, response) => {
     HTTP.call('POST', url, {
       headers: {

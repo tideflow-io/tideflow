@@ -142,6 +142,54 @@ const service = {
         cb(!commandSent, null)
       }
     },
+
+
+
+    {
+      name: 'checksuite',
+      humanName: 's-gh-ci.events.checksuite.name',
+      viewerTitle: 's-gh-ci.events.checksuite.viewer.title',
+      inputable: true,
+      stepable: false,
+      
+      /**
+       * @param {object} service Flow's original trigger service, including secrets, etc.
+       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
+       * @param {array} triggerData Data which triggered the flow execution.
+       * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
+       * @param {object} currentStep The flow's current step object
+       * @param {array} executionLogs
+       * @param {string} executionId
+       * @param {string} logId
+       * @param {function} cb
+       */
+      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+        const agentId = flow.trigger.config.agent
+        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.checksuite', {
+          triggerService: service,
+          webhook: executionLogs[0].stepResult.data
+        })
+
+        cb(null, {
+          result: [],
+          next: false,
+          error: !commandSent,
+          msgs: [
+            {
+              m: commandSent ? 's-gh-ci.events.checksuite.agent.sent.success' : 's-gh-ci.events.checksuite.agent.sent.error',
+              err: !commandSent,
+              d: new Date()
+            }
+          ]
+        })
+      },
+
+      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
+        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.checksuite.execution.finished', {})
+        cb(!commandSent, null)
+      }
+    },
+
     {
       name: 'run_cmd',
       humanName: 's-gh-ci.events.run_cmd.name',

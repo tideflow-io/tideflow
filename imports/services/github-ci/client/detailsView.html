@@ -16,6 +16,16 @@
             </div>
             
             <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.appId"}}</label>
+              <input type="text" class="form-control" data-schema-key="config.appId" value="{{service.config.appId}}">
+            </div>
+            
+            <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.clientId"}}</label>
+              <input type="text" class="form-control" data-schema-key="config.clientId" value="{{service.config.clientId}}">
+            </div>
+
+            <div class="form-group" data-required="true">
               <label class="control-label">{{__ "s-gh-ci.ciPem"}}</label>
               <textarea type="text" class="form-control" data-schema-key="config.pem">{{service.config.pem}}</textarea>
             </div>
@@ -65,7 +75,14 @@
 
       <p>The application is almost ready. Click on <b>Create GitHub App</b>.</p>
 
-      <p>Scroll down to the button of the page to the <b>Private keys</b> section. Generate a new key and paste its content in the corresponding field in this page.</p>
+      <p>At this point, you need to copy 3 things from the newly created Github application, into this page. This are:</p>
+      <p>
+        <ul>
+          <li>The <b>App ID</b></li>
+          <li>The <b>Client ID</b></li>
+          <li>Scroll down to the <b>Private keys</b> section. Generate a private key and copy its content.</li>
+        </ul>
+      </p>
 
       <h4>2. Grant access to your repositores.</h4>
       <p>

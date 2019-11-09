@@ -38,6 +38,14 @@ const service = {
       stepable: false,
       callback: () => {}
     },
+    {
+      name: 'checksuite',
+      humanName: 's-gh-ci.events.checksuite.name',
+      viewerTitle: 's-gh-ci.events.checksuite.viewer.title',
+      inputable: true,
+      stepable: false,
+      callback: () => {}
+    },
     // {
     //   name: 'test_cmd',
     //   humanName: 's-gh-ci.events.test_cmd.name',

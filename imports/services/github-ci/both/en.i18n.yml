@@ -16,14 +16,18 @@ events.general.branch.filterHelp: Use "*" for any branch
 
 events.pull_request.name: Pull request created
 events.pull_request.viewer.title: When a pull request gets created
+events.pull_request.agent.sent.success: PULL REQUEST event sent to the agent
+events.pull_request.agent.sent.error: Error contacting the agent when notifying the PULL REQUEST event
 
 events.push.name: Pushed code
 events.push.viewer.title: When pushed commits
-
-events.pull_request.agent.sent.success: PULL REQUEST event sent to the agent
-events.pull_request.agent.sent.error: Error contacting the agent when notifying the PULL REQUEST event
 events.push.agent.sent.success: PUSH event sent to the agent
 events.push.agent.sent.error: Error contacting the agent when notifying the PUSH event
+
+events.checksuite.name: Checksuite created
+events.checksuite.viewer.title: When a new checksuite is created
+events.checksuite.agent.sent.success: CHECKSUITE event sent to the agent
+events.checksuite.agent.sent.error: Error contacting the agent when notifying the CHECKSUITE event
 
 events.test_cmd.agent.sent.success: Test suite sent to the agent
 events.test_cmd.agent.sent.error: Error contacting the agent when notifying the test suite

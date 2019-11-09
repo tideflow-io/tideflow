@@ -37,8 +37,8 @@ Router.route('/ghci/:uuid', function () {
 
   const body = this.request.body
 
-  const req = this.request;
-  const res = this.response;
+  const req = this.request
+  const res = this.response
   
   const uuid = this.params.uuid
 
@@ -78,22 +78,16 @@ Router.route('/ghci/:uuid', function () {
     return
   }
 
-  console.log(req.headers['x-github-event'])
-
   switch (req.headers['x-github-event']) {
-    case 'installation_repositories':
-    case 'installation':
-      return webhooks.installations.run(service, body)
-      break;
-    case 'pull_request':
-      return webhooks.pullRequest.run(service, body)
-      break;
-    case 'push':
-      return webhooks.push.run(service, body)
-      break;
-    case 'check_suite':
-      return webhooks.checkSuite.run(service, body)
-      break;
+  case 'installation_repositories':
+  case 'installation':
+    return webhooks.installations.run(service, body)
+  case 'pull_request':
+    return webhooks.pullRequest.run(service, body)
+  case 'push':
+    return webhooks.push.run(service, body)
+  case 'check_suite':
+    return webhooks.checkSuite.run(service, body)
   }
 
 }, {where: 'server'})

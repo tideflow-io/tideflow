@@ -484,12 +484,11 @@ jobs.register('workflow-start', function(jobData) {
     this.success()
     return
   }
-
   if (!triggerResult.next) {
     console.log('no more atm')
     debug('No next step atm')
-    this.success();
-    return;
+    this.success()
+    return
   }
 
   // Now that the trigger has been executed, we need to know which steps we

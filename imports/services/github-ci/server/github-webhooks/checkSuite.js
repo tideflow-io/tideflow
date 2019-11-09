@@ -7,7 +7,7 @@ const requested = (service, body) => {
 
   const flows = Flows.find({
     'trigger.type': 'gh-ci',
-    'trigger.event': 'push',
+    'trigger.event': 'checksuite',
     'trigger.config.branch': { $in: ['*', '', ghBranch] },
     'trigger.config.repository': body.repository.id.toString(),
     status: 'enabled'
@@ -44,7 +44,6 @@ const requested = (service, body) => {
 const run = (service, body) => {
   if (body.action === 'requested') {
     requested(service, body)
-    return;
   }
 }
 
