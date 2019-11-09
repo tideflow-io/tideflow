@@ -14,6 +14,11 @@
               <input type="text" class="form-control" value="{{service.config.secret}}" disabled>
               {{> clipboardBtnSmall text=service.config.secret}}
             </div>
+            
+            <div class="form-group" data-required="true">
+              <label class="control-label">{{__ "s-gh-ci.ciPem"}}</label>
+              <textarea type="text" class="form-control" data-schema-key="config.pem">{{service.config.pem}}</textarea>
+            </div>
           </div>
         </div>
 
@@ -57,7 +62,10 @@
       <p>
         Select <b>"Any account"</b> in the <i>"Where can this GitHub App be installed?"</i> question.
       </p>
-      <p>The application is ready. Click on <b>Create GitHub App</b>.</p>
+
+      <p>The application is almost ready. Click on <b>Create GitHub App</b>.</p>
+
+      <p>Scroll down to the button of the page to the <b>Private keys</b> section. Generate a new key and paste its content in the corresponding field in this page.</p>
 
       <h4>2. Grant access to your repositores.</h4>
       <p>
