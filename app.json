@@ -9,11 +9,14 @@
       "url": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
     }
   ],
+  "addons": [
+    {
+      "plan": "mongolab:shared-single-small",
+      "as": "MONGO"
+    }
+  ],
   "env": {
     "ROOT_URL": {
-      "required": true
-    },
-    "MONGO_URL": {
       "required": true
     },
     "MONGO_OPLOG_URL": {
