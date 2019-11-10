@@ -6,7 +6,7 @@
   "website": "https://tideflow.io/",
   "buildpacks": [
     {
-      "url": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
+      "url": "https://github.com/tideflow-io/meteor-buildpack-horse.git"
     }
   ],
   "addons": [
