@@ -50,10 +50,6 @@ const diffs = (currentInstallation, addedRepositories, removedRepositories) => {
     }
   })
 
-  console.log(JSON.stringify({
-    current: currentInstallation.repositories, pull, push
-  }, ' ', 2))
-
   return { pull, push }
 }
 

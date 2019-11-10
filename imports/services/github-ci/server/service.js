@@ -2,17 +2,18 @@ import { servicesAvailable } from '/imports/services/_root/server'
 
 import { ioTo } from '/imports/services/agent/server/socket'
 
-import { Services } from "/imports/modules/services/both/collection.js"
+import { Services } from '/imports/modules/services/both/collection.js'
+import { Executions } from '/imports/modules/executions/both/collection.js'
 
 import { createCheckrun, updateCheckrun } from './ghApi'
 
 const uuidv4 = require('uuid/v4')
 
-const sendAgent = (agentId, flow, executionId, logId, currentStep, topic, data) => {
+const sendAgent = (agentId, flow, execution, logId, currentStep, topic, data) => {
   const agentDoc = agentId === 'any' ? 'any' : Services.findOne({_id: agentId})
   return ioTo(agentDoc, Object.assign( {
     flow: flow._id,
-    execution: executionId,
+    execution: execution._id,
     log: logId,
     step: currentStep ? currentStep._id : null
   }, data || {}), topic)
@@ -62,19 +63,18 @@ const service = {
       /**
        * @param {object} service Flow's original trigger service, including secrets, etc.
        * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-       * @param {array} triggerData Data which triggered the flow execution.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
-       * @param {string} executionId
+       * @param {object} execution
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
         const agent = currentStep.config.agent
-        const webhook = executionLogs[0].stepResult.data
+        const webhook = execution.triggerData.data
 
-        const commandSent = sendAgent(agent, flow, executionId, logId, currentStep, 'tf.githubCi.pullRequest', {
+        const commandSent = sendAgent(agent, flow, execution, logId, currentStep, 'tf.githubCi.pullRequest', {
           triggerService: currentStep,
           webhook
         })
@@ -93,11 +93,12 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
-        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
+      executionFinished: async (service, flow, user, execution, cb) => {
+        const commandSent = sendAgent(flow.trigger.config.agent, flow, execution, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
         cb(!commandSent, null)
       }
     },
+    
     {
       name: 'push',
       humanName: 's-gh-ci.events.push.name',
@@ -108,19 +109,19 @@ const service = {
       /**
        * @param {object} service Flow's original trigger service, including secrets, etc.
        * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-       * @param {array} triggerData Data which triggered the flow execution.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
-       * @param {string} executionId
+       * @param {object} execution
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
         const agentId = flow.trigger.config.agent
-        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.push', {
+        const webhook = execution.triggerData.data
+        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.push', {
           triggerService: service,
-          webhook: executionLogs[0].stepResult.data
+          webhook
         })
 
         cb(null, {
@@ -137,13 +138,12 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
-        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.push.execution.finished', {})
+      executionFinished: async (service, flow, user, execution, cb) => {
+        const agentId = flow.trigger.config.agent
+        const commandSent = sendAgent(agentId, flow, execution, null, null, 'tf.githubCi.push.execution.finished', {})
         cb(!commandSent, null)
       }
     },
-
-
 
     {
       name: 'checksuite',
@@ -155,20 +155,31 @@ const service = {
       /**
        * @param {object} service Flow's original trigger service, including secrets, etc.
        * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-       * @param {array} triggerData Data which triggered the flow execution.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
-       * @param {string} executionId
+       * @param {object} execution
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+        const webhook = execution.triggerData.data
+
         const agentId = flow.trigger.config.agent
-        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.checksuite', {
+        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.checksuite', {
           triggerService: service,
-          webhook: executionLogs[0].stepResult.data
+          webhook
         })
+
+        if (commandSent) {
+          let checkRun = await createCheckrun(service, webhook, execution, 'in_progress')
+          Executions.update(
+            { _id: execution._id },
+            { $set: {
+              'extras.checkRun': checkRun.data
+            } }
+          )
+        }
 
         cb(null, {
           result: [],
@@ -184,8 +195,11 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, triggerData, user, executionId, cb) => {
-        const commandSent = sendAgent(flow.trigger.config.agent, flow, executionId, null, null, 'tf.githubCi.checksuite.execution.finished', {})
+      executionFinished: async (service, flow, user, execution, cb) => {
+        const webhook = execution.triggerData.data
+        const checkRun = execution.extras.checkRun
+        const commandSent = sendAgent(flow.trigger.config.agent, flow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
+        await updateCheckrun(service, webhook, checkRun, 'completed', 'success')
         cb(!commandSent, null)
       }
     },
@@ -203,20 +217,19 @@ const service = {
       /**
        * @param {object} service Flow's original trigger service, including secrets, etc.
        * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-       * @param {array} triggerData Data which triggered the flow execution.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
-       * @param {string} executionId
+       * @param {object} execution
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
         const agentId = flow.trigger.config.agent
         const cmd = currentStep.config.cmd
-        const webhook = triggerData[0].data
+        const webhook = execution.triggerData.data
 
-        const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.run_cmd', {
+        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.run_cmd', {
           cmd,
           webhook,
           currentStep
@@ -236,65 +249,7 @@ const service = {
           ]
         })
       }
-    },
-    // {
-    //   name: 'test_cmd',
-    //   humanName: 's-gh-ci.events.test_cmd.name',
-    //   viewerTitle: 's-gh-ci.events.test_cmd.viewer.title',
-    //   inputable: false,
-    //   stepable: true,
-    //   templates: {
-    //     eventConfig: 'servicesGithubCiBasicStep'
-    //   },
-      
-    //   /**
-    //    * @param {object} service Flow's original trigger service, including secrets, etc.
-    //    * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
-    //    * @param {array} triggerData Data which triggered the flow execution.
-    //    * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
-    //    * @param {object} currentStep The flow's current step object
-    //    * @param {array} executionLogs
-    //    * @param {string} executionId
-    //    * @param {string} logId
-    //    * @param {function} cb
-    //    */
-    //   callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
-    //     const agentId = flow.trigger.config.agent
-    //     const cmd = currentStep.config.cmd
-    //     const webhook = triggerData[0].data
-
-    //     let checkRun = null
-
-    //     if (webhook.check_suite) {
-    //       // post
-    //       checkRun = await createCheckrun(service, webhook.repository, webhook.check_suite, executionId, 'in_progress')
-    //     }
-
-    //     // update execution with extras
-    //     // this should run after the commands have been run, in the agent service
-    //     // await updateCheckrun(service, webhook.repository, webhook.check_suite, checkRun, executionId, 'completed', 'success')
-
-    //     const commandSent = sendAgent(agentId, flow, executionId, logId, currentStep, 'tf.githubCi.test_cmd', {
-    //       cmd,
-    //       webhook,
-    //       currentStep
-    //     })
-          
-    //     cb(null, {
-    //       result: [],
-    //       next: false,
-    //       error: !commandSent,
-    //       msgs: [
-    //         {
-    //           m: commandSent ? 's-gh-ci.events.test_cmd.agent.sent.success' : 's-gh-ci.events.test_cmd.agent.sent.error',
-    //           err: !commandSent,
-    //           // p: callParameters,
-    //           d: new Date()
-    //         }
-    //       ]
-    //     })
-    //   }
-    // }
+    }
   ]
 }
 

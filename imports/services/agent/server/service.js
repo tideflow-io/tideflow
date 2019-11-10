@@ -45,14 +45,14 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const commandSent = ioTo(agentDoc, {
           flow: flow._id,
-          execution: executionId,
+          execution: execution._id,
           log: logId,
           step: currentStep._id,
           command: currentStep.config.command,
@@ -85,14 +85,14 @@ const service = {
     
     {
       name: 'code_nodesfc',
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const commandSent = ioTo(agentDoc, {
           flow: flow._id,
-          execution: executionId,
+          execution: execution._id,
           log: logId,
           step: currentStep._id,
           code: currentStep.config.command,

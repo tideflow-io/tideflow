@@ -20,7 +20,7 @@ const service = {
   events: [
     {
       name: 'run',
-      callback: async (service, flow, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
 
         const language = currentStep.config.language // not used atm
         const code = currentStep.config.code

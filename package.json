@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
+    "@octokit/auth-app": "^2.4.2",
     "bcrypt": "^2.0.1",
     "cron-converter": "0.0.12",
     "debug": "^4.1.1",

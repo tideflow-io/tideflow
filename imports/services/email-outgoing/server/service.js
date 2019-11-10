@@ -15,7 +15,7 @@ const service = {
   events: [{
     name: 'to-me',
     visibe: true,
-    callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+    callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
       const to = commonEmailHelper.userEmail(user)
 
       if (!to) {
@@ -74,7 +74,7 @@ const service = {
   {
     name: 'to-others',
     visibe: true,
-    callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+    callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const previousStepsData = executionLogs.map(el => el.stepResult)
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())

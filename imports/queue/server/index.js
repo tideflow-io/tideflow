@@ -323,7 +323,6 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
     event.callback(
       service,
       flow,
-      triggerData,
       user,
       flow.trigger,
       [
@@ -332,7 +331,7 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
           next: true
         }
       ],
-      execution._id,
+      execution,
       logId,
       cb
     )
@@ -605,7 +604,7 @@ jobs.register('workflow-step', function(jobData) {
   if (!stepEvent || !stepEvent.callback) return null
   
   let eventCallback = Meteor.wrapAsync(cb => {
-    stepEvent.callback(service, flow, triggerData, user, currentStep, previousSteps, executionId, logId, cb)
+    stepEvent.callback(service, flow, user, currentStep, previousSteps, execution, logId, cb)
   })()
 
   // Process files that may have been returned from the step execution
@@ -743,6 +742,8 @@ jobs.register('workflow-execution-notify-email', function(user, flow) {
 jobs.register('workflow-execution-finished', function(jobData) {
   let instance = this
 
+  console.log('workflow-execution-finished', JSON.stringify({jobData}, ' ', 2))
+
   let { executionId } = jobData
 
   const execution = Executions.findOne({_id: executionId})
@@ -764,7 +765,7 @@ jobs.register('workflow-execution-finished', function(jobData) {
   }
 
   Meteor.wrapAsync(cb => {
-    stepEvent.executionFinished(service, flow, triggerData, user, executionId, cb)
+    stepEvent.executionFinished(service, flow, user, execution, cb)
   })()
 
   instance.success()

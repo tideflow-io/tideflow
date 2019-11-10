@@ -78,7 +78,6 @@ Meteor.startup(async () => {
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finishBulk', async message => {
-      console.log('tf.notify.finishBulk', message)
       let err = !!message.code
 
       await logUpdate(
@@ -104,7 +103,6 @@ Meteor.startup(async () => {
     // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finish', async message => {
-      console.log('tf.notify.finish', message)
       let msgs = message.stdout || message.stderr
       let err = !!(message.stderr && message.stderr.length)
 
@@ -178,9 +176,9 @@ const ioTo = (agent, message, topic) => {
       return io
         .to(agent.secrets.socketId)
         .emit(topic, message)
-      }
+    }
     catch (ex) {
-      console.error({ex})
+      console.error(ex)
       executionError(pick(message, ['flow', 'execution']))
       return null
     }
