@@ -10,14 +10,15 @@
     }
   ],
   "addons": [
-    {
-      "plan": "mongolab:sandbox",
-      "as": "MONGO"
-    }
+    
   ],
   "env": {
     "ROOT_URL": {
       "description": "Provide a full URL to your Tideflow, like: https://tideflow.mycompany.com",
+      "required": true
+    },
+    "MONGO_URL": {
+      "description": "MongoDB server URL. Give a fully qualified URL (or comma-separated list of URLs)",
       "required": true
     },
     "MONGO_OPLOG_URL": {
