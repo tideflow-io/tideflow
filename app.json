@@ -11,7 +11,7 @@
   ],
   "addons": [
     {
-      "plan": "mongolab:shared-single-small",
+      "plan": "mongolab:shared-cluster-1",
       "as": "MONGO"
     }
   ],
