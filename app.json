@@ -17,12 +17,15 @@
   ],
   "env": {
     "ROOT_URL": {
+      "description": "Provide a full URL to your Tideflow, like: https://tideflow.mycompany.com",
       "required": true
     },
     "MONGO_OPLOG_URL": {
+      "description": "MongoDB server oplog URL",
       "required": false
     },
     "MAIL_URL": {
+      "description": "Set the SMTP server for sending e-mails",
       "required": false
     }
   },
