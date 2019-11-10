@@ -3,6 +3,7 @@
   "logo": "https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg",
   "keywords": ["workflow", "automation", "meteorjs", "realtime", "mongodb", "javascript"],
   "repository": "https://github.com/tideflow-io/tideflow",
+  "website": "https://tideflow.io/",
   "buildpacks": [
     {
       "url": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
@@ -28,6 +29,5 @@
     }
   },
   "scripts": {
-  },
-  "stack": "heroku-18"
+  }
 }
