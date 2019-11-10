@@ -13,8 +13,9 @@
     
   ],
   "env": {
-
-
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
     "MAIL_URL": {
       "description": "Set the SMTP server for sending e-mails",
       "required": false
