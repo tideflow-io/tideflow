@@ -2,15 +2,9 @@
   <div class="card">
     <div class="card-body">
       <div class="form-group" data-required="true">
-        <label class="control-label">{{__ "s-agent.token"}}</label>
-        <input type="text" class="form-control" value="{{service.config.token}}" disabled>
-        {{> clipboardBtnSmall text=service.config.token}}
-      </div>
-      
-      <div class="form-group" data-required="true">
         <label class="control-label">{{__ "s-agent.launch"}}</label>
-        <pre class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}}</code></pre>
-        {{> clipboardBtnSmall prefix-text="npx @tideflowio/tideflow-agent -t " text=service.config.token}}
+        <pre id="command" class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}} -u {{rootUrl}}</code></pre>
+        {{> clipboardBtnSmall selector-text="#command"}}
       </div>
 
       <p>
