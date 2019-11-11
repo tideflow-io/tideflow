@@ -14,7 +14,6 @@ const opened = (service, body) => {
   })
 
   if (!flows || !flows.count()) {
-    console.log('no flows')
     return
   }
 

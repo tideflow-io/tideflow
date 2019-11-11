@@ -63,9 +63,6 @@ let updateCheckrun = async (service, webhook, check_run, status, conclusion) => 
         completed_at: new Date()
       }
     }, (error, result) => {
-      console.log({
-        error, result
-      })
       return error ? reject(error) : resolve(result)
     })
   })

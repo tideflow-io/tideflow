@@ -14,7 +14,6 @@ const requested = (service, body) => {
   })
 
   if (!flows || !flows.count()) {
-    console.log('no flows')
     return
   }
 
