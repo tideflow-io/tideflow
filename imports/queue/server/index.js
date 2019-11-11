@@ -341,18 +341,18 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
 const guessStepsWithoutPreceding = (flow) => {
   // Build a list with all the steps indexes.
   // [0, 1]
-  const allSteps = flow.steps.map((s,i)=>i);
+  const allSteps = flow.steps.map((s,i)=>i)
   // List of steps indexes that are connected to the trigger
   // The result is [1]
-  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex);
+  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex)
   // The result is [1, 1]
   flow.steps.map(flowStep => {
     triggerNextSteps = triggerNextSteps.concat( (flowStep.outputs || []).map(s => s.stepIndex) )
-  });
+  })
   // The result is [ [0,1], [1,1] ]
-  const lists = [allSteps, triggerNextSteps];
+  const lists = [allSteps, triggerNextSteps]
   // The result is [ 0 ]
-  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)));
+  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
   return cardsWithoutInbound || []
 }
 
@@ -362,9 +362,7 @@ const guessStepsWithoutPreceding = (flow) => {
  * @param {*} arr2 
  */
 const compareArrays = (arr1, arr2) => {
-    return arr1.sort()
-          .join() === arr2.sort()
-                        .join();
+  return arr1.sort().join() === arr2.sort().join()
 }
 
 /**
@@ -400,35 +398,35 @@ const guessTriggerSingleChilds = (flow) => {
 jobs.register('workflow-start', function(jobData) {
   check(jobData, {
     executionId: String,
-  });
+  })
 
-  let createdAt = new Date();
+  let createdAt = new Date()
 
   // Get the current execution
-  const execution = Executions.findOne({_id: jobData.executionId});
+  const execution = Executions.findOne({_id: jobData.executionId})
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
     debug('execution is stopped')
-    return this.success();
+    return this.success()
   }
 
   const triggerData = execution.triggerData
-  const flow = execution.fullFlow;
-  const service = execution.fullService;
+  const flow = execution.fullFlow
+  const service = execution.fullService
   const user = Meteor.users.findOne({_id:execution.user}, {
     fields: { services: false }
   })
 
   // Service triggering the execution
-  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type);
-  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2');
+  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
+  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
 
   // For the service triggering the execution, get the event
-  let event = serviceWorker.events.find(e => e.name === flow.trigger.event);
+  let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
   // Woop! The event triggered can't be found
   if (!event) {
-    return this.success();
+    return this.success()
   }
 
   // Log the trigger execution
@@ -456,12 +454,12 @@ jobs.register('workflow-start', function(jobData) {
     }
   }
   if (triggerResult.msgs) {
-    stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } };
+    stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } }
   }
   ExecutionsLogs.update({
     _id: logId,
     execution: jobData.executionId
-  }, stepUpdate);
+  }, stepUpdate)
 
   if (triggerResult.error) {
     endExecution(execution, 'error')
@@ -489,9 +487,9 @@ jobs.register('workflow-start', function(jobData) {
 
   if (!flow.steps || !flow.steps.length) {
     debug('no flow steps')
-    endExecution(execution);
-    this.success();
-    return;
+    endExecution(execution)
+    this.success()
+    return
   }
 
   // ===========================================================================
@@ -516,9 +514,9 @@ jobs.register('workflow-start', function(jobData) {
       currentStep: flow.steps[stepIndex],
       executionId: jobData.executionId
     })
-  });
+  })
 
-  this.success();
+  this.success()
 })
 
 /**
@@ -726,13 +724,9 @@ jobs.register('workflow-execution-notify-email', function(user, flow) {
 
 jobs.register('workflow-execution-finished', function(jobData) {
   let instance = this
-
   let { executionId } = jobData
 
   const execution = Executions.findOne({_id: executionId})
-  const service = execution.fullService
-  const flow = execution.fullFlow
-  const triggerData = execution.triggerData
   const user = Meteor.users.findOne({_id:execution.user}, {
     fields: { services: false }
   })
