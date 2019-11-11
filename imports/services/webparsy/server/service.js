@@ -32,13 +32,11 @@ const service = {
         const string = currentStep.config.yml
         const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
 
-        let result = [{
-          type: 'object',
-          data: await webparsy.init({string, flags})
-        }]
-
         cb(null, {
-          result,
+          result: {
+            type: 'object',
+            data: await webparsy.init({string, flags})
+          },
           next: true,
           error: false,
           msgs: [

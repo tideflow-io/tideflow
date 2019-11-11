@@ -164,19 +164,6 @@ const jobs = {
 
 module.exports.jobs = jobs
 
-const logUpdate = (execution, logId, messages, set) => {
-  return ExecutionsLogs.update({_id: logId, execution}, {
-    $set: set || {},
-    $push: {
-      msgs: {
-        $each: messages
-      }
-    }
-  })
-}
-
-module.exports.logUpdate = logUpdate
-
 /**
  * Given a channel details, searches all flows using it as a trigger
  * 

@@ -70,7 +70,7 @@ const service = {
         }
 
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [
@@ -106,7 +106,7 @@ const service = {
         }, 'tf.agent.code_nodesfc')
 
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [

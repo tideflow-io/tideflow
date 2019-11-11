@@ -1,23 +1,44 @@
-import { Meteor } from 'meteor/meteor'
-
 import http from 'http'
 import socket_io from 'socket.io'
 
+import { Meteor } from 'meteor/meteor'
+import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 import { Services } from '/imports/modules/services/both/collection.js'
 
-import { logUpdate, executeNextStep, executionError } from '/imports/queue/server'
+import { executeNextStep, executionError } from '/imports/queue/server'
 import { pick } from '/imports/helpers/both/objects'
 
 // Server
 const server = http.createServer()
 const io = socket_io(server)
 
+const logUpdate = (context, messages, results, extras) => {
+  const { log, execution } = context
+
+  if (results && !Array.isArray(results)) {
+    results = [results]
+  }
+
+  let push = {
+    msgs: { $each: messages }
+  }
+
+  if (results && results.length) {
+    push['stepResult.data'] = { $each: results }
+  }
+
+  return ExecutionsLogs.update({_id: log, execution}, {
+    $set: Object.assign({}, extras, { 'stepResult.type': 'array' }),
+    $push: push
+  })
+}
+
 Meteor.startup(async () => {
   await Services.update(
     {
       type: 'agent'
     },
-    { 
+    {
       $set: {
         'details.online': false,
       },
@@ -34,6 +55,7 @@ Meteor.startup(async () => {
       'config.token': token
     })
     if (c) {
+      // eslint-disable-next-line require-atomic-updates
       socket.tf = {
         _id: c._id,
         token,
@@ -69,9 +91,9 @@ Meteor.startup(async () => {
       let err = !!(message.stderr && message.stderr.length)
       let msgs = err ? message.stderr : message.stdout
       await logUpdate(
-        message.execution,
-        message.log,
-        msgs.map(msg => { return { m: msg, p: null, err, d: date } })
+        message,
+        msgs.map(msg => { return { m: msg, p: null, err, d: date } }),
+        msgs
       )
     })
 
@@ -81,14 +103,16 @@ Meteor.startup(async () => {
       let err = !!message.code
 
       await logUpdate(
-        message.execution,
-        message.log,
+        message,
         message.stdLines.map(line => { return { 
           m: line.output,
           p: null,
           err: line.err,
           d: line.date
         } }),
+        message.stdLines.map(l => {
+          return `${l.err ? 'ERR ' : ''}${l.output}`
+        }),
         { status: err ? 'error' : 'success' }
       )
 
@@ -107,9 +131,9 @@ Meteor.startup(async () => {
       let err = !!(message.stderr && message.stderr.length)
 
       await logUpdate(
-        message.execution,
-        message.log,
+        message,
         msgs.map(msg => { return { m: msg, p: null, err, d: new Date() } }),
+        msgs,
         { status: err ? 'error' : 'success' }
       )
 
@@ -124,13 +148,13 @@ Meteor.startup(async () => {
 
     // An agent is reporting an exception when executing the command
     socket.on('tf.notify.exception', async message => {
-      console.log('tf.notify.exception', message)
+      console.error('tf.notify.exception', message)
       await logUpdate(
-        message.execution,
-        message.log,
+        message,
         [
           { m: message.ex, p: null, err: true, d: new Date() }
         ],
+        [ `ERR ${message.ex}` ],
         { status: 'error' }
       )
       executionError(pick(message, ['flow', 'execution']))

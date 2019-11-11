@@ -60,7 +60,7 @@ const service = {
       emailHelper.send(data)
 
       cb(null, {
-        result: [],
+        result: {},
         next: true,
         msgs: [
           {
@@ -117,7 +117,7 @@ const service = {
       emailHelper.send(data)
 
       cb(null, {
-        result: [],
+        result: {},
         next: true,
         msgs: [
           {

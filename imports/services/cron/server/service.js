@@ -207,7 +207,7 @@ const service = {
     visibe: true,
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       cb(null, {
-        result: [],
+        result: {},
         next: true
       })
     }

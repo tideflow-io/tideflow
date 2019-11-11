@@ -79,7 +79,7 @@ const service = {
         })
 
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [
@@ -124,7 +124,7 @@ const service = {
         })
 
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [
@@ -181,7 +181,7 @@ const service = {
         }
 
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [
@@ -236,7 +236,7 @@ const service = {
         })
           
         cb(null, {
-          result: [],
+          result: {},
           next: false,
           error: !commandSent,
           msgs: [

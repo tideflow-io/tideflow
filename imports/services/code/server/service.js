@@ -60,10 +60,10 @@ const service = {
         messages = messages.concat(result.stdLines.map(line => { return { m: line.output, p: null, err: line.err, d: line.date } }))
 
         cb(null, {
-          result: result ? [{
+          result: result ? {
             type: 'object',
             data: result
-          }] : [],
+          } : {},
           next: true,
           error: errored || !!result.code,
           msgs: messages
