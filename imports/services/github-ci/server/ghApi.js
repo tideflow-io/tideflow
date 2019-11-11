@@ -29,7 +29,7 @@ let createCheckrun = async (service, webhook, execution, status) => {
         'authorization': `Bearer ${auth.token}`
       },
       data: {
-        name: `Tideflow ${execution._id}`,
+        name: `Tideflow ${execution.fullFlow.title} #${execution._id}`,
         head_sha: check_suite.head_sha,
         status: status || 'in_progress',
         details_url: `${process.env.ROOT_URL || 'https://tideflow.io'}flows/${execution.flow}/executions/${execution._id}`,
