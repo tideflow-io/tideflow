@@ -1,5 +1,5 @@
 _namespace: s-gh-ci
-name: Github CI server (preview)
+name: Github CI server
 description: Build and deploy from Github
 trigger.repository.name: Repository name
 trigger.repository.any: Any repository
