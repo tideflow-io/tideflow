@@ -763,7 +763,7 @@ jobs.register('workflow-execution-finished', function(jobData) {
   }
 
   Meteor.wrapAsync(cb => {
-    stepEvent.executionFinished(service, flow, user, execution, cb)
+    stepEvent.executionFinished(user, execution, cb)
   })()
 
   instance.success()
