@@ -77,7 +77,9 @@ Template.registerHelper('eventHumanName', (serviceName, eventName) => {
 })
 
 Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
-Template.registerHelper('rootUrl', () => new URL(Meteor.absoluteUrl()).host)
+Template.registerHelper('agentUrl', () => {
+  return `${new URL(Meteor.absoluteUrl()).hostname}:1337`
+})
 Template.registerHelper('checkUserRole', (team) => {
   return checkRole(Meteor.userId(), team)
 })

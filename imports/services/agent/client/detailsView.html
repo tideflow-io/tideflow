@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="form-group" data-required="true">
         <label class="control-label">{{__ "s-agent.launch"}}</label>
-        <pre id="command" class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}} -u {{rootUrl}}</code></pre>
+        <pre id="command" class="code"><code>npx @tideflowio/tideflow-agent -t {{service.config.token}} -u {{agentUrl}}</code></pre>
         {{> clipboardBtnSmall selector-text="#command"}}
       </div>
 
