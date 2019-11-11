@@ -740,8 +740,6 @@ jobs.register('workflow-execution-notify-email', function(user, flow) {
 jobs.register('workflow-execution-finished', function(jobData) {
   let instance = this
 
-  console.log('workflow-execution-finished', JSON.stringify({jobData}, ' ', 2))
-
   let { executionId } = jobData
 
   const execution = Executions.findOne({_id: executionId})

@@ -195,11 +195,12 @@ const service = {
       },
 
       executionFinished: async (user, execution, cb) => {
-        const { fullService, fullFlow } = execution
+        const { fullService, fullFlow, status } = execution
         const webhook = execution.triggerData.data
         const checkRun = execution.extras.checkRun
+        const conclusion = status === 'finished' ? 'success' : status === 'error' ? 'failure' : 'neutral'
         const commandSent = sendAgent(fullFlow.trigger.config.agent, fullFlow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
-        await updateCheckrun(fullService, webhook, checkRun, 'completed', 'success')
+        await updateCheckrun(fullService, webhook, checkRun, 'completed', conclusion)
         cb(!commandSent, null)
       }
     },
