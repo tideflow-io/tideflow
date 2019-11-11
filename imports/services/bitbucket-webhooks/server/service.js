@@ -39,7 +39,7 @@ const service = {
       name: 'called',
       humanName: 's-bb-webhooks.events.called.name',
       visibe: true,
-      callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : null
 
         cb(null, {

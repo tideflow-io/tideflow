@@ -321,8 +321,6 @@ module.exports.executionError = executionError
 const executeTrigger = (service, event, flow, user, triggerData, execution, logId) => {
   return Meteor.wrapAsync((cb) => {
     event.callback(
-      service,
-      flow,
       user,
       flow.trigger,
       [
@@ -604,7 +602,7 @@ jobs.register('workflow-step', function(jobData) {
   if (!stepEvent || !stepEvent.callback) return null
   
   let eventCallback = Meteor.wrapAsync(cb => {
-    stepEvent.callback(service, flow, user, currentStep, previousSteps, execution, logId, cb)
+    stepEvent.callback(user, currentStep, previousSteps, execution, logId, cb)
   })()
 
   // Process files that may have been returned from the step execution

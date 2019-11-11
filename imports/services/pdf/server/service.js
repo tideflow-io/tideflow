@@ -46,7 +46,7 @@ const service = {
     {
       name: 'build-pdf',
       visibe: true,
-      callback: (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (user, currentStep, executionLogs, executionId, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : {}
 
         const filesData = lastData.filter(data => data.type === 'object');

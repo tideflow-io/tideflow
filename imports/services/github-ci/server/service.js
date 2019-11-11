@@ -61,8 +61,6 @@ const service = {
       stepable: false,
 
       /**
-       * @param {object} service Flow's original trigger service, including secrets, etc.
-       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
@@ -70,11 +68,12 @@ const service = {
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const { fullFlow, triggerData } = execution
         const agent = currentStep.config.agent
-        const webhook = execution.triggerData.data
+        const webhook = triggerData.data
 
-        const commandSent = sendAgent(agent, flow, execution, logId, currentStep, 'tf.githubCi.pullRequest', {
+        const commandSent = sendAgent(agent, fullFlow, execution, logId, currentStep, 'tf.githubCi.pullRequest', {
           triggerService: currentStep,
           webhook
         })
@@ -93,8 +92,9 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, user, execution, cb) => {
-        const commandSent = sendAgent(flow.trigger.config.agent, flow, execution, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
+      executionFinished: async (user, execution, cb) => {
+        const { fullFlow } = execution
+        const commandSent = sendAgent(fullFlow.trigger.config.agent, fullFlow, execution, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
         cb(!commandSent, null)
       }
     },
@@ -107,8 +107,6 @@ const service = {
       stepable: false,
       
       /**
-       * @param {object} service Flow's original trigger service, including secrets, etc.
-       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
@@ -116,10 +114,11 @@ const service = {
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
-        const agentId = flow.trigger.config.agent
-        const webhook = execution.triggerData.data
-        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.push', {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const { service, fullFlow, triggerData } = execution
+        const agentId = fullFlow.trigger.config.agent
+        const webhook = triggerData.data
+        const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.push', {
           triggerService: service,
           webhook
         })
@@ -138,9 +137,10 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, user, execution, cb) => {
-        const agentId = flow.trigger.config.agent
-        const commandSent = sendAgent(agentId, flow, execution, null, null, 'tf.githubCi.push.execution.finished', {})
+      executionFinished: async (user, execution, cb) => {
+        const { fullFlow } = execution
+        const agentId = fullFlow.trigger.config.agent
+        const commandSent = sendAgent(agentId, fullFlow, execution, null, null, 'tf.githubCi.push.execution.finished', {})
         cb(!commandSent, null)
       }
     },
@@ -153,8 +153,6 @@ const service = {
       stepable: false,
       
       /**
-       * @param {object} service Flow's original trigger service, including secrets, etc.
-       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
@@ -162,11 +160,12 @@ const service = {
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const { service, fullFlow } = execution
         const webhook = execution.triggerData.data
 
-        const agentId = flow.trigger.config.agent
-        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.checksuite', {
+        const agentId = fullFlow.trigger.config.agent
+        const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.checksuite', {
           triggerService: service,
           webhook
         })
@@ -195,10 +194,11 @@ const service = {
         })
       },
 
-      executionFinished: async (service, flow, user, execution, cb) => {
+      executionFinished: async (user, execution, cb) => {
+        const { service, fullFlow } = execution
         const webhook = execution.triggerData.data
         const checkRun = execution.extras.checkRun
-        const commandSent = sendAgent(flow.trigger.config.agent, flow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
+        const commandSent = sendAgent(fullFlow.trigger.config.agent, fullFlow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
         await updateCheckrun(service, webhook, checkRun, 'completed', 'success')
         cb(!commandSent, null)
       }
@@ -215,8 +215,6 @@ const service = {
       },
       
       /**
-       * @param {object} service Flow's original trigger service, including secrets, etc.
-       * @param {object} flow Full flow. The trigger doesn't include secrets, etc.
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
        * @param {object} currentStep The flow's current step object
        * @param {array} executionLogs
@@ -224,12 +222,13 @@ const service = {
        * @param {string} logId
        * @param {function} cb
        */
-      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
-        const agentId = flow.trigger.config.agent
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const { fullFlow, triggerData } = execution
+        const agentId = fullFlow.trigger.config.agent
         const cmd = currentStep.config.cmd
-        const webhook = execution.triggerData.data
+        const webhook = triggerData.data
 
-        const commandSent = sendAgent(agentId, flow, execution, logId, currentStep, 'tf.githubCi.run_cmd', {
+        const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.run_cmd', {
           cmd,
           webhook,
           currentStep

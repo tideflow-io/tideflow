@@ -15,7 +15,8 @@ const service = {
   events: [{
     name: 'to-me',
     visibe: true,
-    callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+    callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+      const { fullFlow } = execution
       const to = commonEmailHelper.userEmail(user)
 
       if (!to) {
@@ -38,7 +39,7 @@ const service = {
       })
 
       let tplVars = {
-        messageTitle: flow.title,
+        messageTitle: fullFlow.title,
         fullName,
         userEmail: to,
         lines: (currentStep.config.body || '').split('\n'),
@@ -74,7 +75,8 @@ const service = {
   {
     name: 'to-others',
     visibe: true,
-    callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+    callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+      const { fullFlow } = execution
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
       const previousStepsData = executionLogs.map(el => el.stepResult)
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
@@ -92,7 +94,7 @@ const service = {
       })
 
       let tplVars = {
-        messageTitle: flow.title,
+        messageTitle: fullFlow.title,
         fullName,
         userEmail,
         lines: currentStep.config.body.split('\n'),

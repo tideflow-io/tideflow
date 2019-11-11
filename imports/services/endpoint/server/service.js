@@ -38,7 +38,7 @@ const service = {
       name: 'called',
       humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
-      callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = executionLogs[executionLogs.length - 1].stepResult
 
         cb(null, {

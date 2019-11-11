@@ -20,9 +20,8 @@ const service = {
   events: [
     {
       name: 'run',
-      callback: async (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
-
-        const language = currentStep.config.language // not used atm
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        // const language = currentStep.config.language // not used atm
         const code = currentStep.config.code
         const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}`
 
@@ -33,7 +32,6 @@ const service = {
 
         let tmpResultsFile = `${tmpFileName}-previous-results`
         let previousResults = processableResults(executionLogs, false)
-        console.log(JSON.stringify(previousResults, ' ', 2))
         fs.writeFileSync(tmpResultsFile, JSON.stringify(previousResults))
 
         try {

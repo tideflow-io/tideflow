@@ -28,10 +28,8 @@ const service = {
   events: [
     {
       name: 'scrape',
-      callback: async (service, flow, triggerData, user, currentStep, executionLogs, executionId, logId, cb) => {
-
+      callback: async (user, currentStep, executionLogs, executionId, logId, cb) => {
         const string = currentStep.config.yml
-
         const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
 
         let result = [{

@@ -205,7 +205,7 @@ const service = {
     name: 'called',
     humanName: i18n.__('s-cron.events.called.name'),
     visibe: true,
-    callback: (service, flow, user, currentStep, executionLogs, execution, logId, cb) => {
+    callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       cb(null, {
         result: [],
         next: true
