@@ -11,7 +11,7 @@ SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
 
 /**
- * Get the email sending config for Nodemailer
+ * Get the email configuration for Nodemailer
  */
 const getConfig = () => {
   const processUrl = process.env.MAIL_URL
@@ -74,11 +74,14 @@ let transporter = mailConfing ? nodemailer.createTransport(getConfig()) :
   } }
 
 /**
+ * Builds the parameters needed to send an email
  * 
  * @param {Array} to List of email addresses
- * @param {*} emailDetails 
+ * @param {Object} emailDetails 
  * @param {Object} tplVars 
  * @param {String} tplName 
+ * 
+ * @returns {Object}
  */
 const data = (to, emailDetails, tplVars, tplName) => {
   const config = getConfig()
@@ -108,8 +111,9 @@ const data = (to, emailDetails, tplVars, tplName) => {
 module.exports.data = data
 
 /**
+ * Sends an email
  * 
- * @param {*} data 
+ * @param {object} data 
  */
 const send = (data) => {
   Meteor.defer(function() {
