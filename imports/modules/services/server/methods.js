@@ -36,7 +36,7 @@ export const updateService = new ValidatedMethod({
     UPDATABLE_PROPERTIES.map(p => { newServiceProperties[p] = service[p] })
 
     let afterPreHookDoc = servicesHooks.update.pre(originalService, Object.assign({}, originalService, newServiceProperties))
-    console.log({afterPreHookDoc})
+
     if (!afterPreHookDoc) {
       throw new Error('Service pre-update hook failed')
     }
