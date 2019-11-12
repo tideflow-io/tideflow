@@ -33,7 +33,7 @@ const service = {
           return Object.assign(service, {
             config: {
               endpoint: uuidv4(),
-              secret: uuidv4() 
+              secret: uuidv4()
             }
           }) 
         }
@@ -41,8 +41,16 @@ const service = {
       update: {
         pre: (existing, update) => {
           const { endpoint, secret } = existing.config
+          const { privateKey } = update.config || {}
+          let secrets = {}
+
+          if (privateKey) {
+            delete update.config.privateKey
+            secrets = { secrets: { privateKey } }
+          }
+
           const config = Object.assign(update.config || {}, { endpoint, secret })
-          return Object.assign(update, { config }) 
+          return Object.assign(update, { config }, secrets) 
         }
       },
       delete: {
