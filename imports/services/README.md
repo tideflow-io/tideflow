@@ -1,7 +1,7 @@
 # Services
 
 Services are things you can connected to workflows. Either to trigger them or
-as workflow tasks.
+as workflow actions.
 
 Services prefixed with "_" in this folder are system only.
 

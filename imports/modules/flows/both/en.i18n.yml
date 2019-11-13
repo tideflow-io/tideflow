@@ -15,8 +15,8 @@ editor.trigger.title: Which event will fire this workflow?
 editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.event.selectOneOption: Select an option
-editor.step.removeOne: Remove task
-editor.step.addOne: Add a new task
+editor.step.removeOne: Remove action
+editor.step.addOne: Add a new action
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
 properties.emailOnTrigger: Send me an email when this workflow is triggered
@@ -27,7 +27,7 @@ index.createNew: Create a new workflow
 index.emptyListSubTitle: It seems you haven't created any workflow yet.
 index.viewOne: View
 new.submit: Create
-executions.steps.title: "Task by task:"
+executions.steps.title: "Action by action:"
 one.enabled: Enabled
 executions.title: Workflow's execution logs
 executiondetails.logsViewAs.console: View as console

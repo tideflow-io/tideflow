@@ -2,25 +2,32 @@
 
 > Using Tideflow, you can design, automate and monitor your workflows in realtime.
 
-It's as easy as drag and drop. Create and connect tasks to create a custom workflow that replaces manual steps with automation.
+It's as easy as drag and drop. Create and connect actions to create custom
+workflows that replaces manual steps with automation.
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow-website/master/website/static/img/D43dLHRXsAIwXDs.jpg" height="400" style="border:1px solid gray;">
 
 ## Run tasks in your own computer
 
-With Tideflow's agent, you can run workflows tasks in your own infrastructure. Either if it's for running an arbitrary command in your pc, or creating your own Continious Integration workflow using your office's server.
+With Tideflow's agent, you can run workflows actions in your own infrastructure.
+Either if it's for running an arbitrary command in your pc, or creating your own
+Continious Integration workflow using your office's server.
 
 - [Learn more](https://docs.tideflow.io/docs/services-agent)
 
-## Create complex task connections
+## Automate complex processes
 
-With our workflow editor, you can create multiple-to-multiple connections between tasks. Tideflow's execution engine will take care of the rest.
+With our workflow editor, you can create multiple-to-multiple connections
+between actions. Tideflow's execution engine will take care of the rest.
 
 - [Learn more](https://docs.tideflow.io/docs/workflows-introduction)
 
 ## Automate and create anything
 
-Tideflow comes with a set of services that will allow you to do things like automating website contents scraping, automate build and deploy processes, generate PDF files, send emails and more. You can also build your own integrations.
+Tideflow comes with a set of services that will allow you to do things like
+automating website contents scraping, automate build and deploy processes,
+generate PDF files, send emails and more. You can also build your own
+integrations.
 
 - [Learn more about services](https://docs.tideflow.io/docs/services-introduction)
 - [Developer’s guide](https://docs.tideflow.io/docs/developers)
