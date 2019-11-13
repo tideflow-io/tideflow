@@ -26,9 +26,11 @@ jobs:
           printf "\Installing Meteor\n"
           curl https://install.meteor.com | /bin/sh
         fi
-    - name: npm install, build, and test
+    - name: install deps
       run: |
         meteor npm install
+    - name: test
+      run: |
         meteor test --once --driver-package meteortesting:mocha
       env:
         CI: true
