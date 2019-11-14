@@ -1,1 +1,2 @@
-module.exports = 'c$"VT%By65tgrew'
+module.exports = process.env.JWT_SECRET || 
+  'uPlGf7hE6w3VIVd7KI7qXhwsPgMYSzB2f50nxWfjTYkKemvADo2oYphrLpTjS7oUAOBbmPiyCcJVahv55Zr8pcEEyGE3vv5WLaqfQDSCHyjL7bPn0B5M6gTeHBgknKWb5EgEYfrA5MCmBPbjXMnwWykGWMG0IWOjGT359wWRUkrrfkTmuIpVawQdbrLpH6df'
