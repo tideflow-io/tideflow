@@ -6,6 +6,9 @@
 import './emails'
 import './accounts'
 
+import '/imports/files/both'
+import '/imports/files/server'
+
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
 

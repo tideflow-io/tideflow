@@ -49,40 +49,36 @@ const service = {
       callback: (user, currentStep, executionLogs, executionId, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : {}
 
-        const filesData = lastData.filter(data => data.type === 'object');
+        const fileData = lastData.type === 'object' ? lastData : {}
 
         const pdfType = (currentStep.config || {}).type || 'simple';
 
-        let results = [];
+        let results = {};
 
-        (filesData || []).map(fileData => {
-          let total = 0
+        let total = 0
 
-          fileData.data.date = moment().format('LL')
-          
-          if (pdfType === 'bill') {
-            (fileData.data.items || []).map(i => {
-              total += Number(i.price || 0)
-            })
-            fileData.data.total = fileData.data.total || total
-          }
+        fileData.data.date = moment().format('LL')
+        
+        if (pdfType === 'bill') {
+          (fileData.data.items || []).map(i => {
+            total += Number(i.price || 0)
+          })
+          fileData.data.total = fileData.data.total || total
+        }
 
-          results.push({
+        cb(null, {
+          result: {
             type: 'file',
             data: {
               fileName: `${pdfType}.pdf`,
               data: Meteor.wrapAsync(cb => generatePdf(pdfType, fileData.data, cb))()
             }
-          })
-        })
-
-        cb(null, {
-          result: results,
+          },
           next: true,
           msgs: [
             {
               m: 's-pdf.log.build_pdf.files_created',
-              p: [filesData.length],
+              p: [],
               d: new Date()
             }
           ]

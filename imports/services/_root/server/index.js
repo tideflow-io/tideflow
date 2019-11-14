@@ -1,6 +1,8 @@
 const os = require('os')
 const fs = require('fs')
 const path = require('path')
+const jwt = require('jsonwebtoken')
+const jwtSecret = require('/imports/files/server/secret')
 
 let servicesAvailable = []
 //calculateUsage
@@ -168,12 +170,12 @@ const flows = {
 module.exports.flows = flows
 
 /**
- * Given tasks execution logs (as taken from the database) return them in a
+ * Given actions execution logs (as taken from the database) return them in a
  * format that can be passed to services like `code` or `agent`, so this
  * services get only the necessary data and that they can get.
  * 
- * For example, some workflow tasks generate files. This files can then be
- * passed to other tasks that can be either executed locally (in the same server
+ * For example, some workflow actions generate files. This files can then be
+ * passed to other actions that can be either executed locally (in the same server
  * that is running Tideflow) or in external computers. 
  * 
  * This means that such files needs to be accesible externally. 
@@ -183,14 +185,14 @@ module.exports.flows = flows
  * 
  * @param {array} executionLogs 
  * @param {boolean} external Indicates if the service executing the workflow
- * task is running on an external system. This causes any files to be neede to
+ * action is running on an external system. This causes any files to be neede to
  * be returned as an URL that can be reached externally.
  */
 const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
 
   return (executionLogs || []).map(el => {
-    let { _id, stepIndex, type, event, createdAt, updatedAt, stepResult } = el
+    let { _id, execution, flow, step, stepIndex, user, type, event, createdAt, updatedAt, stepResult } = el
 
     if (!external && stepResult.type === 'file') { // Store files locally
       const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
@@ -200,9 +202,15 @@ const processableResults = (executionLogs, external) => {
       stepResult.data = 'truncated'
     }
     else if (external && stepResult.type === 'file') {
-      // TODO
-    }
+      let token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        data: { _id, execution, flow, step, user, fileName: stepResult.data.fileName }
+      }, jwtSecret)
 
+      stepResult.data.url = `${process.env.ROOT_URL}/files?type=actionFile&token=${token}`
+      delete stepResult.data.data
+    }
+    
     return { _id, stepIndex, type, event, createdAt, updatedAt, stepResult }
   }) // external ? 'external' : 'internal'
 }

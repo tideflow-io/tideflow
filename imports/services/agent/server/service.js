@@ -89,11 +89,10 @@ const service = {
       name: 'code_nodesfc',
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
-
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
           execution: execution._id,
@@ -101,7 +100,7 @@ const service = {
           step: currentStep._id,
           code: currentStep.config.command,
           previous: attachPrevious ? JSON.stringify(
-            _.map(executionLogs || [], 'stepResult')
+            processableResults(executionLogs, true)
           ) : null
         }, 'tf.agent.code_nodesfc')
 
