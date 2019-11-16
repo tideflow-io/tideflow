@@ -78,9 +78,40 @@ let transporter = mailConfing ? nodemailer.createTransport(getConfig()) :
  * 
  * @param {Array} to List of email addresses
  * @param {Object} emailDetails 
- * @param {Object} tplVars 
- * @param {String} tplName 
  * 
+ * {
+ *   "type": "email-outgoing",
+ *   "event": "to-me",
+ *   "config": {
+ *     "subject": "subject",
+ *     "body": "body",
+ *     "inputLast": "yes"
+ *   },
+ *   "outputs": [],
+ *   "x": 861,
+ *   "y": 126,
+ *   "_id": "XJQpcJbMspJ47fm9M"
+ * }
+ * 
+ * @param {Object} tplVars 
+ * 
+ * {
+ *   "messageTitle": "website title",
+ *   "fullName": "<user's email>",
+ *   "userEmail": "<user's email>",
+ *   "lines": [
+ *     "body"
+ *   ],
+ *   "links": [],
+ *   "objects": [
+ *     {
+ *       "content": string
+ *     }
+ *   ],
+ *   "sentOutside": false
+ * }
+ * 
+ * @param {String} tplName 
  * @returns {Object}
  */
 const data = (to, emailDetails, tplVars, tplName) => {
@@ -93,10 +124,12 @@ const data = (to, emailDetails, tplVars, tplName) => {
   const siteSettings = Settings.findOne({type: 'siteSettings'})
   const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
 
-  tplVars = (tplVars || {}).tideflow = {
-    appUrl: '',
-    name: siteName
-  }
+  tplVars = Object.assign(tplVars, {
+    tideflow: {
+      appUrl: process.env.ROOT_URL,
+      name: siteName
+    }
+  })
 
   return {
     from: `${siteName} <${config && config.auth ? config.auth.user : 'noreply@localhost'}>`,
