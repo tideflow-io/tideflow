@@ -1,7 +1,7 @@
 <template name="servicesWebformUpdateForm">
     <div class="form-group" data-required="true">
         <label class="control-label">{{__ "s-webform.url"}}</label>
-        <input id="url" class="form-control" value="{{absoluteUrl}}webform/{{service.config.endpoint}}" disabled>
+        <input id="url" class="form-control" value="{{absoluteUrl}}webform/{{service.config.endpoint}}" readonly>
         {{> clipboardBtnSmall subfix-val="#url"}}
     </div>
     <div class="form-group">

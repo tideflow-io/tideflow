@@ -5,13 +5,13 @@
           <div class="col-12">
             <div class="form-group" data-required="true">
               <label class="control-label">{{__ "s-gh-ci.ciUrl"}}</label>
-              <input type="text" class="form-control" value="{{absoluteUrl}}ghci/{{service.config.endpoint}}" disabled>
+              <input type="text" class="form-control" value="{{absoluteUrl}}ghci/{{service.config.endpoint}}" readonly>
               {{> clipboardBtnSmall prefix-text=absoluteUrl text="ghci/" subfix-text=service.config.endpoint}}
             </div>
             
             <div class="form-group" data-required="true">
               <label class="control-label">{{__ "s-gh-ci.ciSecret"}}</label>
-              <input type="text" class="form-control" value="{{service.config.secret}}" disabled>
+              <input type="text" class="form-control" value="{{service.config.secret}}" readonly>
               {{> clipboardBtnSmall text=service.config.secret}}
             </div>
             
