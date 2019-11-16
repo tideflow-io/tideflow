@@ -32,7 +32,6 @@ universe:i18n
 universe:i18n-blaze
 aldeed:schema-deny
 msavin:sjobs
-force-ssl@1.1.0
 meteorhacks:ssr
 natestrauser:connection-banner
 meteortesting:mocha
