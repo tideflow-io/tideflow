@@ -84,3 +84,14 @@ GNU AFFERO GENERAL PUBLIC LICENSE
 
 - Documentation: https://docs.tideflow.io/docs/introduction
 - Contribute: https://docs.tideflow.io/docs/contribute
+
+## Deploy
+
+docker run -d \
+  -p 80:3000 \
+  -p 1337:1337 \
+  -e ROOT_URL="http://<your app url>" \
+  -e MONGO_URL="mongodb://<your mongo url>" \
+  -e MONGO_OPLOG_URL="mongodb://<your mongo oplog url>" \
+  -e JWT_SECRET="<secret key>" \
+  tideflowio/tideflow:latest
