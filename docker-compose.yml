@@ -2,29 +2,21 @@
 # The local files are mounted into the created container.
 # Usage: docker-compose up [-d]
 tideflow:
-  build:
-    context: .
+  build: .
   ports:
    - "3000:3000"
    - "1337:1337"
-  depends_on:
-    - mongo
   links:
    - mongo
   environment:
    - MAIL_URL=mongodb://mongo/tideflow
    - MONGO_URL=mongodb://mongo/tideflow
-   - MONGO_OPLOG_URL=mongodb://mongo/tideflow
    - ROOT_URL=http://localhost
    - JWT_SECRET=3cr4vt5yb6u7ikyunrtefwd3r4t5j6ytbfdbnmi9876
+   # - MONGO_OPLOG_URL=mongodb://mongo/tideflow
 
 mongo:
   image: mongo:3.6
   command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
   ports:
     - "27017:27017"
-  volumes:
-    - mongo-db:/data/db
-    
-volumes:
-  mongo-db:
