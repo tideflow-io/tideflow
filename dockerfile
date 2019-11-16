@@ -2,7 +2,7 @@ FROM pozylon/meteor-docker-auto as bundler
 ADD . /source
 WORKDIR /source
 RUN meteor npm install && \
-  meteor build --server-only --allow-superuser --directory /bundle
+  meteor build --allow-superuser --directory /bundle
 
 FROM node:8-alpine as rebuilder
 RUN apk add --no-cache make gcc g++ python sudo
@@ -16,11 +16,8 @@ RUN adduser -D -u 501 -h /home/meteor meteor
 COPY --from=rebuilder /rebuild/bundle /webapp
 WORKDIR /webapp
 
-ENV MONGO_URL mongodb://mongo/tideflow
 ENV PORT 3000
-ENV NODE_ENV production
-ENV ROOT_URL http://localhost
-
 EXPOSE 3000
+EXPOSE 1337
 USER meteor
 CMD node main.js
