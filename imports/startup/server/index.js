@@ -6,8 +6,8 @@
 import './emails'
 import './accounts'
 
-import '/imports/files/both'
-import '/imports/files/server'
+import '/imports/download/both'
+import '/imports/download/server'
 
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
@@ -53,6 +53,9 @@ import '/imports/modules/services/server'
 
 import '/imports/modules/dashboard/both'
 import '/imports/modules/dashboard/server'
+
+import '/imports/modules/files/both'
+import '/imports/modules/files/server'
 
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/server'

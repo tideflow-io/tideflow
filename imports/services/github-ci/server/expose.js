@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 const crypto = require('crypto')
 
 import { Router } from 'meteor/iron:router'

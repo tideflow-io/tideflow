@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import i18n from 'meteor/universe:i18n'
 import { Template } from 'meteor/templating'
 

@@ -17,19 +17,19 @@ const ServiceSchema = new SimpleSchema({
   },
   title: {
     type: String,
-    label: "Title",
+    label: 'Title',
     max: 120,
     optional: false
   },
   description: {
     type: String,
-    label: "Description",
+    label: 'Description',
     max: 1000,
     optional: true
   },
   type: {
     type: String,
-    label: "Type",
+    label: 'Type',
     max: 1000,
     optional: false
   },

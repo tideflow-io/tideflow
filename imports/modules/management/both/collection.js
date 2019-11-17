@@ -1,4 +1,4 @@
-import { Mongo } from "meteor/mongo"
+import { Mongo } from 'meteor/mongo'
 
 import SettingsSchema from "./schemas/schema"
 

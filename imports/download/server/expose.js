@@ -1,16 +1,12 @@
 const jwt = require('jsonwebtoken')
 
-import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
-import { Flows } from '/imports/modules/flows/both/collection'
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
-import { triggerFlows } from '/imports/queue/server'
+const jwtSecret = require('/imports/download/server/secret')
 
-const jwtSecret = require('/imports/files/server/secret')
-
-Router.route('/files', function () {
+Router.route('/download', function () {
   const req = this.request
   const res = this.response
 

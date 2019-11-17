@@ -1,5 +1,6 @@
 _namespace: header
 dashboard: Dashboard
+files: Files
 services: Services
 flows: Workflows
 myaccount.admin: Management
