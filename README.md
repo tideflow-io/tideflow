@@ -69,6 +69,23 @@ credentials as well as some other necessary settings.
 
 The next time you want to execute Tideflow locally, simply run `meteor`
 
+### Deploy
+
+You can run Tideflow anywhere, like any other MeteorJS or NodeJS application.
+
+Check the documentation for [manual deployment](https://docs.tideflow.io/docs/sysadmin-deploying)
+instructions or [via Docker](https://docs.tideflow.io/docs/sysadmin-deploying-docker).
+
+```bash
+docker run -d \ 
+  -p 80:3000 \
+  -p 1337:1337 \
+  -e ROOT_URL="<the url where your application will be available>" \
+  -e MONGO_URL="<mongodb deployment>" \
+  -e JWT_SECRET="<a random security token>" \
+  tideflowio/tideflow:latest
+```
+
 ---
 
 ## Contributing
@@ -84,14 +101,3 @@ GNU AFFERO GENERAL PUBLIC LICENSE
 
 - Documentation: https://docs.tideflow.io/docs/introduction
 - Contribute: https://docs.tideflow.io/docs/contribute
-
-## Deploy
-
-docker run -d \
-  -p 80:3000 \
-  -p 1337:1337 \
-  -e ROOT_URL="http://<your app url>" \
-  -e MONGO_URL="mongodb://<your mongo url>" \
-  -e MONGO_OPLOG_URL="mongodb://<your mongo oplog url>" \
-  -e JWT_SECRET="<secret key>" \
-  tideflowio/tideflow:latest
