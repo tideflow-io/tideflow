@@ -44,21 +44,17 @@ Router.route('/files/new', function () {
 })
 
 Router.route('/files/:_id/edit', function () {
-  window.editorViewDetailsHooks = []
   this.render('files.one.edit')
 }, {
   waitOn: function () {
     return [
-      Meteor.subscribe('files.single', {
-        _id: this.params._id
-      })
+      Meteor.subscribe('files.all', {})
     ]
   },
   data: function() {
     if (this.ready) {
       return {
-        type: this.params.type,
-        service: Files.findOne({
+        file: Files.findOne({
           _id: this.params._id
         })
       }
@@ -67,8 +63,10 @@ Router.route('/files/:_id/edit', function () {
   name: 'files.one.edit',
   title: function() {
     try {
-      return this.data().service.title
-    } catch (ex) {}
+      return this.data().name
+    } catch (ex) {
+
+    }
   },
   parent: 'files.index'
 })

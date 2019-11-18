@@ -1,3 +1,5 @@
+import SimpleSchema from 'simpl-schema'
+
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 
 import { Meteor } from 'meteor/meteor'
@@ -29,5 +31,35 @@ export const createFile = new ValidatedMethod({
         sAlert.success(i18n.__('files.create.ok'))
       }
     }, true)
+  }
+})
+
+export const updateFile = new ValidatedMethod({
+  name: 'files.update',
+  validate: schema.validator(),
+  run(file) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    
+    // Check if the user can update the flow
+    if (file.userId !== Meteor.userId()) {
+      throw new Meteor.Error('no-access')
+    }
+
+    //return Files.remove(file._id)
+  }
+})
+
+export const deleteFile = new ValidatedMethod({
+  name: 'files.delete',
+  validate: new SimpleSchema({ _id: { type: String } }).validator(),
+  run(file) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    
+    // Check if the user can delete the flow
+    if (file.userId !== Meteor.userId()) {
+      throw new Meteor.Error('no-access')
+    }
+
+    return Files.remove(file._id)
   }
 })

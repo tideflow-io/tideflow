@@ -33,5 +33,27 @@
 </template>
 
 <template name="filesIndexElement">
-  file here
+  <div class="card clickable card-task p-3">
+    <div class="row">
+      <div class="col-md-1">
+        <span class="sf sf-{{this.ext}}"></span>
+      </div>
+      <div class="col-md-9">
+          <a href="{{pathFor 'files.one.edit' _id=_id}}">
+            <h6>{{this.name}}</h6>
+          </a>
+      </div>
+      <div class="col-md-2">
+        <div class="float-right">
+          <div class="three-dots dropdown-toggle" data-toggle="dropdown">
+          </div>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item files-one-delete" href="#">{{__ "files.index.list.delete"}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

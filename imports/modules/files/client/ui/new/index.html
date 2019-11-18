@@ -11,16 +11,18 @@
       </div>
     </div>
 
-    {{#autoForm collection=Files.collection id="insertFileForm" type="method" meteormethod="files.create"}}
+    {{debug file}}
+    {{debug file.name}}
+
+    {{#autoForm collection=Files.collection id="insertFileForm" type="method" meteormethod="files.create" doc=file}}
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              {{> afQuickField name='name' id="filename"}}
+              {{> afQuickField name='name' value=file.name id="filename"}}
               <div class="form-group ace-editor-container">
                 <div id="editor"></div>
               </div>
-              {{> afQuickField name='content' type="hidden"}}
               <button type="submit" class="btn btn-primary float-right">{{__ "files.new.submit"}}</button>
             </div>
           </div>
