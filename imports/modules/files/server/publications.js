@@ -9,7 +9,6 @@ Meteor.publish('files.all', (query, options) => {
   new SimpleSchema({
     userId: String
   }).validate(query)
-  console.log({query, r: Files.find(query, options)})
   return Files.find(query, options).cursor
 })
 
