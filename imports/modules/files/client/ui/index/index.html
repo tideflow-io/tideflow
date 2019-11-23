@@ -34,18 +34,20 @@
 
 <template name="filesIndexElement">
   <div class="card clickable card-task p-3">
-    <div class="row">
-      <div class="col-md-1">
-        <span class="sf sf-{{this.ext}}"></span>
+    <div class="row  my-auto">
+      <div class="col-md-1 my-auto">
+          <div class="file-icon file-icon-default" data-type="{{this.ext}}"></div>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-9 my-auto">
+        <div class="card-title text-left my-auto">
           <a href="{{pathFor 'files.one.edit' _id=_id}}">
             <h6>{{this.name}}</h6>
           </a>
+        </div>
       </div>
       <div class="col-md-2">
         <div class="float-right">
-          <div class="three-dots dropdown-toggle" data-toggle="dropdown">
+          <div class="three-dots btn btn-primary dropdown-toggle" data-toggle="dropdown">
           </div>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>

@@ -41,5 +41,4 @@ meteorhacks:aggregate
 alanning:roles
 erasaur:meteor-lodash
 http
-ostrio:files
-ostrio:autoform-files
+ostrio:cookies

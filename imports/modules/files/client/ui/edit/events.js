@@ -37,9 +37,15 @@ Template['files.one.edit'].onRendered(function() {
     let c = ace.edit('editor').getValue()
     $('[name="content"]').val(c)
   })
+  
+  const { _id } = this.data.file
 
-  const fileLink = this.data.file.link()
-  HTTP.call('GET', fileLink, {}, (error, result) => {
+  HTTP.call('GET', `/file?_id=${_id}`, {
+    headers: {
+      t: localStorage.getItem('Meteor.loginToken'),
+      u: Meteor.userId()
+    }
+  }, (error, result) => {
     if (!error) editor.setValue(result.content)
     editor.clearSelection()
   })
@@ -48,7 +54,6 @@ Template['files.one.edit'].onRendered(function() {
 Template['files.one.edit'].events({
   'blur #filename': (event, template) => {
     event.target.value = slugify(event.target.value).toLowerCase()
-
     let newAceMethod = guessAceMethod(event.target.value)
     // eslint-disable-next-line no-undef
     ace.edit('editor').session.setMode(newAceMethod)

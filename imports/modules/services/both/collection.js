@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 
-import ServiceSchema from "./schemas/schema"
+import ServiceSchema from './schemas/schema'
 
 export const Services = new Mongo.Collection('services')
 

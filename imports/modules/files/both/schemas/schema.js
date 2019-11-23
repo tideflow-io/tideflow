@@ -24,43 +24,11 @@ const Schema = new SimpleSchema({
     type: String,
     optional: true
   },
-  isVideo: {
-    type: Boolean,
-    optional: true
-  },
-  isAudio: {
-    type: Boolean,
-    optional: true
-  },
-  isImage: {
-    type: Boolean,
-    optional: true
-  },
-  isText: {
-    type: Boolean,
-    optional: true
-  },
-  isJSON: {
-    type: Boolean,
-    optional: true
-  },
-  isPDF: {
-    type: Boolean,
-    optional: true
-  },
-  extension: {
-    type: String,
-    optional: true
-  },
   ext: {
     type: String,
     optional: true
   },
-  extensionWithDot: {
-    type: String,
-    optional: true
-  },
-  mime: {
+  content: {
     type: String,
     optional: true
   },
@@ -68,43 +36,28 @@ const Schema = new SimpleSchema({
     type: String,
     optional: true
   },
-  _storagePath: {
-    type: String,
-    optional: true
-  },
-  _downloadRoute: {
-    type: String,
-    optional: true
-  },
-  _collectionName: {
-    type: String,
-    optional: true
-  },
-  public: {
-    type: Boolean,
-    optional: true
-  },
   meta: {
     type: Object,
     blackbox: true,
     optional: true
   },
-  userId: {
+  user: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
-  content: {
-    type: String,
-    autoform: {
-      rows: 10
-    },
+  versions: {
+    type: Array,
     optional: true
   },
-  versions: {
+  'versions.$': {
     type: Object,
-    blackbox: true,
-    optional: true
+    optional: true,
+    blackbox: true
+  },
+  'versions.$.gfsId': {
+    type: String,
+    optional: false
   },
   createdAt: {
     type: Date,

@@ -48,7 +48,9 @@ Router.route('/files/:_id/edit', function () {
 }, {
   waitOn: function () {
     return [
-      Meteor.subscribe('files.all', {})
+      Meteor.subscribe('files.single', {
+        _id: this.params._id
+      })
     ]
   },
   data: function() {
