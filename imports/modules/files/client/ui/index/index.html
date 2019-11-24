@@ -50,7 +50,8 @@
           <div class="three-dots btn btn-primary dropdown-toggle" data-toggle="dropdown">
           </div>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>
+              <a class="dropdown-item download-file">{{__ "files.index.list.download"}}</a>
+              <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item files-one-delete" href="#">{{__ "files.index.list.delete"}}</a>
           </div>

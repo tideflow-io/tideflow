@@ -1,5 +1,6 @@
 import filesLib from '/imports/modules/files/server/lib'
 import { servicesAvailable } from '/imports/services/_root/server'
+const slugify = require('slugify')
 
 const service = {
   name: 'file',
@@ -22,9 +23,11 @@ const service = {
           if (data.type === 'file') data.data.data = '...'
         })
 
+        const fileName = slugify(`${execution.fullFlow.title} ${execution._id.substring(0, 3)}`).toLowerCase()
+
         filesLib.create({
           user: user._id,
-          name: `${execution._id}.json`
+          name: `${fileName}.json`
         }, JSON.stringify(previousStepsData, ' ', 2))
 
         cb(null, {
@@ -32,7 +35,8 @@ const service = {
             type: 'file',
             data: {}
           },
-          next: true,
+          next: false,
+          error: false,
           msgs: [
             {
               m: 's-file.log.create-file.created',
