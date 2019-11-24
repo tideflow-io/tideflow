@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
 
 import { Services } from '/imports/modules/services/both/collection.js'
+import { Files } from '/imports/modules/files/both/collection.js'
 
 Template.registerHelper('sAgentReportStatusDot', function() {
   try {
@@ -38,5 +39,8 @@ Template.servicesAgentCommonConfig.helpers({
         title: a.title
       }
     })
+  },
+  files: function () {
+    return Files.find()
   }
 })

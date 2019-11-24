@@ -1,9 +1,8 @@
 import i18n from 'meteor/universe:i18n'
 
 import { Services } from '/imports/modules/services/both/collection.js'
-
+import filesLib from '/imports/modules/files/server/lib'
 import { servicesAvailable, processableResults } from '/imports/services/_root/server'
-
 import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
@@ -45,8 +44,10 @@ const service = {
       name: 'execute',
       humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
+
+        const command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
 
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
@@ -57,7 +58,7 @@ const service = {
           execution: execution._id,
           log: logId,
           step: currentStep._id,
-          command: currentStep.config.command,
+          command,
           previous: attachPrevious ? JSON.stringify(
             processableResults(executionLogs, true)
           ) : null
@@ -92,13 +93,14 @@ const service = {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
         
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
           execution: execution._id,
           log: logId,
           step: currentStep._id,
-          code: currentStep.config.command,
+          code: command,
           previous: attachPrevious ? JSON.stringify(
             processableResults(executionLogs, true)
           ) : null
