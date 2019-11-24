@@ -34,8 +34,8 @@ export const createFile = new ValidatedMethod({
 
 
     // Add aditional file details
-    file.type = mime.lookup(file.name) || 'application/octet-stream'
-    file.ext = getExtension(file.name) || 'bin'
+    file.type = mime.lookup(file.name) || 'text/plain'
+    file.ext = getExtension(file.name) || ''
 
     let uploadStream = gfs.openUploadStream(`${file.user}/${new Date().getTime()}/${file.name}`)
 
@@ -92,8 +92,8 @@ export const updateFile = new ValidatedMethod({
 
     update.$set = {
       name: file.name,
-      type: mime.lookup(file.name) || 'application/octet-stream',
-      ext: getExtension(file.name) || 'bin'
+      type: mime.lookup(file.name) || 'text/plain',
+      ext: getExtension(file.name) || ''
     }
 
     // Create stream with buffer to pipe to uploadStream
