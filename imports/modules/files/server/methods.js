@@ -20,11 +20,12 @@ export const createFile = new ValidatedMethod({
   validate: schema.validator(),
   async run(file) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-
     const newFile = await lib.create({
       user: Meteor.userId(),
-      name: file.name
+      name: file.name,
+      userCreated: true
     }, file.content)
+    console.log({newFile})
     return pick(newFile, ['_id'])
   }
 })

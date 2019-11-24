@@ -8,6 +8,11 @@ const Schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  userCreated: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
   size: {
     type: Number,
     optional: true

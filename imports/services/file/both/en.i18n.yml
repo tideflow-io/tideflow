@@ -1,9 +1,10 @@
-_namespace: s-pdf
-name: PDF
-description: Generate and fill PDF files
-event.build.type.text: Text
-event.build.type.bill: Simple bill
-event.build.type.selectOne: Select a template
-events.buildpdf.title: Create a PDF file
-events.buildpdf.viewer.title: Create a PDF file
-log.build_pdf.files_created: Files created
+_namespace: s-file
+name: Files
+description: Connect and collect files
+event.readFile.file: Select a file
+events.createfile.title: Create a file from previous results
+events.readFile.title: Connect a file
+events.readFile.select: Select a file
+
+log.read-file.retrieveFailed: Failed to retrieve file
+log.read-file.readed: File connected to the workflow

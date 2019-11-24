@@ -1,17 +1,24 @@
+import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
+import { Router } from 'meteor/iron:router'
 
 const slugify = require('slugify')
 
 const aceSupportedMethods = [
-  { method: 'javascript', extensions: ['javascript', 'js'] },
-  { method: 'text', extensions: ['txt'] },
-  { method: 'markdown', extensions: ['markdown', 'md'] }
+  { method: 'javascript', extensions: ['javascript', 'js'], mimes: ['application/javascript'] },
+  { method: 'json', extensions: ['json'], mimes: ['application/json'] },
+  { method: 'text', extensions: ['txt'], mimes: ['text/plain'] },
+  { method: 'markdown', extensions: ['markdown', 'md'], mimes: ['text/markdown'] }
 ]
 
 const guessAceMethod = (fileName) => {
   const ext = fileName.split('.').pop()
   const compatibleMode = aceSupportedMethods.find(sm => sm.extensions.includes(ext))
   return `ace/mode/${compatibleMode ? compatibleMode.method : 'text'}`
+}
+
+const aceSupportedByType = (type) => {
+  return aceSupportedMethods.find(sm => sm.mimes.includes(type))
 }
 
 Template['files.one.edit'].onRendered(function() {
@@ -38,17 +45,24 @@ Template['files.one.edit'].onRendered(function() {
     $('[name="content"]').val(c)
   })
   
-  const { _id } = this.data.file
-
-  HTTP.call('GET', `/file?_id=${_id}`, {
-    headers: {
-      t: localStorage.getItem('Meteor.loginToken'),
-      u: Meteor.userId()
-    }
-  }, (error, result) => {
-    if (!error) editor.setValue(result.content)
-    editor.clearSelection()
-  })
+  const { _id, type, userCreated } = this.data.file
+  
+  if (userCreated || aceSupportedByType(type)) {
+    HTTP.call('GET', `/file?_id=${_id}`, {
+      headers: {
+        t: localStorage.getItem('Meteor.loginToken'),
+        u: Meteor.userId()
+      }
+    }, (error, result) => {
+      if (!error) editor.setValue(result.content)
+      editor.clearSelection()
+    })
+  }
+  else {
+    alert('File can not be edited')
+    Router.go('files.index')
+  }
+  
 })
 
 Template['files.one.edit'].events({

@@ -4,7 +4,6 @@ const Readable = require('stream').Readable
 
 import { MongoInternals } from 'meteor/mongo'
 import { Files } from '/imports/modules/files/both/collection.js'
-import { pick } from '/imports/helpers/both/objects'
 
 import { gfs } from './gfs'
 
@@ -79,6 +78,6 @@ const create = async (doc, content) => {
     })
   })
   Files.insert(doc)
-  return pick(doc, ['_id'])
+  return doc
 }
 module.exports.create = create
