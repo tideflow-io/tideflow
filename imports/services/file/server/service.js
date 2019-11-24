@@ -40,13 +40,11 @@ const service = {
           },
           next: true,
           error: false,
-          msgs: [
-            {
-              m: 's-file.log.create-file.created',
-              p: [],
-              d: new Date()
-            }
-          ]
+          msgs: [{
+            m: 's-file.log.create-file.created',
+            p: [],
+            d: new Date()
+          }]
         })
       }
     },
@@ -55,47 +53,48 @@ const service = {
       name: 'read-file',
       visibe: true,
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const file = await filesLib.getOne({ _id: currentStep.config.file })
-        const string = await filesLib.getOneAsString({ _id: file._id })
+        try {
+          const file = await filesLib.getOne({
+            _id: currentStep.config.file
+          })
+          const string = await filesLib.getOneAsString({
+            _id: file._id
+          })
 
-        if (!string) {
+          cb(null, {
+            result: {
+              type: 'file',
+              data: {
+                fileName: file.name,
+                data: Buffer.from(string, 'utf-8')
+              }
+            },
+            next: true,
+            error: false,
+            msgs: [{
+              m: 's-file.log.read-file.readed',
+              p: [],
+              d: new Date()
+            }]
+          })
+        } catch (ex) {
           cb(null, {
             result: {},
             next: true,
             error: true,
-            msgs: [
-              {
-                m: 's-file.log.read-file.retrieveFailed',
-                p: [],
-                d: new Date(),
-                e: true
-              }
-            ]
+            msgs: [{
+              m: 's-file.log.read-file.retrieveFailed',
+              p: [],
+              d: new Date(),
+              e: true
+            }]
           })
-          return
         }
 
-        cb(null, {
-          result: {
-            type: 'file',
-            data: {
-              fileName: file.name,
-              data: Buffer.from(string, 'utf-8')
-            }
-          },
-          next: true,
-          error: false,
-          msgs: [
-            {
-              m: 's-file.log.read-file.readed',
-              p: [],
-              d: new Date()
-            }
-          ]
-        })
+
       }
     }
-    
+
   ]
 }
 
