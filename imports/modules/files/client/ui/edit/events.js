@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
+import { sAlert } from 'meteor/juliancwirko:s-alert'
+import i18n from 'meteor/universe:i18n'
 
 const slugify = require('slugify')
 
@@ -62,7 +64,6 @@ Template['files.one.edit'].onRendered(function() {
     alert('File can not be edited')
     Router.go('files.index')
   }
-  
 })
 
 Template['files.one.edit'].events({
@@ -77,5 +78,31 @@ Template['files.one.edit'].events({
     let newAceMethod = guessAceMethod(ext)
     // eslint-disable-next-line no-undef
     ace.edit('editor').session.setMode(newAceMethod)
+  },
+  'click .delete-file': (event, template) => {
+    event.stopPropagation()
+    event.preventDefault()
+    swal({
+      title: i18n.__('files.delete.title'),
+      text: i18n.__('files.delete.text'),
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      animation: false
+    })
+      .then(accepted => {
+        if (accepted) {
+          Meteor.call('files.delete', {
+            _id: template.data.file._id
+          }, (error) => {
+            if (error) {
+              sAlert.error(i18n.__('files.delete.error'))
+              return
+            }
+            sAlert.success(i18n.__('files.delete.success'))
+            Router.go('files.index')
+          })
+        }
+      })
   }
 })

@@ -12,6 +12,10 @@ new.title: New file
 new.submit: Save
 
 edit.title: Edit file
+edit.remove: Remove file
 edit.submit: Save
+
+delete.title: Are you sure?
+delete.text: Once deleted, you will not be able to recover it.
 
 download.error: Error downloading file
