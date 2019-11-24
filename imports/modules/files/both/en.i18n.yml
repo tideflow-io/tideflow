@@ -3,3 +3,12 @@ index.title: Files
 index.subtitle: Connect and collect files into your processes
 index.createNew: New file
 index.emptyListDescription: There are no files
+
+index.list.edit: Edit
+index.list.delete: Delete
+
+new.title: New file
+new.submit: Save
+
+edit.title: Edit file
+edit.submit: Save
