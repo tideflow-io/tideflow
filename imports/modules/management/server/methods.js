@@ -4,7 +4,7 @@ import { check } from 'meteor/check'
 
 import { checkRole } from '/imports/helpers/both/roles'
 
-import { Settings as SettingsCollection } from "../both/collection"
+import { Settings as SettingsCollection } from '../both/collection'
 
 Meteor.methods({
   'site-settings' (settings) {

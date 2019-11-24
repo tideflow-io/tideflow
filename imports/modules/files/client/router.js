@@ -65,10 +65,8 @@ Router.route('/files/:_id/edit', function () {
   name: 'files.one.edit',
   title: function() {
     try {
-      return this.data().name
-    } catch (ex) {
-
-    }
+      return this.data().file.name
+    } catch (ex) { return }
   },
   parent: 'files.index'
 })

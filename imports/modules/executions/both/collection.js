@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 
-import ExecutionSchema from "./schemas/schema"
+import ExecutionSchema from './schemas/schema'
 
 export const Executions = new Mongo.Collection('executions')
 

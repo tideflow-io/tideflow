@@ -1,4 +1,4 @@
-import j from "meteor/jquery"
+import j from 'meteor/jquery'
 
 let buildSelector = (field) => {
   if (typeof field === 'string'){

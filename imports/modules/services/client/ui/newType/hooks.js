@@ -1,5 +1,4 @@
-import { Template } from 'meteor/templating'
-import { AutoForm } from "meteor/aldeed:autoform"
+import { AutoForm } from 'meteor/aldeed:autoform'
 import { Router } from 'meteor/iron:router'
 
 AutoForm.addHooks(['insertServiceForm'], {

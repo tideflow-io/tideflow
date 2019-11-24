@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 
-import SettingsSchema from "./schemas/schema"
+import SettingsSchema from './schemas/schema'
 
 export const Settings = new Mongo.Collection('settings')
 
