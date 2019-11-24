@@ -46,10 +46,10 @@ const service = {
     {
       name: 'build-pdf',
       visibe: true,
-      callback: (user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : {}
 
-        const fileData = lastData.type === 'object' ? lastData : {}
+        const fileData = lastData.type === 'object' ? lastData : { data: {} }
 
         const pdfType = (currentStep.config || {}).type || 'simple';
 

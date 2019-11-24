@@ -30,7 +30,7 @@ const service = {
   events: [
     {
       name: 'scrape',
-      callback: async (user, currentStep, executionLogs, executionId, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const string = await filesLib.getOneAsString({ _id: currentStep.config.ymlFile })
         const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
 

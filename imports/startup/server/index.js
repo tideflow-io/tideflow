@@ -30,6 +30,9 @@ import '/imports/services/endpoint/server'
 import '/imports/services/pdf/both'
 import '/imports/services/pdf/server'
 
+import '/imports/services/file/both'
+import '/imports/services/file/server'
+
 import '/imports/services/agent/both'
 import '/imports/services/agent/server'
 

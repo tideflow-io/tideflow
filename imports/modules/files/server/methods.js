@@ -1,10 +1,10 @@
-import { Random } from 'meteor/random'
 import { Meteor } from 'meteor/meteor'
 import { MongoInternals } from 'meteor/mongo'
-import path from 'path'
 const mime = require('mime-types')
 import SimpleSchema from 'simpl-schema'
 const Readable = require('stream').Readable
+
+import lib from './lib'
 
 import { pick } from '/imports/helpers/both/objects'
 
@@ -15,48 +15,17 @@ import { Files } from '../both/collection'
 
 import { gfs } from './gfs'
 
-const getExtension = filename => {
-  var ext = path.extname(filename||'').split('.')
-  return ext[ext.length - 1]
-}
-
 export const createFile = new ValidatedMethod({
   name: 'files.create',
   validate: schema.validator(),
   async run(file) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
-    // Some hooks may need to have a pre-defined _id
-    file._id = Random.id()
-
-    // Ensure the file's owner is the logged-in user
-    file.user = Meteor.userId()
-
-
-    // Add aditional file details
-    file.type = mime.lookup(file.name) || 'text/plain'
-    file.ext = getExtension(file.name) || ''
-
-    let uploadStream = gfs.openUploadStream(`${file.user}/${new Date().getTime()}/${file.name}`)
-
-    file.versions = [{
-      date: new Date(),
-      gfsId: uploadStream.id.toString()
-    }]
-
-    // Create stream with buffer to pipe to uploadStream
-    var s = new Readable()
-    s.push(file.content)
-    s.push(null) // Push null to end stream
-    s.pipe(uploadStream)
-    
-    await new Promise((resolve, reject) => {
-      uploadStream.once('finish', () => {
-        resolve()
-      })
-    })
-    Files.insert(file)
-    return pick(file, ['_id'])
+    const newFile = await lib.create({
+      user: Meteor.userId(),
+      name: file.name
+    }, file.content)
+    return pick(newFile, ['_id'])
   }
 })
 
@@ -93,7 +62,7 @@ export const updateFile = new ValidatedMethod({
     update.$set = {
       name: file.name,
       type: mime.lookup(file.name) || 'text/plain',
-      ext: getExtension(file.name) || ''
+      ext: lib.getFilenameExtension(file.name) || ''
     }
 
     // Create stream with buffer to pipe to uploadStream
