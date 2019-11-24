@@ -1,6 +1,7 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
 import { ioTo } from '/imports/services/agent/server/socket'
+import filesLib from '/imports/modules/files/server/lib'
 
 import { Services } from '/imports/modules/services/both/collection.js'
 import { Executions } from '/imports/modules/executions/both/collection.js'
@@ -226,8 +227,9 @@ const service = {
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow, triggerData } = execution
         const agentId = fullFlow.trigger.config.agent
-        const cmd = currentStep.config.cmd
         const webhook = triggerData.data
+
+        const cmd = await filesLib.getOneAsString({ _id: currentStep.config.cmdFile })
 
         const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.run_cmd', {
           cmd,
