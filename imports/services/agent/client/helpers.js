@@ -38,8 +38,5 @@ Template.servicesAgentCommonConfig.helpers({
         title: a.title
       }
     })
-  },
-  selectedAgent: function(compare) {
-    return this._id === compare ? 'selected' : ''
   }
 })

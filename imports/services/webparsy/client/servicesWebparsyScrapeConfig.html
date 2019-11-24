@@ -1,6 +1,11 @@
 <template name="servicesWebparsyScrapeConfig">
   <div class="form-group">
     <label class="control-label">{{__ "s-webparsy.events.scrape.yml"}}</label>
-    <textarea class="code-editor form-control" name="{{stepConfigName 'yml'}}" data-schema-key="{{stepConfigName 'yml'}}">{{stepConfigValue 'yml' ''}}</textarea>
+    <select class="form-control" name="{{stepConfigName 'ymlFile'}}" data-schema-key="{{stepConfigName 'ymlFile'}}">
+      {{#each files}}
+        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'ymlFile' this._id}}>{{__ this.name}}</option>
+      {{/each}}
+    </select>
+    <!-- <textarea class="code-editor form-control" >{{stepConfigValue 'yml' ''}}</textarea> -->
   </div>
 </template>

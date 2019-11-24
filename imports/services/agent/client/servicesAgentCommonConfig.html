@@ -4,7 +4,7 @@
     <select class="form-control" data-schema-key="{{stepConfigName 'agent'}}" name="{{stepConfigName 'agent'}}">
       <option value="any" {{stepConfigValueSelected 'agent' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
       {{#each registeredAgents}}
-        <option value="{{_id}}" {{selectedAgent _id}}>{{title}}</option>
+        <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'agent' _id}}>{{title}}</option>
       {{/each}}
     </select>
   </div>

@@ -113,9 +113,21 @@ Template.registerHelper('stepConfigValueSelected', function(setting, compare) {
   return s === compare ? 'selected' : ''
 })
 
+Template.registerHelper('stepConfigValueSelectedEach', function(steps, index, setting, compare) {
+  if (!steps || !steps[index]) return
+  const s = steps[index].config ? steps[index].config[setting] || '' : ''
+  return s === compare ? 'selected' : ''
+})
+
+Template.registerHelper('triggerConfigValueSelectedEach', function(trigger, setting, compare) {
+  if (!trigger) return
+  const s = trigger.config ? trigger.config[setting] || '' : ''
+  return s === compare ? 'selected' : ''
+})
+
 Template.registerHelper('triggerConfigValueSelected', function(setting, compare) {
-  if (!this || !this.trigger || !this.trigger.config) return
-  return this.trigger.config[setting] === compare ? 'selected' : ''
+  if (!this.flow || !this.flow.trigger || !this.flow.trigger.config) return
+  return this.flow.trigger.config[setting] === compare ? 'selected' : ''
 })
 
 Template.registerHelper('stepConfigValueChecked', function(setting) {
