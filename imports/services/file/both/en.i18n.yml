@@ -3,6 +3,7 @@ name: Files
 description: Connect and collect files
 event.readFile.file: Select a file
 events.createfile.title: Create a file from previous results
+events.readFile.viewer.title: Connect a file
 events.readFile.title: Connect a file
 events.readFile.select: Select a file
 
