@@ -4,4 +4,5 @@ description: Scrape and interact with websites
 events.scrape.yml: YAML definition
 events.scrape.name: Scrape website content(s)
 events.scrape.title: Run web scraping
-log.scrape.yaml.title: Run scraping from YAML definition
+log.scrape.yaml.title: Scraping process finished
+log.scrape.yaml.errorTitle: Scraping process failed

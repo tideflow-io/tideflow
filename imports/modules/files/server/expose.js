@@ -1,11 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { Accounts } from 'meteor/accounts-base'
-import { MongoInternals } from 'meteor/mongo'
 
-import { Files } from '/imports/modules/files/both/collection.js'
-
-import { gfs } from './gfs'
+import lib from './lib'
 
 Router.route('/file', function () {
   const req = this.request
@@ -35,29 +32,15 @@ Router.route('/file', function () {
     return
   }
 
-  // Retrieve file document
-
-  const file = Files.findOne({
-    _id, user: authenticatedUser._id
-  })
-
-  if (!file) {
+  try {
+    const fileVersion = lib.getOneVersion({ _id, user: authenticatedUser._id }, v)
+    let downloadStream = lib.downloadStream(fileVersion.gfsId)
+    downloadStream.on('error', err => { throw err })
+    downloadStream.pipe(res)
+  }
+  catch (ex) {
     res.writeHead(404)
     res.end()
     return
   }
-
-  const version = file.versions[v || file.versions.length - 1]
-
-  if (!version) {
-    res.writeHead(404)
-    res.end()
-    return
-  }
-
-  // Pipe gfs file to response
-
-  let downloadStream = gfs.openDownloadStream(MongoInternals.NpmModule.ObjectID(version.gfsId))
-  downloadStream.on('error', err => { throw err })
-  downloadStream.pipe(res)
 }, {where: 'server'})
