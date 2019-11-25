@@ -55,6 +55,8 @@ module.exports.getOneAsString = getOneAsString
 const create = async (doc, content) => {
   delete doc.content
 
+  if (!doc.user) throw Meteor.Error('no-user')
+
   // Add aditional file details
   if (!doc.type) doc.type = mime.lookup(doc.name) || 'text/plain'
   if (!doc.ext) doc.ext = getFilenameExtension(doc.name) || ''

@@ -2,15 +2,11 @@ import { Template } from 'meteor/templating'
 
 const slugify = require('slugify')
 
-const aceSupportedMethods = [
-  { method: 'javascript', extensions: ['javascript', 'js'] },
-  { method: 'text', extensions: ['txt'] },
-  { method: 'markdown', extensions: ['markdown', 'md'] }
-]
+const fileTypes = require('../../fileTypes')
 
 const guessAceMethod = (fileName) => {
   const ext = fileName.split('.').pop()
-  const compatibleMode = aceSupportedMethods.find(sm => sm.extensions.includes(ext))
+  const compatibleMode = fileTypes.aceSupportedMethods.find(sm => sm.extensions.includes(ext))
   return `ace/mode/${compatibleMode ? compatibleMode.method : 'text'}`
 }
 

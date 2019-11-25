@@ -6,21 +6,16 @@ import i18n from 'meteor/universe:i18n'
 
 const slugify = require('slugify')
 
-const aceSupportedMethods = [
-  { method: 'javascript', extensions: ['javascript', 'js'], mimes: ['application/javascript'] },
-  { method: 'json', extensions: ['json'], mimes: ['application/json'] },
-  { method: 'text', extensions: ['txt'], mimes: ['text/plain'] },
-  { method: 'markdown', extensions: ['markdown', 'md'], mimes: ['text/markdown'] }
-]
+const fileTypes = require('../../fileTypes')
 
 const guessAceMethod = (fileName) => {
   const ext = fileName.split('.').pop()
-  const compatibleMode = aceSupportedMethods.find(sm => sm.extensions.includes(ext))
+  const compatibleMode = fileTypes.aceSupportedMethods.find(sm => sm.extensions.includes(ext))
   return `ace/mode/${compatibleMode ? compatibleMode.method : 'text'}`
 }
 
 const aceSupportedByType = (type) => {
-  return aceSupportedMethods.find(sm => sm.mimes.includes(type))
+  return fileTypes.aceSupportedMethods.find(sm => sm.mimes.includes(type))
 }
 
 Template['files.one.edit'].onRendered(function() {

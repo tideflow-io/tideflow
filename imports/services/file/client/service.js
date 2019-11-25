@@ -19,14 +19,14 @@ const service = {
   },
   events: [
     {
-      name: 'create-file',
-      humanName: 's-file.events.createfile.title',
-      viewerTitle: 's-file.events.createfile.viewer.title',
+      name: 'create-input-log-file',
+      humanName: 's-file.events.create-input-log-file.title',
+      viewerTitle: 's-file.events.create-input-log-file.viewer.title',
       inputable: false,
       stepable: true,
       callback: () => { return {} },
       templates: {
-        eventConfig: 'servicesfileCreatefileConfig'
+        eventConfig: 'servicesfileCreateInputLogFileConfig'
       }
     },
 
@@ -40,7 +40,21 @@ const service = {
       templates: {
         eventConfig: 'servicesfileReadfileConfig'
       }
+    },
+
+    {
+      name: 'store-previous-files',
+      humanName: 's-file.events.store-previous-files.title',
+      viewerTitle: 's-file.events.store-previous-files.viewer.title',
+      inputable: false,
+      stepable: true,
+      callback: () => { return {} },
+      templates: {
+        // eventConfig: 'servicesfileReadfileConfig'
+      }
     }
+
+    
   ]
 }
 

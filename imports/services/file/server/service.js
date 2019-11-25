@@ -14,7 +14,7 @@ const service = {
   },
   events: [
     {
-      name: 'create-file',
+      name: 'create-input-log-file',
       visibe: true,
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let previousStepsData = executionLogs.map(el => el.stepResult)
@@ -41,7 +41,7 @@ const service = {
           next: true,
           error: false,
           msgs: [{
-            m: 's-file.log.create-file.created',
+            m: 's-file.log.create-input-log-file.created',
             p: [],
             d: new Date()
           }]
@@ -93,8 +93,42 @@ const service = {
 
 
       }
-    }
+    },
 
+    {
+      name: 'store-previous-files',
+      visibe: true,
+      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+        let previousFiles = executionLogs.map(el => el.stepResult).filter(el => el.type === 'file')
+        
+        let fileNames = []
+
+        previousFiles.map(file => {
+          const fileName = slugify(`${execution._id.substring(0, 3)}-${file.data.fileName}`).toLowerCase()
+          fileNames.push(fileName)
+          return filesLib.create({
+            user: user._id,
+            name: fileName
+          }, new Buffer(file.data.data))
+        })
+
+        cb(null, {
+          result: {
+            type: 'object',
+            data: {
+              fileNames
+            }
+          },
+          next: true,
+          error: false,
+          msgs: [{
+            m: 's-file.log.store-previous-files.created',
+            p: [fileNames.length],
+            d: new Date()
+          }]
+        })
+      }
+    },
   ]
 }
 
