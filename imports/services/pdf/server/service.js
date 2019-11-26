@@ -1,11 +1,13 @@
 const Handlebars = require('handlebars')
-import { moment } from 'meteor/momentjs:moment'
 
+import filesLib from '/imports/modules/files/server/lib'
+
+import { moment } from 'meteor/momentjs:moment'
 import { servicesAvailable } from '/imports/services/_root/server'
 
 const puppeteer = require('puppeteer')
 
-const generatePdf = async (template, data, cb) => {
+const generatePdf = async (content, data, cb) => {
   let options = {
     width: 1280,
     height: 800,
@@ -21,9 +23,7 @@ const generatePdf = async (template, data, cb) => {
 
   const launchOptions = {...options.launchOptions}
 
-  const content = Assets.getText(`pdfs/${template}.html`)
   const html = Handlebars.compile(content)(data)
-
   const browser = await puppeteer.launch(launchOptions)
   const page = await browser.newPage()
   await page.setContent(html)
@@ -44,45 +44,48 @@ const service = {
   },
   events: [
     {
-      name: 'build-pdf',
+      name: 'create-from-html',
       visibe: true,
-      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : {}
-
         const fileData = lastData.type === 'object' ? lastData : { data: {} }
 
-        const pdfType = (currentStep.config || {}).type || 'simple';
+        try {
+          const file = await filesLib.getOne({ _id: currentStep.config.file })
+          const string = await filesLib.getOneAsString({ _id: file._id })
 
-        let results = {};
-
-        let total = 0
-
-        fileData.data.date = moment().format('LL')
-        
-        if (pdfType === 'bill') {
-          (fileData.data.items || []).map(i => {
-            total += Number(i.price || 0)
+          cb(null, {
+            result: {
+              type: 'file',
+              data: {
+                fileName: `lol-${execution._id}.pdf`,
+                data: Meteor.wrapAsync(cb => generatePdf(string, fileData.data, cb))()
+              }
+            },
+            next: true,
+            msgs: [
+              {
+                m: 's-pdf.log.create-from-html.created',
+                p: [],
+                d: new Date()
+              }
+            ]
           })
-          fileData.data.total = fileData.data.total || total
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: true,
+            error: true,
+            msgs: [{
+              m: 's-pdf.log.create-from-html.retrieveFailed',
+              p: [],
+              d: new Date(),
+              e: true
+            }]
+          })
         }
 
-        cb(null, {
-          result: {
-            type: 'file',
-            data: {
-              fileName: `${pdfType}.pdf`,
-              data: Meteor.wrapAsync(cb => generatePdf(pdfType, fileData.data, cb))()
-            }
-          },
-          next: true,
-          msgs: [
-            {
-              m: 's-pdf.log.build_pdf.files_created',
-              p: [],
-              d: new Date()
-            }
-          ]
-        })
       }
     }
   ]

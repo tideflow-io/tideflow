@@ -19,14 +19,14 @@ const service = {
   },
   events: [
     {
-      name: 'build-pdf',
-      humanName: 's-pdf.events.buildpdf.title',
-      viewerTitle: 's-pdf.events.buildpdf.viewer.title',
+      name: 'create-from-html',
+      humanName: 's-pdf.events.create-from-html.title',
+      viewerTitle: 's-pdf.events.create-from-html.viewer.title',
       inputable: false,
       stepable: true,
       callback: () => { return {} },
       templates: {
-        eventConfig: 'servicesPdfBuildPdfConfig'
+        eventConfig: 'servicesPdfCreateFromHtmlConfig'
       }
     }
   ]
