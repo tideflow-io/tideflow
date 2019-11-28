@@ -7,10 +7,13 @@ token: Authentication token
 moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
 events.command.title: Execute a command in my agent.
+
 events.code_nodesfc.name: Execute a single-file-code
 events.code_nodesfc.title: Execute a single-file-code
+
 event.execute.commandFile: File to execute
 event.execute.selectAgent: Which agent must be used
+events.execute.selectOneFile: Select one file
 event.execute.anyAgent: Any agent available
 service.status.lastSeen: Last seen
 service.status.offline: Offline

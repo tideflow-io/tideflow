@@ -11,6 +11,7 @@
   <div class="form-group">
     <label class="control-label">{{__ "s-agent.event.execute.commandFile"}}</label>
     <select class="form-control" name="{{stepConfigName 'commandFile'}}" data-schema-key="{{stepConfigName 'commandFile'}}">
+      <option value="">{{__ "s-agent.events.execute.selectOneFile"}}</option>
       {{#each files}}
         <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'commandFile' this._id}}>{{__ this.name}}</option>
       {{/each}}
