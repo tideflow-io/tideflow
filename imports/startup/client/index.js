@@ -20,6 +20,9 @@ import '/imports/services/bitbucket-webhooks/client'
 import '/imports/services/endpoint/both'
 import '/imports/services/endpoint/client'
 
+import '/imports/services/file/both'
+import '/imports/services/file/client'
+
 import '/imports/services/pdf/both'
 import '/imports/services/pdf/client'
 
@@ -56,6 +59,9 @@ import '/imports/modules/services/client'
 
 import '/imports/modules/executions/both'
 import '/imports/modules/executions/client'
+
+import '/imports/modules/files/both'
+import '/imports/modules/files/client'
 
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/client'

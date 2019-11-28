@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { buildLinks } from '/imports/queue/server/helpers/links'
 

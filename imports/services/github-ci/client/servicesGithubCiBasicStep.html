@@ -1,6 +1,11 @@
 <template name="servicesGithubCiBasicStep">
   <div class="form-group">
     <label class="control-label">{{__ "s-gh-ci.events.general.cmd.title"}}</label>
-    <textarea class="code-editor form-control" name="{{stepConfigName 'cmd'}}" data-schema-key="{{stepConfigName 'cmd'}}">{{stepConfigValue 'cmd' ''}}</textarea>
+    <select class="form-control" name="{{stepConfigName 'cmdFile'}}" data-schema-key="{{stepConfigName 'cmdFile'}}">
+      <option value="">{{__ "s-gh-ci.events.general.selectOneFile"}}</option>
+      {{#each files}}
+        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'cmdFile' this._id}}>{{__ this.name}}</option>
+      {{/each}}
+    </select>
   </div>
 </template>

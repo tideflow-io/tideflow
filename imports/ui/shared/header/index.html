@@ -17,6 +17,9 @@
             <li class="nav-item {{#if isInUrl 'dashboard'}}active{{/if}}">
               <a class="nav-link" href="{{pathFor 'dashboard'}}">{{__ "header.dashboard"}}</a>
             </li>
+            <li class="nav-item {{#if routeContains 'files'}}active{{/if}}">
+              <a class="nav-link" href="{{pathFor 'files.index'}}">{{__ "header.files"}}</a>
+            </li>
             <li class="nav-item {{#if routeContains 'services'}}active{{/if}}">
               <a class="nav-link" href="{{pathFor 'services.index'}}">{{__ "header.services"}}</a>
             </li>

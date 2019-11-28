@@ -1,12 +1,15 @@
 import i18n from 'meteor/universe:i18n'
 
 import { Services } from '/imports/modules/services/both/collection.js'
-
+import filesLib from '/imports/modules/files/server/lib'
 import { servicesAvailable, processableResults } from '/imports/services/_root/server'
-
 import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
+
+const reportFileNotFound = (eventName) => {
+  
+}
 
 const service = {
   name: 'agent',
@@ -43,10 +46,31 @@ const service = {
   events: [
     {
       name: 'execute',
-      humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
-      callback: (user, currentStep, executionLogs, execution, logId, cb) => {
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
+
+        let command = null
+
+        try {
+          command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: false,
+            error: true,
+            msgs: [
+              {
+                m: 's-agent.log.execute.commandfile.error',
+                err: true,
+                p: [],
+                d: new Date()
+              }
+            ]
+          })
+          return
+        }
 
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
@@ -57,17 +81,11 @@ const service = {
           execution: execution._id,
           log: logId,
           step: currentStep._id,
-          command: currentStep.config.command,
+          command,
           previous: attachPrevious ? JSON.stringify(
             processableResults(executionLogs, true)
           ) : null
         }, 'tf.agent.execute')
-
-        let callParameters = [currentStep.config.command]
-
-        if (agentDoc) {
-          callParameters.push(agentDoc._id || agentDoc)
-        }
 
         cb(null, {
           result: {},
@@ -77,7 +95,7 @@ const service = {
             {
               m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
               err: !commandSent,
-              p: callParameters,
+              p: [],
               d: new Date()
             }
           ]
@@ -92,13 +110,35 @@ const service = {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+
+        let command = null
+
+        try {
+          command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: false,
+            error: true,
+            msgs: [
+              {
+                m: 's-agent.log.code_nodesfc.commandfile.error',
+                err: true,
+                p: [],
+                d: new Date()
+              }
+            ]
+          })
+          return
+        }
         
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
           execution: execution._id,
           log: logId,
           step: currentStep._id,
-          code: currentStep.config.command,
+          code: command,
           previous: attachPrevious ? JSON.stringify(
             processableResults(executionLogs, true)
           ) : null
@@ -112,7 +152,7 @@ const service = {
             {
               m: commandSent ? 's-agent.log.code_nodesfc.sent.success' : 's-agent.log.code_nodesfc.sent.error',
               err: !commandSent,
-              p: [agentDoc._id || agentDoc],
+              p: [],
               d: new Date()
             }
           ]

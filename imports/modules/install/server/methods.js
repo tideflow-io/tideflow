@@ -2,9 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import { Roles } from 'meteor/alanning:roles'
 
-import { pick } from '/imports/helpers/both/objects'
 import { Settings } from '/imports/modules/management/both/collection'
-import * as settingsHelper from '/imports/helpers/server/settings'
 
 import { check } from 'meteor/check'
 

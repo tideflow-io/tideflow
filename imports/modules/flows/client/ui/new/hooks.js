@@ -1,6 +1,6 @@
+import { Meteor } from 'meteor/meteor'
 import { AutoForm } from 'meteor/aldeed:autoform'
 import { Router } from 'meteor/iron:router'
-import { doesNotReject } from 'assert';
 
 AutoForm.addHooks(['insertFlowForm'], {
   before: {

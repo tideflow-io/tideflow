@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { checkRole } from '/imports/helpers/both/roles'
 

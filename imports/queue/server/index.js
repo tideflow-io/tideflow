@@ -594,6 +594,8 @@ jobs.register('workflow-step', function(jobData) {
   if (eventCallback.result.type === 'file') {
     if (!eventCallback.result.data.data) {
       console.error('File have no data attached')
+      endExecution(execution, 'error')
+      instance.success()
       return
     }
   

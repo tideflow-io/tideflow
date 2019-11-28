@@ -1,0 +1,11 @@
+<template name="servicesfileReadfileConfig">
+  <div class="form-group">
+    <label class="control-label">{{__ "s-file.event.readFile.file"}}</label>
+    <select class="form-control" name="{{stepConfigName 'file'}}" data-schema-key="{{stepConfigName 'file'}}">
+      <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' null}}>{{__ 's-file.events.readFile.select'}}</option>
+      {{#each files}}
+        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' this._id}}>{{__ this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>

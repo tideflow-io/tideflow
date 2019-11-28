@@ -2,7 +2,6 @@ import { Random } from 'meteor/random'
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import { sAlert } from 'meteor/juliancwirko:s-alert'
 
 import { flows as flowsHooks } from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'
@@ -12,8 +11,6 @@ import { Executions } from '../../executions/both/collection'
 import { ExecutionsLogs } from '../../executionslogs/both/collection'
 
 import schema from '../both/schemas/schema.js'
-
-import i18n from 'meteor/universe:i18n'
 
 export const createFlow = new ValidatedMethod({
   name: 'flows.create',
@@ -35,20 +32,7 @@ export const createFlow = new ValidatedMethod({
     // Execute the hooks
     flow = flowsHooks.create.pre(flow)
 
-    Flows.insert(
-      flow,
-      (error, result) => {
-        if (error) {
-          if (Meteor.isClient) {
-            sAlert.error(i18n.__('flows.create.error'))
-          }
-          throw new Meteor.Error(500, 'Server error')
-        }
-        if (Meteor.isClient) {
-          sAlert.success(i18n.__('flows.create.ok'))
-        }
-      }
-    )
+    Flows.insert(flow)
 
     return pick(flowsHooks.create.post(flow), ['_id'])
   }

@@ -1,4 +1,7 @@
-import { Services } from "/imports/modules/services/both/collection.js"
+import { Template } from 'meteor/templating'
+
+import { Services } from '/imports/modules/services/both/collection.js'
+import { Files } from '/imports/modules/files/both/collection.js'
 
 Template.servicesGhCiTriggerEditorPre.helpers({
   registeredRepositories: function() {
@@ -14,7 +17,6 @@ Template.servicesGhCiTriggerEditorPre.helpers({
     finally {
       return result
     }
-    
   },
   selectedRepository: function(compare) {
     return this.id === compare ? 'selected' : ''
@@ -29,8 +31,11 @@ Template.servicesGhCiTriggerEditorPost.helpers({
         title: a.title
       }
     })
-  },
-  selectedAgent: function(compare) {
-    return this._id === compare ? 'selected' : ''
+  }
+})
+
+Template['servicesGithubCiBasicStep'].helpers({
+  files: function () {
+    return Files.find()
   }
 })

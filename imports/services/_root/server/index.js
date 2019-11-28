@@ -2,7 +2,7 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken')
-const jwtSecret = require('/imports/files/server/secret')
+const jwtSecret = require('/imports/download/server/secret')
 
 let servicesAvailable = []
 //calculateUsage
@@ -207,7 +207,7 @@ const processableResults = (executionLogs, external) => {
         data: { _id, execution, flow, step, user, fileName: stepResult.data.fileName }
       }, jwtSecret)
 
-      stepResult.data.url = `${process.env.ROOT_URL}/files?type=actionFile&token=${token}`
+      stepResult.data.url = `${process.env.ROOT_URL}/download?type=actionFile&token=${token}`
       delete stepResult.data.data
     }
     

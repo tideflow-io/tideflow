@@ -6,8 +6,8 @@
 import './emails'
 import './accounts'
 
-import '/imports/files/both'
-import '/imports/files/server'
+import '/imports/download/both'
+import '/imports/download/server'
 
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
@@ -29,6 +29,9 @@ import '/imports/services/endpoint/server'
 
 import '/imports/services/pdf/both'
 import '/imports/services/pdf/server'
+
+import '/imports/services/file/both'
+import '/imports/services/file/server'
 
 import '/imports/services/agent/both'
 import '/imports/services/agent/server'
@@ -53,6 +56,9 @@ import '/imports/modules/services/server'
 
 import '/imports/modules/dashboard/both'
 import '/imports/modules/dashboard/server'
+
+import '/imports/modules/files/both'
+import '/imports/modules/files/server'
 
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/server'

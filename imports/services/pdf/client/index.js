@@ -1,4 +1,4 @@
-import './servicesPdfBuildPdfConfig'
+import './servicesPdfCreateFromHtmlConfig'
 
 import './events'
 import './helpers'

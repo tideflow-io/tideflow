@@ -14,6 +14,7 @@ updateFormPre: Github's webhook URLs are inmutable over time. You can safely upd
 events.general.cmd.selectAgent: Which agent?
 events.general.cmd.anyAgent: Any agent
 
+events.general.selectOneFile: Select one file
 events.general.branch.filter: Which branch?
 events.general.branch.filterHelp: Use "*" for any branch
 

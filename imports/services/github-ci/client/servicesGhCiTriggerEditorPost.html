@@ -4,7 +4,7 @@
     <select class="form-control" data-schema-key="{{triggerConfigName 'agent'}}" name="{{triggerConfigName 'agent'}}">
       <option value="any" {{triggerConfigValueSelected 'agent' 'any'}}>{{__ "s-gh-ci.events.general.cmd.anyAgent"}}</option>
       {{#each registeredAgents}}
-        <option value="{{_id}}" {{selectedAgent _id}}>{{title}}</option>
+        <option value="{{_id}}" {{triggerConfigValueSelectedEach ../flow.trigger 'agent' _id}}>{{title}}</option>
       {{/each}}
     </select>
   </div>

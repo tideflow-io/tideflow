@@ -1,0 +1,31 @@
+<template name="files.new">
+  {{> breadcrumbContainer}}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "files.new.title"}}
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    {{#autoForm collection=Files id="insertFileForm" type="method" meteormethod="files.create"}}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              {{> afQuickField name='name' value=file.name id="filename"}}
+              <div class="form-group ace-editor-container">
+                <div id="editor"></div>
+              </div>
+              {{> afQuickField name='content' type='hidden'}}
+              <button type="submit" class="btn btn-primary float-right">{{__ "files.new.submit"}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/autoForm}}
+  </div>
+</template>

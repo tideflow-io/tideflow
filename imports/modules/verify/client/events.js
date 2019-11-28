@@ -1,3 +1,10 @@
+import i18n from 'meteor/universe:i18n'
+import { Session } from 'meteor/session'
+import { Router } from 'meteor/iron:router'
+import { Accounts } from 'meteor/accounts-base'
+
+import { Template } from 'meteor/templating'
+
 Template.verifyIndex.onRendered(function() {
   let instance = this
   Session.set('verifyMessage', null)

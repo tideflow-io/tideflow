@@ -133,6 +133,10 @@ Router.route('/flows/:_id/executions', function () {
       return {
         executions: Executions.find({
           // flow: this.params._id
+        }, {
+          sort: {
+            createdAt: -1
+          }
         }),
         flow: Flows.findOne({
           _id: this.params._id
@@ -190,6 +194,7 @@ Router.route('/flows/:_id/executions/:executionId', function () {
 })
 
 Router.route('/flows/:_id/edit', function () {
+  // Remove all session variables related to the flows editor
   Object.keys(Session.keys).map(sk => {
     if (sk.indexOf('fe-') === 0) {
       delete Session.keys[sk]
@@ -199,7 +204,8 @@ Router.route('/flows/:_id/edit', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('services.all', {})
+      Meteor.subscribe('services.all', {}),
+      Meteor.subscribe('files.all', {})
     ]
   },
   data: function() {

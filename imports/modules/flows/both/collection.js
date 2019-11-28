@@ -1,8 +1,8 @@
-import { Mongo } from "meteor/mongo"
+import { Mongo } from 'meteor/mongo'
 
-import FlowSchema from "./schemas/schema"
+import FlowSchema from './schemas/schema'
 
-export const Flows = new Mongo.Collection("flows")
+export const Flows = new Mongo.Collection('flows')
 
 // We use explicit methods, so deny everything
 Flows.allow({

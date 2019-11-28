@@ -1,0 +1,10 @@
+<template name="servicesPdfCreateFromHtmlConfig">
+  <div class="form-group">
+    <select class="form-control" data-schema-key="{{stepConfigName 'file'}}" name="{{stepConfigName 'file'}}">
+      <option value="">{{__ "s-pdf.event.create-from-html.file.selectOne"}}</option>
+      {{#each files}}
+        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' this._id}}>{{__ this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>

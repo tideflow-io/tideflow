@@ -7,19 +7,26 @@ token: Authentication token
 moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
 events.command.title: Execute a command in my agent.
+
 events.code_nodesfc.name: Execute a single-file-code
 events.code_nodesfc.title: Execute a single-file-code
-event.execute.command: Command to execute
+
+event.execute.commandFile: File to execute
 event.execute.selectAgent: Which agent must be used
+events.execute.selectOneFile: Select one file
 event.execute.anyAgent: Any agent available
-event.execute.nodeJs: Code to execute
 service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
+
 log.execute.sent.success: Command reported to the agent
 log.execute.sent.error: The command could not be delivered. Is the agent online?
+log.execute.commandfile.error: Could not find the command file
+
 log.code_nodesfc.sent.success: NodeJS script reported to the agent.
 log.code_nodesfc.sent.error: NodeJS script could not be delivered. Is the agent online?
+log.code_nodesfc.commandfile.error: Could not find the source code file
+
 event.common.attachPreviousStepOutput: Attach the output from the previous step
 event.common.attachPreviousStepOutputYes: Yes
 event.common.attachPreviousStepOutputNo: No

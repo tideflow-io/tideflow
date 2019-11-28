@@ -1,6 +1,6 @@
 import { HTTP } from 'meteor/http'
 
-const { createAppAuth } = require('@octokit/auth-app');
+const { createAppAuth } = require('@octokit/auth-app')
 
 const BASE_URL = 'https://api.github.com'
 

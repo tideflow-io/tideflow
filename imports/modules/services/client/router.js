@@ -1,9 +1,10 @@
+import i18n from 'meteor/universe:i18n'
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { Services } from "/imports/modules/services/both/collection.js"
+import { Services } from '/imports/modules/services/both/collection.js'
 
 import './ui/index'
 import './ui/new'
@@ -63,10 +64,7 @@ Router.route('/services/new/:type', function () {
       return i18n.__(
         servicesAvailable.find(sa => sa.name === this.params.type).humanName
       )
-    } catch (ex) {
-      console.log(ex)
-      return null
-    }
+    } catch (ex) { return null }
   },
   parent: 'services.new'
 })
@@ -96,7 +94,7 @@ Router.route('/services/:type/:_id/edit', function () {
   title: function() {
     try {
       return this.data().service.title
-    } catch (ex) {}
+    } catch (ex) { return }
   },
   parent: 'services.index'
 })

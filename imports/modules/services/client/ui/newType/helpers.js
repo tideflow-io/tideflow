@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { Services } from "/imports/modules/services/both/collection.js"
+import { Services } from '/imports/modules/services/both/collection.js'
 
 Template['services.new.type'].helpers({
   service: function() {
