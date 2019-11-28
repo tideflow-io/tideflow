@@ -13,12 +13,13 @@ const getCurrentInstallation = (service, installation) => {
  * @param {array} repositories 
  */
 const createInstall = (service, installation, repositories) => {
-  installation = _.omit(installation, ['sender']);
-  installation.repositories = repositories
+  // _.omit(..., ['sender'])
+  let { sender, ...installDetails } = installation
+  installDetails.repositories = repositories
   
   Services.update({_id: service._id}, {
     $addToSet: {
-      'details.installations': installation
+      'details.installations': installDetails
     }
   })
 }

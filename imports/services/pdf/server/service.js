@@ -47,7 +47,7 @@ const service = {
       name: 'create-from-html',
       visibe: true,
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : {}
+        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
         const fileData = lastData.type === 'object' ? lastData : { data: {} }
 
         try {
