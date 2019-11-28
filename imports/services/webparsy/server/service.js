@@ -31,7 +31,28 @@ const service = {
     {
       name: 'scrape',
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const string = await filesLib.getOneAsString({ _id: currentStep.config.ymlFile })
+        let string = null
+
+        try {
+          string = await filesLib.getOneAsString({ _id: currentStep.config.ymlFile })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: false,
+            error: true,
+            msgs: [
+              {
+                m: 's-agent.log.scrape.commandfile.error',
+                err: true,
+                p: [],
+                d: new Date()
+              }
+            ]
+          })
+          return
+        }
+
         const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
 
         try {

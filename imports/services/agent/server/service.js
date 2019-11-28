@@ -7,6 +7,10 @@ import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
 
+const reportFileNotFound = (eventName) => {
+  
+}
+
 const service = {
   name: 'agent',
   humanName: i18n.__('s-agent.name'),
@@ -46,7 +50,27 @@ const service = {
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
 
-        const command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+        let command = null
+
+        try {
+          command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: false,
+            error: true,
+            msgs: [
+              {
+                m: 's-agent.log.execute.commandfile.error',
+                err: true,
+                p: [],
+                d: new Date()
+              }
+            ]
+          })
+          return
+        }
 
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
 
@@ -63,12 +87,6 @@ const service = {
           ) : null
         }, 'tf.agent.execute')
 
-        let callParameters = [currentStep.config.command]
-
-        if (agentDoc) {
-          callParameters.push(agentDoc._id || agentDoc)
-        }
-
         cb(null, {
           result: {},
           next: false,
@@ -77,7 +95,7 @@ const service = {
             {
               m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
               err: !commandSent,
-              p: callParameters,
+              p: [],
               d: new Date()
             }
           ]
@@ -92,7 +110,28 @@ const service = {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
-        const command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+
+        let command = null
+
+        try {
+          command = await filesLib.getOneAsString({ _id: currentStep.config.commandFile })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: false,
+            error: true,
+            msgs: [
+              {
+                m: 's-agent.log.code_nodesfc.commandfile.error',
+                err: true,
+                p: [],
+                d: new Date()
+              }
+            ]
+          })
+          return
+        }
         
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
@@ -113,7 +152,7 @@ const service = {
             {
               m: commandSent ? 's-agent.log.code_nodesfc.sent.success' : 's-agent.log.code_nodesfc.sent.error',
               err: !commandSent,
-              p: [agentDoc._id || agentDoc],
+              p: [],
               d: new Date()
             }
           ]

@@ -15,10 +15,15 @@ event.execute.anyAgent: Any agent available
 service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
+
 log.execute.sent.success: Command reported to the agent
 log.execute.sent.error: The command could not be delivered. Is the agent online?
+log.execute.commandfile.error: Could not find the command file
+
 log.code_nodesfc.sent.success: NodeJS script reported to the agent.
 log.code_nodesfc.sent.error: NodeJS script could not be delivered. Is the agent online?
+log.code_nodesfc.commandfile.error: Could not find the source code file
+
 event.common.attachPreviousStepOutput: Attach the output from the previous step
 event.common.attachPreviousStepOutputYes: Yes
 event.common.attachPreviousStepOutputNo: No

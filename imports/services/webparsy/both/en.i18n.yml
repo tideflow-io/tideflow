@@ -6,3 +6,4 @@ events.scrape.name: Scrape website content(s)
 events.scrape.title: Run web scraping
 log.scrape.yaml.title: Scraping process finished
 log.scrape.yaml.errorTitle: Scraping process failed
+log.scrape.commandfile.error: Scraping definition not found

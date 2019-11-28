@@ -10,7 +10,6 @@ Meteor.publish('executions.all', (query, options) => {
     user: String,
     flow: String
   }).validate(query)
-  console.log({options})
   return Executions.find(query, options)
 })
 

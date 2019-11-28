@@ -46,6 +46,7 @@ module.exports.streamToString = streamToString
 
 const getOneAsString = (query, versionIndex) => {
   const file = getOne(query)
+  if (!file) throw 'not-found'
   const version = file.versions[versionIndex || file.versions.length - 1]
   const stream = downloadStream(version.gfsId)
   return streamToString(stream)
