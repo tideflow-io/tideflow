@@ -97,7 +97,7 @@ const service = {
         messageTitle: fullFlow.title,
         fullName,
         userEmail,
-        lines: currentStep.config.body.split('\n'),
+        lines: (currentStep.config.body || '').split('\n'),
         links,
         objects,
         sentOutside: true
@@ -105,7 +105,7 @@ const service = {
 
       let data = emailHelper.data(to, currentStep, tplVars, 'standard')
 
-      if (!data.to || data.to.trim() === '') return null;
+      if (!data.to || data.to.trim() === '') return null
 
       data.attachments = files.map(file => {
         return {

@@ -42,7 +42,6 @@ const service = {
   events: [
     {
       name: 'execute',
-      humanName: i18n.__('s-agent.events.command.name'),
       visibe: true,
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution

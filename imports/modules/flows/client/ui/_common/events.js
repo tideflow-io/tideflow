@@ -22,7 +22,7 @@ const stepTypeSelectorChanged = (index, type) => {
 
   Session.set(`fe-step-${index}`, selectedStepService || null)
   Session.set(`fe-step-${index}-event`, null)
-  Session.set(`fe-editMode`, index)
+  Session.set('fe-editMode', index)
 }
 
 /**
@@ -32,8 +32,12 @@ const stepTypeSelectorChanged = (index, type) => {
  * @param {*} type 
  */
 const stepEventSelectorChanged = function(index, type) {
+  
   if (index === null) { return null }
   let selectedStepService = Session.get(`fe-step-${index}`)
+
+  if (!selectedStepService) return;
+  console.log({selectedStepService})
   let selectedStepEvent = (selectedStepService.events || []).find(e => e.name === type)
   
   $(`[name="steps.${index}.event"]`).val(selectedStepService ? type : null)

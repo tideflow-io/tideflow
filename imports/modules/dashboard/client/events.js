@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor'
+import { Router } from 'meteor/iron:router'
 import { Template } from 'meteor/templating'
+import { ReactiveVar } from 'meteor/reactive-var'
 
 Template.dashboard.onCreated(function() {
   let self = this

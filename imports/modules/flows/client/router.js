@@ -133,6 +133,10 @@ Router.route('/flows/:_id/executions', function () {
       return {
         executions: Executions.find({
           // flow: this.params._id
+        }, {
+          sort: {
+            createdAt: -1
+          }
         }),
         flow: Flows.findOne({
           _id: this.params._id

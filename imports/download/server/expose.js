@@ -29,7 +29,7 @@ Router.route('/download', function () {
   }
 
   if (type === 'actionFile') {
-    // token: 
+    // tokenData: 
     // {
     //   "_id": "xc2fR9qtwvkZFSp3Q",
     //   "execution": "5eyKi9Pjw5tkQizAH",
