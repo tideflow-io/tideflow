@@ -8,8 +8,22 @@ import { Services } from '/imports/modules/services/both/collection.js'
 import { servicesAvailable } from '/imports/services/_root/client'
 import { checkRole } from '/imports/helpers/both/roles'
 
-// The native sort modifies the array in place. `_.orderBy` and `_.sortBy` do not, so we use `.concat()` to
-// copy the array, then sort.
+/**
+ * Sorts an array of objects by the specified property.
+ * 
+ * The native sort javascript function modifies the array in place, so we use 
+ * `.concat()` to copy the array, and then apply this sortBy function
+ * 
+ * @param {string} key property to sort by
+ * 
+ * Usage example:
+ * 
+ * [
+ *   { title: 'c' },
+ *   { title: 'b' },
+ *   { title: 'a' }
+ * ].concat().sort(sortBy('title'))
+ */
 const sortBy = (key) => {
   return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0)
 }

@@ -33,8 +33,8 @@ const service = {
       humanName: i18n.__('s-webform.events.submitted.name'),
       visibe: true,
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = _.last(executionLogs) ? _.last(executionLogs).stepResult : null
-
+        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        
         cb(null, {
           result: lastData,
           next: true,

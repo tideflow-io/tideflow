@@ -195,7 +195,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     }
   }
 
-  (flows || Flows.find(flowsQuery)).map(flow => {
+  (flows || Flows.find(flowsQuery).fetch()).map(flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
       return null
