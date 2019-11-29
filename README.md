@@ -32,10 +32,8 @@ integrations.
 - [Learn more about services](https://docs.tideflow.io/docs/services-introduction)
 - [Developer’s guide](https://docs.tideflow.io/docs/developers)
 
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tideflow-io/tideflow)
-
 ---
+
 ## Quick start
 
 Installing Tideflow is pretty simple. Once you have MeteorJS installed, you are
