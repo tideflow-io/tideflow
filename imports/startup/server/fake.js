@@ -5,7 +5,6 @@ import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { Executions } from '/imports/modules/executions/both/collection'
 import { servicesAvailable } from '/imports/services/_root/server'
-
 return
 
 if (process.env.NODE_ENV !== 'development') {
@@ -24,11 +23,12 @@ if (!user) {
 }
 
 // Amount of data to be created
-const NUMBER_OF_CHANNELS = 30 // 1 flow per service
+const NUMBER_OF_SERVICES = 1000
+const NUMBER_OF_FLOWS_PER_SERVICE = 1000
 const NUMBER_OF_EXECUTIONS = 30
 
 // Create services
-for (let i = 0; i < NUMBER_OF_CHANNELS; i++) {
+for (let i = 0; i < NUMBER_OF_SERVICES; i++) {
   const title = `${faker.name.jobDescriptor()} ${faker.name.jobArea()} ${faker.name.jobType()}`
   const description = faker.lorem.words(10)
 
@@ -51,19 +51,22 @@ servicesDocs.map(service => {
   const title = `${faker.name.jobDescriptor()} ${faker.name.jobArea()} ${faker.name.jobType()}`
   const description = faker.lorem.words(10)
 
-  Flows.insert({
-    trigger : {
-      type : service.type,
-      _id : service._id
-    },
-    steps : [],
-    title,
-    description,
-    status: faker.random.arrayElement(flowsStatus),
-    user: user._id,
-    emailOnTrigger: false,
-    createdAt: faker.date.past()
-  })
+  for (let i = 0; i < NUMBER_OF_FLOWS_PER_SERVICE; i++) {
+    Flows.insert({
+      trigger : {
+        type : service.type,
+        _id : service._id
+      },
+      steps : [],
+      title,
+      description,
+      status: faker.random.arrayElement(flowsStatus),
+      user: user._id,
+      emailOnTrigger: false,
+      createdAt: faker.date.past()
+    })
+  }
+  
 })
 
 // Grab full list of flows from the database
@@ -83,4 +86,3 @@ flowsDocs.map(flowDoc => {
     })
   }
 })
-

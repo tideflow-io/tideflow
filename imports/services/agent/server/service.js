@@ -7,10 +7,6 @@ import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
 
-const reportFileNotFound = (eventName) => {
-  
-}
-
 const service = {
   name: 'agent',
   humanName: i18n.__('s-agent.name'),
