@@ -25,7 +25,6 @@ export const createFile = new ValidatedMethod({
       name: file.name,
       userCreated: true
     }, file.content)
-    console.log({newFile})
     return pick(newFile, ['_id'])
   }
 })
