@@ -63,9 +63,7 @@ module.exports.getConfig = getConfig
 const mailConfing = getConfig()
 
 if (!mailConfing) {
-  console.error('There is no MAIL_URL environment variable set.')
-  console.error('Therefore, Tideflow will not send emails. Please check how')
-  console.error('to solve this at https://docs.tideflow.io')
+  console.error('There is no MAIL_URL environment variable set. Therefore, Tideflow will not send emails. Please check how to solve this at https://docs.tideflow.io')
 }
 
 let transporter = mailConfing ? nodemailer.createTransport(getConfig()) : 

@@ -83,10 +83,7 @@ tfQueue.jobs.register('s-rss-schedule', function() {
 })
 
 Meteor.startup(() => {
-  console.log('schedule rss')
   tfQueue.jobs.run('s-rss-schedule', null, {
     singular: true
   })
 })
-
-
