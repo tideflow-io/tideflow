@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor'
+import { Session } from 'meteor/session'
 import { Router } from 'meteor/iron:router'
 
 import { Flows } from '/imports/modules/flows/both/collection.js'
