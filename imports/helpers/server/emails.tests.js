@@ -53,7 +53,8 @@ describe('emails tests', () => {
   })
 
 
-  describe('data', () => {
+  describe('data', function() {
+    this.timeout(5000)
 
     before(() => {
       Settings.remove({})
@@ -66,18 +67,24 @@ describe('emails tests', () => {
     })
 
     it('should result correct data for full url', () => {
-      process.env.MAIL_URL = 'smtp://user:password@server.com:465'
-      const result = data(
-        ['jon@example.com', 'ann@example.com'],
-        { config: { subject: 'Subject', body: 'Body' } }, 
-        { name: 'jon' },
-        'ExecutionLogs'
-      )
-
-      assert.equal(result.from, 'Test site <user>')
-      assert.equal(result.to, 'jon@example.com ann@example.com')
-      assert.equal(result.text, 'Test site: Body')
-      assert.deepEqual(result.attachments, [])
+      try {
+        process.env.MAIL_URL = 'smtp://user:password@server.com:465'
+        const result = data(
+          ['jon@example.com', 'ann@example.com'],
+          { config: { subject: 'Subject', body: 'Body' } }, 
+          { name: 'jon' },
+          'ExecutionLogs'
+        )
+  
+        assert.equal(result.from, 'Test site <user>')
+        assert.equal(result.to, 'jon@example.com ann@example.com')
+        assert.equal(result.text, 'Test site: Body')
+        assert.deepEqual(result.attachments, [])
+      }
+      catch (ex) {
+        console.error(ex)
+        assert.equal(ex, null)
+      }
     })
 
     it('should result in noreply@localhost if not auth in url', () => {
