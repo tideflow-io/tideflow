@@ -33,7 +33,7 @@
     "faker": "^4.1.0",
     "handlebars": "^4.1.2",
     "jsonwebtoken": "^8.5.1",
-    "meteor-node-stubs": "^0.3.2",
+    "meteor-node-stubs": "^1.0.0",
     "mime-types": "^2.1.25",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7",
