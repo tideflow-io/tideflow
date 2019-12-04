@@ -16,7 +16,7 @@ index.itemView: View
 newType.submit: Create service
 new.select: Select
 one.edit: Edit
-one.remove: Detele
+one.remove: Delete
 new.title: Connect a new service
 new.subtitle: Select the kind of service you want to connect
 new.moreInfo: More info about this
