@@ -66,6 +66,9 @@ import '/imports/modules/files/client'
 import '/imports/modules/filesTemplates/both'
 import '/imports/modules/filesTemplates/client'
 
+import '/imports/modules/filesTemplatesCategories/both'
+import '/imports/modules/filesTemplatesCategories/client'
+
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/client'
 
