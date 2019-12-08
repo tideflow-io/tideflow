@@ -48,7 +48,8 @@ Router.route('/flows/new', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('services.all', {})
+      Meteor.subscribe('services.all', {}),
+      Meteor.subscribe('files.all', {})
     ]
   },
   data: function() {
