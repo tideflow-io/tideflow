@@ -46,6 +46,11 @@ Router.route('/files/templates', function () {
         sort: {
           createdAt: -1
         }
+      }),
+      Meteor.subscribe('filesTemplates.all', {}, {
+        sort: {
+          createdAt: -1
+        }
       })
     ]
   },

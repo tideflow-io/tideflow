@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor'
+import { HTTP } from 'meteor/http'
 import { Template } from 'meteor/templating'
 
 const slugify = require('slugify')
@@ -33,6 +35,19 @@ Template['files.new'].onRendered(function() {
     let c = ace.edit('editor').getValue()
     $('[name="content"]').val(c)
   })
+
+  if (window.location.hash) {
+    HTTP.call('GET', `/file?type=fileTemplate&_id=${window.location.hash.replace('#', '')}`, {
+      headers: {
+        t: localStorage.getItem('Meteor.loginToken'),
+        u: Meteor.userId()
+      }
+    }, (error, result) => {
+      if (!error) editor.setValue(result.content)
+      editor.clearSelection()
+      editor.focus()
+    })
+  }
 })
 
 Template['files.new'].events({

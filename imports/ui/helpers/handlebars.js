@@ -1,3 +1,4 @@
+import { Session } from 'meteor/session'
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
@@ -13,7 +14,10 @@ Template.registerHelper('prop', (obj, prop) => {
 
 Template.registerHelper('debug', (a) => console.log(a))
 
-Template.registerHelper('sessEq', (name, val) => Session.get(name) ? Session.get(name) === val : false)
+Template.registerHelper('sessEq', (name, val) => {
+  if (val === null && !Session.get(name)) { return true }
+  return Session.get(name) ? Session.get(name) === val : false
+})
 
 Template.registerHelper('simpleDate', (date) => moment(date).format('D MMMM'))
 Template.registerHelper('executionHappened', (date) => {
@@ -78,5 +82,3 @@ Template.registerHelper('userName', function(user) {
     return fn
   }
 })
-
-const random = (list) => list[Math.floor((Math.random()*list.length))]

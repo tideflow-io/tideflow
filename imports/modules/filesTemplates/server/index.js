@@ -1,1 +1,2 @@
 import './prefill'
+import './publications'

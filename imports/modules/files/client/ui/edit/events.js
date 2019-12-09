@@ -1,3 +1,4 @@
+import { HTTP } from 'meteor/http'
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
@@ -53,6 +54,7 @@ Template['files.one.edit'].onRendered(function() {
     }, (error, result) => {
       if (!error) editor.setValue(result.content)
       editor.clearSelection()
+      editor.focus()
     })
   }
   else {

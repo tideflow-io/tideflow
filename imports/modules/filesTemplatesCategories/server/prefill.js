@@ -5,6 +5,18 @@ module.exports.run = async () => {
     {
       id: 'bash',
       name: 'Bash commands'
+    },
+    {
+      id: 'html-template',
+      name: 'HTML Templates'
+    },
+    {
+      id: 'webparsy',
+      name: 'Web scraping definitions'
+    },
+    {
+      id: 'nodesfc',
+      name: 'NodeJS scripts'
     }
   ]
   

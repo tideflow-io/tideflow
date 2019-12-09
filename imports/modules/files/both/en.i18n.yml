@@ -19,3 +19,9 @@ delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover it.
 
 download.error: Error downloading file
+
+templates.title: Templates
+templates.subtitle: Select a template to get started
+
+templates.useThis: Use this template
+templates.allTemplates: All templates

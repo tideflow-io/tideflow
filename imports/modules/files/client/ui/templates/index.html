@@ -1,34 +1,47 @@
 <template name="files.templates">
-  <div class="container">
+  <div class="container" style="">
     <div class="row">
       <div class="col-md-12">
         <div class="page-header mb-4">
           <h2>
-            {{__ "filesTemplates.index.title"}}
+            {{__ "files.templates.title"}}
           </h2>
-          <p class="lead">{{__ "filesTemplates.index.subtitle"}}</p>
+          <p class="lead">{{__ "files.templates.subtitle"}}</p>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4 text-center">
-        <div class="card-list">
-          <div class="card-list-body">
-            {{#each categories}}
-              123
-            {{/each}}
-          </div>
+      <div class="col-md-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a href="#" class="nav-link clear-filter {{#if sessEq 'fileTemplatesCategoryFilter' null}}active{{/if}}" aria-selected="{{#if isActive}}true{{/if}}">{{__ "files.templates.allTemplates"}}</a>
+          {{#each categories}}
+            {{> filesTemplatesCategoryFilter}}
+          {{/each}}
         </div>
       </div>
-      <div class="col-md-8 text-center">
-        <div class="card-list">
-          <div class="card-list-body">
-            {{#each templates}}
-              123
-            {{/each}}
-          </div>
+      <div class="col-md-9">
+        <div class="d-flex flex-items-stretch ml-n2 mr-n2 mb-2 flex-wrap">
+          {{#each templates}}
+            {{> filesTemplatesCard}}
+          {{/each}}
         </div>
       </div>
     </div>
   </div>
+</template>
+
+<template name="filesTemplatesCard">
+  <div class="px-2 col-4 col-lg-6 col-xl-4 d-flex flex-column">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{name}}</h5>
+        <p class="card-text">{{description}}</p>
+        <a href="{{pathFor 'files.new' hash=_id}}" class="card-link">{{__ "files.templates.useThis"}}</a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="filesTemplatesCategoryFilter">
+  <a href="#" class="nav-link {{#if isActive}}active{{/if}}" aria-selected="{{#if isActive}}true{{/if}}">{{name}}</a>
 </template>
