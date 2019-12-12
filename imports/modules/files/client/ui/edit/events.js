@@ -19,6 +19,11 @@ const aceSupportedByType = (type) => {
   return fileTypes.aceSupportedMethods.find(sm => sm.mimes.includes(type))
 }
 
+const setMode = fileName => {
+  let newAceMethod = guessAceMethod(fileName)
+  ace.edit('editor').session.setMode(newAceMethod)
+}
+
 Template['files.one.edit'].onRendered(function() {
   // eslint-disable-next-line no-undef
   var editor = ace.edit('editor', {
@@ -43,7 +48,7 @@ Template['files.one.edit'].onRendered(function() {
     $('[name="content"]').val(c)
   })
   
-  const { _id, type, userCreated } = this.data.file
+  const { _id, type, userCreated, name } = this.data.file
   
   if (userCreated || aceSupportedByType(type)) {
     HTTP.call('GET', `/file?_id=${_id}`, {
@@ -55,6 +60,7 @@ Template['files.one.edit'].onRendered(function() {
       if (!error) editor.setValue(result.content)
       editor.clearSelection()
       editor.focus()
+      setMode(name)
     })
   }
   else {
@@ -66,15 +72,11 @@ Template['files.one.edit'].onRendered(function() {
 Template['files.one.edit'].events({
   'blur #filename': (event, template) => {
     event.target.value = slugify(event.target.value).toLowerCase()
-    let newAceMethod = guessAceMethod(event.target.value)
-    // eslint-disable-next-line no-undef
-    ace.edit('editor').session.setMode(newAceMethod)
+    setMode(event.target.value)
   },
   'keyup #filename': (event, template) => {
     const ext = slugify(event.target.value).toLowerCase()
-    let newAceMethod = guessAceMethod(ext)
-    // eslint-disable-next-line no-undef
-    ace.edit('editor').session.setMode(newAceMethod)
+    setMode(event.target.value)
   },
   'click .delete-file': (event, template) => {
     event.stopPropagation()

@@ -64,11 +64,6 @@ const Schema = new SimpleSchema({
     type: String,
     optional: false
   },
-  priority: {
-    type: Number,
-    optional: false,
-    defaultValue: 0
-  },
   createdAt: {
     type: Date,
     optional: true,

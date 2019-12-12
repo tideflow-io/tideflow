@@ -6,6 +6,8 @@ const Readable = require('stream').Readable
 
 import lib from './lib'
 
+import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
+
 import { pick } from '/imports/helpers/both/objects'
 
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
@@ -26,6 +28,13 @@ export const createFile = new ValidatedMethod({
       userCreated: true
     }, file.content)
     return pick(newFile, ['_id'])
+  }
+})
+
+Meteor.methods({
+  'files.getTemplate': (_id) => {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    return FilesTemplates.findOne({_id})
   }
 })
 

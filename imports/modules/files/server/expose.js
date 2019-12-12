@@ -13,11 +13,6 @@ const downloadFile = (_id, authenticatedUser, v, res) => {
   downloadStream.pipe(res)
 }
 
-const downloadTemplate = (_id, authenticatedUser, res) => {
-  let f = FilesTemplates.findOne({_id})
-  res.end(f.content)
-}
-
 Router.route('/file', function () {
   const req = this.request
   const res = this.response
@@ -47,7 +42,7 @@ Router.route('/file', function () {
   }
 
   try {
-    if (type === 'fileTemplate') return downloadTemplate(_id, authenticatedUser, res)
+    // if (type === 'fileTemplate') return downloadTemplate(_id, authenticatedUser, res)
     downloadFile(_id, authenticatedUser, v, res)
   }
   catch (ex) {

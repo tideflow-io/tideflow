@@ -23,7 +23,7 @@
         <div class="d-flex flex-items-stretch ml-n2 mr-n2 mb-2 flex-wrap">
           {{#if sessEq 'fileTemplatesCategoryFilter' null}}
             <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
-              <div class="card clickable">
+              <div class="card clickable new-file-empty">
                 <div class="card-body">
                   <h5 class="card-title">{{__ "files.templates.empty.title"}}</h5>
                   <p class="card-text">{{__ "files.templates.empty.description"}}</p>
@@ -43,7 +43,7 @@
 
 <template name="filesTemplatesCard">
   <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
-    <div class="card">
+    <div class="card clickable">
       <div class="card-body">
         <h5 class="card-title">{{name}}</h5>
         <p class="card-text">{{description}}</p>
