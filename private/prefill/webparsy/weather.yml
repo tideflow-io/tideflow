@@ -1,0 +1,13 @@
+version: 1
+jobs:
+  main:
+    steps:
+      - goto: https://weather.com/es-ES/tiempo/hoy/l/SPXX0050:1:SP
+      - title
+      - text:
+          selector: .h4.today_nowcard-location
+          as: city
+      - text:
+          selector: .today_nowcard-temp span
+          type: number
+          as: temp

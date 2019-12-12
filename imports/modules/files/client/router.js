@@ -56,7 +56,10 @@ Router.route('/files/templates', function () {
   },
   data: function () {
     return {
-      categories: FilesTemplatesCategories.find()
+      categories: FilesTemplatesCategories.find(
+        {},
+        { sort: { priority: -1 } }
+      )
     }
   },
   name: 'files.templates',

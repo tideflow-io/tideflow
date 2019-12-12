@@ -1,0 +1,6 @@
+{
+  "name": "Madrid's temperature",
+  "description": "Scrape Madrid's weather",
+  "fileName": "weather.yml",
+  "type": "text"
+}

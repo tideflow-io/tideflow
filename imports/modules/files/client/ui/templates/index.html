@@ -1,5 +1,5 @@
 <template name="files.templates">
-  <div class="container" style="">
+  <div class="container-fluid" style="">
     <div class="row">
       <div class="col-md-12">
         <div class="page-header mb-4">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-lg-2 col-md-4 col-sm-12">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a href="#" class="nav-link clear-filter {{#if sessEq 'fileTemplatesCategoryFilter' null}}active{{/if}}" aria-selected="{{#if isActive}}true{{/if}}">{{__ "files.templates.allTemplates"}}</a>
           {{#each categories}}
@@ -19,8 +19,19 @@
           {{/each}}
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-lg-10 col-md-8 col-sm-12">
         <div class="d-flex flex-items-stretch ml-n2 mr-n2 mb-2 flex-wrap">
+          {{#if sessEq 'fileTemplatesCategoryFilter' null}}
+            <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
+              <div class="card clickable">
+                <div class="card-body">
+                  <h5 class="card-title">{{__ "files.templates.empty.title"}}</h5>
+                  <p class="card-text">{{__ "files.templates.empty.description"}}</p>
+                  <a href="{{pathFor 'files.new'}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
+                </div>
+              </div>
+            </div>
+          {{/if}}
           {{#each templates}}
             {{> filesTemplatesCard}}
           {{/each}}
@@ -31,7 +42,7 @@
 </template>
 
 <template name="filesTemplatesCard">
-  <div class="px-2 col-4 col-lg-6 col-xl-4 d-flex flex-column">
+  <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{name}}</h5>

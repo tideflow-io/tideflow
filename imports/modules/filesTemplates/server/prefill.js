@@ -1,61 +1,44 @@
 import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
+import { FilesTemplatesCategories } from '/imports/modules/filesTemplatesCategories/both/collection'
 
 import { run as runCategories } from '/imports/modules/filesTemplatesCategories/server/prefill'
+import * as fs from 'fs'
 
 const run = async () => {
 
-  const categories = await runCategories()
+  await FilesTemplates.remove({})
+  await FilesTemplatesCategories.remove({})
 
-  const templates = [
+  const categories = await runCategories()
+  const tplCategories = [
     {
       categoryId: 'bash',
-      template: {
-        name: 'Demo 1',
-        description: '1230m',
-        fileName: 'demo1.txt',
-        type: 'text',
-        content: ''
-      }
+      templates: [
+        'prefill/bash/s3buildpublish.json'
+      ]
     },
     {
-      categoryId: 'bash',
-      template: {
-        name: 'Demo 2',
-        description: '1230m',
-        fileName: 'demo1.txt',
-        type: 'text',
-        content: 'holaquease'
-      }
+      categoryId: 'html-template',
+      templates: [
+        'prefill/html-template/basic.json'
+      ]
     },
     {
-      categoryId: 'bash',
-      template: {
-        name: 'Demo 3',
-        description: '1230m',
-        fileName: 'demo1.txt',
-        type: 'text',
-        content: 'holaquease'
-      }
+      categoryId: 'webparsy',
+      templates: [
+        'prefill/webparsy/browserSettings.json',
+        'prefill/webparsy/weather.json',
+        'prefill/webparsy/form.json',
+        'prefill/webparsy/html.json',
+        'prefill/webparsy/many.json',
+        'prefill/webparsy/transform.json'
+      ]
     },
     {
-      categoryId: 'bash',
-      template: {
-        name: 'Demo 4',
-        description: '1230m',
-        fileName: 'demo1.txt',
-        type: 'text',
-        content: 'holaquease'
-      }
-    },
-    {
-      categoryId: 'html',
-      template: {
-        name: 'Oh html',
-        description: '1230m',
-        fileName: 'demo1.html',
-        type: 'text',
-        content: 'holaquease'
-      }
+      categoryId: 'nodesfc',
+      templates: [
+        'prefill/nodesfc/basics.json'
+      ]
     }
   ]
   
@@ -67,15 +50,23 @@ const run = async () => {
     return
   }
   
-  templates.map(tpl => {
-    const category = categories.find(c => c.id === tpl.categoryId)
+  tplCategories.map(tplCategory => {
+    const category = categories.find(c => c.id === tplCategory.categoryId)
     if (!category) {
-      console.error(`No file template category found for ${tpl.categoryId}`)
+      console.error(`No file template category found for ${tplCategory.categoryId}`)
       return
     }
-    FilesTemplates.insert(Object.assign(tpl.template, {
-      category: category._id
-    }))
+
+    let p = tplCategory.templates.length
+    tplCategory.templates.map(tpl => {
+      const templateInfo = JSON.parse(Assets.getText(tpl))
+      FilesTemplates.insert(Object.assign(
+        templateInfo, {
+          category: category._id,
+          content: Assets.getText(`prefill/${tplCategory.categoryId}/${templateInfo.fileName}`),
+          priority: p--
+        }))
+    })
   })
 }
 

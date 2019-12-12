@@ -1,0 +1,6 @@
+{
+  "name": "Browser settings",
+  "description": "Customise browser settings",
+  "fileName": "browserSettings.yml",
+  "type": "text"
+}

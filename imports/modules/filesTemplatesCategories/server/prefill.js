@@ -19,7 +19,7 @@ module.exports.run = async () => {
       name: 'NodeJS scripts'
     }
   ]
-  
+
   let numberOfCategories = FilesTemplatesCategories.find({})
   
   if (numberOfCategories.count() > 0) {

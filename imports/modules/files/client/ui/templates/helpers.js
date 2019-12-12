@@ -7,7 +7,9 @@ Template['files.templates'].helpers({
     const filterCat = Session.get('fileTemplatesCategoryFilter')
     let query = {}
     if (filterCat) query.category = filterCat
-    return FilesTemplates.find(query)
+    return FilesTemplates.find(query, {
+      sort: { priority: -1 }
+    })
   }
 })
 

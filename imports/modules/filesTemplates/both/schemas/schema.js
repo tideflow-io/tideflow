@@ -49,6 +49,11 @@ const Schema = new SimpleSchema({
     optional: true,
     blackbox: true
   },
+  priority: {
+    type: Number,
+    optional: false,
+    defaultValue: 0
+  },
   createdAt: {
     type: Date,
     optional: true,

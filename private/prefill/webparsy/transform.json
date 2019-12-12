@@ -1,0 +1,6 @@
+{
+  "name": "Transform data types",
+  "description": "Transform strings to numbers",
+  "fileName": "transform.yml",
+  "type": "text"
+}

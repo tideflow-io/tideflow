@@ -1,0 +1,12 @@
+version: 1
+  jobs:
+    main:
+      browser:
+        width: 1200
+      height: 800
+      scaleFactor: 1
+      timeout: 60
+      delay: 0
+    steps:
+      - goto: http://google.com
+      - title
