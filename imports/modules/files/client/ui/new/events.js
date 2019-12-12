@@ -1,7 +1,7 @@
+const slugify = require('slugify')
+
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
-
-const slugify = require('slugify')
 
 const fileTypes = require('../../fileTypes')
 
@@ -58,12 +58,8 @@ Template['files.new'].onRendered(function() {
 
 Template['files.new'].events({
   'blur #filename': (event, template) => {
-    setMode()
     event.target.value = slugify(event.target.value).toLowerCase()
-
-    let newAceMethod = guessAceMethod(event.target.value)
-    // eslint-disable-next-line no-undef
-    ace.edit('editor').session.setMode(newAceMethod)
+    setMode(event.target.value)
   },
   'keyup #filename': (event, template) => {
     setMode(event.target.value)
