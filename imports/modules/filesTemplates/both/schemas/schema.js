@@ -19,6 +19,14 @@ const Schema = new SimpleSchema({
     type: String,
     optional: false
   },
+  iconClass: {
+    type: String,
+    optional: false
+  },
+  iconColor: {
+    type: String,
+    optional: false
+  },
   description: {
     type: String,
     optional: false

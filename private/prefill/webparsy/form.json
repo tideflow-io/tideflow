@@ -2,5 +2,7 @@
   "name": "Interact with form",
   "description": "Fill and submit an online form",
   "fileName": "form.yml",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fa fa-spider",
+  "iconColor": "#627F89"
 }

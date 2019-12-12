@@ -2,5 +2,7 @@
   "name": "Basic example",
   "description": "Basics of nodesfc",
   "fileName": "basics.js",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fab fa-node-js",
+  "iconColor": "#026E00"
 }

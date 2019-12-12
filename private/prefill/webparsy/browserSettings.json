@@ -2,5 +2,7 @@
   "name": "Browser settings",
   "description": "Customise browser settings",
   "fileName": "browserSettings.yml",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fa fa-spider",
+  "iconColor": "#627F89"
 }

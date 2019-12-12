@@ -2,5 +2,7 @@
   "name": "Transform data types",
   "description": "Transform strings to numbers",
   "fileName": "transform.yml",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fa fa-spider",
+  "iconColor": "#627F89"
 }

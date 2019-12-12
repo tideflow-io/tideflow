@@ -25,9 +25,20 @@
             <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
               <div class="card clickable new-file-empty">
                 <div class="card-body">
-                  <h5 class="card-title">{{__ "files.templates.empty.title"}}</h5>
-                  <p class="card-text">{{__ "files.templates.empty.description"}}</p>
-                  <a href="{{pathFor 'files.new'}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
+                  <div class="row">
+                    <div class="col-10">
+                      <h5 class="card-title">{{__ "files.templates.empty.title"}}</h5>
+                      <p class="card-text">{{__ "files.templates.empty.description"}}</p>
+                    </div>
+                    <div class="col-2">
+                      <i class="far fa-file file-template-icon" style="color: #008FEF"></i>  
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <a href="{{pathFor 'files.new'}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -45,9 +56,20 @@
   <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
     <div class="card clickable">
       <div class="card-body">
-        <h5 class="card-title">{{name}}</h5>
-        <p class="card-text">{{description}}</p>
-        <a href="{{pathFor 'files.new' hash=_id}}" class="card-link">{{__ "files.templates.useThis"}}</a>
+        <div class="row">
+          <div class="col-10">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{description}}</p>
+          </div>
+          <div class="col-2">
+            <i class="{{iconClass}} file-template-icon" style="color: {{iconColor}}"></i>  
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <a href="{{pathFor 'files.new' hash=_id}}" class="card-link">{{__ "files.templates.useThis"}}</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

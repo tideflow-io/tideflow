@@ -2,5 +2,7 @@
   "name": "Get HTML",
   "description": "How to get the page HTML",
   "fileName": "html.yml",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fa fa-spider",
+  "iconColor": "#627F89"
 }

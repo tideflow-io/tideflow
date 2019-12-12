@@ -2,5 +2,7 @@
   "name": "AWS S3 Build & Publish",
   "description": "Publish site to S3 & CF",
   "fileName": "s3buildpublish.sh",
-  "type": "text"
+  "type": "text",
+  "iconClass": "fa fa-save",
+  "iconColor": "#3498DB"
 }
