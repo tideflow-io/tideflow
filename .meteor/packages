@@ -38,7 +38,6 @@ meteortesting:mocha
 matb33:collection-hooks
 meteorhacks:aggregate
 alanning:roles
-erasaur:meteor-lodash
 http@1.4.2
 ostrio:cookies
 msavin:mongol
