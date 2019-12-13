@@ -34,6 +34,7 @@ AutoForm.addHooks(['updateFlowForm'], {
       jsPlumb.getConnections().map((connection, index) => {
         const source = $(`#${connection.sourceId}`)
         const target = $(`#${connection.targetId}`)
+
         const fromTrigger = source.attr('data-step') === 'trigger'
         const targetIndex = Number(target.attr('data-step'))
         const sourceIndex = Number(source.attr('data-step'))
@@ -47,7 +48,7 @@ AutoForm.addHooks(['updateFlowForm'], {
           doc.steps[realSource].outputs.push({stepIndex:realTarget})
         }
       })
-      
+
       return doc
     }
   },

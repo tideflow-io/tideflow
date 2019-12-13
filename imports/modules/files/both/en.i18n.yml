@@ -1,7 +1,7 @@
 _namespace: files
 index.title: Files
 index.subtitle: Connect and collect files into your processes
-index.createNew: New file
+index.createNew: New file...
 index.emptyListDescription: There are no files
 
 index.list.download: Download

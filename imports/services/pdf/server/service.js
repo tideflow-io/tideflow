@@ -58,7 +58,7 @@ const service = {
             result: {
               type: 'file',
               data: {
-                fileName: `lol-${execution._id}.pdf`,
+                fileName: `${execution._id}.pdf`,
                 data: Meteor.wrapAsync(cb => generatePdf(string, fileData.data, cb))()
               }
             },
