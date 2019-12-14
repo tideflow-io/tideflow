@@ -1,0 +1,11 @@
+version: 1
+jobs:
+  main:
+    steps:
+      - goto: 
+          url: http://example.com
+          authentication:
+            type: basic
+            username: my_user
+            password: my_password
+      - html

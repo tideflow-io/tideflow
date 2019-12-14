@@ -1,0 +1,8 @@
+{
+  "name": "Basic HTTP authentication",
+  "description": "Perform basic authentication",
+  "fileName": "basicauth.yml",
+  "type": "text",
+  "iconClass": "fa fa-spider",
+  "iconColor": "#627F89"
+}

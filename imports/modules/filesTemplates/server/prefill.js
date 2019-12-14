@@ -31,7 +31,8 @@ const run = async () => {
         'prefill/webparsy/form.json',
         'prefill/webparsy/html.json',
         'prefill/webparsy/many.json',
-        'prefill/webparsy/transform.json'
+        'prefill/webparsy/transform.json',
+        'prefill/webparsy/basicauth.json'
       ]
     },
     {
