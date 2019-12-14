@@ -1,0 +1,11 @@
+version: 1
+jobs:
+  main:
+    steps:
+      - goto: https://google.com/
+      - form:
+          selector: \"#tsf\"
+          submit: true
+          fill:
+            - selector: '[name=\"q\"]'
+              value: test

@@ -1,0 +1,8 @@
+{
+  "name": "Get HTML",
+  "description": "How to get the page HTML",
+  "fileName": "html.yml",
+  "type": "text",
+  "iconClass": "fab fa-chrome",
+  "iconColor": "#1E6DA5"
+}

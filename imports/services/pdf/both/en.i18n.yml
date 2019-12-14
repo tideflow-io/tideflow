@@ -5,3 +5,4 @@ event.create-from-html.file.selectOne: Select a template
 events.create-from-html.title: Create from HTML
 events.create-from-html.viewer.title: Create from HTML
 log.create-from-html.created: Files created
+log.create-from-html.retrieveFailed: Failed to load HTML template

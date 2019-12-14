@@ -1,7 +1,7 @@
 _namespace: files
 index.title: Files
 index.subtitle: Connect and collect files into your processes
-index.createNew: New file
+index.createNew: New file...
 index.emptyListDescription: There are no files
 
 index.list.download: Download
@@ -19,3 +19,13 @@ delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover it.
 
 download.error: Error downloading file
+
+templates.title: Templates
+templates.subtitle: Select a template to get started
+
+templates.useThis: Use this template
+templates.allTemplates: All templates
+
+templates.empty.title: Empty file
+templates.empty.description: Start from a blank template
+templates.empty.start: Start now

@@ -50,7 +50,7 @@ Router.route('/download', function () {
     const { fileName, data } = executionLog.stepResult.data
     res.setHeader('Content-Type', 'application/octet-stream')
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`)
-    res.end(new Buffer(data))
+    res.end(data)
     return
   }
 

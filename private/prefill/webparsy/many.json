@@ -1,0 +1,8 @@
+{
+  "name": "Listing elements",
+  "description": "Get a list of elements",
+  "fileName": "many.yml",
+  "type": "text",
+  "iconClass": "fab fa-chrome",
+  "iconColor": "#1E6DA5"
+}

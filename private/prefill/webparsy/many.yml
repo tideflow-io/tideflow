@@ -1,0 +1,25 @@
+version: 1
+jobs:
+  main:
+    steps:
+      - goto: https://github.com/marketplace?category=code-quality
+      - many: 
+          as: github_tools
+          selector: main .col-lg-9.mt-1.mb-4.float-lg-right a.col-md-6.mb-4.d-flex.no-underline
+          element:
+            - property:
+                selector: a
+                type: string
+                property: href
+                as: url
+                transform: absoluteUrl
+            - text:
+                selector: h3.h4
+                type: string
+                transform: trim
+                as: name
+            - text:
+                selector: p
+                type: string
+                transform: trim
+                as: description

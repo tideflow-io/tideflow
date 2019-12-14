@@ -60,6 +60,12 @@ import '/imports/modules/dashboard/server'
 import '/imports/modules/files/both'
 import '/imports/modules/files/server'
 
+import '/imports/modules/filesTemplates/both'
+import '/imports/modules/filesTemplates/server'
+
+import '/imports/modules/filesTemplatesCategories/both'
+import '/imports/modules/filesTemplatesCategories/server'
+
 import '/imports/modules/executionslogs/both'
 import '/imports/modules/executionslogs/server'
 

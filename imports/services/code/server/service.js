@@ -1,6 +1,5 @@
 import { servicesAvailable, processableResults } from '/imports/services/_root/server'
 
-const _ = require('lodash')
 const nodesfc = require('nodesfc')
 const os = require('os')
 const path = require('path')

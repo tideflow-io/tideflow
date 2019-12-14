@@ -1,0 +1,80 @@
+<template name="files.templates">
+  <div class="container-fluid" style="">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header mb-4">
+          <h2>
+            {{__ "files.templates.title"}}
+          </h2>
+          <p class="lead">{{__ "files.templates.subtitle"}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-md-4 col-sm-12 mb-4">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a href="#" class="nav-link clear-filter {{#if sessEq 'fileTemplatesCategoryFilter' null}}active{{/if}}" aria-selected="{{#if isActive}}true{{/if}}">{{__ "files.templates.allTemplates"}}</a>
+          {{#each categories}}
+            {{> filesTemplatesCategoryFilter}}
+          {{/each}}
+        </div>
+      </div>
+      <div class="col-lg-10 col-md-8 col-sm-12">
+        <div class="d-flex flex-items-stretch ml-n2 mr-n2 mb-2 flex-wrap">
+          {{#if sessEq 'fileTemplatesCategoryFilter' null}}
+            <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
+              <div class="card clickable new-file-empty">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-10">
+                      <h5 class="card-title">{{__ "files.templates.empty.title"}}</h5>
+                      <p class="card-text">{{__ "files.templates.empty.description"}}</p>
+                    </div>
+                    <div class="col-2">
+                      <i class="far fa-file file-template-icon" style="color: #008FEF"></i>  
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <a href="{{pathFor 'files.new'}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {{/if}}
+          {{#each templates}}
+            {{> filesTemplatesCard}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="filesTemplatesCard">
+  <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
+    <div class="card clickable">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-10">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{description}}</p>
+          </div>
+          <div class="col-2">
+            <i class="{{iconClass}} file-template-icon" style="color: {{iconColor}}"></i>  
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <a href="{{pathFor 'files.new' hash=_id}}" class="card-link">{{__ "files.templates.useThis"}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="filesTemplatesCategoryFilter">
+  <a href="#" class="nav-link {{#if isActive}}active{{/if}}" aria-selected="{{#if isActive}}true{{/if}}">{{name}}</a>
+</template>

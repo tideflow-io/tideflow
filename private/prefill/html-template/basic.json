@@ -1,0 +1,8 @@
+{
+  "name": "Basic",
+  "description": "Basic HTML structure",
+  "fileName": "basic.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}

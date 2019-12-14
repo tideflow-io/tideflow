@@ -4,13 +4,20 @@ import { Accounts } from 'meteor/accounts-base'
 
 import lib from './lib'
 
+const downloadFile = (_id, authenticatedUser, v, res) => {
+  const fileVersion = lib.getOneVersion({ _id, user: authenticatedUser._id }, v)
+  let downloadStream = lib.downloadStream(fileVersion.gfsId)
+  downloadStream.on('error', err => { throw err })
+  downloadStream.pipe(res)
+}
+
 Router.route('/file', function () {
   const req = this.request
   const res = this.response
 
   // Validate query parameters
 
-  const { _id, v } = req.query
+  const { type, _id, v } = req.query
 
   if (!_id) {
     res.writeHead(404)
@@ -33,10 +40,8 @@ Router.route('/file', function () {
   }
 
   try {
-    const fileVersion = lib.getOneVersion({ _id, user: authenticatedUser._id }, v)
-    let downloadStream = lib.downloadStream(fileVersion.gfsId)
-    downloadStream.on('error', err => { throw err })
-    downloadStream.pipe(res)
+    // if (type === 'fileTemplate') return downloadTemplate(_id, authenticatedUser, res)
+    downloadFile(_id, authenticatedUser, v, res)
   }
   catch (ex) {
     res.writeHead(404)
