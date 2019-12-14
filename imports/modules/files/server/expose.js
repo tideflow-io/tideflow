@@ -2,8 +2,6 @@ import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { Accounts } from 'meteor/accounts-base'
 
-import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
-
 import lib from './lib'
 
 const downloadFile = (_id, authenticatedUser, v, res) => {
