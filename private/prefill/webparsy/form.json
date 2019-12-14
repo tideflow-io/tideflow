@@ -3,6 +3,6 @@
   "description": "Fill and submit an online form",
   "fileName": "form.yml",
   "type": "text",
-  "iconClass": "fa fa-spider",
-  "iconColor": "#627F89"
+  "iconClass": "fab fa-chrome",
+  "iconColor": "#1E6DA5"
 }

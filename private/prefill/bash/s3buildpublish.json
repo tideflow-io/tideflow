@@ -3,6 +3,6 @@
   "description": "Publish site to S3 & CF",
   "fileName": "s3buildpublish.sh",
   "type": "text",
-  "iconClass": "fa fa-save",
-  "iconColor": "#3498DB"
+  "iconClass": "fab fa-aws",
+  "iconColor": "#F8981D"
 }
