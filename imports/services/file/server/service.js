@@ -105,11 +105,12 @@ const service = {
 
         previousFiles.map(file => {
           const fileName = slugify(`${execution._id.substring(0, 3)}-${file.data.fileName}`).toLowerCase()
+          //require('fs').writeFileSync(`/Users/joseconstela/Desktop/${fileName}`, file.data.data)
           fileNames.push(fileName)
           return filesLib.create({
             user: user._id,
             name: fileName
-          }, new Buffer(file.data.data))
+          }, file.data.data)
         })
 
         cb(null, {
