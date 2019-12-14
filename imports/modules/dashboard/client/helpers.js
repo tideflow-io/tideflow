@@ -12,5 +12,8 @@ Template.dashboard.helpers({
   },
   'executionsLoaded': function () {
     return Template.instance().executionsLoaded.get()
+  },
+  'executionsTime': function() {
+    return Template.instance().executionsTime.get()
   }
 })

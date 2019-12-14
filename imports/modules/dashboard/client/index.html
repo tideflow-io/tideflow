@@ -21,15 +21,15 @@
           </div>
           <div class="col-md-6">
             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-              <label class="btn btn-secondary active" id="execution-filter-month">
+              <label class="btn btn-secondary {{#if isEq executionsTime 'lastMonth'}}active{{/if}}" id="execution-filter-month">
                 <input type="radio" name="options" value="lastMonth" autocomplete="off">
                 {{__ "dashboard.executions.filters.lastMonth"}}
               </label>
-              <label class="btn btn-secondary" id="execution-filter-week">
+              <label class="btn btn-secondary {{#if isEq executionsTime 'lastWeek'}}active{{/if}}" id="execution-filter-week">
                 <input type="radio" name="options" value="lastWeek" autocomplete="off">
                 {{__ "dashboard.executions.filters.lastWeek"}}
               </label>
-              <label class="btn btn-secondary" id="execution-filter-day">
+              <label class="btn btn-secondary {{#if isEq executionsTime 'last24Hours'}}active{{/if}}" id="execution-filter-day">
                 <input type="radio" name="options" value="last24Hours" autocomplete="off" checked>
                 {{__ "dashboard.executions.filters.last24Hours"}}
               </label>
