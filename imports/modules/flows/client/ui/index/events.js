@@ -1,7 +1,6 @@
+import { Router } from 'meteor/iron:router'
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
-
-import { Flows } from '/imports/modules/flows/both/collection.js'
 
 Template['flows.index'].events({
   'click .flow-editor-link': (event) => {

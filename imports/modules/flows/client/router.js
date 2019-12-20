@@ -104,9 +104,8 @@ Router.route('/flows/:_id', function () {
   name: 'flows.one',
   parent: 'flows.index',
   title: function() {
-    try {
-      return this.data().flow.title
-    } catch (ex) {}
+    const data = this.data()
+    return data && data.flow ? data.flow.title : null
   }
 })
 

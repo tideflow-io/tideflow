@@ -1,3 +1,4 @@
+import { Router } from 'meteor/iron:router'
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
@@ -64,4 +65,3 @@ Template.flowOneExecutionSmallCardsCardHorizontal.events({
     })
   }
 })
-

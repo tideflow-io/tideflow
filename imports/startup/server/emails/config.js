@@ -15,10 +15,10 @@ Accounts.emailTemplates.siteName = siteName
 Accounts.emailTemplates.from = `${siteName} <no-reply@service.tideflow.io>`
 
 Accounts.emailTemplates.resetPassword = {
-  subject(user) {
+  subject(_user) {
     return 'Reset your password'
   },
-  text(user, url) {
+  text(_user, url) {
     return 'To reset your password, simply click the link below:\n\n'
     + url
   },
@@ -46,7 +46,7 @@ Accounts.emailTemplates.verifyEmail = {
   subject() {
     return 'Verify your email'
   },
-  text(user, url) {
+  text(_user, url) {
     return 'To verify yuor email address, simply click the link below:\n\n' + url
   },
   html(user, url) {
