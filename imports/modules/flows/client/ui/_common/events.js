@@ -140,7 +140,7 @@ const createConnection = (from, to) => {
  * @param {object} flow Flow's doc - as from MongoDB
  */
 const setJsPlumb = (flow) => {
-  
+
   jsPlumb.ready(function() {
     jsPlumb.setContainer($('#flow-editor'))
 
@@ -250,9 +250,9 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-triggerEventSelected', '')
   Session.set('fe-stepSelected', '')
   Session.set('fe-editMode', '')
+  let initialized = false
 
   instance.autorun(function () {
-
     // The URL doesn't contains a flow _id, therefore, the user is viewing
     // the flow's editor to create a brand new flow
     if (!Router.current().params._id) {
@@ -266,8 +266,11 @@ Template.flowEditor.onRendered(function() {
       _id: Router.current().params._id
     })
 
+
     // Whenever Meteor has subscriber to flows.single...
     if (subscription.ready()) {
+      if (initialized) return;
+      initialized = true
 
       // Grab the flow we want to work with
       let flow = Flows.findOne({
@@ -308,6 +311,7 @@ Template.flowEditor.onRendered(function() {
 
         window.setTimeout(() => {
           setJsPlumb(flow)
+          console.log('init')
           instance.flowEditorRendered = true
         }, 1000)
       }

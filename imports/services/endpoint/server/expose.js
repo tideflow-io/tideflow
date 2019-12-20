@@ -5,6 +5,8 @@ import { Flows } from '/imports/modules/flows/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 
+Router.onBeforeAction( Iron.Router.bodyParser.urlencoded(), {where: 'server'} );
+
 Router.route('/service/endpoint/:uuid', function () {
   const req = this.request
   const res = this.response
