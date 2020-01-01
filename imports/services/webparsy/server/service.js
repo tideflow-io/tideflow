@@ -1,4 +1,4 @@
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
 
 import filesLib from '/imports/modules/files/server/lib'
 
@@ -53,7 +53,7 @@ const service = {
           return
         }
 
-        const flags = _.chain(executionLogs.map(el => el.stepResult)).filter(['type', 'object']).map('data').reduce((i, m)=> Object.assign(i,m)).value()
+        let flags = _.chain(getResultsTypes(executionLogs, 'data')).reduce((i, m)=> Object.assign(i,m)).value()
 
         try {
           let result = await webparsy.init({string, flags})

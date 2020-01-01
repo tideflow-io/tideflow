@@ -16,12 +16,9 @@ const service = {
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
         
-        let result = buildLinks(lastData).map(element => {
-          return {
-            type: 'link',
-            data: element
-          }
-        })
+        let result = {
+          links: buildLinks(lastData)
+        }
 
         cb(null, {
           result: result,
