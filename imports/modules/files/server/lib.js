@@ -24,7 +24,10 @@ const getOneVersion = (query, versionIndex) => {
   if (!file) throw 'not-found'
   const version = file.versions[versionIndex || file.versions.length - 1]
   if (!version) throw 'not-found'
-  return version
+  return {
+    version,
+    file
+  }
 }
 module.exports.getOneVersion = getOneVersion
 
@@ -71,7 +74,7 @@ const create = async (doc, content) => {
 
   // Create stream with buffer to pipe to uploadStream
   var s = new Readable()
-  s.push(content)
+  s.push(Buffer.from(content))
   s.push(null) // Push null to end stream
   s.pipe(uploadStream)
   
