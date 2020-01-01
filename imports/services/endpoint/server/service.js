@@ -39,7 +39,7 @@ const service = {
       humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = executionLogs[executionLogs.length - 1].stepResult
+        const lastData = executionLogs[0].stepResult
 
         cb(null, {
           result: lastData,

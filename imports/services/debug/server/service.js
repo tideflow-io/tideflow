@@ -4,7 +4,6 @@ const executionCb = (cb, executionLogs, name) => {
   console.log(JSON.stringify({executionLogs, name}, ' ', 2))
   cb(null, {
     result: {
-      type: 'object',
       data: {
         name,
         random: Math.random()

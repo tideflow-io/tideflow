@@ -1,9 +1,0 @@
-_namespace: s-code
-name: Run code snippets
-description: Run any source code in TF's server
-events.run.code: Code to run
-events.run.name: Run code snippet
-events.run.title: Run code snippet
-log.run.title: Run code snippet
-event.build.language.selectOne: Select the language
-event.build.language.nodejs: NodeJS via nodesfc

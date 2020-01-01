@@ -51,7 +51,7 @@ Template['files.one.edit'].onRendered(function() {
   const { _id, type, userCreated, name } = this.data.file
   
   if (userCreated || aceSupportedByType(type)) {
-    HTTP.call('GET', `/file?_id=${_id}`, {
+    HTTP.call('GET', `/file?_id=${_id}&force=true`, {
       headers: {
         t: localStorage.getItem('Meteor.loginToken'),
         u: Meteor.userId()

@@ -1,6 +1,6 @@
 import * as commonEmailHelper from '/imports/helpers/both/emails'
 import * as emailHelper from '/imports/helpers/server/emails'
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
 
 const service = {
   name: 'email-outgoing',
@@ -26,15 +26,14 @@ const service = {
       const fullName = user.profile ? user.profile.firstName || to : to
 
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = executionLogs.map(el => el.stepResult)
 
-      let files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
-      let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
-      let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
+      let files = attachPrevious ? getResultsTypes(executionLogs, 'files') : []
+      let links = attachPrevious ? getResultsTypes(executionLogs, 'links') : []
+      let objects = attachPrevious ? getResultsTypes(executionLogs, 'data') : []
 
       objects = objects.map(o => {
         return {
-          content: JSON.stringify(o.data, ' ', 2)
+          content: JSON.stringify(o, ' ', 2)
         }
       })
 
@@ -52,8 +51,8 @@ const service = {
 
       data.attachments = files.map(file => {
         return {
-          content: new Buffer(file.data.data),
-          filename: file.data.fileName
+          content: Buffer.from(file.data),
+          filename: file.fileName
         }
       })
 
@@ -83,9 +82,9 @@ const service = {
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
 
-      let files = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'file') : []
-      let links = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'link') : []
-      let objects = attachPrevious ? (previousStepsData || []).filter(data => data.type === 'object') : []
+      let files = attachPrevious ? getResultsTypes(executionLogs, 'files') : []
+      let links = attachPrevious ? getResultsTypes(executionLogs, 'links') : []
+      let objects = attachPrevious ? getResultsTypes(executionLogs, 'data') : []
 
       objects = objects.map(o => {
         return {
@@ -109,8 +108,8 @@ const service = {
 
       data.attachments = files.map(file => {
         return {
-          content: new Buffer(file.data.data),
-          filename: file.data.fileName
+          content: Buffer.from(file.data),
+          filename: file.fileName
         }
       })
 

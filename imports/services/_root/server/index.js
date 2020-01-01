@@ -194,25 +194,52 @@ const processableResults = (executionLogs, external) => {
   return (executionLogs || []).map(el => {
     let { _id, execution, flow, step, stepIndex, user, type, event, createdAt, updatedAt, stepResult } = el
 
-    if (!external && stepResult.type === 'file') { // Store files locally
-      const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
-      fs.writeFileSync(tmpFileName, stepResult.data.data)
-      stepResult.path = tmpFileName
-      stepResult.fileName = stepResult.data.fileName
-      stepResult.data = 'truncated'
+    if (!external && stepResult.files) { // Store files locally
+      stepResult.files.map(file => {
+        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
+        fs.writeFileSync(tmpFileName, stepResult.data.data)
+        file.path = tmpFileName
+        delete file.data
+      })
     }
-    else if (external && stepResult.type === 'file') {
-      let token = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
-        data: { _id, execution, flow, step, user, fileName: stepResult.data.fileName }
-      }, jwtSecret)
-
-      stepResult.data.url = `${process.env.ROOT_URL}/download?type=actionFile&token=${token}`
-      delete stepResult.data.data
+    else if (external && stepResult.files) {
+      stepResult.files.map(file => {
+        let token = jwt.sign({
+          exp: Math.floor(Date.now() / 1000) + (60 * 60),
+          data: { _id, execution, flow, step, user, fileName: file.fileName, fieldName: file.fieldName }
+        }, jwtSecret)
+  
+        file.url = `${process.env.ROOT_URL}download?type=actionFile&token=${token}`
+        delete file.data
+      })
     }
-    
+    console.log({ _id, stepIndex, type, event, createdAt, updatedAt, stepResult })
     return { _id, stepIndex, type, event, createdAt, updatedAt, stepResult }
   }) // external ? 'external' : 'internal'
 }
 
 module.exports.processableResults = processableResults
+
+/**
+ * returns an array of all 'type' results
+ * @param {array} executionLogs Original list of step results
+ * @param {string} type Type of results to get
+ */
+const getResultsTypes = (executionLogs, type) => {
+  let r = []
+
+  executionLogs.map(executionLog => {
+      if (executionLog.stepResult && executionLog.stepResult[type]) {
+        let el = executionLog.stepResult[type]
+        let canProcess = false
+        if (Array.isArray(el) && el.length) canProcess = true
+        if (Object.keys(el).length) canProcess = true
+
+        if (canProcess) r = r.concat(el)
+      }
+  })
+
+  return r
+}
+
+module.exports.getResultsTypes = getResultsTypes

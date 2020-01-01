@@ -36,21 +36,23 @@ Router.route('/download', function () {
     //   "flow": "ZaBBLqoWJZ9Tzo8C7",
     //   "step": "o78QJesYWaCMqTr43",
     //   "user": "fc74opoSJuFYSQNSb",
-    //   "fileName": "text.pdf"
+    //   "fileName": "text.pdf",
+    //   "fieldName": "myfile"
     // }
-    const { _id, execution, flow, step, user } = tokenData
+    const { _id, execution, flow, step, user, fieldName } = tokenData
     const executionLog = ExecutionsLogs.findOne({ _id, execution, flow, step, user })
-    
+
     if (!executionLog) {
       res.writeHead(404)
       res.end()
       return
     }
 
-    const { fileName, data } = executionLog.stepResult.data
+    const { fileName, data } = executionLog.stepResult.files.find(f => f.fieldName === fieldName)
+
     res.setHeader('Content-Type', 'application/octet-stream')
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`)
-    res.end(data)
+    res.end(Buffer.from(data))
     return
   }
 

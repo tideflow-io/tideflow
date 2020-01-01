@@ -53,14 +53,19 @@ const service = {
         try {
           const file = await filesLib.getOne({ _id: currentStep.config.file })
           const string = await filesLib.getOneAsString({ _id: file._id })
-
+          const fileBuffer = Meteor.wrapAsync(cb => generatePdf(string, fileData.data, cb))()
           cb(null, {
             result: {
-              type: 'file',
-              data: {
-                fileName: `${execution._id}.pdf`,
-                data: Meteor.wrapAsync(cb => generatePdf(string, fileData.data, cb))()
-              }
+              data: {},
+              files: [
+                {
+                  mimetype: 'application/pdf',
+                  size: fileBuffer.length,
+                  fieldName: `${execution._id}.pdf`,
+                  fileName: `${execution._id}.pdf`,
+                  data: fileBuffer
+                }
+              ]
             },
             next: true,
             msgs: [
@@ -73,6 +78,7 @@ const service = {
           })
         }
         catch (ex) {
+          console.error({ex})
           cb(null, {
             result: {},
             next: true,

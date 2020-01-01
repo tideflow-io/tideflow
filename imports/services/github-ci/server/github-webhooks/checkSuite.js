@@ -33,7 +33,6 @@ const requested = (service, body) => {
       user,
       null,
       {
-        type: 'object',
         data: body
       },
       [flow]

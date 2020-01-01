@@ -1,10 +1,7 @@
-// ***************************************************************
-// Bundle for server modules
-// ***************************************************************
-
 // Config
 import './emails'
 import './accounts'
+import './router'
 
 import '/imports/download/both'
 import '/imports/download/server'

@@ -79,7 +79,6 @@ Router.route('/ghwebhook/:uuid', function () {
   // Attach the request - as-is - as "objects"
   data = req.body.map(element => {
     return {
-      type: 'object',
       data: element
     }
   })

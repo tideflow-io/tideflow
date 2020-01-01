@@ -1,5 +1,5 @@
 import filesLib from '/imports/modules/files/server/lib'
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
 const slugify = require('slugify')
 
 const service = {
@@ -17,10 +17,10 @@ const service = {
       name: 'create-input-log-file',
       visibe: true,
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        let previousStepsData = executionLogs.map(el => el.stepResult)
-
-        previousStepsData.map(data => {
-          if (data.type === 'file') data.data.data = '...'
+        let previousSteps = executionLogs.map(el => el.stepResult)
+        
+        previousSteps.map(previousStep => {
+          if (previousStep.files) previousStep.files.map(f => f.data = '...')
         })
 
         const fileName = slugify(`${execution.fullFlow.title} ${execution._id.substring(0, 3)}`).toLowerCase()
@@ -28,14 +28,14 @@ const service = {
         filesLib.create({
           user: user._id,
           name: `${fileName}.json`
-        }, JSON.stringify(previousStepsData, ' ', 2))
+        }, JSON.stringify(previousSteps, ' ', 2))
 
         cb(null, {
           result: {
             type: 'file',
             data: {
               fileName: `${fileName}.json`,
-              data: Buffer.from(JSON.stringify(previousStepsData, ' ', 2), 'utf-8')
+              data: Buffer.from(JSON.stringify(previousSteps, ' ', 2), 'utf-8')
             }
           },
           next: true,
@@ -63,11 +63,12 @@ const service = {
 
           cb(null, {
             result: {
-              type: 'file',
-              data: {
-                fileName: file.name,
-                data: Buffer.from(string, 'utf-8')
-              }
+              files: [
+                {
+                  fileName: file.name,
+                  data: Buffer.from(string, 'utf-8')
+                }
+              ]
             },
             next: true,
             error: false,
@@ -99,23 +100,22 @@ const service = {
       name: 'store-previous-files',
       visibe: true,
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        let previousFiles = executionLogs.map(el => el.stepResult).filter(el => el.type === 'file')
+        let previousFiles = getResultsTypes(executionLogs, 'files')
         
         let fileNames = []
 
         previousFiles.map(file => {
-          const fileName = slugify(`${execution._id.substring(0, 3)}-${file.data.fileName}`).toLowerCase()
+          const fileName = slugify(`${execution._id.substring(0, 3)}-${file.fileName}`).toLowerCase()
           //require('fs').writeFileSync(`/Users/joseconstela/Desktop/${fileName}`, file.data.data)
           fileNames.push(fileName)
           return filesLib.create({
             user: user._id,
             name: fileName
-          }, file.data.data)
+          }, file.data)
         })
 
         cb(null, {
           result: {
-            type: 'object',
             data: {
               fileNames
             }

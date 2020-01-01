@@ -42,17 +42,17 @@ const service = {
       }
     },
 
-    // {
-    //   name: 'store-previous-files',
-    //   humanName: 's-file.events.store-previous-files.title',
-    //   viewerTitle: 's-file.events.store-previous-files.viewer.title',
-    //   inputable: false,
-    //   stepable: true,
-    //   callback: () => { return {} },
-    //   templates: {
-    //     // eventConfig: 'servicesfileReadfileConfig'
-    //   }
-    // }
+    {
+      name: 'store-previous-files',
+      humanName: 's-file.events.store-previous-files.title',
+      viewerTitle: 's-file.events.store-previous-files.viewer.title',
+      inputable: false,
+      stepable: true,
+      callback: () => { return {} },
+      templates: {
+        // eventConfig: 'servicesfileReadfileConfig'
+      }
+    }
 
     
   ]

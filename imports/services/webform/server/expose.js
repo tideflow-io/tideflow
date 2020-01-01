@@ -77,7 +77,6 @@ Router.route('/webform/:uuid/submit', function () {
       'trigger.event': 'submitted'
     },
     {
-      type: 'object',
       data: req.body
     }
   )

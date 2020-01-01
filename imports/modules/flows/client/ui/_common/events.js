@@ -266,7 +266,6 @@ Template.flowEditor.onRendered(function() {
       _id: Router.current().params._id
     })
 
-
     // Whenever Meteor has subscriber to flows.single...
     if (subscription.ready()) {
       if (initialized) return;

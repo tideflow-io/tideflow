@@ -59,7 +59,6 @@ const service = {
           let result = await webparsy.init({string, flags})
           cb(null, {
             result: {
-              type: 'object',
               data: result
             },
             next: true,

@@ -6,25 +6,24 @@ import { sAlert } from 'meteor/juliancwirko:s-alert'
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
 
-import filesLib from '../../lib'
-
 Template.filesIndexElement.events({
   'click .download-file': (event, template) => {
     event.preventDefault()
     event.stopPropagation()
-    
+
     HTTP.call('GET', `/file?_id=${template.data._id}`, {
       headers: {
         t: localStorage.getItem('Meteor.loginToken'),
         u: Meteor.userId()
-      }
+      },
+      json: true
     }, (error, result) => {
       if (error) {
-        console.error(error)
         sAlert.error(i18n.__('files.download.error'))
         return
       }
-      filesLib.forceDownload(template.data.name, result.content)
+      const response = JSON.parse(result.content)
+      window.open(response.url, '_self');
     })
   },
   'click .card': (event, template) => {
