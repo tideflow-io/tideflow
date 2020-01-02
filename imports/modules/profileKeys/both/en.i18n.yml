@@ -1,0 +1,17 @@
+_namespace: profileKeys
+title: Keys
+description: This is a list of keys associated with your account. Remove any keys that you do not recognize.
+add: New key
+remove: Delete
+delete.title: Are you sure?
+delete.text: This operation is permanent
+delete.error: Error removing the key
+delete.success: Key deleted
+
+create.button: Create new key
+create.success: Key created
+create.copyNow: Copy your key now. It will not be displayed again for security reasons.
+
+table.key: Key
+table.creationDate: Added on
+table.options: Options

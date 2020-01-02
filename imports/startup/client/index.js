@@ -108,6 +108,9 @@ import '/imports/modules/profilePassword/client'
 import '/imports/modules/profileNotifications/both'
 import '/imports/modules/profileNotifications/client'
 
+import '/imports/modules/profileKeys/both'
+import '/imports/modules/profileKeys/client'
+
 import '/imports/modules/management/both'
 import '/imports/modules/management/client'
 

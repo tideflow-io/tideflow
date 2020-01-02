@@ -19,6 +19,7 @@ Template.registerHelper('sessEq', (name, val) => {
   return Session.get(name) ? Session.get(name) === val : false
 })
 
+Template.registerHelper('extendedDate', (date) => moment(date).format('D MMMM YYYY'))
 Template.registerHelper('simpleDate', (date) => moment(date).format('D MMMM'))
 Template.registerHelper('executionHappened', (date) => {
   return moment(date).format('YYYY.MM.DD HH:mm:ss')

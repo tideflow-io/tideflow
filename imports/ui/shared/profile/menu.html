@@ -15,5 +15,10 @@
         {{__ "profileShared.notifications"}}
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'membership.profile.keys'}}active{{/if}}" href="{{pathFor 'membership.profile.keys'}}">
+        {{__ "profileShared.keys"}}
+      </a>
+    </li>
   </ul>
 </template>

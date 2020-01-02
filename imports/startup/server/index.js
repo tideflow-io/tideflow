@@ -105,6 +105,9 @@ import '/imports/modules/profilePassword/server'
 import '/imports/modules/profileNotifications/both'
 import '/imports/modules/profileNotifications/server'
 
+import '/imports/modules/profileKeys/both'
+import '/imports/modules/profileKeys/server'
+
 import '/imports/modules/management/both'
 import '/imports/modules/management/server'
 
