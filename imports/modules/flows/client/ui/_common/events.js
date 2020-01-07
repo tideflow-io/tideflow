@@ -310,7 +310,6 @@ Template.flowEditor.onRendered(function() {
 
         window.setTimeout(() => {
           setJsPlumb(flow)
-          console.log('init')
           instance.flowEditorRendered = true
         }, 1000)
       }

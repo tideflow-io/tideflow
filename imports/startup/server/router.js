@@ -1,17 +1,17 @@
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
-const os = require('os')
-const path = require('path')
-const fs = require('fs')
 const Busboy = require('busboy')
 
 if (Meteor.isServer) {
 
   Router.onBeforeAction((req, res, next) => {
     var filenames = []
-    
     if (req.method === 'POST') {
+      if (req.headers['content-type'].includes('application/json')) {
+        next();
+        return;
+      }
       var busboy = new Busboy({ headers: req.headers })
       busboy.on('file', (fieldName, file, fileName, encoding, mimetype) => {
         let buffers = []
