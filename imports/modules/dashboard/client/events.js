@@ -7,7 +7,7 @@ Template.dashboard.onCreated(function() {
   let self = this
 
   this.executionsTime = new ReactiveVar('lastMonth')
-  this.executions = new ReactiveVar(null)
+  this.executions = new ReactiveVar([])
   this.executionsLoaded = new ReactiveVar(false)
 
   this.autorun(function () {
@@ -42,7 +42,7 @@ Template.darhboardExecutionFlow.events({
   'click .card': (event, template) => {
     event.stopPropagation()
     Router.go('flows.one', {
-      _id: template.data.flow,
+      _id: template.data._id,
     })
   }
 })

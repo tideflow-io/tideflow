@@ -1,0 +1,30 @@
+.flow-one-execution-history:hover h4 span {
+  display: inline-table;
+}
+.flow-one-execution-history h4 span {
+  display: none;
+}
+.flow-one-execution-history .number-title {
+  font-size: .9rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+}
+.flow-one-execution-history .number {
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: block;
+  line-height: 1;
+}
+
+.flow-one-execution-history .number-green {
+  color: #4ECA8A;
+}
+
+.flow-one-execution-history .number-red {
+  color: #E56C88;
+}
+
+.flow-one-execution-history .number-yellow {
+  color: #F9D071;
+}

@@ -129,8 +129,6 @@ const service = {
           return
         }
         
-        console.log(JSON.stringify(processableResults(executionLogs, true), ' ', 2))
-
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
           execution: execution._id,

@@ -39,8 +39,8 @@ one.disabled: Disabled
 one.edit: Edit
 one.remove: Delete
 one.allExecutions: Browse all executions
-one.recentExecutionsEmpty: This workflow hasn't been executed.
-one.recentExecutions: Most recent executions
+one.executions.empty: This workflow hasn't been executed.
+one.executions.title: Executions
 status.running: Running...
 status.finished: Finished
 status.failed: Failed

@@ -3,6 +3,27 @@ import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
 import i18n from 'meteor/universe:i18n'
+import { ReactiveVar } from 'meteor/reactive-var'
+
+Template['flows.one'].onCreated(function() {
+  let self = this
+  
+  this.executions = new ReactiveVar([])
+  this.executionsLoaded = new ReactiveVar(false)
+
+  this.autorun(function () {
+    self.executions.set([])
+    Meteor.call('flows.one.executions', {
+      flow: Router.current().params._id
+    }, (error, result) => {
+      if (!error) {
+        self.executions.set(result.length ? result[0] : {result:[]})
+      }
+      self.executionsLoaded.set(true)
+    })
+  })
+
+})
 
 Template['flows.one'].events({
   'click .flow-editor-link': (event) => {
@@ -48,20 +69,10 @@ Template['flows.one'].events({
   }
 })
 
-Template.flowOneExecutionSmallCardsCard.events({
+Template.flowOneExecutionSmallCardsHorizontal.events({
   'click': (event, template) => {
-    Router.go('flows.one.executionDetails', {
-      _id: template.data.flow._id,
-      executionId: template.data.execution._id
-    })
-  }
-})
-
-Template.flowOneExecutionSmallCardsCardHorizontal.events({
-  'click': (event, template) => {
-    Router.go('flows.one.executionDetails', {
-      _id: template.data.flow._id,
-      executionId: template.data.execution._id
+    Router.go('flowsOneExecutions', {
+      _id: template.data.executions._id
     })
   }
 })

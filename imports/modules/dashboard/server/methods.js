@@ -26,19 +26,33 @@ Meteor.methods({
 
     dbQuery.createdAt = { $gt: time }
 
-    options = Object.assign({
-      fileds: {
-        createdAt: 1,
-        service: 1,
-        flow: 1,
-        status: 1
+    var pipeline = [
+      {
+        $match: dbQuery,
       },
-      limit: 10,
-      reactive: false,
-      sort: {
-        createdAt: -1
-      }
-    }, options || {})
-    return Executions.find(dbQuery, options).fetch()
+      {
+        $group: {
+          _id: {flow: '$flow', status: '$status'},
+          count: {$sum:1}
+        }
+      },
+      {
+        $group: {
+          _id: {flow: '$_id.flow'},
+          result: {$push: {status: '$_id.status', count: '$count'}}
+        }
+      },
+      { $replaceRoot: { newRoot: {
+        _id: '$_id.flow',
+        result: '$result'
+      } } }
+    ]
+
+    return Meteor.wrapAsync(cb => {
+      var rawCollection = Executions.rawCollection()
+      rawCollection.aggregate(pipeline, async (error, result) => {
+        return error ? cb(error) : cb(null, await result.toArray())
+      })
+    })()
   }
 })

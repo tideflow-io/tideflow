@@ -1,20 +1,21 @@
 <template name="flows.one">
     <div class="container">
     <div class="row page-header mb-4">
-      <div class="col-10">
+      <div class="col-8">
         <h2>
           {{flow.title}}
         </h2>
       </div>
-      <div class="col-2">
-        <a class="flow-editor-link btn btn-outline-primary float-right" href="{{pathFor 'flows.one.edit' _id=flow._id}}">{{__ "flows.one.edit"}}</a>
+      <div class="col-4 text-right">
+        <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
+        <a class="btn btn-sm btn-primary flow-editor-link" href="{{pathFor 'flows.one.edit' _id=flow._id}}">{{__ "flows.one.edit"}}</a>
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <h4>{{__ "flows.one.recentExecutions"}}</h4>
-        {{> flowOneExecutionSmallCardsHorizontal flow=flow executions=executions}}
+        <h4>{{__ "flows.one.executions.title"}}</h4>
+        {{> flowOneExecutionSmallCardsHorizontal executions=executions}}
       </div>
     </div>
 
@@ -53,7 +54,7 @@
   <div class="card-list">
     {{#if cursorIsEmpty executions}}
       <p class="text-muted">
-        {{__ "flows.one.recentExecutionsEmpty"}}
+        {{__ "flows.one.executions.empty"}}
       </p>
     {{else}}
       {{#each executions}}
@@ -64,46 +65,31 @@
 </template>
 
 <template name="flowOneExecutionSmallCardsHorizontal">
-  <div class="card-list">
-    <div class="row">
-      {{#if cursorIsEmpty executions}}
-        <div class="col-12">
-          <p class="text-muted mb-0">
-            {{__ "flows.one.recentExecutionsEmpty"}}
-          </p>
+  <div class="card clickable flow-one-execution-history">
+    <div class="card-body m-0">
+      <div class="row">
+        <div class="col-4">
+          <span class="number-title">Executions</span>
+          <span class="number">{{flowExecutions executions.result 'total' false}} times</span>
         </div>
-      {{else}}
-        {{#each executions}}
-          <div class="col-1">
-            {{> flowOneExecutionSmallCardsCardHorizontal flow=../flow execution=this}}
-          </div>
-        {{/each}}
         <div class="col-2">
-          <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
+          <span class="number-title">In Progress</span>
+          <span class="number number-yellow">{{flowExecutions executions.result 'started' false}}</span>
         </div>
-      {{/if}}
+        <div class="col-3">
+          <span class="number-title">Success</span>
+          <span class="number number-green">{{flowExecutions executions.result 'finished' true}}%</span>
+        </div>
+        <div class="col-3">
+          <span class="number-title">Failed</span>
+          <span class="number number-red">{{flowExecutions executions.result 'error' true}}%</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<template name="flowOneExecutionSmallCardsCardHorizontal">
-  <div
-    class="btn btn-block btn-sm btn-{{#if isEq execution.status 'started'}}warning{{else if isEq execution.status 'finished'}}success{{else if isEq execution.status 'error'}}danger{{else}}secondary{{/if}}"
-    title="{{execution._id}} {{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">
-    <b>{{execution.id}}</b>
-    {{#if isEq execution.status 'started'}}
-      <i class="fa fa-spinner fa-spin fa-fw"></i>
-      <span>
-        {{__ "flows.status.running"}}
-      </span>
-    {{else}}
-      &nbsp;
-    {{/if}}
-  </div>
-</template>
-
 <template name="flowOneExecutionSmallCardsCard">
-
   <a
     class="clickable"
     href="{{pathFor 'flows.one.executionDetails' _id=flow executionId=_id}}"
@@ -120,6 +106,4 @@
       <i class="fas fa-square text-gray"></i>
     {{/if}}
   </a>
-  
-
 </template>

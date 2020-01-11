@@ -47,6 +47,21 @@ Template.registerHelper('flowDoc', function(_id, property) {
   return r ? property ? r[property] : r : null
 })
 
+Template.registerHelper('flowExecutions', function(results, status, percent) {
+  if (!results) return 0;
+  let total = 0; results.map(r => total += r.count)
+
+  if (status === 'total') {
+    return total
+  }
+
+  let result = results.find(r => r.status === status)
+  if (!percent) return result ? result.count : 0
+
+  if (!result) return 0
+  return +(Math.round(((result.count/total)*100) + 'e+2')  + 'e-2')
+})
+
 Template.registerHelper('flowViewerStepTitle', function() {
   try {
     if (!this.type || !this.event) {

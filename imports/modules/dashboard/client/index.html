@@ -58,23 +58,28 @@
 <template name="darhboardExecutionFlow">
   <div class="card-list card-list-dots">
     <div class="card clickable">
-        <div class="card-header">
-          {{flowDoc flow 'title'}}
+      <div class="card-header pb-0">
+        {{flowDoc _id 'title'}}
+      </div>
+      <div class="card-body m-0">
+        <div class="row">
+          <div class="col-4">
+            <span class="number-title">Executions</span>
+            <span class="number">{{flowExecutions result 'total' false}} times</span>
+          </div>
+          <div class="col-2">
+            <span class="number-title">In Progress</span>
+            <span class="number number-yellow">{{flowExecutions result 'started' false}}</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">Success</span>
+            <span class="number number-green">{{flowExecutions result 'finished' true}}%</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">Failed</span>
+            <span class="number number-red">{{flowExecutions result 'error' true}}%</span>
+          </div>
         </div>
-        <div class="card-body">
-        {{#each list}}
-          <a href="{{pathFor 'flows.one.executionDetails' _id=flow executionId=_id}}" data-toggle="tooltip" data-placement="top" title="{{executionHappened createdAt}} - {{fromNow createdAt}}">
-            {{#if isEq status 'started'}}
-              <i class="fas fa-square text-warning"></i>
-            {{else if isEq status 'finished'}}
-              <i class="fas fa-square text-success"></i>
-            {{else if isEq status 'error'}}
-              <i class="fas fa-square text-danger"></i>
-            {{else}}
-              <i class="fas fa-square text-gray"></i>
-            {{/if}}
-          </a>
-        {{/each}}
       </div>
     </div>
   </div>
