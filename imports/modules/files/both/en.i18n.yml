@@ -17,6 +17,7 @@ edit.submit: Save
 
 delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover it.
+delete.success: File deleted
 
 download.error: Error downloading file
 

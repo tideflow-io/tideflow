@@ -11,6 +11,7 @@ log.create-input-log-file.created: Log file created
 
 events.store-previous-files.title: Store previous files
 events.store-previous-files.viewer.title: Store previous files
+events.create-input-log-file.viewer.title: Create a log file from previous tasks
 log.store-previous-files.created: Previous files stored
 
 log.read-file.retrieveFailed: Failed to retrieve file

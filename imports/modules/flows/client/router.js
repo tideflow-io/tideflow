@@ -81,7 +81,7 @@ Router.route('/flows/:_id', function () {
         sort: {
           createdAt: -1
         },
-        limit: 5
+        limit: 10
       })
     ]
   },

@@ -74,7 +74,7 @@
         </div>
       {{else}}
         {{#each executions}}
-          <div class="col-2">
+          <div class="col-1">
             {{> flowOneExecutionSmallCardsCardHorizontal flow=../flow execution=this}}
           </div>
         {{/each}}
@@ -87,56 +87,39 @@
 </template>
 
 <template name="flowOneExecutionSmallCardsCardHorizontal">
-  <div class="btn btn-block btn-sm btn-{{#if isEq execution.status 'started'}}warning{{else if isEq execution.status 'finished'}}success{{else if isEq execution.status 'error'}}danger{{else}}secondary{{/if}}">
+  <div
+    class="btn btn-block btn-sm btn-{{#if isEq execution.status 'started'}}warning{{else if isEq execution.status 'finished'}}success{{else if isEq execution.status 'error'}}danger{{else}}secondary{{/if}}"
+    title="{{execution._id}} {{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">
     <b>{{execution.id}}</b>
     {{#if isEq execution.status 'started'}}
       <i class="fa fa-spinner fa-spin fa-fw"></i>
       <span>
         {{__ "flows.status.running"}}
       </span>
-    {{else if isEq execution.status 'finished'}}
-      {{fromNow execution.updatedAt}}
     {{else}}
-      {{fromNow execution.createdAt}}
+      &nbsp;
     {{/if}}
   </div>
 </template>
 
 <template name="flowOneExecutionSmallCardsCard">
-  <div class="card large-card clickable">
-    <div class="progress">
-      {{#if isEq execution.status 'started'}}
-        <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-      {{else if isEq execution.status 'finished'}}
-        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-      {{else if isEq execution.status 'error'}}
-        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-      {{else}}
-        <div class="progress-bar bg-gray" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-      {{/if}}
-    </div>
-    <div class="card-body">
-      <p>
-        {{#if isEq execution.status 'error'}}
-          <button type="button" class="btn btn-outline-danger btn-sm">{{substr execution._id 3}}</button>
-        {{else}}
-          <button type="button" class="btn btn-outline-primary btn-sm">{{substr execution._id 3}}</button>
-        {{/if}}
-        &nbsp;
-        {{#if isEq execution.status 'started'}}
-          <i class="fa fa-spinner fa-spin fa-fw"></i>
-          <span>
-            {{__ "flows.status.running"}}
-          </span>
-          <span class="float-right">
-            {{fromNow execution.createdAt}}
-          </span>
-        {{else if isEq execution.status 'finished'}}
-          {{fromNow execution.updatedAt}}
-        {{else}}
-          {{fromNow execution.createdAt}}
-        {{/if}}
-      </p>
-    </div>
-  </div>
+
+  <a
+    class="clickable"
+    href="{{pathFor 'flows.one.executionDetails' _id=flow executionId=_id}}"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="{{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">
+    {{#if isEq execution.status 'started'}}
+      <i class="fas fa-square text-warning"></i>
+    {{else if isEq execution.status 'finished'}}
+      <i class="fas fa-square text-success"></i>
+    {{else if isEq execution.status 'error'}}
+      <i class="fas fa-square text-danger"></i>
+    {{else}}
+      <i class="fas fa-square text-gray"></i>
+    {{/if}}
+  </a>
+  
+
 </template>
