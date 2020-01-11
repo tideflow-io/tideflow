@@ -22,7 +22,7 @@ Router.route('/service/endpoint/:uuid', function () {
     return
   }
 
-  res.end('queued')
+  res.end(JSON.stringify({status: 'queued'}))
 
   let user = Meteor.users.findOne({_id: flow.user}, {
     fields: { services: false }

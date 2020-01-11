@@ -33,7 +33,7 @@ Router.route('/bbwebhook/:uuid', function () {
   }
 
   // Send a response back to the client
-  res.end('queued')
+  res.end(JSON.stringify({status: 'queued'}))
 
   // Grab the user who created the service
   let user = Meteor.users.findOne({_id: service.user}, {

@@ -21,8 +21,6 @@ const reply = (res, data, status) => {
 Router.route('/api/flows', function () {
   const req = this.request
   const res = this.response
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Content-Type', 'application/json');
 
   authenticate(req.headers)
     .then(u => {
@@ -35,13 +33,14 @@ Router.route('/api/flows', function () {
       }
 
       let flows = Flows.find(flowsQuery, {
-        fields: { _id: true, title: true, 'trigger.type': true }
+        fields: { _id: true, title: true, 'trigger.type': true, 'trigger.config': true }
       }).fetch()
 
       reply(res, flows)
     })
     .catch(ex => {
-      reply(res, ex.reason, 409)
+      console.log(ex)
+      reply(res, ex.reason, 314)
     })
 
 }, {where: 'server'})
