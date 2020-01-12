@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor'
+import { moment } from 'meteor/momentjs:moment'
 
 import { Executions } from '/imports/modules/executions/both/collection.js'
 
@@ -14,13 +15,13 @@ Meteor.methods({
 
     switch (query.time) {
     case 'lastMonth':
-      time = new Date(new Date().setDate(new Date().getDate()-31))
+      time = moment().subtract(1, 'month').startOf('month').toDate()
       break
     case 'lastWeek':
-      time = new Date(new Date().setDate(new Date().getDate()-7))
+      time = moment().subtract(6, 'days').toDate()
       break
     case 'last24Hours':
-      time = new Date(new Date().setDate(new Date().getDate()-1))
+      time = moment().subtract(24, 'hours').toDate()
       break
     }
 
