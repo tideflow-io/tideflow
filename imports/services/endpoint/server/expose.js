@@ -29,7 +29,9 @@ Router.route('/service/endpoint/:uuid', function () {
   })
 
   if (!user) {
-    return null
+    res.writeHead(404)
+    res.end()
+    return
   }
 
   let result = {}
