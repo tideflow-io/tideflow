@@ -537,10 +537,10 @@ jobs.register('workflow-step', function(jobData) {
 
   let { currentStep, user, execution } = jobData
 
-  let isStopped = Executions.count({
+  let isStopped = Executions.find({
     _id: execution._id,
     status: 'stopped'
-  })
+  }).count()
 
   const flow = execution.fullFlow
 
@@ -594,29 +594,6 @@ jobs.register('workflow-step', function(jobData) {
   let eventCallback = Meteor.wrapAsync(cb => {
     stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
   })()
-
-  // Process files that may have been returned from the step execution
-  if (eventCallback.result.type === 'file') {
-    if (!eventCallback.result.data.data) {
-      console.error('File have no data attached')
-      endExecution(execution, 'error')
-      instance.success()
-      return
-    }
-  
-    eventCallback.result.data.data = Meteor.wrapAsync((cb) => {
-      let bufferChunks = []
-      if (Buffer.isBuffer(eventCallback.result.data.data)) return cb(null, eventCallback.result.data.data)
-  
-      eventCallback.result.data.data.data.on('readable', () => {
-        // Store buffer chunk to array
-        let i = eventCallback.result.data.data.read()
-        if (!i) return
-        bufferChunks.push(i)
-      })
-      eventCallback.result.data.data.data.data.on('end', () => cb(null, Buffer.concat(bufferChunks)))
-    })()
-  }
 
   {
     let updateReq = {

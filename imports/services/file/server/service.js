@@ -32,11 +32,12 @@ const service = {
 
         cb(null, {
           result: {
-            type: 'file',
-            data: {
-              fileName: `${fileName}.json`,
-              data: Buffer.from(JSON.stringify(previousSteps, ' ', 2), 'utf-8')
-            }
+            files: [
+              {
+                fileName: `${fileName}.json`,
+                data: Buffer.from(JSON.stringify(previousSteps, ' ', 2), 'utf-8')
+              }
+            ]
           },
           next: true,
           error: false,
