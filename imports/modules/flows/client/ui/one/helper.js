@@ -5,5 +5,8 @@ Template['flows.one'].helpers({
     return Template.instance().executions ?
       Template.instance().executions.get() :
       []
+  },
+  'executionsLoaded': function () {
+    return Template.instance().executionsLoaded.get()
   }
 })

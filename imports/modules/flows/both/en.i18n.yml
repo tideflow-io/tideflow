@@ -41,6 +41,14 @@ one.remove: Delete
 one.allExecutions: Browse all executions
 one.executions.empty: This workflow hasn't been executed.
 one.executions.title: Executions
+
+one.executions.stats.executions: Executions
+one.executions.stats.times: times
+one.executions.stats.inProgress: In Progress
+one.executions.stats.success: Success
+one.executions.stats.loading: Loading
+one.executions.stats.failed: Failed
+
 status.running: Running...
 status.finished: Finished
 status.failed: Failed

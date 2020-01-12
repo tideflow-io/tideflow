@@ -26,7 +26,7 @@ Template.registerHelper('executionHappened', (date) => {
 })
 
 Template.registerHelper('arrayIsEmpty', (i) => i.length === 0)
-Template.registerHelper('cursorIsEmpty', (i) => i.count() === 0)
+Template.registerHelper('cursorIsEmpty', (i) => !i || i.count() === 0)
 
 Template.registerHelper('substr', (i, n) => (i || '').substr(0, n))
 

@@ -12,9 +12,104 @@
         </div>
       </div>
     </div>
+
+    <div class="row mb-4">
+      <div class="col-12">
+        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+          <i class="fa fa-calendar"></i>&nbsp;
+          <span></span> <i class="fa fa-caret-down"></i>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        {{> flowsOneExecutionsStats executions=executionsStats loaded=executionsStatsLoaded}}
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
-        {{> flowOneExecutionSmallCards flow=flow executions=executions}}
+        {{> flowOneExecutionSmallDots flow=flow executions=executions loaded=executionsStatsLoaded}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="flowOneExecutionSmallDots">
+  <div class="card-list">
+    {{#if loaded}}
+      {{#if cursorIsEmpty executions}}
+        <p class="text-muted">
+          {{__ "flows.one.executions.empty"}}
+        </p>
+      {{else}}
+        {{#each executions}}
+          {{> flowOneExecutionSmallDot flow=../flow execution=this}}
+        {{/each}}
+      {{/if}}
+    {{else}}
+      <i class="fa fa-spinner fa-spin fa-fw"></i> {{__ "flows.one.executions.stats.loading"}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="flowOneExecutionSmallDot">
+  <a
+    class="clickable"
+    href="{{pathFor 'flows.one.executionDetails' _id=flow._id executionId=execution._id}}"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="{{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">
+    {{#if isEq execution.status 'started'}}
+      <i class="fas fa-square text-warning"></i>
+    {{else if isEq execution.status 'finished'}}
+      <i class="fas fa-square text-success"></i>
+    {{else if isEq execution.status 'error'}}
+      <i class="fas fa-square text-danger"></i>
+    {{else}}
+      <i class="fas fa-square text-gray"></i>
+    {{/if}}
+  </a>
+</template>
+
+<template name="flowsOneExecutionsStats">
+  <div class="card flow-one-execution-history">
+    <div class="card-body m-0">
+      <div class="row">
+        {{#if loaded}}
+          <div class="col-4">
+            <span class="number-title">{{__ "flows.one.executions.stats.executions"}}</span>
+            <span class="number">{{flowExecutions executions.result 'total' false}} {{__ "flows.one.executions.stats.times"}}</span>
+          </div>
+          <div class="col-2">
+            <span class="number-title">{{__ "flows.one.executions.stats.inProgress"}}</span>
+            <span class="number number-yellow">{{flowExecutions executions.result 'started' false}}</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.success"}}</span>
+            <span class="number number-green">{{flowExecutions executions.result 'finished' true}}%</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.failed"}}</span>
+            <span class="number number-red">{{flowExecutions executions.result 'error' true}}%</span>
+          </div>
+        {{else}}
+          <div class="col-4">
+            <span class="number-title">{{__ "flows.one.executions.stats.executions"}}</span>
+            <span class="number"><i class="fa fa-spinner fa-spin fa-fw"></i> {{__ "flows.one.executions.stats.loading"}}</span>
+          </div>
+          <div class="col-2">
+            <span class="number-title">{{__ "flows.one.executions.stats.inProgress"}}</span>
+            <span class="number number-yellow">...</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.success"}}</span>
+            <span class="number number-green">...%</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.failed"}}</span>
+            <span class="number number-red">...%</span>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>

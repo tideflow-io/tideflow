@@ -46,9 +46,10 @@
       </div>
       <div class="col-md-2">
         <div class="float-right">
-          <div class="three-dots btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <div class="three-dots btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+            {{__ "files.index.list.options"}}
           </div>
-          <div class="dropdown-menu">
+          <div class="dropdown-menu dropdown-menu-right">
               <a class="dropdown-item download-file">{{__ "files.index.list.download"}}</a>
               <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>
             <div class="dropdown-divider"></div>

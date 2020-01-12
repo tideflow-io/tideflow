@@ -64,19 +64,19 @@
       <div class="card-body m-0">
         <div class="row">
           <div class="col-4">
-            <span class="number-title">Executions</span>
-            <span class="number">{{flowExecutions result 'total' false}} times</span>
+            <span class="number-title">{{__ "dashboard.executions.stats.executions"}}</span>
+            <span class="number">{{flowExecutions result 'total' false}} {{__ "dashboard.executions.stats.times"}}</span>
           </div>
           <div class="col-2">
-            <span class="number-title">In Progress</span>
+            <span class="number-title">{{__ "dashboard.executions.stats.inProgress"}}</span>
             <span class="number number-yellow">{{flowExecutions result 'started' false}}</span>
           </div>
           <div class="col-3">
-            <span class="number-title">Success</span>
+            <span class="number-title">{{__ "dashboard.executions.stats.success"}}</span>
             <span class="number number-green">{{flowExecutions result 'finished' true}}%</span>
           </div>
           <div class="col-3">
-            <span class="number-title">Failed</span>
+            <span class="number-title">{{__ "dashboard.executions.stats.failed"}}</span>
             <span class="number number-red">{{flowExecutions result 'error' true}}%</span>
           </div>
         </div>

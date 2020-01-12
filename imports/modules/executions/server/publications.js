@@ -8,7 +8,17 @@ Meteor.publish('executions.all', (query, options) => {
   query.user = Meteor.userId()
   new SimpleSchema({
     user: String,
-    flow: String
+    flow: String,
+    createdAt: {
+      type: Object,
+      blackbox: true,
+      optional: true
+    },
+    updatedAt: {
+      type: Object,
+      blackbox: true,
+      optional: true
+    }
   }).validate(query)
   return Executions.find(query, options)
 })

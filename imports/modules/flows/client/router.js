@@ -116,29 +116,12 @@ Router.route('/flows/:_id/executions', function () {
     return [
       Meteor.subscribe('flows.single', {
         _id: this.params._id
-      }),
-      Meteor.subscribe('executions.all', {
-        flow: this.params._id
-      }, {
-        fields: {
-          _id: true, status: true, createdAt: true, updatedAt: true
-        },
-        sort: {
-          createdAt: -1
-        }
       })
     ]
   },
   data: function() {
     if (this.ready) {
       return {
-        executions: Executions.find({
-          // flow: this.params._id
-        }, {
-          sort: {
-            createdAt: -1
-          }
-        }),
         flow: Flows.findOne({
           _id: this.params._id
         })

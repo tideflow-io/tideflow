@@ -7,6 +7,7 @@ index.emptyListDescription: There are no files
 index.list.download: Download
 index.list.edit: Edit
 index.list.delete: Delete
+index.list.options: Options
 
 new.title: New file
 new.submit: Save

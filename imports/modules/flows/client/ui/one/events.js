@@ -13,6 +13,7 @@ Template['flows.one'].onCreated(function() {
 
   this.autorun(function () {
     self.executions.set([])
+    self.executionsLoaded.set(false)
     Meteor.call('flows.one.executions', {
       flow: Router.current().params._id
     }, (error, result) => {

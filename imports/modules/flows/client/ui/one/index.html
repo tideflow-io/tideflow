@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-12">
         <h4>{{__ "flows.one.executions.title"}}</h4>
-        {{> flowOneExecutionSmallCardsHorizontal executions=executions}}
+        {{> flowOneExecutionSmallCardsHorizontal executions=executions loaded=executionsLoaded}}
       </div>
     </div>
 
@@ -50,60 +50,46 @@
   </div>
 </template>
 
-<template name="flowOneExecutionSmallCards">
-  <div class="card-list">
-    {{#if cursorIsEmpty executions}}
-      <p class="text-muted">
-        {{__ "flows.one.executions.empty"}}
-      </p>
-    {{else}}
-      {{#each executions}}
-        {{> flowOneExecutionSmallCardsCard flow=../flow execution=this}}
-      {{/each}}
-    {{/if}}
-  </div>
-</template>
-
 <template name="flowOneExecutionSmallCardsHorizontal">
   <div class="card clickable flow-one-execution-history">
     <div class="card-body m-0">
       <div class="row">
-        <div class="col-4">
-          <span class="number-title">Executions</span>
-          <span class="number">{{flowExecutions executions.result 'total' false}} times</span>
-        </div>
-        <div class="col-2">
-          <span class="number-title">In Progress</span>
-          <span class="number number-yellow">{{flowExecutions executions.result 'started' false}}</span>
-        </div>
-        <div class="col-3">
-          <span class="number-title">Success</span>
-          <span class="number number-green">{{flowExecutions executions.result 'finished' true}}%</span>
-        </div>
-        <div class="col-3">
-          <span class="number-title">Failed</span>
-          <span class="number number-red">{{flowExecutions executions.result 'error' true}}%</span>
-        </div>
+        {{#if loaded}}
+          <div class="col-4">
+            <span class="number-title">{{__ "flows.one.executions.stats.executions"}}</span>
+            <span class="number">{{flowExecutions executions.result 'total' false}} {{__ "flows.one.executions.stats.times"}}</span>
+          </div>
+          <div class="col-2">
+            <span class="number-title">{{__ "flows.one.executions.stats.inProgress"}}</span>
+            <span class="number number-yellow">{{flowExecutions executions.result 'started' false}}</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.success"}}</span>
+            <span class="number number-green">{{flowExecutions executions.result 'finished' true}}%</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.failed"}}</span>
+            <span class="number number-red">{{flowExecutions executions.result 'error' true}}%</span>
+          </div>
+        {{else}}
+          <div class="col-4">
+            <span class="number-title">{{__ "flows.one.executions.stats.executions"}}</span>
+            <span class="number"><i class="fa fa-spinner fa-spin fa-fw"></i> {{__ "flows.one.executions.stats.loading"}}</span>
+          </div>
+          <div class="col-2">
+            <span class="number-title">{{__ "flows.one.executions.stats.inProgress"}}</span>
+            <span class="number number-yellow">...</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.success"}}</span>
+            <span class="number number-green">...%</span>
+          </div>
+          <div class="col-3">
+            <span class="number-title">{{__ "flows.one.executions.stats.failed"}}</span>
+            <span class="number number-red">...%</span>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>
-</template>
-
-<template name="flowOneExecutionSmallCardsCard">
-  <a
-    class="clickable"
-    href="{{pathFor 'flows.one.executionDetails' _id=flow executionId=_id}}"
-    data-toggle="tooltip"
-    data-placement="top"
-    title="{{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">
-    {{#if isEq execution.status 'started'}}
-      <i class="fas fa-square text-warning"></i>
-    {{else if isEq execution.status 'finished'}}
-      <i class="fas fa-square text-success"></i>
-    {{else if isEq execution.status 'error'}}
-      <i class="fas fa-square text-danger"></i>
-    {{else}}
-      <i class="fas fa-square text-gray"></i>
-    {{/if}}
-  </a>
 </template>

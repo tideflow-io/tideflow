@@ -213,7 +213,6 @@ const processableResults = (executionLogs, external) => {
         delete file.data
       })
     }
-    console.log({ _id, stepIndex, type, event, createdAt, updatedAt, stepResult })
     return { _id, stepIndex, type, event, createdAt, updatedAt, stepResult }
   }) // external ? 'external' : 'internal'
 }
@@ -229,14 +228,14 @@ const getResultsTypes = (executionLogs, type) => {
   let r = []
 
   executionLogs.map(executionLog => {
-      if (executionLog.stepResult && executionLog.stepResult[type]) {
-        let el = executionLog.stepResult[type]
-        let canProcess = false
-        if (Array.isArray(el) && el.length) canProcess = true
-        if (Object.keys(el).length) canProcess = true
+    if (executionLog.stepResult && executionLog.stepResult[type]) {
+      let el = executionLog.stepResult[type]
+      let canProcess = false
+      if (Array.isArray(el) && el.length) canProcess = true
+      if (Object.keys(el).length) canProcess = true
 
-        if (canProcess) r = r.concat(el)
-      }
+      if (canProcess) r = r.concat(el)
+    }
   })
 
   return r
