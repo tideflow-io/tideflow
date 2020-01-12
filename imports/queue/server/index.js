@@ -209,7 +209,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       step._id = Random.id()
     })
 
-    let executionData = {
+    let execution = {
       user: flow.user,
       triggerData,
       service: service._id ? service._id : null,
@@ -219,11 +219,10 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       status: 'started'
     }
 
-    Executions.insert(executionData)
+    Executions.insert(execution)
 
-    jobs.run('workflow-start', {
-      execution: executionData
-    })
+    // executionData now contains _id and createdAt
+    jobs.run('workflow-start', { execution, user })
   })
 }
 
@@ -401,13 +400,14 @@ const guessTriggerSingleChilds = (flow) => {
  **/
 jobs.register('workflow-start', function(jobData) {
   check(jobData, {
-    execution: Object
+    execution: Object,
+    user: Object
   })
 
   let createdAt = new Date()
 
   // Get the current execution
-  const execution = jobData.execution
+  const { execution, user } = jobData
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
@@ -418,9 +418,6 @@ jobs.register('workflow-start', function(jobData) {
   const triggerData = execution.triggerData
   const flow = execution.fullFlow
   const service = execution.fullService
-  const user = Meteor.users.findOne({_id:execution.user}, {
-    fields: { services: false }
-  })
 
   // Service triggering the execution
   let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
@@ -434,20 +431,22 @@ jobs.register('workflow-start', function(jobData) {
   }
 
   // Log the trigger execution
-  let logId = ExecutionsLogs.insert({
+  let executionLog = {
     execution: execution._id,
     type: flow.trigger.type,
     event: flow.trigger.event,
     flow: execution.flow,
-    user: execution.user,
+    user: user._id,
     step: 'trigger',
     stepIndex: 'trigger',
     msgs: [],
     createdAt
-  })
+  }
+  
+  ExecutionsLogs.insert(executionLog)
 
   // Execute the actual trigger
-  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, logId)
+  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, executionLog._id)
 
   // For the trigger log, update it with the results
   let stepUpdate = {
@@ -461,18 +460,19 @@ jobs.register('workflow-start', function(jobData) {
     stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } }
   }
   ExecutionsLogs.update({
-    _id: logId,
+    _id: executionLog._id,
     execution: execution._id
   }, stepUpdate)
 
   if (triggerResult.error) {
     endExecution(execution, 'error')
+    debug('Trigger execution failed. Finishing')
     this.success()
     return
   }
+
   if (!triggerResult.next) {
-    console.log('no more atm')
-    debug('No next step atm')
+    debug('Trigger asked to wait before continue flow execution')
     this.success()
     return
   }
@@ -504,7 +504,7 @@ jobs.register('workflow-start', function(jobData) {
   // ===========================================================================
   // 3. Determine the steps that are directly conneted to the trigger, and DONT
   //    have any other preceding step.
-  
+
   const triggerSingleChilds = guessTriggerSingleChilds(flow)
   
   // ===========================================================================
@@ -516,8 +516,9 @@ jobs.register('workflow-start', function(jobData) {
   stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
     debug(`workflow-start triggered step [${flow.steps[stepIndex].type}]`)
     jobs.run('workflow-step', {
+      execution,
       currentStep: flow.steps[stepIndex],
-      executionId: execution._id
+      user
     })
   })
 
@@ -534,21 +535,19 @@ jobs.register('workflow-step', function(jobData) {
 
   let instance = this
 
-  let { currentStep, executionId } = jobData
+  let { currentStep, user, execution } = jobData
 
-  const execution = Executions.findOne({_id: executionId})
   const flow = execution.fullFlow
-  const triggerData = execution.triggerData
 
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
 
   /**
-   * Store execution in db.
+   * Store log in db.
    */
-  let logId = ExecutionsLogs.insert({
-    execution: executionId,
+  let executionLog = {
+    execution: execution._id,
     flow: execution.flow,
-    user: execution.user,
+    user: user._id,
     step: currentStep._id,
     stepIndex: currentStepIndex,
     type: currentStep.type,
@@ -558,28 +557,25 @@ jobs.register('workflow-step', function(jobData) {
     // stdout
     // stderr
     // status
-  })
+  }
 
-  // If the execution was stopped, do not execute anything else
   if (execution.status === 'stopped') {
-    ExecutionsLogs.update({_id: logId, execution: executionId}, {
-      $set: {
-        status: 'stopped'
-      }
-    })
+    executionLog.status = 'stopped'
+    ExecutionsLogs.insert(executionLog)
     instance.success()
     return
   }
 
+  ExecutionsLogs.insert(executionLog)
+
+  // If the execution was stopped, do not execute anything else
+  
+
   const listOfCalls = calledFrom(flow)
-  const service = execution.fullService
-  const user = Meteor.users.findOne({_id:execution.user}, {
-    fields: { services: false }
-  })
 
   const previousStepsIndexes = listOfCalls[currentStepIndex] || []
   const previousSteps = previousStepsIndexes.length ? ExecutionsLogs.find({
-    execution: executionId,
+    execution: execution._id,
     stepIndex: { $in: previousStepsIndexes }
   }, {
     sort: {
@@ -592,7 +588,7 @@ jobs.register('workflow-step', function(jobData) {
   if (!stepEvent || !stepEvent.callback) return null
   
   let eventCallback = Meteor.wrapAsync(cb => {
-    stepEvent.callback(user, currentStep, previousSteps, execution, logId, cb)
+    stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
   })()
 
   // Process files that may have been returned from the step execution
@@ -637,7 +633,7 @@ jobs.register('workflow-step', function(jobData) {
     if (eventCallback.msgs) {
       updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
     }
-    ExecutionsLogs.update({_id: logId, execution: executionId}, updateReq)
+    ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
   }
 
   if (eventCallback.error) {
@@ -658,7 +654,7 @@ jobs.register('workflow-step', function(jobData) {
     // If no, it could mean that we should stop the flow's execution
     if (!numberOfOutputs) {
       // Get the number of executed steps in the current execution ...
-      const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
+      const executedSteps = ExecutionsLogs.find({execution:execution._id}).count()
 
       // if (currentStep.type === 'debug')
       // console.log({executedSteps, length: flow.steps.length})
@@ -682,7 +678,7 @@ jobs.register('workflow-step', function(jobData) {
 
         // All previous steps are executed?
         const successSteps = ExecutionsLogs.find({
-          execution: executionId,
+          execution: execution._id,
           stepIndex: { $in: nextStepsCalledFrom },
           status: { $in: ['success'] }
         }).count()
@@ -695,7 +691,11 @@ jobs.register('workflow-step', function(jobData) {
       }
 
       // Schedule execution
-      jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
+      jobs.run('workflow-step', {
+        execution,
+        currentStep: nextStepFull,
+        user
+      })
     })
   }
   
