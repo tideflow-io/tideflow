@@ -1,11 +1,3 @@
-{{#if sentOutside}}
-	You are receiving this email because {{fullName}} ({{userEmail}}) added you as the recipient of a workflow automation at <a href="{{tideflow.appUrl}}">{{tideflow.name}}</a>.
-{{else}}
-	You are receiving this email from <a href="{{tideflow.appUrl}}">{{tideflow.name}}</a>.
-{{/if}}
-<br>
-<b>Workflow's name:</b> {{messageTitle}}
-<hr>
 {{#each lines}}
   <br>
   {{{.}}}

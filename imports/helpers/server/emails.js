@@ -68,7 +68,12 @@ if (!mailConfing) {
 
 let transporter = mailConfing ? nodemailer.createTransport(getConfig()) : 
   { sendMail: (data, cb) => {
-    console.info(`The email\'s text was: ${data.text}`)
+    console.info(`Email:
+From:        ${data.from}
+To:          ${data.to}
+Subject:     ${data.subject}
+HTML:        ${data.html}
+Attachments: ${data.attachments ? data.attachments.map(a => a.filename).join(', ') : 'None'}`)
   } }
 
 /**
