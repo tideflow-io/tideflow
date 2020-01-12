@@ -78,7 +78,6 @@ const service = {
           })
         }
         catch (ex) {
-          console.error({ex})
           cb(null, {
             result: {},
             next: true,
