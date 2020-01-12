@@ -48,12 +48,12 @@ const service = {
       visibe: true,
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
-        const fileData = lastData.type === 'object' ? lastData : { data: {} }
+        const fileData = lastData.data || {}
 
         try {
           const file = await filesLib.getOne({ _id: currentStep.config.file })
           const string = await filesLib.getOneAsString({ _id: file._id })
-          const fileBuffer = Meteor.wrapAsync(cb => generatePdf(string, fileData.data, cb))()
+          const fileBuffer = Meteor.wrapAsync(cb => generatePdf(string, fileData, cb))()
           cb(null, {
             result: {
               data: {},
