@@ -1,1 +1,1 @@
-import './methods'
+import './publications'

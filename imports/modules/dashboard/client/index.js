@@ -1,4 +1,3 @@
 import './router'
-import './helpers'
+import './controller'
 import './css.css'
-import './events'

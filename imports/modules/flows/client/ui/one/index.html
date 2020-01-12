@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-12">
         <h4>{{__ "flows.one.executions.title"}}</h4>
-        {{> flowOneExecutionSmallCardsHorizontal executions=executions loaded=executionsLoaded}}
+        {{> flowOneExecutionSmallCardsHorizontal executions=executions}}
       </div>
     </div>
 
@@ -54,7 +54,7 @@
   <div class="card clickable flow-one-execution-history">
     <div class="card-body m-0">
       <div class="row">
-        {{#if loaded}}
+        {{#if Template.subscriptionsReady}}
           <div class="col-4">
             <span class="number-title">{{__ "flows.one.executions.stats.executions"}}</span>
             <span class="number">{{flowExecutions executions.result 'total' false}} {{__ "flows.one.executions.stats.times"}}</span>

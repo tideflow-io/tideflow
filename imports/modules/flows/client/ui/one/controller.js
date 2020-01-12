@@ -5,25 +5,27 @@ import { sAlert } from 'meteor/juliancwirko:s-alert'
 import i18n from 'meteor/universe:i18n'
 import { ReactiveVar } from 'meteor/reactive-var'
 
+import { ExecutionsStats } from '/imports/modules/executions/client/collection'
+
 Template['flows.one'].onCreated(function() {
   let self = this
   
   this.executions = new ReactiveVar([])
-  this.executionsLoaded = new ReactiveVar(false)
 
   this.autorun(function () {
     self.executions.set([])
-    self.executionsLoaded.set(false)
-    Meteor.call('flows.one.executions', {
+
+    self.subscribe('flows.one.executionsStats', {
       flow: Router.current().params._id
-    }, (error, result) => {
-      if (!error) {
-        self.executions.set(result.length ? result[0] : {result:[]})
-      }
-      self.executionsLoaded.set(true)
     })
   })
+})
 
+Template['flows.one'].helpers({
+  'executions': function () {
+    let e = ExecutionsStats.find().fetch()
+      return e && e[0] ? e[0] : {}
+  }
 })
 
 Template['flows.one'].events({

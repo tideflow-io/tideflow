@@ -1,7 +1,24 @@
 import { Meteor } from 'meteor/meteor'
-import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating'
+import { Executions } from '/imports/modules/executions/both/collection.js'
+import { ReactiveVar } from 'meteor/reactive-var'
 import { moment } from 'meteor/momentjs:moment'
+
+import { ExecutionsStats } from '/imports/modules/executions/client/collection'
+
+Template.flowsOneExecutions.helpers({
+  executions: Executions.find({
+    // flow: this.params._id
+  }, {
+    sort: {
+      createdAt: -1
+    }
+  }),
+  executionsStats: function () {
+    let e = ExecutionsStats.find().fetch()
+    return e && e[0] ? e[0] : {}
+  },
+})
 
 Template.flowsOneExecutions.onCreated(function() {
   let self = this
@@ -9,7 +26,6 @@ Template.flowsOneExecutions.onCreated(function() {
   this.start = new ReactiveVar()
   this.end = new ReactiveVar()
   this.executionsStats = new ReactiveVar({})
-  this.executionsStatsLoaded = new ReactiveVar(false)
 })
 
 Template.flowsOneExecutions.onRendered(function() {
@@ -18,7 +34,7 @@ Template.flowsOneExecutions.onRendered(function() {
   this.autorun(function () {
     if (!self.start.get() || typeof self.start.get().toDate !== 'function') return
     
-    Meteor.call('flows.one.executions', {
+    self.subscribe('flows.one.executionsStats', {
       flow: Router.current().params._id,
       createdAt: {
         $gt: self.start.get().toDate()
@@ -26,11 +42,6 @@ Template.flowsOneExecutions.onRendered(function() {
       updatedAt: {
         $lt: self.end.get().toDate()
       }
-    }, (error, result) => {
-      if (!error) {
-        self.executionsStats.set(result.length ? result[0] : {result:[]})
-      }
-      self.executionsStatsLoaded.set(true)
     })
 
     self.subscribe('executions.all', {

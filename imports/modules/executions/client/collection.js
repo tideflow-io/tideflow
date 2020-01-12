@@ -1,0 +1,1 @@
+export const ExecutionsStats = new Mongo.Collection('executionsStats')

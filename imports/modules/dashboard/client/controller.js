@@ -1,29 +1,28 @@
-import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { Template } from 'meteor/templating'
 import { ReactiveVar } from 'meteor/reactive-var'
 
+import { ExecutionsStats } from '/imports/modules/executions/client/collection'
+
 Template.dashboard.onCreated(function() {
   let self = this
-
   this.executionsTime = new ReactiveVar('lastMonth')
-  this.executions = new ReactiveVar([])
-  this.executionsLoaded = new ReactiveVar(false)
-
   this.autorun(function () {
-    self.executions.set([])
-    Meteor.call('dashboard.executions', {
+    self.subscribe('dashboard.executionsStats', {
       time: self.executionsTime.get(),
     }, {
       limit: 0
-    }, (error, result) => {
-      if (!error) {
-        self.executions.set(result)
-      }
-      self.executionsLoaded.set(true)
     })
   })
+})
 
+Template.dashboard.helpers({
+  'executions': function () {
+    return ExecutionsStats.find().fetch()
+  },
+  'executionsTime': function() {
+    return Template.instance().executionsTime.get()
+  }
 })
 
 Template.dashboard.events({
