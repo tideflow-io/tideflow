@@ -33,7 +33,7 @@ Template.flowsOneExecutions.onRendered(function() {
       self.executionsStatsLoaded.set(true)
     })
 
-    Meteor.subscribe('executions.all', {
+    self.subscribe('executions.all', {
       flow: Router.current().params._id,
       createdAt: {
         $gt: self.start.get().toDate()
@@ -65,11 +65,11 @@ Template.flowsOneExecutions.onRendered(function() {
     startDate: start,
     endDate: end,
     ranges: {
-      'Today': [moment().startOf('day'), moment()],
+      'Today': [moment().startOf('day'), moment().endOf('day')],
       'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment()],
+      'Last 7 Days': [moment().subtract(7, 'days'), moment().endOf('day')],
+      'Last 30 Days': [moment().subtract(30, 'days'), moment().endOf('day')],
+      'This Month': [moment().startOf('month'), moment().endOf('month')],
       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     }
   }, cb)

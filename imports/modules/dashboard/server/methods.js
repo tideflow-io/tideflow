@@ -18,7 +18,7 @@ Meteor.methods({
       time = moment().subtract(1, 'month').startOf('month').toDate()
       break
     case 'lastWeek':
-      time = moment().subtract(6, 'days').toDate()
+      time = moment().subtract(7, 'days').toDate()
       break
     case 'last24Hours':
       time = moment().subtract(24, 'hours').toDate()
