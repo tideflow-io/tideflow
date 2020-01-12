@@ -16,7 +16,7 @@ Template['membership.profile.keys'].events({
       content.innerHTML = `
         <input class="form-control" onClick="this.select();" focus type="text" value="${result}">`
       swal({
-        icon: await QRCode.toDataURL(`{url: '${Meteor.absoluteUrl()}', key:'${result}'}`),
+        icon: await QRCode.toDataURL(`{"url": "${Meteor.absoluteUrl()}", "key":"${result}"}`),
         title: i18n.__('profileKeys.create.success'),
         text: i18n.__('profileKeys.create.copyNow'),
         content
