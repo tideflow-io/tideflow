@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
+var QRCode = require('qrcode')
 
 import i18n from 'meteor/universe:i18n'
 
 Template['membership.profile.keys'].events({
   'click .create-key': function(event, template) {
-    Meteor.call('profileKeys.create', (error, result) => {
+    Meteor.call('profileKeys.create', async (error, result) => {
       if (error) {
         sAlert.error(i18n.__('profileKeys.create.error'))
         return
@@ -15,7 +16,7 @@ Template['membership.profile.keys'].events({
       content.innerHTML = `
         <input class="form-control" onClick="this.select();" focus type="text" value="${result}">`
       swal({
-        icon: 'warning',
+        icon: await QRCode.toDataURL(`{url: '${Meteor.absoluteUrl()}', key:'${result}'}`),
         title: i18n.__('profileKeys.create.success'),
         text: i18n.__('profileKeys.create.copyNow'),
         content
