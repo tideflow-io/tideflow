@@ -209,7 +209,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       step._id = Random.id()
     })
 
-    let executionId = Executions.insert({
+    let executionData = {
       user: flow.user,
       triggerData,
       service: service._id ? service._id : null,
@@ -217,9 +217,13 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       flow: flow._id,
       fullFlow: flow,
       status: 'started'
-    })
+    }
 
-    jobs.run('workflow-start', {executionId})
+    Executions.insert(executionData)
+
+    jobs.run('workflow-start', {
+      execution: executionData
+    })
   })
 }
 
@@ -397,13 +401,13 @@ const guessTriggerSingleChilds = (flow) => {
  **/
 jobs.register('workflow-start', function(jobData) {
   check(jobData, {
-    executionId: String,
+    execution: Object
   })
 
   let createdAt = new Date()
 
   // Get the current execution
-  const execution = Executions.findOne({_id: jobData.executionId})
+  const execution = jobData.execution
 
   // If the execution is stopped, halt here and don't continue.
   if (execution.status === 'stopped') {
@@ -458,7 +462,7 @@ jobs.register('workflow-start', function(jobData) {
   }
   ExecutionsLogs.update({
     _id: logId,
-    execution: jobData.executionId
+    execution: execution._id
   }, stepUpdate)
 
   if (triggerResult.error) {
@@ -500,6 +504,7 @@ jobs.register('workflow-start', function(jobData) {
   // ===========================================================================
   // 3. Determine the steps that are directly conneted to the trigger, and DONT
   //    have any other preceding step.
+  
   const triggerSingleChilds = guessTriggerSingleChilds(flow)
   
   // ===========================================================================
@@ -512,7 +517,7 @@ jobs.register('workflow-start', function(jobData) {
     debug(`workflow-start triggered step [${flow.steps[stepIndex].type}]`)
     jobs.run('workflow-step', {
       currentStep: flow.steps[stepIndex],
-      executionId: jobData.executionId
+      executionId: execution._id
     })
   })
 
