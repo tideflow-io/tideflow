@@ -29,7 +29,7 @@ const endExecution = (execution, status) => {
       ended: now
     } }
   )
-  jobs.run('workflow-execution-finished', { executionId: execution._id, status })
+  jobs.run('workflow-execution-finished', { execution, status })
 }
 
 /**
@@ -537,6 +537,11 @@ jobs.register('workflow-step', function(jobData) {
 
   let { currentStep, user, execution } = jobData
 
+  let isStopped = Executions.count({
+    _id: execution._id,
+    status: 'stopped'
+  })
+
   const flow = execution.fullFlow
 
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
@@ -559,7 +564,7 @@ jobs.register('workflow-step', function(jobData) {
     // status
   }
 
-  if (execution.status === 'stopped') {
+  if (isStopped) {
     executionLog.status = 'stopped'
     ExecutionsLogs.insert(executionLog)
     instance.success()
@@ -569,7 +574,6 @@ jobs.register('workflow-step', function(jobData) {
   ExecutionsLogs.insert(executionLog)
 
   // If the execution was stopped, do not execute anything else
-  
 
   const listOfCalls = calledFrom(flow)
 
@@ -730,21 +734,20 @@ jobs.register('workflow-execution-notify-email', function(user, flow) {
 })
 
 jobs.register('workflow-execution-finished', function(jobData) {
-  let instance = this
-  let { executionId } = jobData
+  let { execution } = jobData
 
-  const execution = Executions.findOne({_id: executionId})
   const user = Meteor.users.findOne({_id:execution.user}, {
     fields: { services: false }
   })
 
+  // Determine if the workflow's trigger has a method to be executed when
+  // an execution ends.
   const trigger = execution.fullFlow.trigger
-
   const stepService = servicesAvailable.find(sa => sa.name === trigger.type)
   const stepEvent = stepService.events.find(sse => sse.name === trigger.event)
 
   if (!stepEvent || !stepEvent.executionFinished) {
-    instance.success()
+    this.success()
     return
   }
 
@@ -752,5 +755,5 @@ jobs.register('workflow-execution-finished', function(jobData) {
     stepEvent.executionFinished(user, execution, cb)
   })()
 
-  instance.success()
+  this.success()
 })
