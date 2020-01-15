@@ -52,11 +52,16 @@ const service = {
           })
           return
         }
+        
+        let previousStepsData = getResultsTypes(executionLogs, 'data')
+        let webparsyFlags = {}
 
-        let flags = _.chain(getResultsTypes(executionLogs, 'data')).reduce((i, m)=> Object.assign(i,m)).value()
+        if (previousStepsData.length) {
+          webparsyFlags = _.chain(getResultsTypes(executionLogs, 'data')).reduce((i, m)=> Object.assign(i,m)).value()
+        }
 
         try {
-          let result = await webparsy.init({string, flags})
+          let result = await webparsy.init({string, webparsyFlags})
           cb(null, {
             result: {
               data: result
