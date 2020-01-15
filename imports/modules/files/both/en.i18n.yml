@@ -22,7 +22,7 @@ delete.success: File deleted
 
 download.error: Error downloading file
 
-templates.title: Templates
+templates.title: File templates
 templates.subtitle: Select a template to get started
 
 templates.useThis: Use this template
