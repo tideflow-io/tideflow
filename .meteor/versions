@@ -7,7 +7,7 @@ aldeed:schema-deny@2.0.1
 alexwine:bootstrap-4@4.1.0
 allow-deny@1.1.0
 autoupdate@1.6.0
-babel-compiler@7.5.0
+babel-compiler@7.5.1
 babel-runtime@1.5.0
 base64@1.0.12
 binary-heap@1.0.11
@@ -27,7 +27,7 @@ ddp-server@2.3.0
 deps@1.0.12
 diff-sequence@1.1.1
 dynamic-import@0.5.1
-ecmascript@0.14.0
+ecmascript@0.14.1
 ecmascript-runtime@0.7.0
 ecmascript-runtime-client@0.10.0
 ecmascript-runtime-server@0.9.0
@@ -138,5 +138,5 @@ underscore@1.0.10
 universe:i18n@1.30.0
 universe:i18n-blaze@1.5.1
 url@1.2.0
-webapp@1.8.0
+webapp@1.8.1
 webapp-hashing@1.0.9
