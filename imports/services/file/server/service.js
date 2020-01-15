@@ -106,7 +106,7 @@ const service = {
         let fileNames = []
 
         previousFiles.map(file => {
-          const fileName = slugify(`${execution._id.substring(0, 3)}-${file.fileName}`).toLowerCase()
+          const fileName = slugify(`${execution._id.substring(0, 5)}-${file.fileName}`).toLowerCase()
           //require('fs').writeFileSync(`/Users/joseconstela/Desktop/${fileName}`, file.data.data)
           fileNames.push(fileName)
           return filesLib.create({

@@ -1,4 +1,4 @@
-import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes, fileFromBuffer } from '/imports/services/_root/server'
 
 import filesLib from '/imports/modules/files/server/lib'
 
@@ -57,14 +57,36 @@ const service = {
         let webparsyFlags = {}
 
         if (previousStepsData.length) {
-          webparsyFlags = _.chain(getResultsTypes(executionLogs, 'data')).reduce((i, m)=> Object.assign(i,m)).value()
+          webparsyFlags = _.chain(previousStepsData).reduce((i, m)=> Object.assign(i,m)).value()
         }
 
         try {
-          let result = await webparsy.init({string, webparsyFlags})
+          let scrapingResult = await webparsy.init({string, webparsyFlags})
+          let files = []
+
+          await Promise.all( Object.keys(scrapingResult).map(async k => {
+            return new Promise((resolve, reject) => {
+              if (Buffer.isBuffer(scrapingResult[k])) {
+                fileFromBuffer(scrapingResult[k], k)
+                  .then(fileInfo => {
+                    if (!fileInfo) return resolve()
+                    files.push(fileInfo)
+                    delete scrapingResult[k]
+                    resolve()
+                  })
+                  .catch(ex => {
+                    console.error(ex)
+                    delete scrapingResult[k]
+                    resolve()
+                  })
+              }
+            })
+          }))
+
           cb(null, {
             result: {
-              data: result
+              data: scrapingResult,
+              files
             },
             next: true,
             error: false,

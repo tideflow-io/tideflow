@@ -2,11 +2,32 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken')
+const FileType = require('file-type')
 const jwtSecret = require('/imports/download/server/secret')
 
 let servicesAvailable = []
 //calculateUsage
 module.exports.servicesAvailable = servicesAvailable
+
+const fileFromBuffer = async (buffer, nameSuggestion) => {
+  try {
+    let fileType = await FileType.fromBuffer(buffer)
+    let name = `${nameSuggestion}.${fileType.ext}`
+    return {
+      mimetype: fileType.mime,
+      size: buffer.length,
+      fieldName: name,
+      fileName: name,
+      data: buffer
+    }
+  }
+  catch (ex) {
+    console.error(ex)
+    return null
+  }
+}
+
+module.exports.fileFromBuffer = fileFromBuffer
 
 const executeServiceHook = (service, hook, crud, stage, data, treat) => {
   if (!service) throw new Error('Service not specified')
