@@ -1,5 +1,5 @@
-import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
+import { Router } from 'meteor/iron:router'
 import { Executions } from '/imports/modules/executions/both/collection.js'
 import { ReactiveVar } from 'meteor/reactive-var'
 import { moment } from 'meteor/momentjs:moment'
@@ -21,8 +21,6 @@ Template.flowsOneExecutions.helpers({
 })
 
 Template.flowsOneExecutions.onCreated(function() {
-  let self = this
-
   this.start = new ReactiveVar()
   this.end = new ReactiveVar()
   this.executionsStats = new ReactiveVar({})

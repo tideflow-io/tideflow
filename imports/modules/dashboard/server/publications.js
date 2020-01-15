@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { ReactiveAggregate } from 'meteor/tunguska:reactive-aggregate'
+import { moment } from 'meteor/momentjs:moment'
 
 import { Executions } from '../../executions/both/collection'
 
