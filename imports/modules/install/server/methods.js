@@ -4,6 +4,8 @@ import { Roles } from 'meteor/alanning:roles'
 
 import { Settings } from '/imports/modules/management/both/collection'
 
+import { createUsersTeam, ROLES } from '/imports/modules/_common/server/teams'
+
 import { check } from 'meteor/check'
 
 Meteor.methods({
@@ -16,19 +18,25 @@ Meteor.methods({
     })
 
     let one = Settings.findOne()
-    if (one) {
-      return new Meteor.Error('not-allowed')
-    }
+    if (one) return new Meteor.Error('not-allowed')
 
     // Create user
-    const userId = Accounts.createUser({
+    const userInfo = {
       email: details.email,
       password: details.password,
       profile: { firstName: details.userName }
+    }
+    const userId = Accounts.createUser(userInfo)
+
+    Roles.createRole(ROLES.SUPER, {unlessExists: true})
+    Roles.addUsersToRoles(userId, ROLES.SUPER)
+
+    ROLES.map(r => {
+      Roles.createRole(r)
     })
 
-    Roles.addUsersToRoles(userId, 'super-admin', Roles.GLOBAL_GROUP)
-
+    createUsersTeam(Object.assign(userInfo, {_id: userId}))
+    
     // Verify email automatically
     Meteor.users.update({_id:userId}, {$set:{'emails.0.verified': true}})
 

@@ -1,3 +1,4 @@
+import { Session } from 'meteor/session'
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
@@ -14,7 +15,9 @@ Router.route('/files', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('files.all', {}, {
+      Meteor.subscribe('files.all', {
+        team: Session.get('currentTeamId')
+      }, {
         sort: {
           createdAt: -1
         }
@@ -81,7 +84,8 @@ Router.route('/files/:_id/edit', function () {
   waitOn: function () {
     return [
       Meteor.subscribe('files.single', {
-        _id: this.params._id
+        _id: this.params._id,
+        team: Session.get('currentTeamId')
       })
     ]
   },

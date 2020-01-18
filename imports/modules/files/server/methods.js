@@ -11,6 +11,7 @@ import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
 import { pick } from '/imports/helpers/both/objects'
 
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
+import { isMember } from '../../_common/server/teams'
 
 import schema from '../both/schemas/schema.js'
 import { Files } from '../both/collection'
@@ -22,8 +23,10 @@ export const createFile = new ValidatedMethod({
   validate: schema.validator(),
   async run(file) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    if (!isMember(Meteor.userId(), file.team)) throw new Meteor.Error('no-access')
     const newFile = await lib.create({
       user: Meteor.userId(),
+      team: file.team,
       name: file.name,
       userCreated: true
     }, file.content)
@@ -49,10 +52,7 @@ export const updateFile = new ValidatedMethod({
       throw new Meteor.Error('not-found')
     }
 
-    // Check if the user can update the file
-    if (originalFile.user !== Meteor.userId()) {
-      throw new Meteor.Error('no-access')
-    }
+    if (!isMember(originalFile.user, originalFile.team)) throw new Meteor.Error('no-access')
 
     const { content } = file
     let update = {}
@@ -107,10 +107,7 @@ export const deleteFile = new ValidatedMethod({
       throw new Meteor.Error('not-found')
     }
 
-    // Check if the user can delete the file
-    if (originalFile.user !== Meteor.userId()) {
-      throw new Meteor.Error('no-access')
-    }
+    if (!isMember(originalFile.user, originalFile.team)) throw new Meteor.Error('no-access')
 
     (originalFile.versions || []).map(v => {
       gfs.delete(

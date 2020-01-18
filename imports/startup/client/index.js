@@ -105,6 +105,9 @@ import '/imports/modules/profileEdit/client'
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/client'
 
+import '/imports/modules/teams/both'
+import '/imports/modules/teams/client'
+
 import '/imports/modules/profileNotifications/both'
 import '/imports/modules/profileNotifications/client'
 

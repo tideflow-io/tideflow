@@ -1,3 +1,4 @@
+import { Session } from 'meteor/session'
 import i18n from 'meteor/universe:i18n'
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
@@ -16,7 +17,9 @@ Router.route('/services', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('services.all', {}, {
+      Meteor.subscribe('services.all', {
+        team: Session.get('currentTeamId')
+      }, {
         sort: {
           createdAt: -1
         }
@@ -76,6 +79,7 @@ Router.route('/services/:type/:_id/edit', function () {
   waitOn: function () {
     return [
       Meteor.subscribe('services.single', {
+        team: Session.get('currentTeamId'),
         _id: this.params._id
       })
     ]

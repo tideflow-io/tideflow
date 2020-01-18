@@ -1,0 +1,13 @@
+<template name="teamsSidebar">
+  <div id="teams-sidebar" class="sidebar">
+    <ul class="nav nav-sidebar">
+      {{#each teams}}
+        {{> teamsSidebarTeam}}
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="teamsSidebarTeam">
+  <li class="{{#if activeTeam}}active{{/if}}">{{name}}</li>
+</template>

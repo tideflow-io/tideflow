@@ -3,12 +3,24 @@ const jwt = require('jsonwebtoken')
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { Accounts } from 'meteor/accounts-base'
+import { isMember } from '../../_common/server/teams'
 
 const jwtSecret = require('/imports/download/server/secret')
 import lib from './lib'
 
+/**
+ * @todo replace authenticatedUser or add authenticatedUserTeams
+ * @param {*} _id 
+ * @param {*} authenticatedUser 
+ * @param {*} v 
+ * @param {*} force 
+ * @param {*} req 
+ * @param {*} res 
+ */
 const downloadFile = (_id, authenticatedUser, v, force, req, res) => {
   const fileData = lib.getOneVersion({ _id, user: authenticatedUser.user._id }, v)
+
+  if (!isMember(authenticatedUser.user._id, fileData.file.team)) throw new Meteor.Error('no-access')
 
   if (!fileData) {
     res.writeHead(404)

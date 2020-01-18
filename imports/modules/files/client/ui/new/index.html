@@ -15,6 +15,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
+              {{> afQuickField name='team' value=currentTeamId type='hidden'}}
               {{> afQuickField name='name' value=file.name id="filename"}}
               <div class="form-group ace-editor-container">
                 <div id="editor"></div>

@@ -16,6 +16,7 @@ Router.onBeforeAction(function () {
     this.next()
   }
 }, { except: [
+  'teams.select',
   'install.index',
   'install.finished',
   'membership.verify',
