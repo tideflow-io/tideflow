@@ -1,83 +1,23 @@
-
-/*
- * Sidebar
- */
-#flow-sidebar {
-  position: fixed;
+#sidebar-wrapper {
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  top: 50px;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 0;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  max-height: calc(100vh - 56px);
+    overflow: auto;
 }
-
-#flow-editor .edit-mode-link {
-  text-decoration: underline;
-  color: #007bff;
-  cursor: pointer !important;
-}
-
-#flow-sidebar-right {
-  position: fixed;
-  overflow-y: none;
-  -webkit-overflow-scrolling: touch;
-  top: 49px;
-  bottom: 0;
-  right: 0;
-  width: 420px;
-  z-index: 100; /* Behind the navbar */
-  padding: 0;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-}
-
-#flow-sidebar-right iframe {
-  width: 100%;
-  height: calc(100vh - 103px);
-  border: none;
-}
-
-#flow-sidebar-sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 48px; /* Height of navbar */
-  height: calc(100vh - 48px);
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-
-#flow-sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-}
-
-#flow-sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #999;
-}
-
-#flow-sidebar .nav-link.active {
-  color: #007bff;
-}
-
-#flow-sidebar .nav-link:hover .feather,
-#flow-sidebar .nav-link.active .feather {
-  color: inherit;
-}
-
-#flow-sidebar-heading {
-  font-size: .75rem;
-  text-transform: uppercase;
+#page-content-wrapper {
+    min-width: 0;
+    width: 100%;
 }
 
 #flow-editor {
   background: url(/images/bground.svg) white;
   padding: 0;
   position: relative;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 153px);
 }
 
 #flow-editor .card {

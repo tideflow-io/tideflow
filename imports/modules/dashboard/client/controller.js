@@ -42,6 +42,7 @@ Template.darhboardExecutionFlow.events({
     event.stopPropagation()
     Router.go('flows.one', {
       _id: template.data._id,
+      teamId: Router.current().params.teamId
     })
   }
 })

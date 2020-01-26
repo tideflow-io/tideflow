@@ -9,7 +9,6 @@ const jwtSecret = require('/imports/download/server/secret')
 import lib from './lib'
 
 /**
- * @todo replace authenticatedUser or add authenticatedUserTeams
  * @param {*} _id 
  * @param {*} authenticatedUser 
  * @param {*} v 

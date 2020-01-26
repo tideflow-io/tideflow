@@ -16,6 +16,10 @@ import * as emailHelper from '/imports/helpers/both/emails'
 
 const debug = require('debug')('queue')
 
+Queue.configure({
+  // disableDevelopmentMode: true
+})
+
 const endExecution = (execution, status) => {
   status = status || 'finished'
   debug(`End execution ${execution._id} with ${status}`)
@@ -571,7 +575,14 @@ jobs.register('workflow-step', function(jobData) {
     return
   }
 
-  ExecutionsLogs.insert(executionLog)
+  try {
+    ExecutionsLogs.insert(executionLog)
+  }
+  catch (ex) {
+    endExecution(execution, 'error')
+    instance.success()
+    return
+  }
 
   // If the execution was stopped, do not execute anything else
 

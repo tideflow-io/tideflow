@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <a href="{{pathFor 'flows.new'}}" class="flow-editor-link float-right btn btn-success mt-5 mb-4">{{__ "flows.index.createNew"}}</a>
+          <a href="{{pathFor 'flows.new' teamId=currentTeamId}}" class="flow-editor-link float-right btn btn-success mt-5 mb-4">{{__ "flows.index.createNew"}}</a>
         </div>
       </div>
       <div class="row">
@@ -47,7 +47,7 @@
       </div>
       <div class="col-md-8 my-auto">
         <div class="card-title">
-          <a href="{{pathFor 'flows.one' _id=_id}}">
+          <a href="{{pathFor 'flows.one' teamId=currentTeamId _id=_id}}">
             <h6>{{this.title}}</h6>
           </a>
         </div>

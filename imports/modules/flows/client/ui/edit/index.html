@@ -1,6 +1,7 @@
 <template name="flows.one.edit">
   {{#autoForm collection=Flows id="updateFlowForm" type="method" doc=flow meteormethod="flows.update"}}
-    {{> afQuickField name='_id' value=flow._id type='hidden'}}
-    {{> flowEditor}}
+  {{> afQuickField name='_id' value=flow._id type='hidden'}}
+  {{debug flow}}
+  {{> flowEditor}}
   {{/autoForm}}
 </template>

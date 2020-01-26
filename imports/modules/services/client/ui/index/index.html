@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <a href="{{pathFor 'services.new'}}" class="float-right btn btn-success mt-5 mb-4">{{__ "services.index.connectNew"}}</a>
+        <a href="{{pathFor 'services.new' teamId=currentTeamId}}" class="float-right btn btn-success mt-5 mb-4">{{__ "services.index.connectNew"}}</a>
       </div>
     </div>
     <div class="row">
@@ -41,7 +41,7 @@
       </div>
       <div class="col-md-9 my-auto">
         <div class="card-title text-left">
-          <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
+          <a href="{{pathFor 'services.one.edit' teamId=currentTeamId type=type _id=_id}}">
             <h6>
               {{#if isEq this.type 'agent'}}
                 {{{sAgentReportStatusDot}}}
@@ -63,7 +63,7 @@
       </div>
       <div class="col-md-2">
         <div class="float-right">
-          <a href="{{pathFor 'services.one.edit' type=type _id=_id}}" class="btn btn-outline-primary">
+          <a href="{{pathFor 'services.one.edit' teamId=currentTeamId type=type _id=_id}}" class="btn btn-outline-primary">
             {{__ "services.index.itemView"}}
           </a>
         </div>

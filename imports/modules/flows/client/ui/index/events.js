@@ -18,6 +18,9 @@ Template.flowsIndexListItem.events({
   },
   'click .card': (event, template) => {
     event.stopPropagation()
-    Router.go('flows.one', {_id: template.data._id})
+    Router.go('flows.one', {
+      teamId: Router.current().params.teamId,
+      _id: template.data._id
+    })
   }
 })

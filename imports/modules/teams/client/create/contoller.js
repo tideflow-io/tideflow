@@ -24,8 +24,9 @@ Template.teamsCreate.events({
         sAlert.error(i18n.__('teams.create.error'))
         return
       }
-      Session.set('currentTeamId', teamId)
-      Router.go('dashboard')
+      Router.go('dashboard', {
+        teamId
+      })
     })
   }
 })

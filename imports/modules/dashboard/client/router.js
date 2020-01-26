@@ -4,7 +4,7 @@ import i18n from 'meteor/universe:i18n'
 
 import './index.html'
 
-Router.route('/dashboard', function () {
+Router.route('/:teamId/dashboard', function () {
   this.render('dashboard')
 }, {
   subscriptions: function () {

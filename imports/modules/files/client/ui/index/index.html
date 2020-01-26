@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <a href="{{pathFor 'files.templates'}}" class="float-right btn btn-success mt-5 mb-4">{{__ "files.index.createNew"}}</a>
+        <a href="{{pathFor 'files.templates' teamId=currentTeamId}}" class="float-right btn btn-success mt-5 mb-4">{{__ "files.index.createNew"}}</a>
       </div>
     </div>
     <div class="row">
@@ -49,7 +49,7 @@
           </div>
           <div class="dropdown-menu dropdown-menu-right">
               <a class="dropdown-item download-file">{{__ "files.index.list.download"}}</a>
-              <a class="dropdown-item" href="{{pathFor 'files.one.edit' _id=_id}}">{{__ "files.index.list.edit"}}</a>
+              <a class="dropdown-item" href="{{pathFor 'files.one.edit' teamId=currentTeamId _id=_id}}">{{__ "files.index.list.edit"}}</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item files-one-delete" href="#">{{__ "files.index.list.delete"}}</a>
           </div>

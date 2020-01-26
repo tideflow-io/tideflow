@@ -105,6 +105,19 @@ Template.registerHelper('eventHumanName', (serviceName, eventName) => {
   }
 })
 
+Template.registerHelper('currentTeamId', () => {
+  try {
+    let c = Router.current().params.teamId
+    if (c) Session.set('lastTeamId', c) 
+    else c = Session.get('lastTeamId') 
+    return c
+  }
+  catch (ex) {
+    return null
+  }
+})
+
+
 Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
 Template.registerHelper('agentUrl', () => {
   const url = new URL(Meteor.absoluteUrl())

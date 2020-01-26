@@ -32,7 +32,7 @@
       </div>
       <div class="col-md-9">
         <div class="card-title">
-          <a href="{{pathFor 'services.one.edit' type=type _id=_id}}">
+          <a href="{{pathFor 'services.one.edit' teamId=currentTeamId type=type _id=_id}}">
             <h6>
               {{__ this.humanName}}
               {{#if this.website}}
@@ -47,7 +47,7 @@
       </div>
       <div class="col-md-2">
         <div class="float-right">
-          <a href="{{pathFor 'services.new.type' type=this.name}}" class="btn btn-outline-primary">
+          <a href="{{pathFor 'services.new.type' teamId=currentTeamId type=this.name}}" class="btn btn-outline-primary">
             {{__ "services.new.select"}}
           </a>
         </div>

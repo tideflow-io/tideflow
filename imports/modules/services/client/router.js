@@ -12,13 +12,13 @@ import './ui/new'
 import './ui/newType'
 import './ui/edit'
 
-Router.route('/services', function () {
+Router.route('/:teamId/services', function () {
   this.render('services.index')
 }, {
   subscriptions: function () {
     return [
       Meteor.subscribe('services.all', {
-        team: Session.get('currentTeamId')
+        team: this.params.teamId
       }, {
         sort: {
           createdAt: -1
@@ -42,7 +42,7 @@ Router.route('/services', function () {
   parent: 'home'
 })
 
-Router.route('/services/new', function () {
+Router.route('/:teamId/services/new', function () {
   this.render('services.new')
 }, {
   name: 'services.new',
@@ -50,7 +50,7 @@ Router.route('/services/new', function () {
   parent: 'services.index'
 })
 
-Router.route('/services/new/:type', function () {
+Router.route('/:teamId/services/new/:type', function () {
   window.editorViewDetailsHooks = []
   this.render('services.new.type')
 }, {
@@ -72,15 +72,15 @@ Router.route('/services/new/:type', function () {
   parent: 'services.new'
 })
 
-Router.route('/services/:type/:_id/edit', function () {
+Router.route('/:teamId/services/:type/:_id/edit', function () {
   window.editorViewDetailsHooks = []
   this.render('services.one.edit')
 }, {
   waitOn: function () {
     return [
       Meteor.subscribe('services.single', {
-        team: Session.get('currentTeamId'),
-        _id: this.params._id
+        _id: this.params._id,
+        team: this.params.teamId
       })
     ]
   },

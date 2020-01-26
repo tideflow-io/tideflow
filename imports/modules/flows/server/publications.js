@@ -4,23 +4,26 @@ import SimpleSchema from 'simpl-schema'
 
 import { Flows } from '../both/collection.js'
 import { Executions } from '../../executions/both/collection'
+import { isMember } from '../../_common/server/teams'
 
 Meteor.publish('flows.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-  query.user = Meteor.userId()
   new SimpleSchema({
-    user: String
+    team: String
   }).validate(query)
+
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
   return Flows.find(query, options)
 })
 
 Meteor.publish('flows.single', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-  query.user = Meteor.userId()
   new SimpleSchema({
     _id: String,
-    user: String
+    team: String
   }).validate(query)
+
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
   return Flows.find(query, options)
 })
 

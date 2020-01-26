@@ -16,6 +16,8 @@ Router.route('/service/endpoint/:uuid', function () {
     'trigger.config.endpoint': uuid
   })
 
+  console.log({flow})
+
   if (!flow) {
     res.writeHead(404)
     res.end()

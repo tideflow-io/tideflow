@@ -263,7 +263,8 @@ Template.flowEditor.onRendered(function() {
 
     // Subscribe to the flow.
     let subscription = instance.subscribe('flows.single', {
-      _id: Router.current().params._id
+      _id: Router.current().params._id,
+      team: Router.current().params.teamId
     })
 
     // Whenever Meteor has subscriber to flows.single...

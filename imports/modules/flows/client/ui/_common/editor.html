@@ -5,147 +5,155 @@
     </h6>
     <iframe src="https://tideflow.io/docs/services-email-outgoing"></iframe>
   </div> -->
-  <nav class="col-md-2 d-none d-md-block bg-light" id="flow-sidebar">
+  <!-- <nav class="col-md-2 d-none d-md-block bg-light" id="flow-sidebar">
     <div class="sidebar-sticky">
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
-        <span>{{__ "flows.editor.step.addOne"}}</span>
-      </h6>
-
-      <div class="p-3">
-        <form id="flow-sidebar-step-search">
-          <input type="text" class="form-control" placeholder="Search">
-        </form>
-      </div>
-
-      <div class="p-3 pt-0" id="flow-sidebar-steps">
-        {{#each stepsAvailableSidebar}}
-          {{> flowEditorStepAvailable}}
-        {{/each}}
-      </div>
-
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>Help</span>
-      </h6>
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="https://tideflow.io/documentation" target="_blank">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            Open documentation website
-          </a>
-        </li>
-      </ul>
+      
     </div>
-  </nav>
-  <div class="col-md-9 ml-sm-auto col-lg-10 pt-2">
-    <div class="row greyed-separator-b">
-      <div class="col-7"> {{> afQuickField name='title'}} </div>
-      <div class="col-3"> {{> afQuickField name='status'}} </div>
-      <div class="col-2">
-        <div class="form-group">
-          <label class="control-label">&nbsp;</label>
-          <button type="submit" class="form-control btn btn-primary">
-            {{#if this.flow}}
-              {{__ "flows.edit.submit"}}
-            {{else}}
-              {{__ "flows.new.submit"}}
-            {{/if}}
-          </button>
+  </nav> -->
+  <div class="d-flex" id="wrapper">
+    
+    <div class="bg-light border-right sidebar-sticky" id="sidebar-wrapper">
+      <div class="list-group list-group-flush">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+          <span>{{__ "flows.editor.step.addOne"}}</span>
+        </h6>
+        <div class="p-3">
+          <form id="flow-sidebar-step-search">
+            <input type="text" class="form-control" placeholder="Search">
+          </form>
         </div>
+        <div class="p-3 pt-0" id="flow-sidebar-steps">
+          {{#each stepsAvailableSidebar}}
+            {{> flowEditorStepAvailable}}
+          {{/each}}
+        </div>
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Help</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="https://tideflow.io/documentation" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              Open documentation website
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="row" id="flow-editor">
-      <div class="col-12">
-        {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
-        {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
-        {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
-        <div class="card flow-step flow-step-trigger" data-step="trigger" style="left: 20px; top: 20px;">
-          <div class="card-body">
-            <div class="card-title">
-              {{__ "flows.editor.trigger.title"}}
-            </div>
-            <select class="form-control" name="triggerSelector">
-              <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
-              {{#each triggers}}
-                <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
-              {{/each}}
-            </select>
-            
-            {{#if triggerSelected.templates.triggerEditorPre}}
-              {{> Template.dynamic template=triggerSelected.templates.triggerEditorPre}}
-            {{/if}}
-            
-            {{#if triggerSelected.events}}
-              <select class="form-control" name="triggerEventSelector">
-                <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
-                {{#each triggerSelected.events}}
-                  {{#if inputable}}
-                    <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
-                  {{/if}}
-                {{/each}}
-              </select>
-              {{#if triggerEditorEventForm}}
-                {{> Template.dynamic template=triggerEditorEventForm data=this}}
-              {{/if}}
-            {{/if}}
 
-            {{#if triggerSelected.templates.triggerEditorPost}}
-              {{> Template.dynamic template=triggerSelected.templates.triggerEditorPost}}
-            {{/if}}
-          </div>
-          <div class="connector-out connector-outbound" data-step="trigger">
-            -
+    <div id="page-content-wrapper">
+      <div class="col-lg-12 pt-2">
+        <div class="row greyed-separator-b">
+          <div class="col-7"> {{> afQuickField name='title'}} </div>
+          <div class="col-3"> {{> afQuickField name='status'}} </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label class="control-label">&nbsp;</label>
+              <button type="submit" class="form-control btn btn-primary">
+                {{#if this.flow}}
+                  {{__ "flows.edit.submit"}}
+                {{else}}
+                  {{__ "flows.new.submit"}}
+                {{/if}}
+              </button>
+            </div>
           </div>
         </div>
-        {{#afEachArrayItem name="steps"}}
-          <div class="card flow-step flow-step-step {{#if editMode}}edit-mode{{/if}}" data-step="{{this.index}}"  style="left: 450px; top: 20px;">
-            <div class="connector-out connector-inbound" data-step="{{this.index}}">
-              -
-            </div>
-            <div class="card-body">
-              {{> afFieldInput label=true name=this.current.type type='hidden'}}
-              {{> afFieldInput label=true name=this.current._id type='hidden'}}
-              {{> afFieldInput label=true name=this.current.event type='hidden'}}
-              <select class="d-none step-type-selector form-control" data-step="{{this.index}}">
-                {{#each stepsAvailable}}
-                  <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-                {{/each}}
-              </select>
-              <div class="card-title mb-2">
-                <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
-                <strong>{{cardTitle}}</strong> 
-              </div>
-              <p>
-                {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
-              </p>
-              <div class="{{#if editMode}}{{else}}d-none{{/if}}">
-                {{#if stepSelectedEvents ../../flow ../index this.name}}
-                  <select class="step-event-selector form-control" data-step="{{this.index}}">
-                    <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-                    {{#each stepSelectedEvents}}
-                      <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+        <div class="row" id="flow-editor">
+          <div class="col-12">
+            {{> afQuickField name='trigger.type' value=triggerTypeSelected type='hidden'}}
+            {{> afQuickField name='trigger._id' value=triggerIdSelected type='hidden'}}
+            {{> afQuickField name='trigger.event' value=triggerEventSelected type='hidden'}}
+            <div class="card flow-step flow-step-trigger" data-step="trigger" style="left: 20px; top: 20px;">
+              <div class="card-body">
+                <div class="card-title">
+                  {{__ "flows.editor.trigger.title"}}
+                </div>
+                <select class="form-control" name="triggerSelector">
+                  <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
+                  {{#each triggers}}
+                    <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
+                  {{/each}}
+                </select>
+                
+                {{#if triggerSelected.templates.triggerEditorPre}}
+                  {{> Template.dynamic template=triggerSelected.templates.triggerEditorPre}}
+                {{/if}}
+                
+                {{#if triggerSelected.events}}
+                  <select class="form-control" name="triggerEventSelector">
+                    <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
+                    {{#each triggerSelected.events}}
+                      {{#if inputable}}
+                        <option value="{{this.name}}" {{isSelectedTriggerEvent}}>{{__ this.humanName}}</option>
+                      {{/if}}
                     {{/each}}
                   </select>
+                  {{#if triggerEditorEventForm}}
+                    {{> Template.dynamic template=triggerEditorEventForm data=this}}
+                  {{/if}}
                 {{/if}}
-                {{> stepEventConfig steps=../flow.steps index=this.index}}
+
+                {{#if triggerSelected.templates.triggerEditorPost}}
+                  {{> Template.dynamic template=triggerSelected.templates.triggerEditorPost}}
+                {{/if}}
               </div>
-              {{#if editMode}}
-                <p class="mt-2 edit-mode-link edit-mode-leave">
-                  <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetailsDone"}}</small>
-                </p>
-              {{else}}
-                <p class="edit-mode-link edit-mode-enter">
-                  <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetails"}}</small>
-                </p>
-              {{/if}}
+              <div class="connector-out connector-outbound" data-step="trigger">
+                -
+              </div>
             </div>
-            <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
-              X
-            </button>
-            <div class="connector-out connector-outbound" data-step="{{this.index}}">
-              -
-            </div>
+            {{#afEachArrayItem name="steps"}}
+              <div class="card flow-step flow-step-step {{#if editMode}}edit-mode{{/if}}" data-step="{{this.index}}"  style="left: 450px; top: 20px;">
+                <div class="connector-out connector-inbound" data-step="{{this.index}}">
+                  -
+                </div>
+                <div class="card-body">
+                  {{> afFieldInput label=true name=this.current.type type='hidden'}}
+                  {{> afFieldInput label=true name=this.current._id type='hidden'}}
+                  {{> afFieldInput label=true name=this.current.event type='hidden'}}
+                  <select class="d-none step-type-selector form-control" data-step="{{this.index}}">
+                    {{#each stepsAvailable}}
+                      <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                    {{/each}}
+                  </select>
+                  <div class="card-title mb-2">
+                    <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                    <strong>{{cardTitle}}</strong> 
+                  </div>
+                  <p>
+                    {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
+                  </p>
+                  <div class="{{#if editMode}}{{else}}d-none{{/if}}">
+                    {{#if stepSelectedEvents ../../flow ../index this.name}}
+                      <select class="step-event-selector form-control" data-step="{{this.index}}">
+                        <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                        {{#each stepSelectedEvents}}
+                          <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                        {{/each}}
+                      </select>
+                    {{/if}}
+                    {{> stepEventConfig steps=../flow.steps index=this.index}}
+                  </div>
+                  {{#if editMode}}
+                    <p class="mt-2 edit-mode-link edit-mode-leave">
+                      <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetailsDone"}}</small>
+                    </p>
+                  {{else}}
+                    <p class="edit-mode-link edit-mode-enter">
+                      <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetails"}}</small>
+                    </p>
+                  {{/if}}
+                </div>
+                <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
+                  X
+                </button>
+                <div class="connector-out connector-outbound" data-step="{{this.index}}">
+                  -
+                </div>
+              </div>
+            {{/afEachArrayItem}}
           </div>
-        {{/afEachArrayItem}}
+        </div>
       </div>
     </div>
   </div>

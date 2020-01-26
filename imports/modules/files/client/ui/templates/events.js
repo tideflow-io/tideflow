@@ -11,7 +11,9 @@ Template['files.templates'].events({
     Session.set('fileTemplatesCategoryFilter', null)
   },
   'click .new-file-empty': () => {
-    Router.go('files.new', {})
+    Router.go('files.new', {
+      teamId: Router.current().params.teamId
+    })
   }
 })
 
@@ -24,6 +26,9 @@ Template.filesTemplatesCategoryFilter.events({
 
 Template.filesTemplatesCard.events({
   'click *': (_event, template) => {
-    Router.go('files.new', {}, { hash: template.data._id })
+    Router.go('files.new', {}, {
+      teamId: Router.current().params.teamId,
+      hash: template.data._id
+    })
   }
 })

@@ -22,6 +22,7 @@ export const createFile = new ValidatedMethod({
   name: 'files.create',
   validate: schema.validator(),
   async run(file) {
+    console.log({file})
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
     if (!isMember(Meteor.userId(), file.team)) throw new Meteor.Error('no-access')
     const newFile = await lib.create({
@@ -30,7 +31,7 @@ export const createFile = new ValidatedMethod({
       name: file.name,
       userCreated: true
     }, file.content)
-    return pick(newFile, ['_id'])
+    return pick(newFile, ['_id', 'team'])
   }
 })
 
@@ -91,7 +92,7 @@ export const updateFile = new ValidatedMethod({
       update
     )
 
-    return { _id: file._id }
+    return { _id: file._id, team: file.team }
   }
 })
 
