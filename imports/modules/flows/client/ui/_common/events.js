@@ -45,7 +45,7 @@ const stepEventSelectorChanged = function(index, type) {
 
 Template.flowEditorStepAvailable.events({
   'click .card': async (event, template) => {
-    const formId = $('#page > form')[0].id
+    const formId = $('#page-content-wrapper > form')[0].id
     const formSchema = AutoForm.getFormSchema(formId);
     AutoForm.arrayTracker.addOneToField(formId, 'steps', formSchema)
     setTimeout(() => {
