@@ -14,7 +14,6 @@ AutoForm.addHooks(['insertServiceForm'], {
   },
   after: {
     method: (error, result) => {
-      console.log({result})
       Router.go('services.one.edit', {
         _id: result._id,
         type: result.type,

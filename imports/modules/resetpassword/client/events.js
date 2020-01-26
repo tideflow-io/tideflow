@@ -34,7 +34,9 @@ Template['membership.resetpassword'].events({
         }
       } 
       else {
-        Router.go('dashboard')
+        Router.go('dashboard', {
+          teamId: '0'
+        })
         sAlert.success(i18n.__('resetpassword.ok'))
       }
     })

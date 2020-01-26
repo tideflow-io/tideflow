@@ -5,7 +5,9 @@ import './index.html'
 
 Router.route('/enroll-account/:token', function () {
   if (Meteor.user()) {
-    return Router.go('dashboard')
+    return Router.go('dashboard', {
+      teamId: '0'
+    })
   }
   this.render('membershipEnrollaccount', 
     {

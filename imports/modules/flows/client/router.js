@@ -205,7 +205,6 @@ Router.route('/:teamId/flows/:_id/edit', function () {
   },
   data: function() {
     if (this.ready) {
-      console.log(Flows.findOne({}))
       return {
         flow: Flows.findOne({
           _id: this.params._id

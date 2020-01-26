@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
-import { Router } from 'meteor/iron:router'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
 
 import i18n from 'meteor/universe:i18n'
@@ -18,9 +17,6 @@ Template['membership.login'].events({
         else {
           sAlert.error(error.reason)
         }
-      }
-      else {
-        Router.go('dashboard')
       }
     })
   }

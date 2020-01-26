@@ -8,10 +8,6 @@ import i18n from 'meteor/universe:i18n'
 AutoForm.debug()
 
 Router.onBeforeAction(function () {
-  console.log({
-    u: Meteor.userId(),
-    logging: Meteor.loggingIn()
-  })
   if  (!Meteor.userId() && !Meteor.loggingIn()) {
     this.redirect('membership.login')
     this.stop()

@@ -5,7 +5,9 @@ import i18n from 'meteor/universe:i18n'
 
 Router.route('/', function () {
   if (Meteor.user()) {
-    Router.go('dashboard')
+    Router.go('dashboard', {
+      teamId: '0'
+    })
   }
   else {
     Router.go('membership.login')

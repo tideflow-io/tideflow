@@ -22,7 +22,6 @@ export const createFile = new ValidatedMethod({
   name: 'files.create',
   validate: schema.validator(),
   async run(file) {
-    console.log({file})
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
     if (!isMember(Meteor.userId(), file.team)) throw new Meteor.Error('no-access')
     const newFile = await lib.create({
