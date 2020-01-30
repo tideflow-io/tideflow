@@ -34,6 +34,7 @@ Template['membership.resetpassword'].events({
         }
       } 
       else {
+        console.log('5')
         Router.go('dashboard', {
           teamId: '0'
         })

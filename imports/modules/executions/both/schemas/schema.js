@@ -10,6 +10,11 @@ const ExecutionSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  team: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
   user: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,

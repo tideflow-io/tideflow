@@ -2,7 +2,6 @@ import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
 import { FilesTemplatesCategories } from '/imports/modules/filesTemplatesCategories/both/collection'
 
 import { run as runCategories } from '/imports/modules/filesTemplatesCategories/server/prefill'
-import * as fs from 'fs'
 
 const run = async () => {
 

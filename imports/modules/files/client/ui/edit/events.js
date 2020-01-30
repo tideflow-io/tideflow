@@ -65,7 +65,9 @@ Template['files.one.edit'].onRendered(function() {
   }
   else {
     alert('File can not be edited')
-    Router.go('files.index')
+    Router.go('files.index', {
+      teamId: Router.current().params.teamId
+    })
   }
 })
 
@@ -99,7 +101,9 @@ Template['files.one.edit'].events({
               return
             }
             sAlert.success(i18n.__('files.delete.success'))
-            Router.go('files.index')
+            Router.go('files.index', {
+              teamId: Router.current().params.teamId
+            })
           })
         }
       })

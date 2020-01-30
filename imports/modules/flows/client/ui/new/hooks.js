@@ -60,13 +60,15 @@ AutoForm.addHooks(['insertFlowForm'], {
   },
   after: {
     method: (error, result) => {
-
       jsPlumb.ready(function() {
         $('#flow-editor .card').remove()
         jsPlumb.deleteEveryConnection()
       })
-
-      Router.go('flows.one', result)
+      
+      Router.go('flows.one', {
+        _id: result._id,
+        teamId: result.team
+      })
     }
   }
 })

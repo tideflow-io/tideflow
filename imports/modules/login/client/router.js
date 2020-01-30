@@ -18,6 +18,7 @@ Meteor.startup(() =>{
       }
     }
     if (Meteor.user()) {
+      console.log('4')
       return Router.go('dashboard', {
         teamId: '0'
       })

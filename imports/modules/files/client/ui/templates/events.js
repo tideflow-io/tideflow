@@ -26,7 +26,7 @@ Template.filesTemplatesCategoryFilter.events({
 
 Template.filesTemplatesCard.events({
   'click *': (_event, template) => {
-    Router.go('files.new', {}, {
+    Router.go('files.new', {
       teamId: Router.current().params.teamId,
       hash: template.data._id
     })

@@ -14,6 +14,11 @@ const ExecutionlogSchema = new SimpleSchema({
     type: String,
     optional: false
   },
+  team: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
   user: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,

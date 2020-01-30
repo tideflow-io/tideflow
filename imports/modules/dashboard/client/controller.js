@@ -10,6 +10,7 @@ Template.dashboard.onCreated(function() {
   this.autorun(function () {
     self.subscribe('dashboard.executionsStats', {
       time: self.executionsTime.get(),
+      team: Router.current().params.teamId
     }, {
       limit: 0
     })

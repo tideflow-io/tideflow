@@ -16,7 +16,44 @@ Router.configure({
 })
 
 Template.ApplicationLayout.onRendered(function() {
-  
+
+  this.autorun(function () {
+    if (!Meteor.userId()) return
+    let currentTeam = Router.current().params.teamId
+    if (currentTeam === '0') {
+      let firstTeam = Teams.findOne()
+      console.log({firstTeam})
+      if (!firstTeam) {
+        //Router.go('teams.create')
+      }
+      else {
+        Session.set('lastTeamId', firstTeam._id)
+        Router.go('dashboard', {
+          teamId: firstTeam._id
+        })
+      }
+    }
+    else {
+      console.log('subscribe')
+      Meteor.subscribe('services.all', {
+        team: currentTeam
+      })
+      
+      Meteor.subscribe('flows.all', {
+        team: currentTeam
+      }, {
+        fields: {
+          team: true,
+          title: true,
+          descriptiom: true,
+          status: true,
+          trigger: true
+        }
+      })
+
+    }
+  })
+
   Meteor.subscribe('teams.all', {}, () => {
     let firstTeam = Teams.findOne()
     let currentTeam = Router.current().params.teamId
@@ -40,22 +77,4 @@ Template.ApplicationLayout.onRendered(function() {
     }
   })
 
-  const teamId = Router.current().params.teamId
-  if (!teamId) return;
-
-  Meteor.subscribe('services.all', {
-    team: teamId
-  })
-  
-  Meteor.subscribe('flows.all', {
-    team: teamId
-  }, {
-    fields: {
-      team: true,
-      title: true,
-      descriptiom: true,
-      status: true,
-      trigger: true
-    }
-  })
 })

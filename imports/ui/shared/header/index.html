@@ -45,6 +45,7 @@
                 {{#each teams}}
                   {{> appHeaderTeam}}
                 {{/each}}
+                <a class="dropdown-item" href="{{pathFor 'teams.create'}}">New team</a>
                 <div class="dropdown-divider"></div>
                 <a id="logout" class="dropdown-item" href="#">{{__ "header.myaccount.logout"}}</a>
               </div>

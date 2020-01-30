@@ -38,7 +38,7 @@ export const createFlow = new ValidatedMethod({
 
     Flows.insert(flow)
 
-    return pick(flowsHooks.create.post(flow), ['_id'])
+    return pick(flowsHooks.create.post(flow), ['_id', 'team'])
   }
 })
 

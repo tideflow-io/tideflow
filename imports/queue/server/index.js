@@ -214,6 +214,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     })
 
     let execution = {
+      team: flow.team,
       user: flow.user,
       triggerData,
       service: service._id ? service._id : null,
@@ -436,6 +437,7 @@ jobs.register('workflow-start', function(jobData) {
 
   // Log the trigger execution
   let executionLog = {
+    team: flow.team,
     execution: execution._id,
     type: flow.trigger.type,
     event: flow.trigger.event,
@@ -554,6 +556,7 @@ jobs.register('workflow-step', function(jobData) {
    * Store log in db.
    */
   let executionLog = {
+    team: flow.team,
     execution: execution._id,
     flow: execution.flow,
     user: user._id,

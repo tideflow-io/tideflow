@@ -4,6 +4,7 @@ import i18n from 'meteor/universe:i18n'
 
 const mayGoHome = () => {
   if (Meteor.user()) {
+    console.log('3')
     Router.go('dashboard', {
       teamId: '0'
     })
