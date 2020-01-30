@@ -34,7 +34,6 @@ Template.ApplicationLayout.onRendered(function() {
       }
     }
     else {
-      console.log('subscribe')
       Meteor.subscribe('services.all', {
         team: currentTeam
       })

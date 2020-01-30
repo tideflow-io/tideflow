@@ -28,7 +28,7 @@ Template['services.one.edit'].events({
             }
             sAlert.success(i18n.__('services.delete.success'))
             Router.go('services.index', {
-              teamId: Router.current().params.team
+              teamId: Router.current().params.teamId
             })
           })
         } 
