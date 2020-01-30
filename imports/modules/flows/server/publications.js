@@ -30,8 +30,6 @@ Meteor.publish('flows.single', (query, options) => {
 Meteor.publish('flows.one.executionsStats', function(query, options) {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
-  console.log({query})
-
   query.user = Meteor.userId()
 
   var pipeline = [
