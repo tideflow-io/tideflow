@@ -48,7 +48,7 @@ const service = {
       visibe: true,
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
-        const fileData = lastData.data || {}
+        const fileData = lastData ? lastData.data || {} : {}
 
         try {
           const file = await filesLib.getOne({ _id: currentStep.config.file })

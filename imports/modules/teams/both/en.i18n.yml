@@ -1,1 +1,10 @@
 _namespace: teams
+create:
+  title: Create a new team
+  subtitle: Organise your assets under a different team and invite others to collaborate
+  form:
+    name: Group name
+    submit: Create
+    errors:
+      general: Error creating your new team
+      nameLength: Team names must have 6 characters at least.

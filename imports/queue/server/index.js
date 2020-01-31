@@ -101,7 +101,7 @@ const jobs = {
    * registers a job that can be executed later on
    */
   register: (name, method, options, cb) => {
-    debug(`jobs.register ${name}`)
+    debug(`+ REGISTER ${name}`)
     let jobs = {}
     jobs[name] = method
     return Queue.register(jobs)
@@ -111,26 +111,26 @@ const jobs = {
    * 
    */
   create: (name, data, options) => {
-    debug(`jobs.create ${name}`)
+    debug(`+ CREATE ${name}`)
     if (!data) data = {}
     return Queue.run(name, data, options)
   },
 
   run: (name, data, options) => {
-    debug(`jobs.run ${name}`)
+    debug(`+ RUN ${name}`)
     if (!data) data = {}
     return Queue.run(name, data, options)
   },
 
   schedule: (name, data, options) => {
-    debug(`jobs.schedule ${name}`)
+    debug(`+ SCHEDULE ${name}`)
     if (!data) data = {}
     if (!options.date) throw new Error('Schedule with no date')
     return Queue.run(name, data, options)
   },
 
   reschedule: (name, data, options) => {
-    debug(`jobs.reschedule ${name}`)
+    debug(`+ RESCHEDULE ${name}`)
     if (!data) data = {}
     if (!options.date) throw new Error('Schedule with no date')
 
@@ -151,7 +151,7 @@ const jobs = {
   },
 
   deschedule: (name, data, options, reason) => {
-    debug(`jobs.deschedule ${name}`)
+    debug(`+ DESCHEDULE ${name}`)
     const query = {
       name: 's-cron-runOne',
       state: 'pending'
@@ -409,6 +409,8 @@ jobs.register('workflow-start', function(jobData) {
     user: Object
   })
 
+  debug(`workflow-start execution: ${jobData.execution._id}`)
+
   let createdAt = new Date()
 
   // Get the current execution
@@ -520,7 +522,7 @@ jobs.register('workflow-start', function(jobData) {
   debug(`triggerSingleChilds ${JSON.stringify(triggerSingleChilds)}`)
 
   stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
-    debug(`workflow-start triggered step [${flow.steps[stepIndex].type}]`)
+    debug(`workflow-start triggered step [${flow.steps[stepIndex].type.toUpperCase()}]`)
     jobs.run('workflow-step', {
       execution,
       currentStep: flow.steps[stepIndex],
@@ -542,6 +544,8 @@ jobs.register('workflow-step', function(jobData) {
   let instance = this
 
   let { currentStep, user, execution } = jobData
+
+  debug(`workflow-step execution: ${jobData.execution._id}`)
 
   let isStopped = Executions.find({
     _id: execution._id,
@@ -572,6 +576,7 @@ jobs.register('workflow-step', function(jobData) {
   }
 
   if (isStopped) {
+    debug('  Stopping step due stopped status')
     executionLog.status = 'stopped'
     ExecutionsLogs.insert(executionLog)
     instance.success()
@@ -605,6 +610,8 @@ jobs.register('workflow-step', function(jobData) {
   const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
   if (!stepEvent || !stepEvent.callback) return null
   
+  debug(` ${currentStep.type}.${currentStep.event} => ${executionLog._id}`)
+
   let eventCallback = Meteor.wrapAsync(cb => {
     stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
   })()

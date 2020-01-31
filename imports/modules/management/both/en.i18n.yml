@@ -1,5 +1,5 @@
 _namespace: management
-title: Management
+title: Administration
 site.submit: Update
 site.title.label: Site's title
 site.title.empty: Site's title can not be empty
