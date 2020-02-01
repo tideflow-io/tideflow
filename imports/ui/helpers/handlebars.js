@@ -85,10 +85,10 @@ Template.registerHelper('userName', function(user) {
   }
 })
 
-Template.registerHelper('currentTeamName', () => {
+Template.registerHelper('currentTeamProperty', (prop) => {
   let c = Session.get('lastTeamId') 
   if (!c) return null
 
   let t = Teams.findOne({_id: c})
-  return t ? t.name : null
+  return t ? t[prop] : null
 })

@@ -12,7 +12,7 @@ const KeySchema = new SimpleSchema({
   },
   slug: {
     type: String,
-    optional: false
+    optional: true
   },
   user: {
     type: String,

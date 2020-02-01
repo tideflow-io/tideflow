@@ -1,0 +1,14 @@
+<template name="teamSettingsMenu">
+  <ul class="nav nav-tabs flex-lg-column">
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'teams.one.manage'}}active{{/if}}" href="{{pathFor 'teams.one.manage' teamId=currentTeamId}}">
+        {{__ "teamSettings.menu.general"}}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'teams.one.members'}}active{{/if}}" href="{{pathFor 'teams.one.members' teamId=currentTeamId}}">
+        {{__ "teamSettings.menu.members"}}
+      </a>
+    </li>
+  </ul>
+</template>

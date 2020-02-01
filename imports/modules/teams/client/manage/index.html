@@ -1,3 +1,74 @@
 <template name="teamsManage">
+  <div class="container">
+    {{> teanSeetingsHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        {{> teamSettingsMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            {{#autoForm collection=Teams doc=team id="updateTeamSettings" type="method" meteormethod="team.update"}}
+              {{> afQuickField name='_id' type='hidden'}}
+              {{> afQuickField name='name'}}
+              <button type="submit" class="btn btn-primary">{{__ "teams.update.submit.button"}}</button>
+            {{/autoForm}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
+<template name="teamsManageMembers">
+  <div class="container">
+    {{> teanSeetingsHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        {{> teamSettingsMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">User</th>
+                  <th scope="col">Member</th>
+                  <th scope="col">Manager</th>
+                  <th scope="col">Administrator</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each team.members}}
+                  {{> teamsManageMembersUser }}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="teamsManageMembersUser">
+  <tr>
+    <th scope="row">{{user}}</th>
+    <td>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+      </div>
+    </td>
+    <td>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+      </div>
+    </td>
+    <td>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+      </div>
+    </td>
+  </tr>
 </template>

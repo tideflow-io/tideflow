@@ -8,4 +8,8 @@ myaccount.profile: Profile
 myaccount.logout: Logout
 goToApp: Go to the app
 home: Home
-temansmenu.title: "My teams:"
+temansmenu: 
+  settings: Team settings
+  noteams: "No teams found"
+  title: "My teams:"
+  newTeam: "+ New team"

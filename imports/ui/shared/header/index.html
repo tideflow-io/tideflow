@@ -31,23 +31,27 @@
             <li class="nav-item dropdown dropdown-menu-right {{#if routeContains 'profile'}}active{{/if}}">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{#if userName}}
-                  {{userName}}@{{ currentTeamName }}
+                  {{userName}}@{{ currentTeamProperty 'slug' }}
                 {{else}}
-                  {{userEmail}} - {{ currentTeamName }}
+                  {{userEmail}} - {{ currentTeamProperty 'name' }}
                 {{/if}}
-                 
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{pathFor 'membership.profile.index'}}">{{__ "header.myaccount.profile"}}</a>
                 {{#if checkUserRole 'super-admin'}}
                   <a class="dropdown-item" href="{{pathFor 'management.index'}}">{{__ "header.myaccount.admin"}}</a>
                 {{/if}}
+                <a class="dropdown-item" href="{{pathFor 'teams.one.manage' teamId=currentTeamId}}">{{__ "header.temansmenu.settings"}}</a>
                 <div class="dropdown-divider"></div>
-                <h6 class="dropdown-header">{{__ "header.temansmenu.title"}}</h6>
+                {{#if cursorIsEmpty teams}}
+                  <h6 class="dropdown-header">{{__ "header.temansmenu.noteams"}}</h6>
+                {{else}}
+                  <h6 class="dropdown-header">{{__ "header.temansmenu.title"}}</h6>
+                {{/if}}
                 {{#each teams}}
                   {{> appHeaderTeam}}
                 {{/each}}
-                <a class="dropdown-item" href="{{pathFor 'teams.create'}}">New team</a>
+                <a class="dropdown-item" href="{{pathFor 'teams.create'}}">{{__ "header.temansmenu.newTeam"}}</a>
                 <div class="dropdown-divider"></div>
                 <a id="logout" class="dropdown-item" href="#">{{__ "header.myaccount.logout"}}</a>
               </div>

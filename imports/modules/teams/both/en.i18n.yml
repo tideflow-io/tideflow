@@ -8,3 +8,6 @@ create:
     errors:
       general: Error creating your new team
       nameLength: Team names must have 6 characters at least.
+update:
+  submit:
+    button: Update

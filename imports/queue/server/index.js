@@ -14,7 +14,7 @@ import { servicesAvailable } from '/imports/services/_root/server'
 import * as serverEmailHelper from '/imports/helpers/server/emails'
 import * as emailHelper from '/imports/helpers/both/emails'
 
-const debug = require('debug')('queue')
+const debug = require('debug')('tideflow:queue:core')
 
 Queue.configure({
   // disableDevelopmentMode: true
@@ -612,9 +612,19 @@ jobs.register('workflow-step', function(jobData) {
   
   debug(` ${currentStep.type}.${currentStep.event} => ${executionLog._id}`)
 
-  let eventCallback = Meteor.wrapAsync(cb => {
-    stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
-  })()
+  let eventCallback = null
+
+  try {
+    debug(` ${currentStep.type}.${currentStep.event} => CALLING CALLBACK`)
+    eventCallback = Meteor.wrapAsync(cb => {
+      stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
+    })()
+  }
+  catch (ex) {
+    console.error(ex)
+  }
+
+  debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
 
   {
     let updateReq = {

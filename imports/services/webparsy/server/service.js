@@ -3,6 +3,7 @@ import { servicesAvailable, getResultsTypes, fileFromBuffer } from '/imports/ser
 import filesLib from '/imports/modules/files/server/lib'
 
 const webparsy = require('webparsy')
+const debug = require('debug')('tideflow:services:webparsy')
 
 const service = {
   name: 'webparsy',
@@ -31,12 +32,15 @@ const service = {
     {
       name: 'scrape',
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        debug('scrape called')
         let string = null
 
         try {
           string = await filesLib.getOneAsString({ _id: currentStep.config.ymlFile })
+          debug('Scraping definition: loaded')
         }
         catch (ex) {
+          debug('Scraping definition failed', ex)
           cb(null, {
             result: {},
             next: false,
@@ -60,8 +64,11 @@ const service = {
           webparsyFlags = _.chain(previousStepsData).reduce((i, m)=> Object.assign(i,m)).value()
         }
 
+        debug('Flags', webparsyFlags)
+
         try {
           let scrapingResult = await webparsy.init({string, webparsyFlags})
+          debug('Scraping result', Object.keys(scrapingResult).join(', '))
           let files = []
 
           await Promise.all( Object.keys(scrapingResult).map(async k => {
@@ -79,6 +86,9 @@ const service = {
                     delete scrapingResult[k]
                     resolve()
                   })
+              }
+              else {
+                resolve()
               }
             })
           }))
@@ -100,6 +110,7 @@ const service = {
           })
         }
         catch (ex) {
+          console.error(ex)
           cb(null, {
             result: {},
             next: false,

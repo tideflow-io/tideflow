@@ -38,5 +38,26 @@ Meteor.methods({
         role: 'admin'
       }]
     })
+  },
+  'team.update' (teamData) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    console.log({teamData})
+    check(teamData, {
+      _id: String,
+      name: String
+    })
+
+    let { name, _id } = teamData
+
+    let existingTeam = Teams.findOne({ name, _id: { $ne: _id } })
+
+    if (existingTeam) throw new Meteor.Error('already-exists')
+
+    // Check if group already exists
+    return Teams.update({ _id: teamData._id}, {
+      $set: {
+        name
+      }
+    })
   }
 })

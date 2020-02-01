@@ -13,3 +13,27 @@ Router.route('/teams/new', function () {
   title: i18n.__('teams.create.title'),
   parent: 'home'
 })
+
+Router.route('/:teamId/settings', function () {
+  this.render('teamsManage')
+}, {
+  subscriptions: function () {
+    return [
+    ]
+  },
+  name: 'teams.one.manage',
+  title: i18n.__('teams.one.manage.title'),
+  parent: 'home'
+})
+
+Router.route('/:teamId/members', function () {
+  this.render('teamsManageMembers')
+}, {
+  subscriptions: function () {
+    return [
+    ]
+  },
+  name: 'teams.one.members',
+  title: i18n.__('teams.one.manage.title'),
+  parent: 'home'
+})
