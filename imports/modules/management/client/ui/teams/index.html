@@ -1,0 +1,46 @@
+<template name="management.teams">
+    <div class="container">
+    {{> managementHeader}}
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        {{> managementMenu}}
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <form id="teams-update">
+              <div class="form-group">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="teamsCreation"
+                    id="disabled"
+                    value="none"
+                    checked="{{#if isEq teamsConfig.creationPermissions 'none'}}checked{{/if}}">
+                  <label class="form-check-label" for="noSignups">
+                      {{__ "management.teams.creation.disabled.label"}}
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="teamsCreation"
+                    id="public-signups"
+                    value="public"
+                    checked="{{#if isEq teamsConfig.creationPermissions 'public'}}checked{{/if}}">
+                  <label class="form-check-label" for="publicSignups">
+                      {{__ "management.teams.creation.public.label"}}
+                  </label>
+                </div>
+              </div>
+              <button class="btn  btn-primary" type="submit">{{__ "management.teams.submit.button"}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -13,3 +13,13 @@ permissions.submit.button: Save
 permissions.submit.error: Error updating permissions
 permissions.submit.invalidDomain: Invalid domain
 permissions.submit.ok: Permissions updated succesfully
+teams:
+  creation:
+    disabled:
+      label: Only administrator can create groups
+    public:
+      label: Anyone can create groups
+  submit:
+    button: Update permissions
+    error: Error
+    ok: Settings updated

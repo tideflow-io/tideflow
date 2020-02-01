@@ -38,7 +38,7 @@ module.exports.createUsersTeam = createUsersTeam
 const matchRole = (user, team, role) => {
   let userId = user._id || user
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
-  if (!fullTeam) return null
+  if (!fullTeam) throw 'no-team'
   if (fullTeam && fullTeam.members) {
     return !!fullTeam.members.find(m => m.user === userId && role ? m.role === role : true)
   }
@@ -53,14 +53,59 @@ const isMember = (user, team) => {
 
 module.exports.isMember = isMember
 
-const isManager = (user, team) => {
-  return matchRole(user, team, 'manager')
-}
-
-module.exports.isManager = isManager
-
 const isAdmin = (user, team) => {
   return matchRole(user, team, 'admin')
 }
 
 module.exports.isAdmin = isAdmin
+
+const removeUser = (user, team) => {
+  let fullTeam = team._id ? team : Teams.findOne({_id: team})
+  if (!fullTeam) throw 'no-team'
+
+  let userId = user._id || user
+
+  let userIsMember = isMember(user, fullTeam)
+
+  if (!userIsMember) throw 'member-not-found'
+
+  return Teams.update({_id: fullTeam._id}, {
+    $pull: {
+      members: {
+        user: userId
+      }
+    }
+  })
+}
+
+module.exports.removeUser = removeUser
+
+const setRole = (user, team, role) => {
+  let fullTeam = team._id ? team : Teams.findOne({_id: team})
+  if (!fullTeam) throw 'no-team'
+
+  let userIsMember = isMember(user, fullTeam)
+
+  if (userIsMember) {
+    Teams.update({
+      _id: team,
+      'members.user': user
+    }, {
+      $set: {
+        'members.$.role': role
+      }
+    })
+  }
+  else {
+    Teams.update({_id: team}, {
+      $addToSet: {
+        members: {
+          user: user,
+          role: role
+        }
+      }
+    })
+  }
+}
+
+module.exports.setRole = setRole

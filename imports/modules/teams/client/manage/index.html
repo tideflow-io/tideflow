@@ -29,14 +29,37 @@
       </div>
       <div class="col-md-9">
         <div class="card">
+          <div class="card-header">
+            {{__ "teams.members.invite.title"}}
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="emailInvite">{{__ "teams.members.invite.email.title"}}</label>
+                <input type="email" required class="form-control" id="emailInvite" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">{{__ "teams.members.invite.email.help"}}</small>
+              </div>
+              <button type="submit" class="btn btn-primary">{{__ "teams.members.invite.email.submit"}}</button>
+            </form>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            {{__ "teams.members.list.title"}}
+          </div>
           <div class="card-body">
             <table class="table table-bordered mb-0">
               <thead>
                 <tr>
-                  <th scope="col">User</th>
-                  <th scope="col">Member</th>
-                  <th scope="col">Manager</th>
-                  <th scope="col">Administrator</th>
+                  <th scope="col">{{__ "teams.members.user.title"}}</th>
+                  <th scope="col">
+                    {{__ "teams.members.member.title"}}
+                    <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{__ "teams.members.member.tooltip"}}"></i>
+                  </th>
+                  <th scope="col">
+                    {{__ "teams.members.admin.title"}}
+                    <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{__ "teams.members.admin.tooltip"}}"></i>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -54,20 +77,15 @@
 
 <template name="teamsManageMembersUser">
   <tr>
-    <th scope="row">{{user}}</th>
+    <td>{{userEmail}}</td>
     <td>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <input class="form-check-input" checked="{{#if isMember}}checked{{/if}}" type="checkbox" value="member">
       </div>
     </td>
     <td>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-      </div>
-    </td>
-    <td>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <input class="form-check-input" checked="{{#if isAdmin}}checked{{/if}}" disabled="{{#if isAdmin}}disabled{{/if}}" type="checkbox" value="admin">
       </div>
     </td>
   </tr>

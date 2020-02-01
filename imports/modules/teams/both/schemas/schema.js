@@ -33,7 +33,7 @@ const KeySchema = new SimpleSchema({
   },
   'members.$.role': {
     type: String,
-    allowedValues: ['admin', 'manager', 'member'],
+    allowedValues: ['admin', 'member'],
     optional: false
   },
   createdAt: {

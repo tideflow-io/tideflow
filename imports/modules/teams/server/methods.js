@@ -1,14 +1,23 @@
 import { Meteor } from 'meteor/meteor'
-import { Accounts } from 'meteor/accounts-base'
 import { check } from 'meteor/check'
 
 import { Teams } from '/imports/modules/teams/both/collection'
+
+import { getSetting } from '../../management/both/settings'
+import { checkRole } from '../../../helpers/both/roles'
+import { isMember, isAdmin } from '../../_common/both/teams'
+import { setRole, removeUser } from '../../_common/server/teams'
 
 const slugify = require('slugify')
 
 Meteor.methods({
   'teams.create' (teamData) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+
+    if (!checkRole(Meteor.userId(), 'super-admin')
+      && getSetting('teamsCreation', 'creationPermissions') !== 'public') {
+      throw new Meteor.Error('not-allowed')
+    }
 
     check(teamData, {
       name: String
@@ -48,15 +57,81 @@ Meteor.methods({
 
     let { name, _id } = teamData
 
-    let existingTeam = Teams.findOne({ name, _id: { $ne: _id } })
+    let currentTeam = Teams.findOne({ _id })
+    if (!currentTeam) throw new Meteor.Error('not-found')
 
+    if (!isAdmin(Meteor.userId(), currentTeam)) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    let existingTeam = Teams.findOne({ name, _id: { $ne: _id } })
     if (existingTeam) throw new Meteor.Error('already-exists')
 
     // Check if group already exists
-    return Teams.update({ _id: teamData._id}, {
+    return Teams.update({ _id }, {
       $set: {
         name
       }
     })
+  },
+  'teamMember.switchRole' (teamId, user, newRole) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    check(teamId, String)
+    check(user, String)
+    check(newRole, String)
+
+    if (user === Meteor.userId()) {
+      throw new Meteor.Error('teams.members.switch.errors.notmyself')
+    }
+
+    let existingTeam = Teams.findOne({ _id: teamId })
+    if (!existingTeam) throw new Meteor.Error('not-found')
+
+    if (!isAdmin(Meteor.userId(), existingTeam)) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    return setRole(user, teamId, newRole)
+  },
+  'teamMember.add' (teamId, userEmail) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    check(teamId, String)
+    check(userEmail, String)
+
+    let user = Meteor.users.findOne({
+      'emails.address': userEmail,
+      'verified': true
+    })
+
+    if (!user) {
+      throw new Meteor.Error('user-not-found')
+    }
+
+    let existingTeam = Teams.findOne({ _id: teamId })
+    if (!existingTeam) throw new Meteor.Error('group-not-found')
+
+    if (!isAdmin(Meteor.userId(), existingTeam)) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    return setRole(user._id, teamId, 'member')
+  },
+  'teamMember.kick' (teamId, userId) {
+    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    check(teamId, String)
+    check(userId, String)
+
+    let existingTeam = Teams.findOne({ _id: teamId })
+    if (!existingTeam) throw new Meteor.Error('group-not-found')
+
+    if (!isAdmin(Meteor.userId(), existingTeam)) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    if (!isMember(userId, existingTeam)) {
+      throw new Meteor.Error('member-not-found')
+    }
+
+    return removeUser(userId, teamId)
   }
 })

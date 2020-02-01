@@ -10,5 +10,10 @@
         {{__ "managementShared.menu.permissions"}}
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link {{#if routeIs 'management.teams'}}active{{/if}}" href="{{pathFor 'management.teams'}}">
+        {{__ "managementShared.menu.teams"}}
+      </a>
+    </li>
   </ul>
 </template>

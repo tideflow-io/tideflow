@@ -3,7 +3,7 @@ create:
   title: Create a new team
   subtitle: Organise your assets under a different team and invite others to collaborate
   form:
-    name: Group name
+    name: Team name
     submit: Create
     errors:
       general: Error creating your new team
@@ -11,3 +11,23 @@ create:
 update:
   submit:
     button: Update
+members:
+  invite:
+    title: Invite new members
+    email:
+      title: Email address
+      help: The email address of the person you want no invite to the team
+      submit: Invite person
+  list:
+    title: List of members
+  user:
+    title: User
+  member:
+    title: Member
+    tooltip: Users can create and edit workflows
+  admin:
+    title: Administrator
+    tooltip: Users can create and edit workflows and edit team settings
+  switch:
+    errors:
+      notmyself: You can not update your own role

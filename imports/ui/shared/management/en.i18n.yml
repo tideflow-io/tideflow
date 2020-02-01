@@ -2,3 +2,4 @@ _namespace: managementShared
 title: Management
 menu.general: Home
 menu.permissions: Permissions
+menu.teams: Teams

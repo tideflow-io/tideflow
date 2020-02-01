@@ -41,7 +41,9 @@
                 {{#if checkUserRole 'super-admin'}}
                   <a class="dropdown-item" href="{{pathFor 'management.index'}}">{{__ "header.myaccount.admin"}}</a>
                 {{/if}}
-                <a class="dropdown-item" href="{{pathFor 'teams.one.manage' teamId=currentTeamId}}">{{__ "header.temansmenu.settings"}}</a>
+                {{#if allowTeamSettings}}
+                  <a class="dropdown-item" href="{{pathFor 'teams.one.manage' teamId=currentTeamId}}">{{__ "header.temansmenu.settings"}}</a>
+                {{/if}}
                 <div class="dropdown-divider"></div>
                 {{#if cursorIsEmpty teams}}
                   <h6 class="dropdown-header">{{__ "header.temansmenu.noteams"}}</h6>
@@ -51,7 +53,9 @@
                 {{#each teams}}
                   {{> appHeaderTeam}}
                 {{/each}}
-                <a class="dropdown-item" href="{{pathFor 'teams.create'}}">{{__ "header.temansmenu.newTeam"}}</a>
+                {{#if allowTeamCreation}}
+                  <a class="dropdown-item" href="{{pathFor 'teams.create'}}">{{__ "header.temansmenu.newTeam"}}</a>
+                {{/if}}
                 <div class="dropdown-divider"></div>
                 <a id="logout" class="dropdown-item" href="#">{{__ "header.myaccount.logout"}}</a>
               </div>
