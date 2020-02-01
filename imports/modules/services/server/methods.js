@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
+import { isMember } from '../../_common/server/teams'
+
 import { Services } from '../both/collection'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 
@@ -15,6 +17,8 @@ export const createService = new ValidatedMethod({
   run(service) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
     service.user = Meteor.userId()
+
+    if (!isMember(service.user, service.team)) throw new Meteor.Error('no-access')
 
     service = servicesHooks.create.pre(service)
     Services.insert(service)
@@ -32,6 +36,8 @@ export const updateService = new ValidatedMethod({
     const UPDATABLE_PROPERTIES = ['title', 'description', 'details', 'config']
 
     let originalService = Services.findOne({_id: service._id})
+
+    if (!isMember(originalService.user, originalService.team)) throw new Meteor.Error('no-access')
 
     let newServiceProperties = {}
     UPDATABLE_PROPERTIES.map(p => { newServiceProperties[p] = service[p] })
@@ -60,6 +66,9 @@ export const deleteService = new ValidatedMethod({
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
     
     let originalService = Services.findOne({_id: service._id})
+
+    if (!isMember(originalService.user, originalService.team)) throw new Meteor.Error('no-access')
+
     let docToDelete = servicesHooks.delete.pre(originalService)
     if (!docToDelete) {
       throw new Error('Deletion hook failed')

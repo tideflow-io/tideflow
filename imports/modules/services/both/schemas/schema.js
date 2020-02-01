@@ -15,6 +15,11 @@ const ServiceSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  team: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
   title: {
     type: String,
     label: 'Title',

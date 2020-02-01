@@ -11,7 +11,7 @@ index.title: Services
 index.subtitle: Create tools that integrate with workflows.
 index.connectNew: Create a new service
 index.emptyListTitle: There are no services registered under your account
-index.emptyListDescription: It seems you haven't created any service yet.
+index.emptyListDescription: It seems your team haven't created any service yet.
 index.itemView: View
 newType.submit: Create service
 new.select: Select

@@ -24,7 +24,7 @@ edit.submit: Save
 index.title: Workflows
 index.subtitle: Workflows are lists of actions that happen upon a trigger.
 index.createNew: Create a new workflow
-index.emptyListSubTitle: It seems you haven't created any workflow yet.
+index.emptyListSubTitle: It seems your team haven't created any workflow yet.
 index.viewOne: View
 new.submit: Create
 executions.steps.title: "Action by action:"

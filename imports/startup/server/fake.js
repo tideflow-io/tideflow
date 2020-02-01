@@ -76,6 +76,7 @@ const flowsDocs = Flows.find()
 flowsDocs.map(flowDoc => {
   for (let i = 0; i < NUMBER_OF_EXECUTIONS; i++) {
     Executions.insert({
+      team: '123', // flow.team,
       user: user._id,
       service : flowDoc.trigger._id,
       fullService: Services.findOne({_id: flowDoc.trigger._id}),

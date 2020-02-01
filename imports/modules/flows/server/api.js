@@ -39,7 +39,7 @@ Router.route('/api/flows', function () {
       reply(res, flows)
     })
     .catch(ex => {
-      console.log(ex)
+      console.error(ex)
       reply(res, ex.reason, 314)
     })
 

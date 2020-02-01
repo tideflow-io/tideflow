@@ -1,15 +1,30 @@
 import { Template } from 'meteor/templating'
-import { Settings } from '/imports/modules/management/both/collection'
+import { Meteor } from 'meteor/meteor'
+import { Router } from 'meteor/iron:router'
+
+import { getSetting } from '../../../modules/management/both/settings'
+import { Teams } from '/imports/modules/teams/both/collection'
+import { checkRole } from '/imports/helpers/both/roles'
+import { isMember, isAdmin } from '../../../modules/_common/both/teams'
 
 Template.appHeader.helpers({
   siteName: () => {
-    const st = Settings.findOne({
-      type: 'siteSettings'
-    })
-    return st && st.settings ? st.settings.title || '' : ''
+    return getSetting('siteSettings', 'title') || ''
   },
-  showLogin: () => {
-    const st = Settings.findOne({})
-    return !!st
+  allowTeamCreation: () => {
+    return getSetting('teamsCreation', 'creationPermissions') === 'public' ||
+      checkRole(Meteor.userId(), 'super-admin')
+  },
+  allowTeamSettings: () => {
+    return isAdmin(Meteor.userId(), Session.get('lastTeamId'))
+  },
+  'teams': () => {
+    return Teams.find()
+  },
+})
+
+Template.appHeaderTeam.helpers({
+  'activeTeam': (template) => {
+    return template.data._id === Session.get('lastTeamId')
   }
 })

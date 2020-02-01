@@ -7,8 +7,8 @@
         </h2>
       </div>
       <div class="col-4 text-right">
-        <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
-        <a class="btn btn-sm btn-primary flow-editor-link" href="{{pathFor 'flows.one.edit' _id=flow._id}}">{{__ "flows.one.edit"}}</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' teamId=currentTeamId _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
+        <a class="btn btn-sm btn-primary flow-editor-link" href="{{pathFor 'flows.one.edit' teamId=currentTeamId _id=flow._id}}">{{__ "flows.one.edit"}}</a>
       </div>
     </div>
 

@@ -2,6 +2,7 @@ import { Session } from 'meteor/session'
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
+import { Teams } from '/imports/modules/teams/both/collection'
 
 import { Settings } from '/imports/modules/management/both/collection'
 import * as emailHelper from '/imports/helpers/both/emails'
@@ -82,4 +83,12 @@ Template.registerHelper('userName', function(user) {
   else {
     return fn
   }
+})
+
+Template.registerHelper('currentTeamProperty', (prop) => {
+  let c = Session.get('lastTeamId') 
+  if (!c) return null
+
+  let t = Teams.findOne({_id: c})
+  return t ? t[prop] : null
 })

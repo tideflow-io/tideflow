@@ -16,6 +16,11 @@ const FlowSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  team: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
   emailOnTrigger: {
     label: i18n.__('flows.properties.emailOnTrigger'),
     type: Boolean,

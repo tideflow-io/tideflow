@@ -14,7 +14,11 @@ AutoForm.addHooks(['insertServiceForm'], {
   },
   after: {
     method: (error, result) => {
-      Router.go('services.one.edit', result)
+      Router.go('services.one.edit', {
+        _id: result._id,
+        type: result.type,
+        teamId: Router.current().params.teamId
+      })
     }
   }
 })

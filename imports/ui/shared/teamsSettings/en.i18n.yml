@@ -1,0 +1,5 @@
+_namespace: teamSettings
+title: Team settings
+menu:
+  general: General
+  members: Members

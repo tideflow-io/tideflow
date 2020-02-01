@@ -27,7 +27,9 @@ Template['flows.one.edit'].events({
               return
             }
             sAlert.success(i18n.__('flows.delete.success'))
-            Router.go('flows.index')
+            Router.go('flows.index', {
+              teamId: Router.current().params.teamId
+            })
           })
         }
       })

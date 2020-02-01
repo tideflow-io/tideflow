@@ -99,6 +99,9 @@ import '/imports/modules/profile/server'
 import '/imports/modules/profileEdit/both'
 import '/imports/modules/profileEdit/server'
 
+import '/imports/modules/teams/both'
+import '/imports/modules/teams/server'
+
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/server'
 

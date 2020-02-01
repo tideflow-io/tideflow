@@ -65,7 +65,9 @@ Template['flows.one'].events({
               return
             }
             sAlert.success(i18n.__('flows.delete.success'))
-            Router.go('flows.index')
+            Router.go('flows.index', {
+              teamId: Router.current().params.teamId
+            })
           })
         }
       })
@@ -75,7 +77,8 @@ Template['flows.one'].events({
 Template.flowOneExecutionSmallCardsHorizontal.events({
   'click': (event, template) => {
     Router.go('flowsOneExecutions', {
-      _id: template.data.executions._id
+      _id: template.data.executions._id,
+      teamId: Router.current().params.teamId
     })
   }
 })

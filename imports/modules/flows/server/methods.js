@@ -10,6 +10,8 @@ import { Flows } from '../both/collection'
 import { Executions } from '../../executions/both/collection'
 import { ExecutionsLogs } from '../../executionslogs/both/collection'
 
+import { isMember } from '../../_common/server/teams'
+
 import schema from '../both/schemas/schema.js'
 
 export const createFlow = new ValidatedMethod({
@@ -17,6 +19,8 @@ export const createFlow = new ValidatedMethod({
   validate: schema.validator(),
   run(flow) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+
+    if (!isMember(Meteor.userId(), flow.team)) throw new Meteor.Error('no-access')
 
     // SECURITY:
     // This can not contain the flow.trigger.secrets, and it's meant to contain
@@ -34,7 +38,7 @@ export const createFlow = new ValidatedMethod({
 
     Flows.insert(flow)
 
-    return pick(flowsHooks.create.post(flow), ['_id'])
+    return pick(flowsHooks.create.post(flow), ['_id', 'team'])
   }
 })
 
@@ -64,9 +68,7 @@ export const updateFlow = new ValidatedMethod({
     }
 
     // Check if the user can update the flow
-    if (originalFlow.user !== Meteor.userId()) {
-      throw new Meteor.Error('no-access')
-    }
+    if (!isMember(Meteor.userId(), originalFlow.team)) throw new Meteor.Error('no-access')
 
     // Now we need to build the hook's new object
   
@@ -125,9 +127,7 @@ export const deleteFlow = new ValidatedMethod({
     }
 
     // Check if the user can delete the flow
-    if (originalFlow.user !== Meteor.userId()) {
-      throw new Meteor.Error('no-access')
-    }
+    if (!isMember(Meteor.userId(), originalFlow.team)) throw new Meteor.Error('no-access')
 
     // Hookize the flows and grab the result
     let docToDelete = flowsHooks.delete.pre(originalFlow)

@@ -27,6 +27,7 @@ const service = {
 
         filesLib.create({
           user: user._id,
+          team: execution.team,
           name: `${fileName}.json`
         }, JSON.stringify(previousSteps, ' ', 2))
 
@@ -110,6 +111,7 @@ const service = {
           //require('fs').writeFileSync(`/Users/joseconstela/Desktop/${fileName}`, file.data.data)
           fileNames.push(fileName)
           return filesLib.create({
+            team: execution.team,
             user: user._id,
             name: fileName
           }, file.data)

@@ -9,12 +9,14 @@ import './ui/new'
 import './ui/templates'
 import './ui/edit'
 
-Router.route('/files', function () {
+Router.route('/:teamId/files', function () {
   this.render('files.index')
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('files.all', {}, {
+      Meteor.subscribe('files.all', {
+        team: this.params.teamId
+      }, {
         sort: {
           createdAt: -1
         }
@@ -37,7 +39,7 @@ Router.route('/files', function () {
   parent: 'home'
 })
 
-Router.route('/files/templates', function () {
+Router.route('/:teamId/files/templates', function () {
   this.render('files.templates')
 }, {
   subscriptions: function () {
@@ -67,7 +69,7 @@ Router.route('/files/templates', function () {
   parent: 'files.index'
 })
 
-Router.route('/files/new', function () {
+Router.route('/:teamId/files/new', function () {
   this.render('files.new')
 }, {
   name: 'files.new',
@@ -75,13 +77,14 @@ Router.route('/files/new', function () {
   parent: 'files.index'
 })
 
-Router.route('/files/:_id/edit', function () {
+Router.route('/:teamId/files/:_id/edit', function () {
   this.render('files.one.edit')
 }, {
   waitOn: function () {
     return [
       Meteor.subscribe('files.single', {
-        _id: this.params._id
+        _id: this.params._id,
+        team: this.params.teamId
       })
     ]
   },

@@ -5,7 +5,8 @@ AutoForm.addHooks(['insertFileForm'], {
   after: {
     method: (error, result) => {
       Router.go('files.one.edit', {
-        _id: result._id
+        _id: result._id,
+        teamId: result.team
       })
     }
   },

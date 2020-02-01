@@ -3,7 +3,12 @@ import { Router } from 'meteor/iron:router'
 import i18n from 'meteor/universe:i18n'
 
 const mayGoHome = () => {
-  if (Meteor.user()) { Router.go('dashboard') }
+  if (Meteor.user()) {
+    console.log('3')
+    Router.go('dashboard', {
+      teamId: '0'
+    })
+  }
 }
 
 Router.route('/install/previous', function () {

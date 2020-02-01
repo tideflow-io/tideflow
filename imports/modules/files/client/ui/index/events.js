@@ -28,7 +28,10 @@ Template.filesIndexElement.events({
   },
   'click .card': (event, template) => {
     event.stopPropagation()
-    Router.go('files.one.edit', {_id: template.data._id})
+    Router.go('files.one.edit', {
+      teamId: Router.current().params.teamId,
+      _id: template.data._id
+    })
   },
   'click .card .dropdown-toggle': (event, template) => {
     event.stopPropagation()
@@ -56,7 +59,9 @@ Template.filesIndexElement.events({
               return
             }
             sAlert.success(i18n.__('files.delete.success'))
-            Router.go('files.index')
+            Router.go('files.index', {
+              teamId: Router.current().params.teamId
+            })
           })
         }
       })

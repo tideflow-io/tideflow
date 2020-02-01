@@ -55,7 +55,7 @@
 <template name="flowOneExecutionSmallDot">
   <a
     class="clickable"
-    href="{{pathFor 'flows.one.executionDetails' _id=flow._id executionId=execution._id}}"
+    href="{{pathFor 'flows.one.executionDetails' teamId=currentTeamId _id=flow._id executionId=execution._id}}"
     data-toggle="tooltip"
     data-placement="top"
     title="{{executionHappened execution.createdAt}} - {{fromNow execution.createdAt}}">

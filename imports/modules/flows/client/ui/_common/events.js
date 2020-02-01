@@ -45,7 +45,7 @@ const stepEventSelectorChanged = function(index, type) {
 
 Template.flowEditorStepAvailable.events({
   'click .card': async (event, template) => {
-    const formId = $('#page > form')[0].id
+    const formId = $('#page-content-wrapper > form')[0].id
     const formSchema = AutoForm.getFormSchema(formId);
     AutoForm.arrayTracker.addOneToField(formId, 'steps', formSchema)
     setTimeout(() => {
@@ -263,7 +263,8 @@ Template.flowEditor.onRendered(function() {
 
     // Subscribe to the flow.
     let subscription = instance.subscribe('flows.single', {
-      _id: Router.current().params._id
+      _id: Router.current().params._id,
+      team: Router.current().params.teamId
     })
 
     // Whenever Meteor has subscriber to flows.single...

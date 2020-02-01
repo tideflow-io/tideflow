@@ -25,3 +25,20 @@ const userEmail = (user) => {
 }
 
 module.exports.userEmail = userEmail
+
+/**
+ * Given a user id, return its first email address, having priority verified
+ * addresses.
+ * 
+ * @param {Object} user 
+ * @returns string The user's email adress
+ * @throws Exception if no user provided or no emails found
+ */
+const userEmailById = (_id) => {
+  if (!_id) throw new Error('No user provided')
+  let user = Meteor.users.findOne({_id})
+  if (!user) throw new Error('No user provided')
+  return userEmail(user)
+}
+
+module.exports.userEmailById = userEmailById

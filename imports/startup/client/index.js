@@ -46,6 +46,7 @@ import '/imports/ui/layouts/layout'
 import '/imports/ui/shared/header'
 import '/imports/ui/shared/management'
 import '/imports/ui/shared/profile'
+import '/imports/ui/shared/teamsSettings'
 import '/imports/ui/shared/loading'
 
 import '/imports/modules/verify/both'
@@ -104,6 +105,9 @@ import '/imports/modules/profileEdit/client'
 
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/client'
+
+import '/imports/modules/teams/both'
+import '/imports/modules/teams/client'
 
 import '/imports/modules/profileNotifications/both'
 import '/imports/modules/profileNotifications/client'

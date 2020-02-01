@@ -10,6 +10,7 @@ Template.dashboard.onCreated(function() {
   this.autorun(function () {
     self.subscribe('dashboard.executionsStats', {
       time: self.executionsTime.get(),
+      team: Router.current().params.teamId
     }, {
       limit: 0
     })
@@ -42,6 +43,7 @@ Template.darhboardExecutionFlow.events({
     event.stopPropagation()
     Router.go('flows.one', {
       _id: template.data._id,
+      teamId: Router.current().params.teamId
     })
   }
 })

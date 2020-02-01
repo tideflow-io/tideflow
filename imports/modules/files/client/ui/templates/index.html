@@ -36,7 +36,7 @@
                   </div>
                   <div class="row mt-2">
                     <div class="col-12">
-                      <a href="{{pathFor 'files.new'}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
+                      <a href="{{pathFor 'files.new' teamId=currentTeamId}}" class="card-link">{{__ "files.templates.empty.start"}}</a>
                     </div>
                   </div>
                 </div>
@@ -67,7 +67,7 @@
         </div>
         <div class="row mt-2">
           <div class="col-12">
-            <a href="{{pathFor 'files.new' hash=_id}}" class="card-link">{{__ "files.templates.useThis"}}</a>
+            <a href="{{pathFor 'files.new' hash=_id teamId=currentTeamId}}" class="card-link">{{__ "files.templates.useThis"}}</a>
           </div>
         </div>
       </div>

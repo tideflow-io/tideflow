@@ -1,5 +1,6 @@
 <template name="flows.new">
   {{#autoForm collection=Flows id="insertFlowForm" type="method" meteormethod="flows.create"}}
+    {{> afQuickField name='team' value=currentTeamId type='hidden'}}
     {{> flowEditor}}
   {{/autoForm}}
 </template>

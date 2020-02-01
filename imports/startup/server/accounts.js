@@ -28,3 +28,11 @@ Accounts.validateLoginAttempt(function(options) {
     throw new Meteor.Error('email-not-verified')
   }
 })
+
+Meteor.publish(null, function () {
+  if (this.userId) {
+    return Meteor.roleAssignment.find({ 'user._id': this.userId });
+  } else {
+    this.ready()
+  }
+})

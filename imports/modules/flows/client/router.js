@@ -18,7 +18,7 @@ import './ui/executionslogs'
 import './ui/new'
 import './ui/edit'
 
-Router.route('/flows', function () {
+Router.route('/:teamId/flows', function () {
   this.render('flows.index')
 }, {
   subscriptions: function () {
@@ -38,7 +38,7 @@ Router.route('/flows', function () {
   title: i18n.__('flows.breadcrumb.title.index')
 })
 
-Router.route('/flows/new', function () {
+Router.route('/:teamId/flows/new', function () {
   Object.keys(Session.keys).map(sk => {
     if (sk.indexOf('fe-') === 0) {
       delete Session.keys[sk]
@@ -48,8 +48,12 @@ Router.route('/flows/new', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('services.all', {}),
-      Meteor.subscribe('files.all', {})
+      Meteor.subscribe('services.all', {
+        team: this.params.teamId
+      }),
+      Meteor.subscribe('files.all', {
+        team: this.params.teamId
+      })
     ]
   },
   data: function() {
@@ -64,13 +68,14 @@ Router.route('/flows/new', function () {
   title: i18n.__('flows.breadcrumb.title.new')
 })
 
-Router.route('/flows/:_id', function () {
+Router.route('/:teamId/flows/:_id', function () {
   this.render('flows.one')
 }, {
   subscriptions: function () {
     return [
       Meteor.subscribe('flows.single', {
-        _id: this.params._id
+        _id: this.params._id,
+        team: Router.current().params.teamId
       }),
       Meteor.subscribe('executions.all', {
         flow: this.params._id
@@ -109,13 +114,14 @@ Router.route('/flows/:_id', function () {
   }
 })
 
-Router.route('/flows/:_id/executions', function () {
+Router.route('/:teamId/flows/:_id/executions', function () {
   this.render('flowsOneExecutions')
 }, {
   subscriptions: function () {
     return [
       Meteor.subscribe('flows.single', {
-        _id: this.params._id
+        _id: this.params._id,
+        team: Router.current().params.teamId
       })
     ]
   },
@@ -133,13 +139,14 @@ Router.route('/flows/:_id/executions', function () {
   title: i18n.__('flows.breadcrumb.title.executions')
 })
 
-Router.route('/flows/:_id/executions/:executionId', function () {
+Router.route('/:teamId/flows/:_id/executions/:executionId', function () {
   this.render('flowsOneExecutionsOneDetails')
 }, {
   subscriptions: function () {
     return [
       Meteor.subscribe('flows.single', {
-        _id: this.params._id
+        _id: this.params._id,
+        team: Router.current().params.teamId
       }),
       Meteor.subscribe('executions.single', {
         _id: this.params.executionId
@@ -177,7 +184,7 @@ Router.route('/flows/:_id/executions/:executionId', function () {
   }
 })
 
-Router.route('/flows/:_id/edit', function () {
+Router.route('/:teamId/flows/:_id/edit', function () {
   // Remove all session variables related to the flows editor
   Object.keys(Session.keys).map(sk => {
     if (sk.indexOf('fe-') === 0) {
@@ -188,8 +195,12 @@ Router.route('/flows/:_id/edit', function () {
 }, {
   subscriptions: function () {
     return [
-      Meteor.subscribe('services.all', {}),
-      Meteor.subscribe('files.all', {})
+      Meteor.subscribe('services.all', {
+        team: this.params.teamId
+      }),
+      Meteor.subscribe('files.all', {
+        team: this.params.teamId
+      })
     ]
   },
   data: function() {

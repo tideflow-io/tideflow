@@ -49,5 +49,24 @@ Meteor.methods({
         'settings.signupsDomain': settings.signupsDomain
       }
     })
+  },
+
+  'site-permissions-teams' (settings) {
+    if (!checkRole(Meteor.userId(), 'super-admin')) {
+      throw new Meteor.Error('not-allowed')
+    }
+
+    check(settings, {
+      creationPermissions: String
+    })
+
+    SettingsCollection.upsert({
+      type: 'teamsCreation'
+    }, {
+      $set: {
+        public: true,
+        'settings.creationPermissions': settings.creationPermissions
+      }
+    })
   }
 })

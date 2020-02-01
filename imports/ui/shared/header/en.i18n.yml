@@ -3,8 +3,13 @@ dashboard: Dashboard
 files: Files
 services: Services
 flows: Workflows
-myaccount.admin: Management
+myaccount.admin: Administration
 myaccount.profile: Profile
 myaccount.logout: Logout
 goToApp: Go to the app
 home: Home
+temansmenu: 
+  settings: Team settings
+  noteams: "No teams found"
+  title: "My teams:"
+  newTeam: "+ New team"
