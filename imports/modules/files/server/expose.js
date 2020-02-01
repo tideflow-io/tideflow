@@ -17,7 +17,7 @@ import lib from './lib'
  * @param {*} res 
  */
 const downloadFile = (_id, authenticatedUser, v, force, req, res) => {
-  const fileData = lib.getOneVersion({ _id, user: authenticatedUser.user._id }, v)
+  const fileData = lib.getOneVersion({ _id }, v)
 
   if (!isMember(authenticatedUser.user._id, fileData.file.team)) throw new Meteor.Error('no-access')
 
