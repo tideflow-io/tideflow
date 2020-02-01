@@ -1,5 +1,13 @@
 import { Teams } from '/imports/modules/teams/both/collection'
 
+const ROLES = {
+  MEMBER: 'member',
+  ADMIN: 'admin',
+  SUPER: 'super-admin'
+}
+
+module.exports.ROLES = ROLES
+
 const matchRole = (user, team, role) => {
   let userId = user._id || user
   let fullTeam = team._id ? team : Teams.findOne({_id: team})

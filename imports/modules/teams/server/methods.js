@@ -8,6 +8,8 @@ import { checkRole } from '../../../helpers/both/roles'
 import { isMember, isAdmin } from '../../_common/both/teams'
 import { setRole, removeUser } from '../../_common/server/teams'
 
+import { ROLES } from '../../_common/both/teams'
+
 const slugify = require('slugify')
 
 Meteor.methods({
@@ -114,7 +116,7 @@ Meteor.methods({
       throw new Meteor.Error('teams.members.add.errors.not-authorized')
     }
     
-    return setRole(user._id, existingTeam, 'member')
+    return setRole(user._id, existingTeam, ROLES.MEMBER)
   },
   'teamMember.remove' (teamId, userId) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')

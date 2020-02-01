@@ -2,6 +2,8 @@ import { Template } from 'meteor/templating'
 import { Teams } from '/imports/modules/teams/both/collection.js'
 import { userEmailById } from '../../../../helpers/both/emails'
 
+import { ROLES } from '../../../_common/both/teams'
+
 Template.teamsManage.helpers({
   Teams: function () {
     return Teams
@@ -29,10 +31,10 @@ Template.teamsManageMembersUser.helpers({
     return userEmailById(this.user)
   },
   isMember: function() {
-    return this.role === 'member'
+    return this.role === ROLES.MEMBER
   },
   isAdmin: function() {
-    return this.role === 'admin'
+    return this.role === ROLES.ADMIN
   }
 })
 
@@ -67,7 +69,7 @@ Template.teamsManageMembersUser.events({
     }
 
     if (switchRole) {
-      let newRole = oldRole === 'member' ? 'admin' : 'member'
+      let newRole = oldRole === ROLES.MEMBER ? ROLES.ADMIN : ROLES.MEMBER
       Meteor.call(
         'teamMember.switchRole',
         Router.current().params.teamId,

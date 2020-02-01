@@ -4,7 +4,8 @@ import { Roles } from 'meteor/alanning:roles'
 
 import { Settings } from '/imports/modules/management/both/collection'
 
-import { createUsersTeam, ROLES } from '/imports/modules/_common/server/teams'
+import { createUsersTeam } from '../../_common/server/teams'
+import { ROLES } from '../../_common/both/teams'
 
 import { check } from 'meteor/check'
 

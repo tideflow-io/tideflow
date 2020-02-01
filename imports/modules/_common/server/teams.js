@@ -2,14 +2,7 @@ import { Roles } from 'meteor/alanning:roles'
 
 import { Teams } from '/imports/modules/teams/both/collection'
 
-const ROLES = {
-  MEMBER: 'member',
-  MANAGER: 'manager',
-  ADMIN: 'admin',
-  SUPER: 'super-admin'
-}
-
-module.exports.ROLES = ROLES
+import { ROLES } from '../both/teams'
 
 /**
  * 
