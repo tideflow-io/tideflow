@@ -1,7 +1,7 @@
 _namespace: teams
 create:
   title: Create a new team
-  subtitle: Organise your assets under a different team and invite others to collaborate
+  subtitle: Organise your assets under different teams and invite others to collaborate
   form:
     name: Team name
     submit: Create
