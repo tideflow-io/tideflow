@@ -17,11 +17,11 @@ const KeySchema = new SimpleSchema({
   user: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    optional: false
+    optional: true
   },
   members: {
     type: Array,
-    optional: false
+    optional: true
   },
   'members.$': {
     type: Object,

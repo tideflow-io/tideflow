@@ -34,10 +34,17 @@ Template.ApplicationLayout.onRendered(function() {
       }
     }
     else {
+      let team = Teams.findOne({_id: currentTeam})
+      if (team && team.members) {
+        const members = team.members.map(m => m.user)
+        Meteor.subscribe('teamMembers.emails', {
+          team: currentTeam,
+          users: members
+        })
+      }
       Meteor.subscribe('services.all', {
         team: currentTeam
       })
-      
       Meteor.subscribe('flows.all', {
         team: currentTeam
       }, {
@@ -49,7 +56,6 @@ Template.ApplicationLayout.onRendered(function() {
           trigger: true
         }
       })
-
     }
   })
 

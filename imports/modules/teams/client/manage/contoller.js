@@ -36,6 +36,25 @@ Template.teamsManageMembersUser.helpers({
   }
 })
 
+Template.teamsManageMembers.events({
+  'submit #member-invite': (event) => {
+    event.preventDefault()
+    const email = event.target.emailInvite.value
+    Meteor.call(
+      'teamMember.add',
+      Router.current().params.teamId,
+      email, (error, result) => {
+        if (error) {
+          sAlert.info(i18n.__(error.error))
+          return;
+        }
+        sAlert.success(i18n.__('teams.members.add.success'))
+
+      }
+    )
+  }
+})
+
 Template.teamsManageMembersUser.events({
   'click input[type="checkbox"]': function(event) {
     const user = this.user
@@ -58,5 +77,27 @@ Template.teamsManageMembersUser.events({
         }
       )
     }
+  },
+  'click .remove': function (event) {
+    event.preventDefault()
+    swal({
+      title: i18n.__('teams.members.delete.title'),
+      text: i18n.__('teams.members.delete.text'),
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      animation: false
+    })
+      .then(accepted => {
+        if (accepted) {
+          Meteor.call('teamMember.remove', Router.current().params.teamId, this.user, (error) => {
+            if (error) {
+              sAlert.error(i18n.__('teams.members.delete.errors.general'))
+              return
+            }
+            sAlert.success(i18n.__('teams.members.delete.success'))
+          })
+        }
+      })
   }
 })

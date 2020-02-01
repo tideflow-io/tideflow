@@ -12,22 +12,36 @@ update:
   submit:
     button: Update
 members:
+  add:
+    success: Member added to the team
+    errors:
+      team-not-found: Team not found
+      user-not-found: User not found
+      not-authorized: Not authorized
   invite:
     title: Invite new members
     email:
       title: Email address
       help: The email address of the person you want no invite to the team
       submit: Invite person
+  delete:
+    title: Remove member from team
+    text: You can always add him/her later. The user will not be notified.
+    errors:
+      general: There was a problem removing the member from the team
+    success: Member removed from the team
   list:
     title: List of members
+    delete:
+      button: Remove from team
   user:
     title: User
   member:
     title: Member
-    tooltip: Users can create and edit workflows
+    tooltip: Members can create/edit/remove workflows, files and services
   admin:
     title: Administrator
-    tooltip: Users can create and edit workflows and edit team settings
+    tooltip: Administrators ccan create/edit/remove workflows, files and services and edit team settings
   switch:
     errors:
       notmyself: You can not update your own role

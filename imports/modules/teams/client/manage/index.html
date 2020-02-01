@@ -33,7 +33,7 @@
             {{__ "teams.members.invite.title"}}
           </div>
           <div class="card-body">
-            <form>
+            <form id="member-invite">
               <div class="form-group">
                 <label for="emailInvite">{{__ "teams.members.invite.email.title"}}</label>
                 <input type="email" required class="form-control" id="emailInvite" aria-describedby="emailHelp">
@@ -60,6 +60,8 @@
                     {{__ "teams.members.admin.title"}}
                     <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{__ "teams.members.admin.tooltip"}}"></i>
                   </th>
+                  <th scope="col">
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -80,13 +82,16 @@
     <td>{{userEmail}}</td>
     <td>
       <div class="form-check">
-        <input class="form-check-input" checked="{{#if isMember}}checked{{/if}}" type="checkbox" value="member">
+        <input class="form-check-input" checked="{{#if isMember}}checked{{/if}}" disabled="{{#if isMember}}disabled{{/if}}" type="checkbox" value="member">
       </div>
     </td>
     <td>
       <div class="form-check">
         <input class="form-check-input" checked="{{#if isAdmin}}checked{{/if}}" disabled="{{#if isAdmin}}disabled{{/if}}" type="checkbox" value="admin">
       </div>
+    </td>
+    <td>
+      <button class="btn btn-sm btn-outline-danger remove float-right">{{__ "teams.members.list.delete.button"}}</button>
     </td>
   </tr>
 </template>

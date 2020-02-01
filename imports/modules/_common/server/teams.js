@@ -40,7 +40,9 @@ const matchRole = (user, team, role) => {
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
   if (!fullTeam) throw 'no-team'
   if (fullTeam && fullTeam.members) {
-    return !!fullTeam.members.find(m => m.user === userId && role ? m.role === role : true)
+    return !!fullTeam.members.find(m => {
+      return (m.user === userId) && (role ? m.role === role : true)
+    })
   }
   return false
 }
@@ -81,15 +83,17 @@ const removeUser = (user, team) => {
 module.exports.removeUser = removeUser
 
 const setRole = (user, team, role) => {
+  let userId = user._id || user
+
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
   if (!fullTeam) throw 'no-team'
 
   let userIsMember = isMember(user, fullTeam)
 
   if (userIsMember) {
-    Teams.update({
-      _id: team,
-      'members.user': user
+    return Teams.update({
+      _id: fullTeam._id,
+      'members.user': userId
     }, {
       $set: {
         'members.$.role': role
@@ -97,10 +101,10 @@ const setRole = (user, team, role) => {
     })
   }
   else {
-    Teams.update({_id: team}, {
+    return Teams.update({_id: fullTeam._id}, {
       $addToSet: {
         members: {
-          user: user,
+          user: userId,
           role: role
         }
       }
