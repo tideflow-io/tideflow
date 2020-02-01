@@ -41,7 +41,6 @@ Meteor.methods({
   },
   'team.update' (teamData) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-    console.log({teamData})
     check(teamData, {
       _id: String,
       name: String
