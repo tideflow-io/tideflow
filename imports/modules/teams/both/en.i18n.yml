@@ -28,6 +28,10 @@ members:
     title: Remove member from team
     text: You can always add him/her later. The user will not be notified.
     errors:
+      team-not-found: Team not found
+      user-not-found: User not found
+      not-authorized: Not authorized
+      notmyself: You can not remove yourself
       general: There was a problem removing the member from the team
     success: Member removed from the team
   list:

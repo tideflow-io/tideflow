@@ -121,15 +121,19 @@ Meteor.methods({
     check(teamId, String)
     check(userId, String)
 
+    if (userId === Meteor.userId()) {
+      throw new Meteor.Error('teams.members.delete.errors.notmyself')
+    }
+
     let existingTeam = Teams.findOne({ _id: teamId })
-    if (!existingTeam) throw new Meteor.Error('team-not-found')
+    if (!existingTeam) throw new Meteor.Error('teams.members.delete.errors.team-not-found')
 
     if (!isAdmin(Meteor.userId(), existingTeam)) {
-      throw new Meteor.Error('not-authorized')
+      throw new Meteor.Error('teams.members.delete.errors.not-authorized')
     }
 
     if (!isMember(userId, existingTeam)) {
-      throw new Meteor.Error('member-not-found')
+      throw new Meteor.Error('teams.members.delete.errors.member-not-found')
     }
 
     return removeUser(userId, teamId)

@@ -92,7 +92,7 @@ Template.teamsManageMembersUser.events({
         if (accepted) {
           Meteor.call('teamMember.remove', Router.current().params.teamId, this.user, (error) => {
             if (error) {
-              sAlert.error(i18n.__('teams.members.delete.errors.general'))
+              sAlert.error(i18n.__(error.error))
               return
             }
             sAlert.success(i18n.__('teams.members.delete.success'))
