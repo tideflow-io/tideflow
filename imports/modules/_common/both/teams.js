@@ -13,7 +13,7 @@ const matchRole = (user, team, role) => {
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
   if (!fullTeam) throw 'no-team'
   if (fullTeam && fullTeam.members) {
-    return !!fullTeam.members.find(m => m.user === userId && role ? m.role === role : true)
+    return !!fullTeam.members.find(m => (m.user === userId) && (role ? m.role === role : true))
   }
   return false
 }

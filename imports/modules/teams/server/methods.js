@@ -115,8 +115,7 @@ Meteor.methods({
     if (!isAdmin(Meteor.userId(), existingTeam)) {
       throw new Meteor.Error('teams.members.add.errors.not-authorized')
     }
-    
-    return setRole(user._id, existingTeam, ROLES.MEMBER)
+    return setRole(user, existingTeam, ROLES.MEMBER)
   },
   'teamMember.remove' (teamId, userId) {
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
