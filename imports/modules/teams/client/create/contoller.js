@@ -13,7 +13,7 @@ Template.teamsCreate.events({
     const name = event.target.name.value
     
     if (name.length < 6) {
-      sAlert.error(i18n.__('teams.create.form.errors.nameLength'))
+      sAlert.error(i18n.__('teams.create.form.errors.name-too-short'))
       return
     }
 
@@ -21,7 +21,7 @@ Template.teamsCreate.events({
       name
     }, (error, teamId) => {
       if (error) {
-        sAlert.error(i18n.__('teams.create.form.errors.general'))
+        sAlert.error(i18n.__(error.error))
         return
       }
       Router.go('dashboard', { teamId })

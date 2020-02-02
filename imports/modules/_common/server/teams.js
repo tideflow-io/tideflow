@@ -1,6 +1,7 @@
 import { Roles } from 'meteor/alanning:roles'
 
 import { Teams } from '/imports/modules/teams/both/collection'
+import { isAdmin, isMember, matchRole } from '../both/teams'
 
 import { ROLES } from '../both/teams'
 
@@ -27,32 +28,6 @@ const createUsersTeam = (user, teamName) => {
 }
 
 module.exports.createUsersTeam = createUsersTeam
-
-const matchRole = (user, team, role) => {
-  let userId = user._id || user
-  let fullTeam = team._id ? team : Teams.findOne({_id: team})
-  if (!fullTeam) throw 'no-team'
-  if (fullTeam && fullTeam.members) {
-    return !!fullTeam.members.find(m => {
-      return (m.user === userId) && (role ? m.role === role : true)
-    })
-  }
-  return false
-}
-
-module.exports.matchRole = matchRole
-
-const isMember = (user, team) => {
-  return matchRole(user, team)
-}
-
-module.exports.isMember = isMember
-
-const isAdmin = (user, team) => {
-  return matchRole(user, team, 'admin')
-}
-
-module.exports.isAdmin = isAdmin
 
 const removeUser = (user, team) => {
   let fullTeam = team._id ? team : Teams.findOne({_id: team})

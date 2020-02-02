@@ -14,11 +14,11 @@ const slugify = require('slugify')
 
 Meteor.methods({
   'teams.create' (teamData) {
-    if (!Meteor.userId()) throw new Meteor.Error('no-auth')
+    if (!Meteor.userId()) throw new Meteor.Error('teams.create.form.errors.no-auth')
 
     if (!checkRole(Meteor.userId(), 'super-admin')
       && getSetting('teamsCreation', 'creationPermissions') !== 'public') {
-      throw new Meteor.Error('not-allowed')
+      throw new Meteor.Error('teams.create.form.errors.not-allowed')
     }
 
     check(teamData, {
@@ -30,14 +30,14 @@ Meteor.methods({
     name = name.trim()
     let slug = slugify(name)
 
-    if (name.length < 5) throw new Meteor.Error('name-too-short') 
+    if (name.length < 5) throw new Meteor.Error('teams.create.form.errors.name-too-short') 
 
     let existingTeam = Teams.findOne({$or:[
       { name },
       { slug }
     ]})
 
-    if (existingTeam) throw new Meteor.Error('already-exists')
+    if (existingTeam) throw new Meteor.Error('teams.create.form.errors.already-exists')
     
     // Check if group already exists
     return Teams.insert({

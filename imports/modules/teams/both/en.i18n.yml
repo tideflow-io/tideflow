@@ -6,8 +6,10 @@ create:
     name: Team name
     submit: Create
     errors:
-      general: Error creating your new team
-      nameLength: Team names must have 6 characters at least.
+      no-auth: Not authorised
+      not-allowed: You are not allowed to create new teams
+      name-too-short: Teams names must have 6 characters at least.
+      already-exists: Team already exists
 update:
   submit:
     button: Update
