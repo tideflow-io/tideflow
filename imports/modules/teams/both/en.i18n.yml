@@ -28,7 +28,7 @@ members:
       submit: Invite person
   delete:
     title: Remove member from team
-    text: You can always add him/her later. The user will not be notified.
+    text: The user will not be notified.
     errors:
       team-not-found: Team not found
       user-not-found: User not found
