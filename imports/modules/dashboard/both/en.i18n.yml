@@ -1,7 +1,7 @@
 _namespace: dashboard
 title: Dashboard
 subtitle: History of your workflows executions.
-executions.empty: It seems your team haven't executed any workflow yet.
+executions.empty: It seems your team haven't executed any workflow.
 executions.title: Executions history
 executions.filters.last24Hours: Last 24 hours
 executions.filters.lastWeek: Last week

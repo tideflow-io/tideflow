@@ -23,7 +23,18 @@ b {
   cursor: pointer;
 }
 
-body .navbar-dark .navbar-brand {
+.navbar {
+  background-color: #24292E;
+}
+
+.navbar .navbar-nav .nav-item > a {
+  color: #fff;
+  white-space: nowrap;
+}
+
+.navbar .navbar-brand {
+  color: #fff;
+  white-space: nowrap;
   border-right: 1px solid rgba(0,0,0,.2);
 }
 
@@ -142,4 +153,3 @@ img.h2 {
     min-width: 100px;
   }
 }
-
