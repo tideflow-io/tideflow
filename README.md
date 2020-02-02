@@ -2,25 +2,47 @@
 
 > Using Tideflow, you can design, automate and monitor your workflows in realtime.
 
-It's as easy as drag and drop. Create and connect actions to create custom
+It's as easy as drag and drop. Create and connect tasks to create custom
 workflows that replaces manual steps with automation.
 
 <img src="https://raw.githubusercontent.com/tideflow-io/tideflow-website/master/website/static/img/D43dLHRXsAIwXDs.jpg" height="400" style="border:1px solid gray;">
 
-## Run tasks in your own computer
+## Everything you need in workflow management
 
-With Tideflow's agent, you can run workflows actions in your own infrastructure.
-Either if it's for running an arbitrary command in your pc, or creating your own
-Continious Integration workflow using your office's server.
+- **Connect services and actions:** Designing any complexity process is as easy as drag-and-drop tasks with our tool.
+- **Audit and Improve:** Get realtime insights, logs and timings on your processes. Directly on the tool or via daily or weekly digest emails.
 
-- [Learn more](https://docs.tideflow.io/docs/services-agent)
+## Understand how your processes are behaving. With the blink of an eye.
+
+Tideflow comes with live monitoring dashboards where you can understand how your
+workflows are behaving. You also have live action-by-action logs, filterable
+historical execution logs and graphical visuals of executions.
+
+- [More about monitoring...](https://docs.tideflow.io/docs/monitor)
+
+## Working with files in your processes
+
+You and your workflows can create files and connect them to processes. From an
+image you want to attach to your emails, to storing an screenshot taken from a
+website scraped via WebParsy integration.
+
+- [More about files feature](https://docs.tideflow.io/docs/files)
+- [More about WebParsy integration](https://docs.tideflow.io/docs/services-webparsy)
+
+## Run actions in your own computers
+
+Tideflow's agent allows you to run workflows actions in your own infrastructure.
+Either if it's for running an arbitrary command from your personal computer, or
+building and deploying after pushing to GitHub from your office's server.
+
+- [More about the agent](https://docs.tideflow.io/docs/services-agent)
 
 ## Automate complex processes
 
-With our workflow editor, you can create multiple-to-multiple connections
+Our workflow editor allows you to create multiple-to-multiple connections
 between actions. Tideflow's execution engine will take care of the rest.
 
-- [Learn more](https://docs.tideflow.io/docs/workflows-introduction)
+- [More about workflows](https://docs.tideflow.io/docs/workflows-introduction)
 
 ## Automate and create anything
 
@@ -29,8 +51,8 @@ automating website contents scraping, automate build and deploy processes,
 generate PDF files, send emails and more. You can also build your own
 integrations.
 
-- [Learn more about services](https://docs.tideflow.io/docs/services-introduction)
-- [Developer’s guide](https://docs.tideflow.io/docs/developers)
+- [More about services](https://docs.tideflow.io/docs/services-introduction)
+- [Developer's guide](https://docs.tideflow.io/docs/developers)
 
 ---
 
