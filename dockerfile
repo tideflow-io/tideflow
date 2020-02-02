@@ -1,4 +1,4 @@
-FROM pozylon/meteor-docker-auto as bundler
+FROM megawebmaster/meteor-docker-auto as bundler
 ADD . /source
 WORKDIR /source
 RUN meteor npm install && \
