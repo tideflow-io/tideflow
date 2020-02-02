@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 import { Accounts } from 'meteor/accounts-base'
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 const jwtSecret = require('/imports/download/server/secret')
 import lib from './lib'

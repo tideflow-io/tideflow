@@ -10,7 +10,7 @@ import { Flows } from '../both/collection'
 import { Executions } from '../../executions/both/collection'
 import { ExecutionsLogs } from '../../executionslogs/both/collection'
 
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 import schema from '../both/schemas/schema.js'
 

@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema'
 
 import { Flows } from '../both/collection.js'
 import { Executions } from '../../executions/both/collection'
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 Meteor.publish('flows.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')

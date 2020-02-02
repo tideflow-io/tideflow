@@ -11,7 +11,7 @@ import { FilesTemplates } from '/imports/modules/filesTemplates/both/collection'
 import { pick } from '/imports/helpers/both/objects'
 
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 import schema from '../both/schemas/schema.js'
 import { Files } from '../both/collection'

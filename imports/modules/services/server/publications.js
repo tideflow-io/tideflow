@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
 import { Services } from '../both/collection.js'
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 Meteor.publish('services.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')

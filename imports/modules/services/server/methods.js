@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
-import { isMember } from '../../_common/server/teams'
+import { isMember } from '../../_common/both/teams'
 
 import { Services } from '../both/collection'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
