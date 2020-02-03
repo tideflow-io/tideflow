@@ -1,0 +1,8 @@
+{
+  "name": "AWS SNS Publish",
+  "description": "Publish message to an SNS Topic",
+  "fileName": "aws-sns-message.js",
+  "type": "text",
+  "iconClass": "fab fa-aws",
+  "iconColor": "#F8981D"
+}

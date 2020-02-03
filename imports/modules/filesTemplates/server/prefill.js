@@ -37,7 +37,8 @@ const run = async () => {
     {
       categoryId: 'nodesfc',
       templates: [
-        'prefill/nodesfc/basics.json'
+        'prefill/nodesfc/basics.json',
+        'prefill/nodesfc/aws-sns-message.json'
       ]
     }
   ]
