@@ -36,7 +36,7 @@ const stepEventSelectorChanged = function(index, type) {
   if (index === null) { return null }
   let selectedStepService = Session.get(`fe-step-${index}`)
 
-  if (!selectedStepService) return;
+  if (!selectedStepService) return
   let selectedStepEvent = (selectedStepService.events || []).find(e => e.name === type)
   
   $(`[name="steps.${index}.event"]`).val(selectedStepService ? type : null)
@@ -46,7 +46,7 @@ const stepEventSelectorChanged = function(index, type) {
 Template.flowEditorStepAvailable.events({
   'click .card': async (event, template) => {
     const formId = $('#page-content-wrapper > form')[0].id
-    const formSchema = AutoForm.getFormSchema(formId);
+    const formSchema = AutoForm.getFormSchema(formId)
     AutoForm.arrayTracker.addOneToField(formId, 'steps', formSchema)
     setTimeout(() => {
       let selector = $('.flow-step:last .step-type-selector').last().val(template.data.name)
@@ -69,15 +69,15 @@ Template.flowEditor.events({
   },
 
   'input #flow-sidebar-step-search input': (event, template) => {
-    var scope = event.target;
+    var scope = event.target
     if (!scope.value || scope.value == '') {
-      $('#flow-sidebar-steps .card').show();
-      return;
+      $('#flow-sidebar-steps .card').show()
+      return
     }
   
     $('#flow-sidebar-steps .card').each(function(i, div) {
-      var $div = $(div);
-      $div.toggle($div.text().toLowerCase().indexOf(scope.value.toLowerCase()) > -1);
+      var $div = $(div)
+      $div.toggle($div.text().toLowerCase().indexOf(scope.value.toLowerCase()) > -1)
     })
   },
 
@@ -146,7 +146,7 @@ const setJsPlumb = (flow) => {
 
     jsPlumb.draggable($('.card.flow-step'), {
       containment: '#flow-editor'
-    });
+    })
 
     // Setup target cards
     jsPlumb.makeTarget($('.connector-inbound'), {
@@ -269,7 +269,7 @@ Template.flowEditor.onRendered(function() {
 
     // Whenever Meteor has subscriber to flows.single...
     if (subscription.ready()) {
-      if (initialized) return;
+      if (initialized) return
       initialized = true
 
       // Grab the flow we want to work with
