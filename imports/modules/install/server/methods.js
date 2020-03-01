@@ -4,7 +4,6 @@ import { Roles } from 'meteor/alanning:roles'
 
 import { Settings } from '/imports/modules/management/both/collection'
 
-import { createUsersTeam } from '../../_common/server/teams'
 import { ROLES } from '../../_common/both/teams'
 
 import { check } from 'meteor/check'
@@ -37,17 +36,10 @@ Meteor.methods({
     }
     const userId = Accounts.createUser(userInfo)
 
-    debug('Creating roles...')
-
-    Object.keys(ROLES).map(r => {
-      Roles.createRole(ROLES[r], {unlessExists: true})
-    })
+    debug('Creating ROLES.SUPER...')
+    Roles.createRole(ROLES.SUPER, {unlessExists: true})
     Roles.addUsersToRoles(userId, ROLES.SUPER)
 
-    debug('Creating team...')
-
-    createUsersTeam(Object.assign(userInfo, {_id: userId}))
-    
     // Verify email automatically
     debug('Verifying user email...')
     Meteor.users.update({_id:userId}, {$set:{'emails.0.verified': true}})
