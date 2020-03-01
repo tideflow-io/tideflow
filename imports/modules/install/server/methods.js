@@ -32,8 +32,8 @@ Meteor.methods({
     Roles.createRole(ROLES.SUPER, {unlessExists: true})
     Roles.addUsersToRoles(userId, ROLES.SUPER)
 
-    ROLES.map(r => {
-      Roles.createRole(r)
+    Object.keys(ROLES).map(r => {
+      Roles.createRole(ROLES[r])
     })
 
     createUsersTeam(Object.assign(userInfo, {_id: userId}))
