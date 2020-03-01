@@ -10,11 +10,11 @@ import { Flows } from '../both/collection'
  */
 const reply = (res, data, status) => {
   if (typeof data === 'object') {
-    res.end(JSON.stringify(data, null, 2));
+    res.end(JSON.stringify(data, null, 2))
   }
   else {
     res.writeHead(status || 200)
-    res.end(data);
+    res.end(data)
   }
 }
 
