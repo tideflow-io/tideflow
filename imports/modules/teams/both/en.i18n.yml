@@ -8,7 +8,7 @@ create:
     errors:
       no-auth: Not authorised
       not-allowed: You are not allowed to create new teams
-      name-too-short: Teams names must have 6 characters at least.
+      name-too-short: Teams names must have 3 characters at least.
       already-exists: Team already exists
 update:
   submit:

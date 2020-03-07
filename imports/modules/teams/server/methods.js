@@ -30,7 +30,7 @@ Meteor.methods({
     name = name.trim()
     let slug = slugify(name)
 
-    if (name.length < 5) throw new Meteor.Error('teams.create.form.errors.name-too-short') 
+    if (name.length < 3) throw new Meteor.Error('teams.create.form.errors.name-too-short') 
 
     let existingTeam = Teams.findOne({$or:[
       { name },

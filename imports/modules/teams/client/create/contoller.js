@@ -12,7 +12,7 @@ Template.teamsCreate.events({
     event.preventDefault()
     const name = event.target.name.value
     
-    if (name.length < 6) {
+    if (name.length < 3) {
       sAlert.error(i18n.__('teams.create.form.errors.name-too-short'))
       return
     }
