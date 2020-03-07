@@ -34,9 +34,8 @@ b {
 }
 
 .navbar .navbar-brand {
-  color: #fff;
+  color: #fff !important;
   white-space: nowrap;
-  border-right: 1px solid rgba(0,0,0,.2);
 }
 
 p.lead {
