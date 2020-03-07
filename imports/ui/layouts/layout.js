@@ -42,6 +42,9 @@ Template.ApplicationLayout.onRendered(function() {
           users: members
         })
       }
+      
+      if (!currentTeam) return;
+
       Meteor.subscribe('services.all', {
         team: currentTeam
       })
