@@ -19,6 +19,8 @@ editor.step.removeOne: Remove action
 editor.step.addOne: Add a new action
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
+editor.help.title: Help
+editor.help.linkText: Open documentation website
 properties.emailOnTrigger: Send me an email when this workflow is triggered
 edit.submit: Save
 index.title: Workflows
