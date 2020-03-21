@@ -115,7 +115,7 @@ If you would like to contribute to Tideflow, check out the
 
 ## License
 
-GNU AFFERO GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE V3
 
 ## Developer Resources
 
