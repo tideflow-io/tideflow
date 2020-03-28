@@ -6,7 +6,6 @@ import { Settings } from '/imports/modules/management/both/collection'
 
 SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'));
 SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'));
-SSR.compileTemplate('emailTemplateflowEmailOnTriggered', Assets.getText('emails/flowEmailOnTriggered.html'));
 SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
 

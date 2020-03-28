@@ -62,7 +62,6 @@ servicesDocs.map(service => {
       description,
       status: faker.random.arrayElement(flowsStatus),
       user: user._id,
-      emailOnTrigger: false,
       createdAt: faker.date.past()
     })
   }
