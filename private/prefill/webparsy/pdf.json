@@ -1,0 +1,8 @@
+{
+  "name": "Save webpage as PDF",
+  "description": "Captures the webpage to a PDF",
+  "fileName": "pdf.yml",
+  "type": "text",
+  "iconClass": "fab fa-chrome",
+  "iconColor": "#1E6DA5"
+}
