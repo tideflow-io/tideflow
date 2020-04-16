@@ -18,6 +18,12 @@
   padding: 0;
   position: relative;
   height: calc(100vh - 153px);
+  overflow: auto
+}
+
+#flow-editor .col-12 {
+  min-width: 5000px;
+  min-height: 5000px;
 }
 
 #flow-editor .card {
