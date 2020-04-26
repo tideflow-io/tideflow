@@ -22,7 +22,7 @@ const stepTypeSelectorChanged = (index, type) => {
 
   Session.set(`fe-step-${index}`, selectedStepService || null)
   Session.set(`fe-step-${index}-event`, null)
-  Session.set('fe-editMode', index)
+  //Session.set('fe-editMode', index)
 }
 
 /**
