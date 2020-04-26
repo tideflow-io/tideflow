@@ -17,6 +17,9 @@ import '/imports/services/github-webhooks/client'
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/client'
 
+import '/imports/services/aws/both'
+import '/imports/services/aws/client'
+
 import '/imports/services/endpoint/both'
 import '/imports/services/endpoint/client'
 

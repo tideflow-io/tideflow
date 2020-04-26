@@ -21,6 +21,9 @@ import '/imports/services/webparsy/server'
 import '/imports/services/webform/both'
 import '/imports/services/webform/server'
 
+import '/imports/services/aws/both'
+import '/imports/services/aws/server'
+
 import '/imports/services/endpoint/both'
 import '/imports/services/endpoint/server'
 

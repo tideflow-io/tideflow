@@ -1,0 +1,14 @@
+<template name="servicesAwsCreateForm">
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.region"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.region" name="config.region">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.accessKeyId"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.accessKeyId" name="config.accessKeyId">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.accessSecretId"}}</label>
+        <input type="password" class="form-control" data-schema-key="config.accessSecretId" name="config.accessSecretId">
+    </div>
+</template>
