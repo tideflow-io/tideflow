@@ -12,6 +12,8 @@ events.iot.name: IoT Core
 events.iot.shadow-update.name: '[IoT Core] Update device shadow'
 events.iot.shadow-update.title: '[IoT Core] Update device shadow'
 
+
+events.iot.shadow-update.endpoint: Endpoint
 events.iot.shadow-update.deviceName: Device name
 events.iot.shadow-update.deviceShadow: Shadow update
 
