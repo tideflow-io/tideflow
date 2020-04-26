@@ -15,8 +15,8 @@ editor.trigger.title: What event triggers this workflow?
 editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.event.selectOneOption: Select an option
-editor.step.removeOne: Remove action
-editor.step.addOne: Add a new action
+editor.step.removeOne: Remove task
+editor.step.addOne: Add task
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
 editor.help.title: Help

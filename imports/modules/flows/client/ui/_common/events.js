@@ -32,7 +32,6 @@ const stepTypeSelectorChanged = (index, type) => {
  * @param {*} type 
  */
 const stepEventSelectorChanged = function(index, type) {
-  
   if (index === null) { return null }
   let selectedStepService = Session.get(`fe-step-${index}`)
 
