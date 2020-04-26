@@ -140,7 +140,6 @@ const createConnection = (from, to) => {
  * @param {object} flow Flow's doc - as from MongoDB
  */
 const setJsPlumb = (flow) => {
-
   jsPlumb.ready(function() {
     jsPlumb.setContainer($('#flow-editor'))
 

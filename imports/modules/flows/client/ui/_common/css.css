@@ -18,7 +18,7 @@
   background: url(/images/bground.svg) white;
   padding: 0;
   position: relative;
-  height: calc(100vh - 153px);
+  height: calc(100vh - 140px);
   overflow: auto
 }
 
