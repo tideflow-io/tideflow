@@ -1,4 +1,5 @@
 #sidebar-wrapper {
+  min-width: 350px !important;
   -webkit-transition: margin .25s ease-out;
   -moz-transition: margin .25s ease-out;
   -o-transition: margin .25s ease-out;
