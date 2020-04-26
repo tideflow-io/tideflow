@@ -7,6 +7,13 @@
         </h2>
       </div>
       <div class="col-4 text-right">
+        <a href="#" class="flow-toggle btn btn-sm {{#if flowEnabled flow}}btn-primary active{{else}}btn-outline-primary{{/if}}">
+          {{#if flowEnabled flow}}
+            <i class="fas fa-play"></i>&nbsp;&nbsp; {{__ "flows.one.enabled"}}
+          {{else}}
+            <i class="fas fa-pause"></i>&nbsp;&nbsp; {{__ "flows.one.disabled"}}
+          {{/if}}
+        </a>
         <a class="btn btn-sm btn-outline-primary" href="{{pathFor 'flowsOneExecutions' teamId=currentTeamId _id=flow._id}}">{{__ "flows.one.allExecutions"}}</a>
         <a class="btn btn-sm btn-primary flow-editor-link" href="{{pathFor 'flows.one.edit' teamId=currentTeamId _id=flow._id}}">{{__ "flows.one.edit"}}</a>
       </div>
