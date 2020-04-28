@@ -120,7 +120,7 @@
                     <strong>{{cardTitle}}</strong> 
                   </div>
                   <p>
-                    {{cardText flow=../flow}}
+                    {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
                   </p>
                   {{#if editMode}}
                   {{else}}
@@ -139,29 +139,27 @@
             {{/afEachArrayItem}}
           </div>
           {{#afEachArrayItem name="steps"}}
-            {{#if editMode}}
-              <div class="fixed-right-sidebar">
-                <div class="card-title mb-2">
-                  <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
-                  <strong>{{cardTitle}}</strong> 
-                </div>
-                <div class="step-event-selector-wrapper">
-                  {{#if stepSelectedEvents ../../flow ../index this.name}}
-                    <select class="step-event-selector form-control" data-step="{{this.index}}">
-                      <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-                      {{#each stepSelectedEvents}}
-                        <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-                      {{/each}}
-                    </select>
-                  {{/if}}
-                  {{> stepEventConfig steps=../flow.steps index=this.index}}
-                </div>
-
-                <button type="button" class="edit-mode-leave form-control btn btn-primary">
-                  {{__ "flows.editor.step.editDetailsDone"}}
-                </button>
+            <div class="fixed-right-sidebar {{#if editMode}}{{else}}d-none{{/if}}">
+              <div class="card-title mb-2">
+                <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                <strong>{{cardTitle}}</strong>
               </div>
-            {{/if}}
+              <div class="step-event-selector-wrapper">
+                {{#if stepSelectedEvents  ../../flow ../index this.name}}
+                  <select class="step-event-selector form-control" data-step="{{this.index}}">
+                    <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                    {{#each stepSelectedEvents}}
+                      <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                    {{/each}}
+                  </select>
+                {{/if}}
+                {{> stepEventConfig steps=../flow.steps index=this.index}}
+              </div>
+
+              <button type="button" class="edit-mode-leave form-control btn btn-primary">
+                {{__ "flows.editor.step.editDetailsDone"}}
+              </button>
+            </div>
           {{/afEachArrayItem}}
         </div>
       </div>
