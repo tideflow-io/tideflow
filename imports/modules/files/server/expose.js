@@ -9,15 +9,15 @@ const jwtSecret = require('/imports/download/server/secret')
 import lib from './lib'
 
 /**
- * @param {*} _id 
+ * @param {object} query
  * @param {*} authenticatedUser 
  * @param {*} v 
  * @param {*} force 
  * @param {*} req 
  * @param {*} res 
  */
-const downloadFile = (_id, authenticatedUser, v, force, req, res) => {
-  const fileData = lib.getOneVersion({ _id }, v)
+const downloadFile = (query, authenticatedUser, v, force, req, res) => {
+  const fileData = lib.getOneVersion(query, v)
 
   if (!isMember(authenticatedUser.user._id, fileData.file.team)) throw new Meteor.Error('no-access')
 
@@ -40,7 +40,7 @@ const downloadFile = (_id, authenticatedUser, v, force, req, res) => {
       data: {
         t: authenticatedUser.token,
         u: authenticatedUser.user._id,
-        _id,
+        _id: fileData._id,
         v
       }
     }, jwtSecret)
@@ -92,10 +92,41 @@ Router.route('/file', function () {
 
   try {
     // if (type === 'fileTemplate') return downloadTemplate(_id, authenticatedUser, res)
-    downloadFile(_id, {
+    downloadFile({_id}, {
       user: authenticatedUser,
       token: t
     }, v, force, req, res)
+  }
+  catch (ex) {
+    console.error(ex)
+    res.writeHead(404)
+    res.end()
+    return
+  }
+}, {where: 'server'})
+
+
+Router.route('/publicFile/:uniqueId', function () {
+  const req = this.request
+  const res = this.response
+  console.log({req})
+  let { uniqueId } = this.params
+
+  // Validate query parameters
+  if (!uniqueId) {
+    res.writeHead(404)
+    res.end()
+    return
+  }
+
+  try {
+    const fileData = lib.getOneVersion({uniqueId, public: true})
+    console.log({fileData})
+    let downloadStream = lib.downloadStream(fileData.version.gfsId)
+    downloadStream.on('error', err => { throw err })
+    // res.setHeader('Content-Disposition', `attachment;filename=${fileData.file.name}`)
+    res.setHeader('Content-Type', fileData.file.type)
+    downloadStream.pipe(res)
   }
   catch (ex) {
     console.error(ex)

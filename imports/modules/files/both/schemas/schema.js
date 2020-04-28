@@ -1,3 +1,4 @@
+import { Random } from 'meteor/random'
 import SimpleSchema from 'simpl-schema'
 
 SimpleSchema.extendOptions(['autoform'])
@@ -68,6 +69,21 @@ const Schema = new SimpleSchema({
   'versions.$.gfsId': {
     type: String,
     optional: false
+  },
+  public: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
+  uniqueId: {
+    type: String,
+    optional: true,
+    denyUpdate: true,
+    autoValue: function() {
+      if (this.isInsert) {
+        return Random.id(30)
+      }
+    }
   },
   createdAt: {
     type: Date,
