@@ -20,7 +20,24 @@
                 <div id="editor"></div>
               </div>
               {{> afQuickField name='content' type='hidden'}}
-              <button type="submit" class="btn btn-primary float-right">{{__ "files.edit.submit"}}</button>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input checked="{{#if file.public}}checked{{/if}}" class="form-check-input" type="checkbox" value="" id="make-public">
+                    <label class="form-check-label" for="make-public">
+                      {{__ "files.edit.makePublic.link"}}
+                    </label>
+                  </div>
+                  {{#if file.public}}
+                    <p>
+                      {{> clipboardBtnSmall isUrl=true prefix-text=absoluteUrl text="publicFile/" subfix-text=file.uniqueId}}
+                    </p>
+                  {{/if}}
+                </div>
+                <div class="col-md-6">
+                  <button type="submit" class="btn btn-primary float-right">{{__ "files.edit.submit"}}</button>
+                </div>
+              </div>
             </div>
           </div>
           <button class="btn btn-sm btn-outline-danger delete-file float-right">{{__ "files.edit.remove"}}</button>

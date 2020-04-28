@@ -22,7 +22,7 @@ const stepTypeSelectorChanged = (index, type) => {
 
   Session.set(`fe-step-${index}`, selectedStepService || null)
   Session.set(`fe-step-${index}-event`, null)
-  Session.set('fe-editMode', index)
+  //Session.set('fe-editMode', index)
 }
 
 /**
@@ -32,7 +32,6 @@ const stepTypeSelectorChanged = (index, type) => {
  * @param {*} type 
  */
 const stepEventSelectorChanged = function(index, type) {
-  
   if (index === null) { return null }
   let selectedStepService = Session.get(`fe-step-${index}`)
 
@@ -140,7 +139,6 @@ const createConnection = (from, to) => {
  * @param {object} flow Flow's doc - as from MongoDB
  */
 const setJsPlumb = (flow) => {
-
   jsPlumb.ready(function() {
     jsPlumb.setContainer($('#flow-editor'))
 

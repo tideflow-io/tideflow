@@ -1,0 +1,14 @@
+<template name="servicesAwsUpdateForm">
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.region"}}</label>
+        <input value="{{service.config.region}}" type="text" class="form-control" data-schema-key="config.region" name="config.region">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.accessKeyId"}}</label>
+        <input value="{{service.config.accessKeyId}}" type="text" class="form-control" data-schema-key="config.accessKeyId" name="config.accessKeyId">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws.create.accessSecretId"}}</label>
+        <input value="{{service.config.accessSecretId}}" type="password" class="form-control" data-schema-key="config.accessSecretId" name="config.accessSecretId">
+    </div>
+</template>

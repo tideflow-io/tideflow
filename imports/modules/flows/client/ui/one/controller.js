@@ -29,6 +29,14 @@ Template['flows.one'].helpers({
 })
 
 Template['flows.one'].events({
+  'click .flow-toggle': (event, template) => {
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    let { flow } = template.data
+    flow.status = flow.status === 'enabled' ? 'disabled' : 'enabled'
+    Meteor.call('flows.update', flow)
+  },
+
   'click .flow-editor-link': (event) => {
     event.stopPropagation()
     document.location.reload(true)

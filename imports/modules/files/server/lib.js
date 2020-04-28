@@ -25,6 +25,7 @@ const getOneVersion = (query, versionIndex) => {
   const version = file.versions[versionIndex || file.versions.length - 1]
   if (!version) throw 'not-found'
   return {
+    _id: file._id,
     version,
     file
   }

@@ -80,6 +80,16 @@ Template['files.one.edit'].events({
     const ext = slugify(event.target.value).toLowerCase()
     setMode(event.target.value)
   },
+  'click #make-public': (event, template) => {
+    Meteor.call(
+      'files.updatePublic',
+      template.data.file._id,
+      !!event.target.checked,
+      error => {
+        if (error) return sAlert.error(i18n.__('files.edit.makePublic.error'))
+        sAlert.success(i18n.__('files.edit.makePublic.success'))
+      })
+  },
   'click .delete-file': (event, template) => {
     event.stopPropagation()
     event.preventDefault()

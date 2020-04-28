@@ -15,6 +15,10 @@ new.submit: Save
 edit.title: Edit file
 edit.remove: Remove file
 edit.submit: Save
+edit.makePublic.link: Make this file publicly available
+edit.makePublic.copyUrl: Copy file\'s public URL to clipboard
+edit.makePublic.success: Settings updated
+edit.makePublic.error: Error updating file settings
 
 delete.title: Are you sure?
 delete.text: Once deleted, you will not be able to recover it.

@@ -1,4 +1,5 @@
 _namespace: clipboard
+url: Copy URL to clipboard
 text: Copy to clipboard
 textCopied: Text copied to clipboard.
 unableToCopy: Could not copy to clipboard
