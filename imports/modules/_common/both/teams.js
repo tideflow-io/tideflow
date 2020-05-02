@@ -25,8 +25,8 @@ const isMember = (user, team) => {
 module.exports.isMember = isMember
 
 const isAdmin = (user, team) => {
-  if (!user) throw new Meteor.Error('no-user')
-  if (!team) throw new Meteor.Error('no-team')
+  if (!user) return false
+  if (!team) return false
   return matchRole(user, team, 'admin')
 }
 

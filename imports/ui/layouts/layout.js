@@ -22,7 +22,6 @@ Template.ApplicationLayout.onRendered(function() {
     let currentTeam = Router.current().params.teamId
     if (currentTeam === '0') {
       let firstTeam = Teams.findOne()
-      console.log({firstTeam})
       if (!firstTeam) {
         //Router.go('teams.create')
       }

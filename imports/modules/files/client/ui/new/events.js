@@ -24,6 +24,8 @@ Template['files.new'].onRendered(function() {
   })
 
   editor.setOptions({
+    tabSize: 2,
+    useSoftTabs: true,
     autoScrollEditorIntoView: true,
     copyWithEmptySelection: true,
   })

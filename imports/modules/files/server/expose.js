@@ -98,7 +98,6 @@ Router.route('/file', function () {
     }, v, force, req, res)
   }
   catch (ex) {
-    console.error(ex)
     res.writeHead(404)
     res.end()
     return
@@ -109,7 +108,6 @@ Router.route('/file', function () {
 Router.route('/publicFile/:uniqueId', function () {
   const req = this.request
   const res = this.response
-  console.log({req})
   let { uniqueId } = this.params
 
   // Validate query parameters
@@ -121,15 +119,12 @@ Router.route('/publicFile/:uniqueId', function () {
 
   try {
     const fileData = lib.getOneVersion({uniqueId, public: true})
-    console.log({fileData})
     let downloadStream = lib.downloadStream(fileData.version.gfsId)
     downloadStream.on('error', err => { throw err })
-    // res.setHeader('Content-Disposition', `attachment;filename=${fileData.file.name}`)
     res.setHeader('Content-Type', fileData.file.type)
     downloadStream.pipe(res)
   }
   catch (ex) {
-    console.error(ex)
     res.writeHead(404)
     res.end()
     return
