@@ -117,6 +117,7 @@ Template.flowEditor.events({
       }
     })
     Session.set('fe-editMode', undefined)
+    $('#nav-tasks-tab').tab('show');
   },
 
   'change .step-event-selector': function(event, template) {
