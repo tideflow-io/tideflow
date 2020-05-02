@@ -19,8 +19,9 @@ const run = async () => {
     {
       categoryId: 'html-template',
       templates: [
+        'prefill/html-template/basic.json',
         'prefill/html-template/buttons.json',
-        'prefill/html-template/basic.json'
+        'prefill/html-template/buttons-shadows.json'
       ]
     },
     {

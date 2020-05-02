@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Buttons Shadows</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script
+    src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
+    integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
+    crossorigin="anonymous"></script>
+
+  <script>
+    const URL_TO_GET_SHADOW = ''
+    const URL_TO_SET_SHADOW = ''
+
+    $( document ).ready(function() {
+      $('#loaded').hide()
+
+      const blockBtn = btn => 
+        btn.attr('class', 'btn btn-secondary').text('Loading...').data('status', false)
+
+      const disableBtn = btn => 
+        btn.attr('class', 'btn btn-secondary').text('Disabled').data('status', false)
+
+      const enableBtn = btn => 
+        btn.attr('class', 'btn btn-primary').text('Enabled').data('status', true)
+      
+      fetch(URL_TO_GET_SHADOW)
+        .then(response => response.json())
+        .then(body => {
+          if (body.status !== 'finished') throw 'queued'
+          
+          return body.results.find(result => {
+            return result.type === 'aws' && result.event === 'iot-shadow-get'
+          }).stepResult.data.state.reported.relays
+        })
+        .then(relays => {
+          Object.keys(relays).map(k => {
+            const state = relays[k]
+            const button = $(`button[data-number="${k}"]`)
+            if (state) enableBtn(button)
+            else disableBtn(button)
+          })
+          $('#loaded').show()
+          $('#loading').hide()
+        })
+        
+      const setStatus = (button, n, status) => {
+        let relays = {}; relays[n] = status
+        
+        return fetch(URL_TO_SET_SHADOW, {
+          method: 'POST', // or 'PUT'
+          body: JSON.stringify({
+            desired: { relays }
+          }),
+          headers:{
+            'Content-Type': 'application/json'
+          }
+        })
+      }
+      
+      $('button').click(event => {
+        event.preventDefault()
+        const pressedButton = $(event.target)
+        const buttonNumber = parseInt(pressedButton.data('number'))
+        const buttonState = pressedButton.data('status')
+        blockBtn(pressedButton)
+        if (buttonState) {
+          setStatus(pressedButton, buttonNumber, false)
+            .then(() => disableBtn(pressedButton))
+        }
+        else {
+          setStatus(pressedButton, buttonNumber, true)
+            .then(() => enableBtn(pressedButton))
+        }
+      })
+    });
+  </script>
+</head>
+<body>
+  <main role="main" class="flex-shrink-0">
+    <div class="container">
+      <h1 class="mt-5">Tideflow.io & AWS IoT Core</h1>
+      <p class="lead">Connecting Tideflow Files, Flows and AWS IoT Core.</p>
+      
+      <div id="loading">
+        Loading...
+      </div>
+      <div id="loaded">
+        <button data-number="1" type="button" class="btn btn-primary">Loading...</button> 
+        <button data-number="2" type="button" class="btn btn-secondary">Loading...</button> 
+        <button data-number="3" type="button" class="btn btn-success">Loading...</button> 
+        <button data-number="4" type="button" class="btn btn-danger">Loading...</button> 
+        <button data-number="5" type="button" class="btn btn-warning">Loading...</button> 
+        <button data-number="6" type="button" class="btn btn-info">Loading...</button> 
+        <button data-number="7" type="button" class="btn btn-light">Loading...</button> 
+        <button data-number="8" type="button" class="btn btn-dark">Loading...</button> 
+      </div>
+    </div>
+  </main>
+</body>
+</html>

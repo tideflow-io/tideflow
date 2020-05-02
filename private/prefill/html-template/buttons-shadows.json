@@ -1,0 +1,9 @@
+{
+  "id": "html-template-buttons-interactions",
+  "name": "Bootstrap Buttons Interaction",
+  "description": "Bootstrap buttons interacting with Flows and AWS IoT Core",
+  "fileName": "buttons-shadows.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}
