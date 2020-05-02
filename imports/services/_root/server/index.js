@@ -191,6 +191,20 @@ const flows = {
 module.exports.flows = flows
 
 /**
+ * Given a set of executionLogs, return the data that can be publicly available
+ * @param {Array} executionLogs 
+ */
+const exposeExecutionLogs = executionLogs => {
+  executionLogs = processableResults(executionLogs, true)
+  return executionLogs.map(el => {
+    const { _id, type, event, stepIndex, createdAt, stepResult, updatedAt } = el
+    return { _id, type, event, stepIndex, createdAt, stepResult, updatedAt }
+  })
+}
+
+module.exports.exposeExecutionLogs = exposeExecutionLogs
+
+/**
  * Given actions execution logs (as taken from the database) return them in a
  * format that can be passed to services like `code` or `agent`, so this
  * services get only the necessary data and that they can get.
@@ -214,7 +228,6 @@ const processableResults = (executionLogs, external) => {
 
   return (executionLogs || []).map(el => {
     let { _id, execution, flow, step, stepIndex, user, type, event, createdAt, updatedAt, stepResult } = el
-
     if (!external && stepResult.files) { // Store files locally
       stepResult.files.map(file => {
         const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`

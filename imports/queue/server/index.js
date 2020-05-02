@@ -199,7 +199,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     }
   }
 
-  (flows || Flows.find(flowsQuery).fetch()).map(flow => {
+  let executionIds = (flows || Flows.find(flowsQuery).fetch()).map(flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
       return null
@@ -224,11 +224,15 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       status: 'started'
     }
 
-    Executions.insert(execution)
+    let executionId = Executions.insert(execution)
 
     // executionData now contains _id and createdAt
     jobs.run('workflow-start', { execution, user })
+
+    return executionId
   })
+
+  return executionIds
 }
 
 module.exports.triggerFlows = triggerFlows
