@@ -22,6 +22,17 @@ const service = {
   },
   events: [
     {
+      name: 'iot-shadow-get',
+      humanName: 's-aws.events.iot.shadow-get.name',
+      viewerTitle: 's-aws.events.iot.shadow-get.title',
+      inputable: false,
+      stepable: true,
+      callback: () => {},
+      templates: {
+        eventConfig: 'servicesAwsIotShadowGet'
+      }
+    },
+    {
       name: 'iot-shadow-update',
       humanName: 's-aws.events.iot.shadow-update.name',
       viewerTitle: 's-aws.events.iot.shadow-update.title',

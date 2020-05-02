@@ -31,12 +31,26 @@ const service = {
   templates: {},
   events: [
     {
+      name: 'iot-shadow-get',
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        let client = await iotData(currentStep, execution)
+        client.getThingShadow({
+          thingName: currentStep.config.thingName
+        }, (err, data) => {
+          awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-get.ok', cb)
+        })
+      }
+    },
+    {
       name: 'iot-shadow-update',
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        const shadowData = lastData ? lastData.data || {} : {}
+
         let client = await iotData(currentStep, execution)
         client.updateThingShadow({
           thingName: currentStep.config.thingName,
-          payload: Buffer.from(currentStep.config.shadow)
+          payload: Buffer.from(JSON.stringify({state: shadowData}))
         }, (err, data) => {
           awsResponse(err, data, 's-aws.log.iot-shadow-update.ok', cb)
         })
