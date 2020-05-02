@@ -16,11 +16,11 @@ editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.event.selectOneOption: Select an option
 editor.step.removeOne: Remove task
-editor.step.addOne: Add task
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
-editor.help.title: Help
-editor.help.linkText: Open documentation website
+editor.sidebar.tabs.tasks.link.text: Add task
+editor.sidebar.tabs.tasks.search.text: Search ...
+editor.sidebar.tabs.task.link.text: Task settings
 properties.emailOnTrigger: Send me an email when this workflow is triggered
 edit.submit: Save
 index.title: Workflows

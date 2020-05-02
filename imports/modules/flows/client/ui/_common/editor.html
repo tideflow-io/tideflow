@@ -11,33 +11,60 @@
     </div>
   </nav> -->
   <div class="d-flex" id="wrapper">
-    
     <div class="bg-light border-right sidebar-sticky" id="sidebar-wrapper">
-      <div class="list-group list-group-flush">
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
-          <span>{{__ "flows.editor.step.addOne"}}</span>
-        </h6>
-        <div class="p-3">
-          <form id="flow-sidebar-step-search">
-            <input type="text" class="form-control" placeholder="Search">
-          </form>
+      <nav class="m-3">
+        <div class="nav nav-tabs" id="editor-sidebar-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-tasks-tab" data-toggle="tab" href="#nav-tasks" role="tab" aria-controls="nav-tasks" aria-selected="true">
+            {{__ "flows.editor.sidebar.tabs.tasks.link.text"}}
+          </a>
+          <a class="nav-item nav-link {{#if sessIsSet 'fe-editMode'}}{{else}}d-none{{/if}}" id="nav-task-settings-tab" data-toggle="tab" href="#nav-task-settings" role="tab" aria-controls="nav-task-settings" aria-selected="false">
+            {{__ "flows.editor.sidebar.tabs.task.link.text"}}
+          </a>
         </div>
-        <div class="p-3 pt-0" id="flow-sidebar-steps">
-          {{#each stepsAvailableSidebar}}
-            {{> flowEditorStepAvailable}}
-          {{/each}}
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-tasks" role="tabpanel" aria-labelledby="nav-tasks-tab">
+          
+          <div class="list-group list-group-flush">
+            <div class="pr-3 pl-3 pb-2">
+              <form id="flow-sidebar-step-search">
+                <input type="text" class="form-control" placeholder="{{__ "flows.editor.sidebar.tabs.tasks.search.text"}}">
+              </form>
+            </div>
+            <div class="p-3 pt-0" id="flow-sidebar-steps">
+              {{#each stepsAvailableSidebar}}
+                {{> flowEditorStepAvailable}}
+              {{/each}}
+            </div>
+          </div>
+
         </div>
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>{{__ "flows.editor.help.title"}}</span>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="https://docs.tideflow.io/" target="_blank">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              {{__ "flows.editor.help.linkText"}}
-            </a>
-          </li>
-        </ul>
+        <div class="tab-pane fade p-3 {{#if sessIsSet 'fe-editMode'}}{{else}}d-none{{/if}}" id="nav-task-settings" role="tabpanel" aria-labelledby="nav-task-settings-tab">
+          
+          {{#afEachArrayItem name="steps"}}
+            <div class="fixed-right-sidebar {{#if editMode}}{{else}}d-none{{/if}}">
+              <div class="mb-3">
+                <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                <strong>{{cardTitle}}</strong>
+              </div>
+              <div class="step-event-selector-wrapper">
+                {{#if stepSelectedEvents ../../flow ../index this.name}}
+                  <select class="step-event-selector form-control mb-3" data-step="{{this.index}}">
+                    <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                    {{#each stepSelectedEvents}}
+                      <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                    {{/each}}
+                  </select>
+                {{/if}}
+                {{> stepEventConfig steps=../flow.steps index=this.index}}
+              </div>
+
+              <button type="button" class="edit-mode-leave form-control btn btn-primary">
+                {{__ "flows.editor.step.editDetailsDone"}}
+              </button>
+            </div>
+          {{/afEachArrayItem}}
+        </div>
       </div>
     </div>
 
@@ -123,21 +150,7 @@
                   <p>
                     {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
                   </p>
-                  <div class="{{#if editMode}}{{else}}d-none{{/if}}">
-                    {{#if stepSelectedEvents ../../flow ../index this.name}}
-                      <select class="step-event-selector form-control" data-step="{{this.index}}">
-                        <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-                        {{#each stepSelectedEvents}}
-                          <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-                        {{/each}}
-                      </select>
-                    {{/if}}
-                    {{> stepEventConfig steps=../flow.steps index=this.index}}
-                  </div>
                   {{#if editMode}}
-                    <p class="mt-2 edit-mode-link edit-mode-leave">
-                      <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetailsDone"}}</small>
-                    </p>
                   {{else}}
                     <p class="edit-mode-link edit-mode-enter">
                       <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetails"}}</small>
@@ -153,6 +166,7 @@
               </div>
             {{/afEachArrayItem}}
           </div>
+          
         </div>
       </div>
     </div>

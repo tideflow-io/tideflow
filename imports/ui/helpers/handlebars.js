@@ -15,6 +15,7 @@ Template.registerHelper('prop', (obj, prop) => {
 
 Template.registerHelper('debug', (a) => console.log(a))
 
+Template.registerHelper('sessIsSet', name => typeof Session.get(name) !== 'undefined')
 Template.registerHelper('sessEq', (name, val) => {
   if (val === null && !Session.get(name)) { return true }
   return Session.get(name) ? Session.get(name) === val : false

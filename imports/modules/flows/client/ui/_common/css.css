@@ -101,7 +101,10 @@
   display: table;
 }
 
-#flow-editor .card select:not(:last-child) {
+#flow-editor .card select:not(:last-child), 
+#flow-editor .fixed-right-sidebar select:not(:last-child),
+#flow-editor .fixed-right-sidebar .step-event-selector-wrapper
+{
   margin-bottom: 20px;
 }
 
@@ -113,3 +116,17 @@
 #flow-editor .card .form-group:last-child select {
   margin-bottom: 0px;
 }
+
+#flow-editor .fixed-right-sidebar {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background-color: #fff;
+  padding: 20px;
+  width: 350px;
+  border-left: 2px solid #E9EEF2;
+  overflow-y: auto;
+}
+

@@ -61,10 +61,12 @@ Template.flowEditor.events({
   'click .edit-mode-enter': (event, template) => {
     const stepIndex = $(event.target).data('step')
     Session.set('fe-editMode', stepIndex)
+    $('#nav-task-settings-tab').tab('show');
   },
 
   'click .edit-mode-leave': (event, template) => {
-    Session.set('fe-editMode', '')
+    Session.set('fe-editMode', undefined)
+    $('#nav-tasks-tab').tab('show');
   },
 
   'input #flow-sidebar-step-search input': (event, template) => {
@@ -114,7 +116,7 @@ Template.flowEditor.events({
         $( '.connector-out', this ).attr('data-step', newStepNumber)
       }
     })
-    Session.set('fe-editMode', '')
+    Session.set('fe-editMode', undefined)
   },
 
   'change .step-event-selector': function(event, template) {
@@ -244,10 +246,10 @@ Template.flowEditor.onRendered(function() {
 
   instance.flowEditorRendered = false
   
-  Session.set('fe-triggerIdSelected', '')
-  Session.set('fe-triggerEventSelected', '')
-  Session.set('fe-stepSelected', '')
-  Session.set('fe-editMode', '')
+  Session.set('fe-triggerIdSelected', undefined)
+  Session.set('fe-triggerEventSelected', undefined)
+  Session.set('fe-stepSelected', undefined)
+  Session.set('fe-editMode', undefined)
   let initialized = false
 
   instance.autorun(function () {
