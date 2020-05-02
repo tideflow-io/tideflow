@@ -1,0 +1,9 @@
+{
+  "id": "html-template-buttons",
+  "name": "Bootstrap Buttons",
+  "description": "Bootstrap buttons and jQuery",
+  "fileName": "buttons.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}

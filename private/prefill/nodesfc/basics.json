@@ -1,4 +1,5 @@
 {
+  "id": "nodesfc-basic",
   "name": "Basic example",
   "description": "Basics of nodesfc",
   "fileName": "basics.js",

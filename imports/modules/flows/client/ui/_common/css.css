@@ -53,7 +53,7 @@
 }
 
 #flow-editor .card .connector-out {
-  top: 25px;
+  top: 16px;
   position: absolute;
   width: 25px;
   height: 25px;
@@ -95,6 +95,10 @@
 
 #flow-editor .card .only-edit-mode {
   display: none;
+}
+
+#flow-editor .card.edit-mode .card-title {
+  margin-bottom: 0 !important;
 }
 
 #flow-editor .card.edit-mode .only-edit-mode {

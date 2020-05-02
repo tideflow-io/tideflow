@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-pdf",
   "name": "Save webpage as PDF",
   "description": "Captures the webpage to a PDF",
   "fileName": "pdf.yml",

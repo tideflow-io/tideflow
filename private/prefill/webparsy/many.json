@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-many",
   "name": "Listing elements",
   "description": "Get a list of elements",
   "fileName": "many.yml",

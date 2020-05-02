@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-basicauth",
   "name": "Basic HTTP authentication",
   "description": "Perform basic authentication",
   "fileName": "basicauth.yml",

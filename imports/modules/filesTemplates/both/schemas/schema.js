@@ -10,6 +10,10 @@ const Schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  id: {
+    type: String,
+    optional: true
+  },
   category: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,

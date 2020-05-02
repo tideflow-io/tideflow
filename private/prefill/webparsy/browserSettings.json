@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-browserSettings",
   "name": "Browser settings",
   "description": "Customise browser settings",
   "fileName": "browserSettings.yml",
