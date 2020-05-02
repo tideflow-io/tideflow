@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-weather",
   "name": "Madrid's temperature",
   "description": "Scrape Madrid's weather",
   "fileName": "weather.yml",

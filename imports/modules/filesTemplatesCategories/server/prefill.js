@@ -20,17 +20,15 @@ module.exports.run = async () => {
     }
   ]
 
-  let numberOfCategories = FilesTemplatesCategories.find({})
-  
-  if (numberOfCategories.count() > 0) {
-    return numberOfCategories.fetch()
-  }
-
   let promises = categories.map(category => {
     return new Promise((resolve, reject) => {
       try {
-        let _id = FilesTemplatesCategories.insert(category)
-        resolve(Object.assign({}, category, { _id }))
+        let r = FilesTemplatesCategories.upsert({id:category.id}, {
+          $set: category
+        }, {
+          multi: false
+        })
+        resolve(Object.assign(category, { _id: r.insertedId }))
       }
       catch (ex) {
         reject(ex)

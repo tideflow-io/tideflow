@@ -19,6 +19,7 @@ const run = async () => {
     {
       categoryId: 'html-template',
       templates: [
+        'prefill/html-template/buttons.json',
         'prefill/html-template/basic.json'
       ]
     },
@@ -43,14 +44,6 @@ const run = async () => {
     }
   ]
   
-  let numberOfSystemTemplates = FilesTemplates.find({
-    userCreated: false
-  }).count()
-  
-  if (numberOfSystemTemplates > 0) {
-    return
-  }
-  
   tplCategories.map(tplCategory => {
     const category = categories.find(c => c.id === tplCategory.categoryId)
     if (!category) {
@@ -59,14 +52,20 @@ const run = async () => {
     }
 
     let p = tplCategory.templates.length
+
     tplCategory.templates.map(tpl => {
       const templateInfo = JSON.parse(Assets.getText(tpl))
-      FilesTemplates.insert(Object.assign(
-        templateInfo, {
-          category: category._id,
-          content: Assets.getText(`prefill/${tplCategory.categoryId}/${templateInfo.fileName}`),
-          priority: p--
-        }))
+      let r = FilesTemplates.upsert({
+        id: templateInfo.id,
+        userCreated: false
+      }, {
+        $set: Object.assign(
+          templateInfo, {
+            category: category._id,
+            content: Assets.getText(`prefill/${tplCategory.categoryId}/${templateInfo.fileName}`),
+            priority: p--
+          })
+      })
     })
   })
 }

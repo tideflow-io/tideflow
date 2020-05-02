@@ -1,4 +1,5 @@
 {
+  "id": "bash-s3buildpublish",
   "name": "AWS S3 Build & Publish",
   "description": "Publish site to S3 & CF",
   "fileName": "s3buildpublish.sh",

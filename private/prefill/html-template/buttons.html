@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Buttons Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script
+    src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
+    integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
+    crossorigin="anonymous"></script>
+
+  <style>
+    /* Your styles here */
+  </style>
+  
+  <script>
+    $( document ).ready(function() {
+      $('button').click(event => {
+        event.preventDefault()
+        const pressedButton = $(event.target)
+        const buttonNumber = parseInt(pressedButton.data('number'))
+        alert(`Button ${buttonNumber} clicked`)
+      })
+    });
+  </script>
+</head>
+<body>
+  <main role="main" class="flex-shrink-0">
+    <div class="container">
+      <h1 class="mt-5">Buttons example</h1>
+      <p class="lead">Example using Bootstrap 4.0.0 and jQuery 3.5.0 for interactions with buttons.</p>
+      
+      <button data-number="1" type="button" class="btn btn-primary">Primary</button> 
+      <button data-number="2" type="button" class="btn btn-secondary">Secondary</button> 
+      <button data-number="3" type="button" class="btn btn-success">Success</button> 
+      <button data-number="4" type="button" class="btn btn-danger">Danger</button> 
+      <button data-number="5" type="button" class="btn btn-warning">Warning</button> 
+      <button data-number="6" type="button" class="btn btn-info">Info</button> 
+      <button data-number="7" type="button" class="btn btn-light">Light</button> 
+      <button data-number="8" type="button" class="btn btn-dark">Dark</button> 
+      <button data-number="9" type="button" class="btn btn-link">Link</button> 
+
+    </div>
+  </main>
+</body>
+</html>

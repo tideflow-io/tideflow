@@ -1,4 +1,5 @@
 {
+  "id": "webparsy-form",
   "name": "Interact with form",
   "description": "Fill and submit an online form",
   "fileName": "form.yml",

@@ -1,4 +1,5 @@
 {
+  "id": "nodesfc-aws-sns",
   "name": "AWS SNS Publish",
   "description": "Publish message to an SNS Topic",
   "fileName": "aws-sns-message.js",
