@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor'
 import { AutoForm } from 'meteor/aldeed:autoform'
 import { Router } from 'meteor/iron:router'
 
