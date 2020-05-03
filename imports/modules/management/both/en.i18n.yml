@@ -33,7 +33,7 @@ teams:
     title: Remove group?
     text: This will remove services, files, workflows, metrics, etc for this group. This operation can not be reverted.
     error: There was a problem deleting the team.
-    succes: Team removed.
+    success: Team removed.
     isSystemDefault: Can not remove system's default team
   systemDefault:
     disable:
