@@ -60,6 +60,7 @@ Template.flowEditor.events({
 
   'click .edit-mode-enter': (event, template) => {
     const stepIndex = $(event.target).data('step')
+    if (typeof stepIndex === 'undefined') return;
     Session.set('fe-editMode', stepIndex)
     $('#nav-task-settings-tab').tab('show');
   },
