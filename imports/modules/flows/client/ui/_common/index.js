@@ -1,4 +1,5 @@
 import './editor'
 import './helper'
 import './events'
+import './hooks'
 import './css.css'
