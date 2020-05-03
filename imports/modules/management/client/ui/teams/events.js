@@ -49,7 +49,6 @@ Template['managementTeamsItem'].events({
           Meteor.call('teams.delete', {
             _id: template.data._id
           }, (error) => {
-            console.log({error})
             if (error) {
               sAlert.error(i18n.__('management.teams.delete.error'))
               return
