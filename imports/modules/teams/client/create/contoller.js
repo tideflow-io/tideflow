@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
-import { Session } from 'meteor/session'
-import { Accounts } from 'meteor/accounts-base'
 import { Router } from 'meteor/iron:router'
 import { sAlert } from 'meteor/juliancwirko:s-alert'
 
