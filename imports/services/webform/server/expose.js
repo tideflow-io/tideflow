@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import Handlebars from 'handlebars'
 import { Router } from 'meteor/iron:router'
 
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 import { triggerFlows } from '/imports/queue/server'
 
 Router.route('/webform/:uuid', function () {

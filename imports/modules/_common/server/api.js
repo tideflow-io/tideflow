@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { Keys } from '../../profileKeys/both/collection.js'
+import { Keys } from '../../profileKeys/both/collection'
 
 /**
  * Returns the user's who owns the authentication token

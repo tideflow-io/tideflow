@@ -2,10 +2,10 @@ import { Meteor } from 'meteor/meteor'
 import { Session } from 'meteor/session'
 import { Router } from 'meteor/iron:router'
 
-import { Flows } from '/imports/modules/flows/both/collection.js'
-import { Services } from '/imports/modules/services/both/collection.js'
-import { Executions } from '/imports/modules/executions/both/collection.js'
-import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
+import { Services } from '/imports/modules/services/both/collection'
+import { Executions } from '/imports/modules/executions/both/collection'
+import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import i18n from 'meteor/universe:i18n'
 

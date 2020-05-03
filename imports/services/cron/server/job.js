@@ -4,7 +4,7 @@ import * as tfQueue from '/imports/queue/server'
 
 import { nextCronExecution } from './service'
 
-import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 

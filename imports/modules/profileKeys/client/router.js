@@ -1,6 +1,6 @@
 import { Router } from 'meteor/iron:router'
 
-import { Keys } from '../both/collection.js'
+import { Keys } from '../both/collection'
 
 Router.route('/profile/keys', function () {
   this.render('membership.profile.keys')

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
 
 import { triggerFlows } from '/imports/queue/server'
 

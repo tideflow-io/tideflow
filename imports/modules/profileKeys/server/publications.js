@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 
-import { Keys } from '../both/collection.js'
+import { Keys } from '../both/collection'
 
 Meteor.publish('keys.all', function(query) {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')

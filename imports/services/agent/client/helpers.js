@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
 
-import { Services } from '/imports/modules/services/both/collection.js'
-import { Files } from '/imports/modules/files/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
+import { Files } from '/imports/modules/files/both/collection'
 
 Template.registerHelper('sAgentReportStatusDot', function() {
   try {

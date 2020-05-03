@@ -1,6 +1,6 @@
 import i18n from 'meteor/universe:i18n'
 
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 import filesLib from '/imports/modules/files/server/lib'
 import { servicesAvailable, processableResults } from '/imports/services/_root/server'
 import { ioTo } from './socket'

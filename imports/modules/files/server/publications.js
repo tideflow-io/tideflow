@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
-import { Files } from '../both/collection.js'
+import { Files } from '../both/collection'
 import { isMember } from '../../_common/both/teams'
 
 Meteor.publish('files.all', (query, options) => {

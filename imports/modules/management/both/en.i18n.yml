@@ -23,3 +23,18 @@ teams:
     button: Update permissions
     error: Error
     ok: Settings updated
+  list:
+    title: Teams
+    name: Name
+    options: Options
+    systemDefault: System's default
+    delete: Delete
+  delete:
+    title: Remove group?
+    text: This will remove services, files, workflows, metrics, etc for this group. This operation can not be reverted.
+    error: There was a problem deleting the team.
+    succes: Team removed.
+    isSystemDefault: Can not remove system's default team
+  systemDefault:
+    disable:
+      no-others: At least one default team is required
