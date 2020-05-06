@@ -26,6 +26,15 @@ const ExecutionSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  capabilities: {
+    type: Object,
+    optional: true
+  },
+  'capabilities.runInOneGo': {
+    type: Boolean,
+    optional: false,
+    defaultValue: true
+  },
   fullService: {
     type: Object,
     label: 'Full service',

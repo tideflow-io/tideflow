@@ -60,6 +60,9 @@ const service = {
       viewerTitle: 's-gh-ci.events.pull_request.viewer.title',
       inputable: true,
       stepable: false,
+      capabilities: {
+        runInOneGo: false
+      },
 
       /**
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
@@ -106,6 +109,9 @@ const service = {
       viewerTitle: 's-gh-ci.events.push.viewer.title',
       inputable: true,
       stepable: false,
+      capabilities: {
+        runInOneGo: false
+      },
       
       /**
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
@@ -152,6 +158,9 @@ const service = {
       viewerTitle: 's-gh-ci.events.checksuite.viewer.title',
       inputable: true,
       stepable: false,
+      capabilities: {
+        runInOneGo: false
+      },
       
       /**
        * @param {object} user Flow's owner information, excluding password, services, etc. As in database 
@@ -214,6 +223,9 @@ const service = {
       stepable: true,
       templates: {
         eventConfig: 'servicesGithubCiBasicStep'
+      },
+      capabilities: {
+        runInOneGo: false
       },
       
       /**

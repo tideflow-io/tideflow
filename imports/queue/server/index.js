@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import i18n from 'meteor/universe:i18n'
-import { Jobs as Queue } from 'meteor/msavin:sjobs'
+import { Jobs as Queue } from './engine/api'
 
 import { Random } from 'meteor/random'
 import { check } from 'meteor/check'
@@ -20,11 +20,12 @@ Queue.configure({
   // disableDevelopmentMode: true
 })
 
-const endExecution = (execution, status) => {
+const endExecution = async (execution, status) => {
   status = status || 'finished'
   debug(`End execution ${execution._id} with ${status}`)
   let now = new Date()
   let lapsed = (now.getTime() - execution.createdAt.getTime()) / 1000
+
   Executions.update(
     { _id: execution._id },
     { $set: {
@@ -169,6 +170,32 @@ const jobs = {
 module.exports.jobs = jobs
 
 /**
+ * 
+ * @param {Object} flow 
+ * 
+ * @returns {Object} Object containing the execution capabilities. This are:
+ *  runInOneGo: Determines if all the tasks for a flow can be executed 
+ *              one after each other, instead of creating independent jobs queue
+ *              taks.
+ */
+const executionCapabilities = flow => {
+  if (!flow) throw new Meteor.Error('no-flow')
+  if (!flow.capabilities) flow.capabilities = {}
+
+  let capabilities = {
+    // Only run the tasks in one go, if we are totally confident that it's 
+    // possible. 
+    runInOneGo: flow.capabilities.runInOneGo === true
+  }
+
+  return capabilities
+}
+
+const executeFlowInOneGo = (execution, user) => {
+  workflowStart({ execution, user })
+}
+
+/**
  * Given a channel details, searches all flows using it as a trigger
  * 
  * @param {Object} service 
@@ -178,6 +205,8 @@ module.exports.jobs = jobs
  * @param {Array} flows
  */
 const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
+
+  // Prevent user sensitive information leaks
   if (user.services) {
     throw new Error('Security issue: user services attached on triggerFlows.')
   }
@@ -199,7 +228,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     }
   }
 
-  let executionIds = (flows || Flows.find(flowsQuery).fetch()).map(flow => {
+  let executionCreated = (flows || Flows.find(flowsQuery).fetch()).map(flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
       return null
@@ -224,15 +253,24 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
       status: 'started'
     }
 
+    execution.capabilities = executionCapabilities(flow)
+
     let executionId = Executions.insert(execution)
+
+    if (execution.capabilities.runInOneGo) {
+      return executeFlowInOneGo(execution, user)
+    }
 
     // executionData now contains _id and createdAt
     jobs.run('workflow-start', { execution, user })
 
-    return executionId
+    return {
+      _id: executionId,
+      capabilities: execution.capabilities
+    }
   })
 
-  return executionIds
+  return executionCreated
 }
 
 module.exports.triggerFlows = triggerFlows
@@ -407,7 +445,9 @@ const guessTriggerSingleChilds = (flow) => {
 /**
  * workflow-start launches a flow execution
  **/
-jobs.register('workflow-start', function(jobData) {
+const workflowStart = function (jobData) {
+  let instance = this
+
   check(jobData, {
     execution: Object,
     user: Object
@@ -420,303 +460,359 @@ jobs.register('workflow-start', function(jobData) {
   // Get the current execution
   const { execution, user } = jobData
 
-  // If the execution is stopped, halt here and don't continue.
-  if (execution.status === 'stopped') {
-    debug('execution is stopped')
-    return this.success()
-  }
-
+  // Get needed execution data
   const triggerData = execution.triggerData
   const flow = execution.fullFlow
   const service = execution.fullService
 
-  // Service triggering the execution
-  let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
-  if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
+  // The event for the service triggering the execution
+  let event = null
 
-  // For the service triggering the execution, get the event
-  let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
-  // Woop! The event triggered can't be found
-  if (!event) {
-    return this.success()
-  }
+  return new Promise((resolve, reject) => {
+    Promise.resolve()
+      .then(() => {
+        // If the execution is stopped, halt here and don't continue.
+        if (execution.status === 'stopped') 
+          throw { completed: true, reason: 'stopped' }
+      })
 
-  // Log the trigger execution
-  let executionLog = {
-    team: flow.team,
-    execution: execution._id,
-    type: flow.trigger.type,
-    event: flow.trigger.event,
-    flow: execution.flow,
-    user: user._id,
-    step: 'trigger',
-    stepIndex: 'trigger',
-    msgs: [],
-    createdAt
-  }
-  
-  ExecutionsLogs.insert(executionLog)
+      .then(() => {
+        // Service triggering the execution
+        let serviceWorker = servicesAvailable.find(serviceAvailable => serviceAvailable.name === service.type)
+        if (!serviceWorker) throw new Error('Service not found @ triggerFlows #2')
 
-  // Execute the actual trigger
-  const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, executionLog._id)
+        // Stores the event for the service triggering the execution
+        event = serviceWorker.events.find(e => e.name === flow.trigger.event)
 
-  // For the trigger log, update it with the results
-  let stepUpdate = {
-    $set: {
-      stepResult: triggerResult.result,
-      next: triggerResult.next,
-      status: triggerResult.next ? triggerResult.error ? 'error' : 'success' : 'pending'
-    }
-  }
-  if (triggerResult.msgs) {
-    stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } }
-  }
-  ExecutionsLogs.update({
-    _id: executionLog._id,
-    execution: execution._id
-  }, stepUpdate)
+        // Woop! The event triggered can't be found
+        if (!event) throw { completed: true, reason: 'trigger-not-found' }
+      })
 
-  if (triggerResult.error) {
-    endExecution(execution, 'error')
-    debug('Trigger execution failed. Finishing')
-    this.success()
-    return
-  }
+      .then(() => {
+        // Log the trigger execution
+        let executionLog = {
+          team: flow.team,
+          execution: execution._id,
+          type: flow.trigger.type,
+          event: flow.trigger.event,
+          flow: execution.flow,
+          user: user._id,
+          step: 'trigger',
+          stepIndex: 'trigger',
+          msgs: [],
+          createdAt
+        }
+        
+        ExecutionsLogs.insert(executionLog)
 
-  if (!triggerResult.next) {
-    debug('Trigger asked to wait before continue flow execution')
-    this.success()
-    return
-  }
+        return executionLog
+      })
 
-  // Now that the trigger has been executed, we need to know which steps we
-  // need to execute next. To do this
-  // 
-  // 1. Determine if there's anything to execute
-  // 2. Determine the steps that don't have preceding steps
-  // 3. Determine the steps that are directly conneted to the trigger, and DONT
-  //    have any other preceding step.
-  // 4. Launch
+      .then(executionLog => {
+        // Execute the actual trigger
+        const triggerResult = executeTrigger(service, event, flow, user, triggerData, execution, executionLog._id)
 
-  // ===========================================================================
-  // 1. Determine if there's anything to execute
+        // For the trigger log, update it with the results
+        let stepUpdate = {
+          $set: {
+            stepResult: triggerResult.result,
+            next: triggerResult.next,
+            status: triggerResult.next ? triggerResult.error ? 'error' : 'success' : 'pending'
+          }
+        }
+        if (triggerResult.msgs) {
+          stepUpdate['$push'] = { msgs: { $each: triggerResult.msgs } }
+        }
 
-  if (!flow.steps || !flow.steps.length) {
-    debug('no flow steps')
-    endExecution(execution)
-    this.success()
-    return
-  }
+        ExecutionsLogs.update({
+          _id: executionLog._id,
+          execution: execution._id
+        }, stepUpdate)
 
-  // ===========================================================================
-  // 2. Determine the steps that don't have preceding steps
+        if (triggerResult.error) {
+          endExecution(execution, 'error')
+          debug('Trigger execution failed. Finishing')
+          throw { completed: true, reason: 'trigger-execution-failed' }
+        }
 
-  const stepsWithoutPreceding = guessStepsWithoutPreceding(flow)
+        if (!triggerResult.next) {
+          debug('Trigger asked to wait before continue flow execution')
+          throw { completed: true, reason: 'trigger-next-step' }
+        }
+      })
 
-  // ===========================================================================
-  // 3. Determine the steps that are directly conneted to the trigger, and DONT
-  //    have any other preceding step.
+      .then(() => {
+        // Now that the trigger has been executed, we need to know which steps we
+        // need to execute next. To do this
+        // 
+        // 1. Determine if there's anything to execute
+        // 2. Determine the steps that don't have preceding steps
+        // 3. Determine the steps that are directly conneted to the trigger, and DONT
+        //    have any other preceding step.
+        // 4. Launch
 
-  const triggerSingleChilds = guessTriggerSingleChilds(flow)
-  
-  // ===========================================================================
-  // 4. launch
+        // ===========================================================================
+        // 1. Determine if there's anything to execute
 
-  debug(`stepsWithoutPreceding ${JSON.stringify(stepsWithoutPreceding)}`)
-  debug(`triggerSingleChilds ${JSON.stringify(triggerSingleChilds)}`)
+        if (!flow.steps || !flow.steps.length) {
+          debug('no flow steps')
+          endExecution(execution)
+          throw { completed: true, reason: 'flow-no-steps' }
+        }
 
-  stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
-    debug(`workflow-start triggered step [${flow.steps[stepIndex].type.toUpperCase()}]`)
-    jobs.run('workflow-step', {
-      execution,
-      currentStep: flow.steps[stepIndex],
-      user
-    })
+        // ===========================================================================
+        // 2. Determine the steps that don't have preceding steps
+
+        const stepsWithoutPreceding = guessStepsWithoutPreceding(flow)
+
+        // ===========================================================================
+        // 3. Determine the steps that are directly conneted to the trigger, and DONT
+        //    have any other preceding step.
+
+        const triggerSingleChilds = guessTriggerSingleChilds(flow)
+        
+        // ===========================================================================
+        // 4. launch
+
+        debug(`stepsWithoutPreceding ${JSON.stringify(stepsWithoutPreceding)}`)
+        debug(`triggerSingleChilds ${JSON.stringify(triggerSingleChilds)}`)
+
+        let runInOneGoPromises = []
+
+        stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
+          debug(`workflow-start triggered step [${flow.steps[stepIndex].type.toUpperCase()}]`)
+
+          const nextStepData = {
+            execution,
+            currentStep: flow.steps[stepIndex],
+            user
+          }
+
+          if (execution.capabilities.runInOneGo) {
+            return runInOneGoPromises.push(
+              workflowStep(nextStepData)
+            )
+          }
+
+          return jobs.run('workflow-step', nextStepData)
+        })
+
+        if (execution.capabilities.runInOneGo && runInOneGoPromises.length) {
+          return Promise.all(runInOneGoPromises)
+        }
+      })
+
+      .catch(ex => {
+        if (!ex.completed) console.error(ex)
+      })
+
+      .finally(() => {
+        if (instance.success) instance.success()
+        return resolve()
+      })
   })
+}
+jobs.register('workflow-start', workflowStart)
 
-  this.success()
-})
+const workflowStep = function(jobData) {
+  debug(`workflow-step execution: ${jobData.execution._id}`)
+
+  let createdAt = new Date()
+  let instance = this
+  
+  let { currentStep, user, execution } = jobData
+  const flow = execution.fullFlow
+  const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
+  const listOfCalls = calledFrom(flow)
+  const previousStepsIndexes = listOfCalls[currentStepIndex] || []
+
+  let isStopped = Executions.find({
+    _id: execution._id,
+    status: { $ne: 'started' }
+  }).count()
+
+  let executionLog = null
+
+  return Promise.resolve()
+    .then(async () => { // Store log in database
+      executionLog = {
+        team: flow.team,
+        execution: execution._id,
+        flow: execution.flow,
+        user: user._id,
+        step: currentStep._id,
+        stepIndex: currentStepIndex,
+        type: currentStep.type,
+        event: currentStep.event,
+        msgs: [],
+        createdAt
+        // stdout
+        // stderr
+        // status
+      }
+
+      if (isStopped) {
+        debug('  Stopping step due stopped status')
+        executionLog.status = 'stopped'
+        ExecutionsLogs.insert(executionLog)
+        throw { completed: true, reason: 'execution-stopped' }
+      }
+    
+      try {
+        ExecutionsLogs.insert(executionLog)
+      }
+      catch (ex) {
+        endExecution(execution, 'error')
+        throw { completed: true, reason: 'executionlog-error', error: ex }
+      }
+    })
+
+    // Get the list of previous tasks to this one
+    .then(() => { 
+      return previousStepsIndexes.length ? ExecutionsLogs.find({
+        execution: execution._id,
+        stepIndex: { $in: previousStepsIndexes }
+      }, {
+        sort: {
+          createdAt: -1
+        }
+      }).fetch() : []
+    })
+
+    .then(async previousSteps => {
+      const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
+      const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
+      if (!stepEvent || !stepEvent.callback) throw { completed: true, reason: 'stepEvent-not-found' }
+      
+      debug(` ${currentStep.type}.${currentStep.event} => ${executionLog._id}`)
+    
+      let eventCallback = null
+    
+      try {
+        debug(` ${currentStep.type}.${currentStep.event} => CALLING CALLBACK`)
+        eventCallback = await Meteor.wrapAsync(cb => {
+          stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
+        })()
+      }
+      catch (ex) {
+        console.error(ex)
+      }
+      finally {
+        return eventCallback
+      }
+    })
+
+    .then(async eventCallback => {
+      debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
+      let updateReq = {
+        $set: {
+          stepResult: eventCallback.result,
+          next: eventCallback.next
+        }
+      }
+  
+      if (eventCallback.error) {
+        updateReq.$set.status = 'error'
+      }
+  
+      if (eventCallback.next) {
+        updateReq.$set.status = eventCallback.error ? 'error' : 'success'
+      }
+  
+      if (eventCallback.msgs) {
+        updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
+      }
+      ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
+    
+      if (eventCallback.error) {
+        await endExecution(execution, 'error')
+        throw { completed: true, reason: 'event-error', error: eventCallback.error }
+      }
+
+      return eventCallback
+    })
+
+    .then(eventCallback => {
+      // The service asked the queue to don't keep working on the execution
+      if (!eventCallback.next) throw { completed: true, reason: 'next' }
+
+      // Does the current step have any output?
+      const numberOfOutputs = (currentStep.outputs || []).length
+
+      // If no, it could mean that we should stop the flow's execution
+      if (!numberOfOutputs) {
+        // Get the number of executed steps in the current execution ...
+        const executedSteps = ExecutionsLogs.find({execution:execution._id}).count()
+
+        // if (currentStep.type === 'debug')
+        // console.log({executedSteps, length: flow.steps.length})
+
+        // and compare it against the number of steps in the executed flow (+ trigger).
+        // If the number matches, flag the execution as finished
+        if (executedSteps === flow.steps.length + 1) {
+          endExecution(execution)
+        }
+      }
+
+      currentStep.outputs.map(output => {
+        const nextStepId = output.stepIndex
+        const nextStepFull = flow.steps[nextStepId]
+
+        // next step have multiple inputs?
+        const stepInputsCount = listOfCalls[nextStepId] ? listOfCalls[nextStepId].length : 0
+
+        if (stepInputsCount > 1) {
+          const nextStepsCalledFrom = listOfCalls[nextStepId]
+
+          // All previous steps are executed?
+          const successSteps = ExecutionsLogs.find({
+            execution: execution._id,
+            stepIndex: { $in: nextStepsCalledFrom },
+            status: { $in: ['success'] }
+          }).count()
+
+          // If so, continue. Otherwise, don't do anything.
+          if (successSteps !== nextStepsCalledFrom.length) {
+            throw { completed: true }
+          }
+        }
+
+        let runInOneGoPromises = []
+
+        const nextStepData = {
+          execution,
+          currentStep: nextStepFull,
+          user
+        }
+
+        if (execution.capabilities.runInOneGo) {
+          return runInOneGoPromises.push(
+            workflowStep(nextStepData)
+          )
+        }
+        if (execution.capabilities.runInOneGo && runInOneGoPromises.length) {
+          return Promise.all(runInOneGoPromises)
+        }
+        // Schedule execution
+        jobs.run('workflow-step', nextStepData)
+      })
+    })
+
+    .catch(ex => {
+      if (!ex.completed) console.error(ex)
+    })
+
+    .finally(() => {
+      if (instance.success) instance.success()
+    })
+}
 
 /**
  * Execute non-trigger flow step
  * 
  * @param {Object} jobData
  */
-jobs.register('workflow-step', function(jobData) {
-  let createdAt = new Date()
-
-  let instance = this
-
-  let { currentStep, user, execution } = jobData
-
-  debug(`workflow-step execution: ${jobData.execution._id}`)
-
-  let isStopped = Executions.find({
-    _id: execution._id,
-    status: 'stopped'
-  }).count()
-
-  const flow = execution.fullFlow
-
-  const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
-
-  /**
-   * Store log in db.
-   */
-  let executionLog = {
-    team: flow.team,
-    execution: execution._id,
-    flow: execution.flow,
-    user: user._id,
-    step: currentStep._id,
-    stepIndex: currentStepIndex,
-    type: currentStep.type,
-    event: currentStep.event,
-    msgs: [],
-    createdAt
-    // stdout
-    // stderr
-    // status
-  }
-
-  if (isStopped) {
-    debug('  Stopping step due stopped status')
-    executionLog.status = 'stopped'
-    ExecutionsLogs.insert(executionLog)
-    instance.success()
-    return
-  }
-
-  try {
-    ExecutionsLogs.insert(executionLog)
-  }
-  catch (ex) {
-    endExecution(execution, 'error')
-    instance.success()
-    return
-  }
-
-  // If the execution was stopped, do not execute anything else
-
-  const listOfCalls = calledFrom(flow)
-
-  const previousStepsIndexes = listOfCalls[currentStepIndex] || []
-  const previousSteps = previousStepsIndexes.length ? ExecutionsLogs.find({
-    execution: execution._id,
-    stepIndex: { $in: previousStepsIndexes }
-  }, {
-    sort: {
-      createdAt: -1
-    }
-  }).fetch() : []
-
-  const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
-  const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
-  if (!stepEvent || !stepEvent.callback) return null
-  
-  debug(` ${currentStep.type}.${currentStep.event} => ${executionLog._id}`)
-
-  let eventCallback = null
-
-  try {
-    debug(` ${currentStep.type}.${currentStep.event} => CALLING CALLBACK`)
-    eventCallback = Meteor.wrapAsync(cb => {
-      stepEvent.callback(user, currentStep, previousSteps, execution, executionLog._id, cb)
-    })()
-  }
-  catch (ex) {
-    console.error(ex)
-  }
-
-  debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
-
-  {
-    let updateReq = {
-      $set: {
-        stepResult: eventCallback.result,
-        next: eventCallback.next
-      }
-    }
-
-    if (eventCallback.error) {
-      updateReq.$set.status = 'error'
-    }
-
-    if (eventCallback.next) {
-      updateReq.$set.status = eventCallback.error ? 'error' : 'success'
-    }
-
-    if (eventCallback.msgs) {
-      updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
-    }
-    ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
-  }
-
-  if (eventCallback.error) {
-    endExecution(execution, 'error')
-    instance.success()
-    return
-  }
-  
-  // The service asked the queue to inmediately execute the next step on the flow 
-  if (eventCallback.next) {
-
-    // Does the current step have any output?
-    const numberOfOutputs = (currentStep.outputs || []).length
-
-    // if (currentStep.type === 'debug')
-    // console.log({numberOfOutputs, currentStep})
-
-    // If no, it could mean that we should stop the flow's execution
-    if (!numberOfOutputs) {
-      // Get the number of executed steps in the current execution ...
-      const executedSteps = ExecutionsLogs.find({execution:execution._id}).count()
-
-      // if (currentStep.type === 'debug')
-      // console.log({executedSteps, length: flow.steps.length})
-
-      // and compare it against the number of steps in the executed flow (+ trigger).
-      // If the number matches, flag the execution as finished
-      if (executedSteps === flow.steps.length + 1) {
-        endExecution(execution)
-      }
-    }
-
-    currentStep.outputs.map(output => {
-      const nextStepId = output.stepIndex
-      const nextStepFull = flow.steps[nextStepId]
-
-      // next step have multiple inputs?
-      const stepInputsCount = listOfCalls[nextStepId] ? listOfCalls[nextStepId].length : 0
-
-      if (stepInputsCount > 1) {
-        const nextStepsCalledFrom = listOfCalls[nextStepId]
-
-        // All previous steps are executed?
-        const successSteps = ExecutionsLogs.find({
-          execution: execution._id,
-          stepIndex: { $in: nextStepsCalledFrom },
-          status: { $in: ['success'] }
-        }).count()
-
-        // If so, continue. Otherwise, don't do anything.
-        if (successSteps !== nextStepsCalledFrom.length) {
-          instance.success()
-          return
-        }
-      }
-
-      // Schedule execution
-      jobs.run('workflow-step', {
-        execution,
-        currentStep: nextStepFull,
-        user
-      })
-    })
-  }
-  
-  instance.success()
-})
+jobs.register('workflow-step', workflowStep)
 
 jobs.register('workflow-execution-notify-email', function(user, flow) {
   let instance = this

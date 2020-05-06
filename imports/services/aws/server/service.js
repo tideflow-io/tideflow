@@ -32,6 +32,9 @@ const service = {
   events: [
     {
       name: 'iot-shadow-get',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         let client = await iotData(currentStep, execution)
         client.getThingShadow({
@@ -43,6 +46,9 @@ const service = {
     },
     {
       name: 'iot-shadow-update',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
         const shadowData = lastData ? lastData.data || {} : {}

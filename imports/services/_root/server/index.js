@@ -29,6 +29,35 @@ const fileFromBuffer = async (buffer, nameSuggestion) => {
 
 module.exports.fileFromBuffer = fileFromBuffer
 
+/**
+ * Determine what are a flow's capabilities.
+ * 
+ * @param {Object} flow 
+ * 
+ * @returns {Object} Object containing the execution capabilities. This are:
+ *  runInOneGo: Determines if all the tasks for a flow can be executed 
+ *              one after each other, instead of creating independent jobs queue
+ *              taks.
+ */
+const flowCapabilities = flow => {
+  let capabilities = {
+    runInOneGo: true
+  }
+
+  const { steps } = flow
+
+  steps.map(step => {
+    const stepService = servicesAvailable.find(sa => sa.name === step.type)
+    const stepEvent = stepService.events.find(sse => sse.name === step.event)
+    const stepCapabilities = stepEvent.capabilities
+    if (!stepCapabilities.runInOneGo) capabilities.runInOneGo = false
+  })
+
+  return capabilities
+}
+
+module.exports.flowCapabilities = flowCapabilities
+
 const executeServiceHook = (service, hook, crud, stage, data, treat) => {
   if (!service) throw new Error('Service not specified')
   const returnableData = treat === 'original' ? data[0] : treat === 'new' ? data[1] : data[0]

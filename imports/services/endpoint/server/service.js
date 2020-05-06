@@ -36,8 +36,10 @@ const service = {
   events: [
     {
       name: 'called',
-      humanName: i18n.__('s-endpoint.events.called.name'),
       visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = executionLogs[0].stepResult
 

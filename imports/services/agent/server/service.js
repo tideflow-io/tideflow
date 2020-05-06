@@ -42,7 +42,9 @@ const service = {
   events: [
     {
       name: 'execute',
-      visibe: true,
+      capabilities: {
+        runInOneGo: false
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
 
@@ -101,6 +103,9 @@ const service = {
     
     {
       name: 'code_nodesfc',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'

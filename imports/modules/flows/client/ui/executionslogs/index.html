@@ -94,6 +94,8 @@
               {{logLapsedInSeconds}}
             {{else if isEq log.status 'error'}}
               {{logLapsedInSeconds}}
+            {{else if isEq log.status 'stopped'}}
+              -
             {{else}}
               <i class="fa fa-spinner fa-spin fa-fw"></i>
             {{/if}}

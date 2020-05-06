@@ -30,8 +30,10 @@ const service = {
   events: [
     {
       name: 'submitted',
-      humanName: i18n.__('s-webform.events.submitted.name'),
       visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
         

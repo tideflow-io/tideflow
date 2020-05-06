@@ -31,7 +31,6 @@ alexwine:bootstrap-4
 universe:i18n
 universe:i18n-blaze
 aldeed:schema-deny
-msavin:sjobs
 meteorhacks:ssr
 natestrauser:connection-banner
 meteortesting:mocha

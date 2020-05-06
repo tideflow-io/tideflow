@@ -80,6 +80,10 @@
   border-left: 6px solid #FFC106 !important;
 }
 
+.card-status-stopped {
+  border-left: 6px solid gray !important;
+}
+
 @media (min-width: 1200px) {
   .card-task .card-title {
     margin: 0;

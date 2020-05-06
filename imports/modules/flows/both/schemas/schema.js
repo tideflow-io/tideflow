@@ -48,6 +48,15 @@ const FlowSchema = new SimpleSchema({
     max: 1000,
     optional: true
   },
+  capabilities: {
+    type: Object,
+    optional: true
+  },
+  'capabilities.runInOneGo': {
+    type: Boolean,
+    optional: false,
+    defaultValue: true
+  },
   trigger: {
     type: Object,
     optional: false

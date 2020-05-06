@@ -3,7 +3,10 @@ import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 
-import { flows as flowsHooks } from '/imports/services/_root/server'
+import {
+  flows as flowsHooks,
+  flowCapabilities 
+} from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'
 
 import { Flows } from '../both/collection'
@@ -35,6 +38,8 @@ export const createFlow = new ValidatedMethod({
 
     // Execute the hooks
     flow = flowsHooks.create.pre(flow)
+
+    flow.capabilities = flowCapabilities(flow)
 
     Flows.insert(flow)
 
@@ -98,6 +103,7 @@ export const updateFlow = new ValidatedMethod({
       status: afterPreHookDoc.status,
       description: afterPreHookDoc.description,
       steps: afterPreHookDoc.steps,
+      capabilities: flowCapabilities(afterPreHookDoc),
       emailOnTrigger: afterPreHookDoc.emailOnTrigger,
       trigger: afterPreHookDoc.trigger
     }
