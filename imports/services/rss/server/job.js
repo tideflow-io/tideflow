@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import * as tfQueue from '/imports/queue/server'
 
-import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
 import { triggerFlows } from '/imports/queue/server'
 
 let Parser = require('rss-parser')

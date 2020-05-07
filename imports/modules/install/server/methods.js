@@ -59,5 +59,18 @@ Meteor.methods({
     }, {
       upsert: true
     })
+    
+    Settings.update({
+      public: true,
+      type: 'teamsCreation'
+    }, {
+      $set: {
+        public: true,
+        type: 'siteSettings',
+        'settings.creationPermissions': 'public'
+      }
+    }, {
+      upsert: true
+    })
   }
 })

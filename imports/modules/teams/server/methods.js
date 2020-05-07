@@ -2,6 +2,13 @@ import { Meteor } from 'meteor/meteor'
 import { check } from 'meteor/check'
 
 import { Teams } from '/imports/modules/teams/both/collection'
+import { Executions } from '/imports/modules/executions/both/collection'
+import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
+import { Files } from '/imports/modules/files/both/collection'
+import { Flows } from '/imports/modules/flows/both/collection'
+import { Services } from '/imports/modules/services/both/collection'
+
+import filesLib from '/imports/modules/files/server/lib'
 
 import { getSetting } from '../../management/both/settings'
 import { checkRole } from '../../../helpers/both/roles'
@@ -16,7 +23,9 @@ Meteor.methods({
   'teams.create' (teamData) {
     if (!Meteor.userId()) throw new Meteor.Error('teams.create.form.errors.no-auth')
 
-    if (!checkRole(Meteor.userId(), 'super-admin')
+    const isSuperAdmin = checkRole(Meteor.userId(), 'super-admin')
+
+    if (!isSuperAdmin
       && getSetting('teamsCreation', 'creationPermissions') !== 'public') {
       throw new Meteor.Error('teams.create.form.errors.not-allowed')
     }
@@ -38,11 +47,20 @@ Meteor.methods({
     ]})
 
     if (existingTeam) throw new Meteor.Error('teams.create.form.errors.already-exists')
+
+    // Check if there's any other group created.
+    // If there's none, then the new group will be the default one.
+    let groupIsDefault = false
+    if (isSuperAdmin) {
+      let existingGroups = Teams.find().count()
+      if (!existingGroups) groupIsDefault = true
+    }
     
     // Check if group already exists
     return Teams.insert({
       name,
       slug,
+      systemDefault: groupIsDefault,
       user: Meteor.userId(),
       members: [{
         user: Meteor.userId(),
@@ -138,5 +156,72 @@ Meteor.methods({
     }
 
     return removeUser(userId, teamId)
+  },
+  'teams.delete' (groupQuery) {
+    if (!checkRole(Meteor.userId(), 'super-admin')) {
+      throw new Meteor.Error('no-auth')
+    }
+
+    const { _id } = groupQuery
+
+    if (!_id) throw new Meteor.Error('bad-query')
+
+    // Get team details
+    const currentTeam = Teams.findOne({_id})
+
+    // Do not allow to remove system's default teams
+    if (currentTeam.systemDefault) {
+      throw new Meteor.Error('team-is-system-default')
+    }
+
+    const deleteQuery = {team:_id}
+
+    // Get list of gridFS files to be removed
+    const files = Files.find(deleteQuery).fetch()
+    let gfsIds = []
+    files.forEach(file => {
+      file.versions.map(v => gfsIds.push(v.gfsId))
+    })
+
+    // Remove gridfs files
+    filesLib.remove(gfsIds)
+
+    // Perform remove operations in the rest of collections
+    Files.remove(deleteQuery)
+    Executions.remove(deleteQuery)
+    ExecutionsLogs.remove(deleteQuery)
+    Flows.remove(deleteQuery)
+    Services.remove(deleteQuery)
+    Teams.remove({_id})
+  },
+  'teams.toggleDefault' (_id, makeDefault) {
+    if (!checkRole(Meteor.userId(), 'super-admin')) {
+      throw new Meteor.Error('no-auth')
+    }
+
+    // User want to set group as non-default
+    if (!makeDefault) {
+      // Check if there are other system default teams
+      let otherDefaultTeams = Teams.findOne({
+        systemDefault: true,
+        _id: { $ne: _id }
+      })
+
+      // There are not other default groups
+      if (!otherDefaultTeams) {
+        throw new Meteor.Error('no-others')
+      }
+
+      Teams.update({_id}, {
+        $set: { systemDefault: false }
+      })
+    }
+
+    // User want to set group as default
+    else {
+      Teams.update({_id}, {
+        $set: { systemDefault: true }
+      })
+    }
   }
 })

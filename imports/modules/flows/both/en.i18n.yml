@@ -10,6 +10,11 @@ delete.text: Once deleted, you will not be able to recover this.
 delete.ok: Workflow deleted
 delete.error: There was a problem deleting the workflow
 delete.success: Your workflow was deleted
+
+insert.error.noTrigger: You must define a trigger before saving your workflow.
+update.error.validation: Your workflow can not be updated. Please check trigger and tasks.
+update.error.generic: There was a problem updating your workflow.
+
 editor.trigger.notSet: Not defined
 editor.trigger.title: What event triggers this workflow?
 editor.triggerEvent.selectOneOption: Select an option

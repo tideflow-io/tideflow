@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { ReactiveAggregate } from 'meteor/tunguska:reactive-aggregate';
 import SimpleSchema from 'simpl-schema'
 
-import { Flows } from '../both/collection.js'
+import { Flows } from '../both/collection'
 import { Executions } from '../../executions/both/collection'
 import { isMember } from '../../_common/both/teams'
 

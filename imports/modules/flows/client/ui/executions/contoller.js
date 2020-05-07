@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
-import { Executions } from '/imports/modules/executions/both/collection.js'
+import { Executions } from '/imports/modules/executions/both/collection'
 import { ReactiveVar } from 'meteor/reactive-var'
 import { moment } from 'meteor/momentjs:moment'
 

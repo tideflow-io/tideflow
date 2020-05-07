@@ -3,8 +3,8 @@ import { servicesAvailable } from '/imports/services/_root/server'
 import { ioTo } from '/imports/services/agent/server/socket'
 import filesLib from '/imports/modules/files/server/lib'
 
-import { Services } from '/imports/modules/services/both/collection.js'
-import { Executions } from '/imports/modules/executions/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
+import { Executions } from '/imports/modules/executions/both/collection'
 
 import { createCheckrun, updateCheckrun } from './ghApi'
 

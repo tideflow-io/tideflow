@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 
-import { FilesTemplatesCategories } from '../both/collection.js'
+import { FilesTemplatesCategories } from '../both/collection'
 
 Meteor.publish('filesTemplatesCategories.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')

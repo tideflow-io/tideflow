@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { Files } from '/imports/modules/files/both/collection.js'
+import { Files } from '/imports/modules/files/both/collection'
 
 Template['servicesWebparsyScrapeConfig'].helpers({
   files: function () {

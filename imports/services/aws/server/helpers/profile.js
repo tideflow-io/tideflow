@@ -1,4 +1,4 @@
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 
 module.exports.getAwsProfile = (currentStep, execution) => {
   if (!currentStep.config || !currentStep.config.profile) {

@@ -19,6 +19,11 @@ const KeySchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  systemDefault: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
   members: {
     type: Array,
     optional: true

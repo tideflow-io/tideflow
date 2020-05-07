@@ -3,7 +3,7 @@ const uuidv4 = require('uuid/v4')
 import { Meteor } from 'meteor/meteor'
 import { check } from 'meteor/check'
 
-import { Keys } from '../both/collection.js'
+import { Keys } from '../both/collection'
 
 Meteor.methods({
   'profileKeys.create' () {

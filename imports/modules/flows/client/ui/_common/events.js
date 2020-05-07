@@ -2,8 +2,8 @@ import { Session } from 'meteor/session'
 import { Router } from 'meteor/iron:router'
 import { Template } from 'meteor/templating'
 
-import { Services } from '/imports/modules/services/both/collection.js'
-import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
+import { Flows } from '/imports/modules/flows/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 
 /**
@@ -60,6 +60,7 @@ Template.flowEditor.events({
 
   'click .edit-mode-enter': (event, template) => {
     const stepIndex = $(event.target).data('step')
+    if (typeof stepIndex === 'undefined') return;
     Session.set('fe-editMode', stepIndex)
     $('#nav-task-settings-tab').tab('show');
   },
