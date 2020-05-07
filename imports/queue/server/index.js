@@ -192,7 +192,7 @@ const executionCapabilities = flow => {
 }
 
 const executeFlowInOneGo = (execution, user) => {
-  workflowStart({ execution, user })
+  return workflowStart({ execution, user })
 }
 
 /**
@@ -204,7 +204,7 @@ const executeFlowInOneGo = (execution, user) => {
  * @param {Array} data [{type: String, data: {}}]
  * @param {Array} flows
  */
-const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
+const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
 
   // Prevent user sensitive information leaks
   if (user.services) {
@@ -228,7 +228,7 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     }
   }
 
-  let executionCreated = (flows || Flows.find(flowsQuery).fetch()).map(flow => {
+  let executionCreated = (flows || Flows.find(flowsQuery).fetch()).map(async flow => {
     let event = serviceWorker.events.find(e => e.name === flow.trigger.event)
     if (!event) {
       return null
@@ -258,7 +258,13 @@ const triggerFlows = (service, user, flowsQuery, triggerData, flows) => {
     let executionId = Executions.insert(execution)
 
     if (execution.capabilities.runInOneGo) {
-      return executeFlowInOneGo(execution, user)
+      let result = await executeFlowInOneGo(execution, user)
+
+      return {
+        _id: executionId,
+        capabilities: execution.capabilities,
+        result
+      }
     }
 
     // executionData now contains _id and createdAt
@@ -601,14 +607,14 @@ const workflowStart = function (jobData) {
           return Promise.all(runInOneGoPromises)
         }
       })
+      .then(r => {
+        if (instance.success) instance.success()
+        return resolve(r)
+      })
 
       .catch(ex => {
         if (!ex.completed) console.error(ex)
-      })
-
-      .finally(() => {
         if (instance.success) instance.success()
-        return resolve()
       })
   })
 }
@@ -704,6 +710,9 @@ const workflowStep = function(jobData) {
 
     .then(async eventCallback => {
       debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
+      //executionLog.stepResult = eventCallback.result
+      //executionLog.next = eventCallback.next
+
       let updateReq = {
         $set: {
           stepResult: eventCallback.result,
@@ -712,18 +721,21 @@ const workflowStep = function(jobData) {
       }
   
       if (eventCallback.error) {
+        //executionLog.status = 'error'
         updateReq.$set.status = 'error'
       }
   
       if (eventCallback.next) {
+        //executionLog.status = eventCallback.error ? 'error' : 'success'
         updateReq.$set.status = eventCallback.error ? 'error' : 'success'
       }
   
       if (eventCallback.msgs) {
+        //executionLog.msgs = eventCallback.msgs
         updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
       }
       ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
-    
+
       if (eventCallback.error) {
         await endExecution(execution, 'error')
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
@@ -732,7 +744,7 @@ const workflowStep = function(jobData) {
       return eventCallback
     })
 
-    .then(eventCallback => {
+    .then(async eventCallback => {
       // The service asked the queue to don't keep working on the execution
       if (!eventCallback.next) throw { completed: true, reason: 'next' }
 
@@ -754,7 +766,7 @@ const workflowStep = function(jobData) {
         }
       }
 
-      currentStep.outputs.map(output => {
+      let allPromises = currentStep.outputs.map(async output => {
         const nextStepId = output.stepIndex
         const nextStepFull = flow.steps[nextStepId]
 
@@ -777,34 +789,32 @@ const workflowStep = function(jobData) {
           }
         }
 
-        let runInOneGoPromises = []
-
         const nextStepData = {
           execution,
           currentStep: nextStepFull,
           user
         }
-
+        
         if (execution.capabilities.runInOneGo) {
-          return runInOneGoPromises.push(
-            workflowStep(nextStepData)
-          )
-        }
-        if (execution.capabilities.runInOneGo && runInOneGoPromises.length) {
-          return Promise.all(runInOneGoPromises)
+          return await workflowStep(nextStepData)
         }
         // Schedule execution
         jobs.run('workflow-step', nextStepData)
       })
+
+      return await Promise.all(allPromises)
+    })
+
+    .then(r => {
+      if (instance.success) instance.success()
+      // return Object.assign(executionLog, { subSteps: r })
+      return executionLog
     })
 
     .catch(ex => {
       if (!ex.completed) console.error(ex)
-    })
-
-    .finally(() => {
       if (instance.success) instance.success()
-    })
+    })  
 }
 
 /**

@@ -44,12 +44,18 @@ const flowCapabilities = flow => {
     runInOneGo: true
   }
 
-  const { steps } = flow
+  let { steps } = flow
+
+  if (!steps) steps = []
 
   steps.map(step => {
     const stepService = servicesAvailable.find(sa => sa.name === step.type)
     const stepEvent = stepService.events.find(sse => sse.name === step.event)
-    const stepCapabilities = stepEvent.capabilities
+    if (!stepEvent) {
+      capabilities.runInOneGo = false
+      return
+    }
+    const stepCapabilities = stepEvent.capabilities || {}
     if (!stepCapabilities.runInOneGo) capabilities.runInOneGo = false
   })
 
@@ -226,8 +232,8 @@ module.exports.flows = flows
 const exposeExecutionLogs = executionLogs => {
   executionLogs = processableResults(executionLogs, true)
   return executionLogs.map(el => {
-    const { _id, type, event, stepIndex, createdAt, stepResult, updatedAt } = el
-    return { _id, type, event, stepIndex, createdAt, stepResult, updatedAt }
+    const { _id, type, event, stepIndex, status, createdAt, stepResult, updatedAt } = el
+    return { _id, type, event, stepIndex, status, createdAt, stepResult, updatedAt }
   })
 }
 
@@ -256,7 +262,7 @@ const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
 
   return (executionLogs || []).map(el => {
-    let { _id, execution, flow, step, stepIndex, user, type, event, createdAt, updatedAt, stepResult } = el
+    let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, stepResult } = el
     if (!external && stepResult.files) { // Store files locally
       stepResult.files.map(file => {
         const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
@@ -276,7 +282,7 @@ const processableResults = (executionLogs, external) => {
         delete file.data
       })
     }
-    return { _id, stepIndex, type, event, createdAt, updatedAt, stepResult }
+    return { _id, stepIndex, type, event, status, createdAt, updatedAt, stepResult }
   }) // external ? 'external' : 'internal'
 }
 
