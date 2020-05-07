@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
-import { ExecutionsLogs } from '../both/collection.js'
+import { ExecutionsLogs } from '../both/collection'
 Meteor.publish('executionsLogs.all', (query, options) => {
   query.user = Meteor.userId()
   new SimpleSchema({

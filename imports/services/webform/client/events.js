@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 
 const editorDefaults = {
   dataType: 'json',

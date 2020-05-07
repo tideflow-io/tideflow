@@ -40,7 +40,44 @@
             </form>
           </div>
         </div>
+        
+        <div class="card">
+          <div class="card-header">
+            {{__ "management.teams.list.title"}}
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">{{__ "management.teams.list.name"}}</th>
+                  <th scope="col">
+                    {{__ "management.teams.list.options"}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each teams}}
+                  {{> managementTeamsItem }}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</template>
+
+<template name="managementTeamsItem">
+  <tr>
+    <td>{{name}}</td>
+    <td>
+      <button class="btn btn-sm btn-outline-danger remove float-right">{{__ "management.teams.list.delete"}}</button>
+      {{#if systemDefault}}
+        <button class="mr-2 btn btn-sm btn-primary system-default float-right">{{__ "management.teams.list.systemDefault"}}</button>
+      {{else}}
+        <button class="mr-2 btn btn-sm btn-outline-primary system-default float-right">{{__ "management.teams.list.systemDefault"}}</button>
+      {{/if}}
+    </td>
+  </tr>
 </template>

@@ -3,7 +3,7 @@ import * as tfQueue from '/imports/queue/server'
 import { moment } from 'meteor/momentjs:moment'
 import * as emailHelper from '/imports/helpers/server/emails'
 
-import { Executions } from '/imports/modules/executions/both/collection.js'
+import { Executions } from '/imports/modules/executions/both/collection'
 
 /**
  * Get the list of users suitable to receive an executions log email

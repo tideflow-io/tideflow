@@ -3,7 +3,7 @@ import path from 'path'
 const Readable = require('stream').Readable
 
 import { MongoInternals } from 'meteor/mongo'
-import { Files } from '/imports/modules/files/both/collection.js'
+import { Files } from '/imports/modules/files/both/collection'
 
 import { gfs } from './gfs'
 
@@ -56,6 +56,14 @@ const getOneAsString = (query, versionIndex) => {
   return streamToString(stream)
 }
 module.exports.getOneAsString = getOneAsString
+
+const remove = async (_id) => {
+  if (Array.isArray(_id)) 
+    return _id.map(i => gfs.delete(MongoInternals.NpmModule.ObjectID(i)))
+  return gfs.delete(MongoInternals.NpmModule.ObjectID(_id))
+}
+
+module.exports.remove = remove
 
 const create = async (doc, content) => {
   delete doc.content

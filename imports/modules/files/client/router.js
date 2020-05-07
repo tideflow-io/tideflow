@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Router } from 'meteor/iron:router'
 
-import { Files } from '/imports/modules/files/both/collection.js'
+import { Files } from '/imports/modules/files/both/collection'
 import { FilesTemplatesCategories } from '/imports/modules/filesTemplatesCategories/both/collection'
 
 import './ui/index'

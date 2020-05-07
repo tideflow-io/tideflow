@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating'
-import { Teams } from '/imports/modules/teams/both/collection.js'
+import { Teams } from '/imports/modules/teams/both/collection'
 import { userEmailById } from '../../../../helpers/both/emails'
 
 import { ROLES } from '../../../_common/both/teams'

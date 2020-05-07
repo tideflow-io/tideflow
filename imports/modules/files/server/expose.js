@@ -106,7 +106,6 @@ Router.route('/file', function () {
 
 
 Router.route('/publicFile/:uniqueId', function () {
-  const req = this.request
   const res = this.response
   let { uniqueId } = this.params
 

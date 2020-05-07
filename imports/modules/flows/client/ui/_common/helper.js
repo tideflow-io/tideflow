@@ -3,8 +3,8 @@ import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import i18n from 'meteor/universe:i18n'
 
-import { Flows } from '/imports/modules/flows/both/collection.js'
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
+import { Services } from '/imports/modules/services/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 import { checkRole } from '/imports/helpers/both/roles'
 

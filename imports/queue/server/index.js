@@ -5,7 +5,7 @@ import { Jobs as Queue } from 'meteor/msavin:sjobs'
 import { Random } from 'meteor/random'
 import { check } from 'meteor/check'
 
-import { Flows } from '/imports/modules/flows/both/collection.js'
+import { Flows } from '/imports/modules/flows/both/collection'
 import { Executions } from '/imports/modules/executions/both/collection'
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 

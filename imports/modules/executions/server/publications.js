@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
-import { Executions } from '../both/collection.js'
+import { Executions } from '../both/collection'
 
 Meteor.publish('executions.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')

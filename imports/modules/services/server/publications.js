@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
-import { Services } from '../both/collection.js'
+import { Services } from '../both/collection'
 import { isMember } from '../../_common/both/teams'
 
 Meteor.publish('services.all', (query, options) => {

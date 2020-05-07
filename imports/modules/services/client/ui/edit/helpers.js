@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 

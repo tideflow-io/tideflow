@@ -5,7 +5,7 @@ import { Router } from 'meteor/iron:router'
 
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { Services } from '/imports/modules/services/both/collection.js'
+import { Services } from '/imports/modules/services/both/collection'
 
 import './ui/index'
 import './ui/new'
