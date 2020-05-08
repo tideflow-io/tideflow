@@ -234,10 +234,6 @@ const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
       return null
     }
 
-    if (flow.emailOnTrigger) {
-      jobs.run('workflow-execution-notify-email', user, flow)
-    }
-
     flow.steps.map(step => {
       step._id = Random.id()
     })
@@ -823,33 +819,6 @@ const workflowStep = function(jobData) {
  * @param {Object} jobData
  */
 jobs.register('workflow-step', workflowStep)
-
-jobs.register('workflow-execution-notify-email', function(user, flow) {
-  let instance = this
-
-  const to = [emailHelper.userEmail(user)]
-
-  const emailDetails = {
-    config: {
-      subject: i18n.__('flows.emailOnTrigger.subject', {name: flow.title}),
-      text: i18n.__('flows.emailOnTrigger.text'),
-    }
-  }
-
-  const tplVars = {
-    title: i18n.__('flows.emailOnTrigger.title'),
-    subtitle: i18n.__('flows.emailOnTrigger.subtitle', {name: flow.title}),
-    message: i18n.__('flows.emailOnTrigger.message', {name: flow.title}),
-    buttonLink: Meteor.absoluteUrl(`/flows/${flow._id}`),
-    buttonText: i18n.__('flows.emailOnTrigger.butonText')
-  }
-
-  const emailData = serverEmailHelper.data(to, emailDetails, tplVars, 'flowEmailOnTriggered')
-
-  serverEmailHelper.send(emailData)
-
-  instance.success()
-})
 
 jobs.register('workflow-execution-finished', function(jobData) {
   let { execution } = jobData

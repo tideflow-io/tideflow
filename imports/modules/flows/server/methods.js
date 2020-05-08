@@ -83,7 +83,6 @@ export const updateFlow = new ValidatedMethod({
       status: flow.status,
       description: flow.description,
       steps: flow.steps,
-      emailOnTrigger: flow.emailOnTrigger,
       trigger: flow.trigger
     }
 
@@ -104,7 +103,6 @@ export const updateFlow = new ValidatedMethod({
       description: afterPreHookDoc.description,
       steps: afterPreHookDoc.steps,
       capabilities: flowCapabilities(afterPreHookDoc),
-      emailOnTrigger: afterPreHookDoc.emailOnTrigger,
       trigger: afterPreHookDoc.trigger
     }
 
