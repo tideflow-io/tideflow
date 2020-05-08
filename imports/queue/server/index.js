@@ -11,9 +11,6 @@ import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import * as serverEmailHelper from '/imports/helpers/server/emails'
-import * as emailHelper from '/imports/helpers/both/emails'
-
 const debug = require('debug')('tideflow:queue:core')
 
 Queue.configure({
