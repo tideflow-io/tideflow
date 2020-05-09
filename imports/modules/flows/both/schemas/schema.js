@@ -21,12 +21,6 @@ const FlowSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
-  emailOnTrigger: {
-    label: i18n.__('flows.properties.emailOnTrigger'),
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
   status: {
     type: String,
     label: 'Status',
@@ -47,6 +41,15 @@ const FlowSchema = new SimpleSchema({
     label: 'Description',
     max: 1000,
     optional: true
+  },
+  capabilities: {
+    type: Object,
+    optional: true
+  },
+  'capabilities.runInOneGo': {
+    type: Boolean,
+    optional: false,
+    defaultValue: true
   },
   trigger: {
     type: Object,

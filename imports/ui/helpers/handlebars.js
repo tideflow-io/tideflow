@@ -58,6 +58,8 @@ Template.registerHelper('logStatusCssClass', function() {
       return this.log.status
     case 'error':
       return 'danger'
+    case 'stopped':
+      return 'stopped'
     default:
       return 'empty' 
   }

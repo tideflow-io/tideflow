@@ -2,9 +2,6 @@ _namespace: s-endpoint
 name: Endpoint
 description: A unique URL to push data into Tideflow
 url: Full URL
-waitForCompletion.title: Wait for execution to be finished
-waitForCompletion.yes: Yes
-waitForCompletion.no: No
 code: POST request example
 events.called.name: When it's reached
 events.called.viewer.title: When an endpoint is reached

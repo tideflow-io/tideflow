@@ -31,6 +31,9 @@ const service = {
   events: [
     {
       name: 'scrape',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         debug('scrape called')
         let string = null

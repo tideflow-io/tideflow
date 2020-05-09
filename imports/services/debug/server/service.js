@@ -27,41 +27,65 @@ const service = {
   events: [
     {
       name: 'e1',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e1')
     },
     {
       name: 'e2',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e2')
     },
     {
       name: 'e3',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e3')
     },
     {
       name: 'e4',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e4')
     },
     {
       name: 'e5',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e5')
     },
     {
       name: 'e6',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e6')
     },
     {
       name: 'e7',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e7')
     },
     {
       name: 'e8',
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => 
         executionCb(cb, executionLogs, 'e8')
     }

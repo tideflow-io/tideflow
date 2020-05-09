@@ -201,8 +201,9 @@ const service = {
   },
   events: [{
     name: 'called',
-    humanName: i18n.__('s-cron.events.called.name'),
-    visibe: true,
+    capabilities: {
+      runInOneGo: true
+    },
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       cb(null, {
         result: {},

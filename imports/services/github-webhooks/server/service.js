@@ -40,6 +40,9 @@ const service = {
       name: 'called',
       humanName: 's-gh-webhooks.events.called.name',
       visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
 

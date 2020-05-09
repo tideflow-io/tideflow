@@ -26,7 +26,6 @@ editor.step.editDetailsDone: Done
 editor.sidebar.tabs.tasks.link.text: Add task
 editor.sidebar.tabs.tasks.search.text: Search ...
 editor.sidebar.tabs.task.link.text: Task settings
-properties.emailOnTrigger: Send me an email when this workflow is triggered
 edit.submit: Save
 index.title: Workflows
 index.subtitle: Workflows are lists of actions that happen upon a trigger.
@@ -61,12 +60,3 @@ status.finished: Finished
 status.failed: Failed
 status.update.ok: Workflow updated
 status.update.error: There was a problem updating the workflow
-emailOnTrigger.title: Workflow executed
-emailOnTrigger.subtitle: The workflow <i>{$name}</i> is being executed.
-emailOnTrigger.message: You are receiving this message because you opt-in for
-  getting notifications for <i>{$name}</i> executions. To disable this notification
-  open the editor for this workflow.
-emailOnTrigger.text: The workflow named '{$name}' is being executed. To disable this notification
-  open its editor.
-emailOnTrigger.subject: Workflow execution [{$name}]
-emailOnTrigger.butonText: View workflow

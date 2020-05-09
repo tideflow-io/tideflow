@@ -14,7 +14,9 @@ const service = {
   },
   events: [{
     name: 'to-me',
-    visibe: true,
+    capabilities: {
+      runInOneGo: true
+    },
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       const { fullFlow } = execution
       const to = commonEmailHelper.userEmail(user)
@@ -74,6 +76,9 @@ const service = {
   {
     name: 'to-others',
     visibe: true,
+    capabilities: {
+      runInOneGo: true
+    },
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       const { fullFlow } = execution
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'

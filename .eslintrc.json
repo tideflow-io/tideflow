@@ -11,10 +11,7 @@
     },
     "rules": {
         "no-console": "off",
-        "indent": [
-            "warn",
-            2
-        ],
+        "indent": ["warn", 2],
         "linebreak-style": [
             "warn",
             "unix"
@@ -26,6 +23,7 @@
         "semi": [
             "warn",
             "never"
-        ]
+        ],
+        "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
     }
 }

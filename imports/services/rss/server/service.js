@@ -13,6 +13,9 @@ const service = {
     {
       name: 'new-content',
       visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = ([].concat(executionLogs).pop() || {}).stepResult
         

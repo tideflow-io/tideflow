@@ -25,12 +25,6 @@ Router.route('/service/endpoint/:uuid', async function () {
     return
   }
 
-  const waitForWorkflowCompletion = flow.trigger.config && flow.trigger.config.waitForCompletion === 'yes'
-
-  if (!waitForWorkflowCompletion) {
-    res.end(JSON.stringify({status: 'queued'}))
-  }
-
   let user = Meteor.users.findOne({_id: flow.user}, {
     fields: { services: false }
   })
@@ -48,7 +42,16 @@ Router.route('/service/endpoint/:uuid', async function () {
 
   if (!Object.keys(result).length) { return }
 
-  const executionIds = triggerFlows(
+  let timedOut = false
+
+  let timeout = Meteor.setTimeout(() => {
+    timedOut = true
+    res.end(JSON.stringify({
+      status: 'queued'
+    }))
+  }, 10000)
+  
+  const triggeredExecutions = await triggerFlows(
     flow.trigger,
     user,
     null,
@@ -56,34 +59,51 @@ Router.route('/service/endpoint/:uuid', async function () {
     [flow]
   )
 
-  if (!waitForWorkflowCompletion) return
+  const firstExecution = await triggeredExecutions[0]
 
-  let callResult = await new Promise((resolve, reject) => {
-    let attemptNumber = 0
-    let intervalID = Meteor.setInterval(function () {
-      let waitedResult = Executions.findOne({
-        _id: executionIds[0],
-        status: 'finished'
-      })
-      if (waitedResult || ++attemptNumber === 10) {
-          Meteor.clearInterval(intervalID);
+  if (firstExecution && firstExecution.capabilities.runInOneGo) {
+    const executionsLogs = ExecutionsLogs.find({
+      execution: firstExecution._id
+    }).fetch()
 
-          const executionsLogs = ExecutionsLogs.find({
-            execution: executionIds[0]
-          }).fetch()
-
-          const result = exposeExecutionLogs(executionsLogs)
-
-          return waitedResult ? resolve(result) : resolve(null)
-      }
-    }, 1000);
-  })
-
-  res.end(JSON.stringify(callResult ? {
-    status: 'finished',
-    results: callResult
-  } : {
-    status: 'queued'
-  }, ' ', 2))
+    const result = exposeExecutionLogs(executionsLogs)
+    if (!timedOut)
+    return res.end(JSON.stringify({
+      status: 'finished',
+      results: result
+    }, ' ', 2))
+  }
+  else {
+    let callResult = await new Promise((resolve, reject) => {
+      let attemptNumber = 0
+      let intervalID = Meteor.setInterval(function () {
+        let waitedResult = Executions.findOne({
+          _id: firstExecution._id,
+          status: { $ne: 'started' }
+        })
+        if (waitedResult || ++attemptNumber === 10) {
+            Meteor.clearInterval(intervalID);
   
+            const executionsLogs = ExecutionsLogs.find({
+              execution: firstExecution._id
+            }).fetch()
+  
+            const result = exposeExecutionLogs(executionsLogs)
+  
+            return waitedResult ? resolve({
+              status: waitedResult.status,
+              results: result
+            }) : resolve(null)
+        }
+      }, 1000);
+    })
+
+    res.end(JSON.stringify(callResult ? callResult : {
+      status: 'queued'
+    }, ' ', 2))
+  }
+
+  Meteor.clearTimeout(timeout)
+
+  if (!timedOut) res.end({ status: 'queued' })
 }, {where: 'server'})

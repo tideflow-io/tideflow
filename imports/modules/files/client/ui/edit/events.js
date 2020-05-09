@@ -79,7 +79,7 @@ Template['files.one.edit'].events({
     setMode(event.target.value)
   },
   'keyup #filename': (event, template) => {
-    const ext = slugify(event.target.value).toLowerCase()
+    event.target.value = slugify(event.target.value).toLowerCase()
     setMode(event.target.value)
   },
   'click #make-public': (event, template) => {

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor'
+
 /**
  * Given a user, return its first email address, having priority verified
  * addresses.

@@ -15,7 +15,9 @@ const service = {
   events: [
     {
       name: 'create-input-log-file',
-      visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let previousSteps = executionLogs.map(el => el.stepResult)
         
@@ -53,7 +55,9 @@ const service = {
 
     {
       name: 'read-file',
-      visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         try {
           const file = await filesLib.getOne({
@@ -100,7 +104,9 @@ const service = {
 
     {
       name: 'store-previous-files',
-      visibe: true,
+      capabilities: {
+        runInOneGo: true
+      },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let previousFiles = getResultsTypes(executionLogs, 'files')
         
