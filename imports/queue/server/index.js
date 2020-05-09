@@ -14,7 +14,7 @@ import { servicesAvailable } from '/imports/services/_root/server'
 const debug = require('debug')('tideflow:queue:core')
 
 Queue.configure({
-  // disableDevelopmentMode: true
+  disableDevelopmentMode: process.env.NODE_ENV !== 'development'
 })
 
 const endExecution = async (execution, status) => {
