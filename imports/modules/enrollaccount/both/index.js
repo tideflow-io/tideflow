@@ -1,1 +1,1 @@
-import './en.i18n.yml';
+import './en.i18n.yml'

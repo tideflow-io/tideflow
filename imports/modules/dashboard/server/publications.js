@@ -23,7 +23,7 @@ Meteor.publish('dashboard.executionsStats', function(query, options) {
   }
 
   query.createdAt = { $gt: time }
-  delete query.time;
+  delete query.time
 
   var pipeline = [
     {

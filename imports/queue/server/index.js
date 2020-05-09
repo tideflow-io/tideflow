@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor'
-import i18n from 'meteor/universe:i18n'
 import { Jobs as Queue } from './engine/api'
 
 import { Random } from 'meteor/random'
