@@ -1,0 +1,22 @@
+<template name="servicesAwsMqttClientCreateForm">
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.create.key"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.key" name="config.key"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.create.cert"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.cert" name="config.cert"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.create.ca"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.ca" name="config.ca"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.create.clientId"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.clientId" name="config.clientId">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.create.host"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.host" name="config.host">
+    </div>
+</template>

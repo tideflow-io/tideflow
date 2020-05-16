@@ -1,4 +1,4 @@
-import { servicesAvailable, getResultsTypes, fileFromBuffer } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
 
 import filesLib from '/imports/modules/files/server/lib'
 
@@ -77,7 +77,7 @@ const service = {
           await Promise.all( Object.keys(scrapingResult).map(async k => {
             return new Promise((resolve, reject) => {
               if (Buffer.isBuffer(scrapingResult[k])) {
-                fileFromBuffer(scrapingResult[k], k)
+                filesLib.fileFromBuffer(scrapingResult[k], k)
                   .then(fileInfo => {
                     if (!fileInfo) return resolve()
                     files.push(fileInfo)

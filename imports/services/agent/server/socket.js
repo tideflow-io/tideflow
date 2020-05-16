@@ -35,13 +35,9 @@ const logUpdate = (context, messages, results, extras) => {
 
 Meteor.startup(async () => {
   await Services.update(
+    { type: 'agent' },
     {
-      type: 'agent'
-    },
-    {
-      $set: {
-        'details.online': false,
-      },
+      $set: { 'details.online': false },
       $unset: { 'secrets.socketId': '' }
     },
     { multi: true }
@@ -54,18 +50,17 @@ Meteor.startup(async () => {
       type: 'agent',
       'config.token': token
     })
-    if (c) {
-      // eslint-disable-next-line require-atomic-updates
-      socket.tf = {
-        _id: c._id,
-        token,
-        user: c.user,
-        title: c.title,
-        description: c.description
-      }
-      return next()
+
+    if(!c) return next(new Error('authentication error'))
+
+    socket.tf = {
+      _id: c._id,
+      token,
+      user: c.user,
+      title: c.title,
+      description: c.description
     }
-    return next(new Error('authentication error'))
+    return next()
   })
 
   // New client

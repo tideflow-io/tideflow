@@ -1,0 +1,22 @@
+<template name="servicesAwsMqttClientUpdateForm">
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.update.key"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.key" name="config.key">{{service.config.key}}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.update.cert"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.cert" name="config.cert">{{service.config.cert}}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.update.ca"}}</label>
+        <textarea type="text" class="form-control" data-schema-key="config.ca" name="config.ca">{{service.config.ca}}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.update.clientId"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.clientId" name="config.clientId" value="{{service.config.clientId}}">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-aws-mqtt-client.update.host"}}</label>
+        <input type="text" class="form-control" data-schema-key="config.host" name="config.host" value="{{service.config.host}}">
+    </div>
+</template>

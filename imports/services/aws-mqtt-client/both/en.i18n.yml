@@ -1,0 +1,25 @@
+_namespace: s-aws
+name: Amazon Web Services
+description: Integrate AWS assets in your workflows
+
+create.region: Region
+create.accessKeyId: Access key id
+create.accessSecretId: Access secret id
+
+events.selectProfile: Select account profile
+
+events.iot.name: IoT Core
+events.iot.shadow-update.name: '[IoT Core] Update device shadow'
+events.iot.shadow-update.title: '[IoT Core] Update device shadow'
+
+events.iot.shadow-get.name: '[IoT Core] Get device shadow'
+events.iot.shadow-get.title: '[IoT Core] Get device shadow'
+
+events.iot.shadow-update.endpoint: Endpoint
+events.iot.shadow-update.deviceName: Device name
+
+events.iot.shadow-get.endpoint: Endpoint
+events.iot.shadow-get.deviceName: Device name
+
+log.iot-shadow-update.ok: Device shadow updated
+log.iot-shadow-get.ok: Device shadow retrieved
