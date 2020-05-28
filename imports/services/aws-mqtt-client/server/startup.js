@@ -14,7 +14,10 @@ import filesLib from '/imports/modules/files/server/lib'
  *   client,
  *   device,
  *   thingName: thingName,
- *   topics: []
+ *   topics: [
+ *     { topic: 'dt/temperature', flow: 'QdwzDDQD6XX2iMMRo' },
+ *     { topic: 'dt/humidity', flow: 'XgCPK3wzqMb9WnMY6' },
+ *   ]
  * }
  */
 let cachedClients = []
