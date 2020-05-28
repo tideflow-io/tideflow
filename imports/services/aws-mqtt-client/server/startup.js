@@ -14,12 +14,12 @@ Meteor.startup(async () => {
   )
 
   // Debug list of connected mqtt clients
-  Meteor.setInterval(() => {
-    console.log('')
-    cachedClients.map(c => {
-      console.log(`${c.thingName}: ${JSON.stringify(c.topics)}`)
-    })
-  }, 1000)
+  // Meteor.setInterval(() => {
+  //   console.log('')
+  //   cachedClients.map(c => {
+  //     console.log(`${c.thingName}: ${JSON.stringify(c.topics)}`)
+  //   })
+  // }, 1000)
 
   const mqttFlows = Flows.find({
     'trigger.type': 'aws-mqtt-client',
