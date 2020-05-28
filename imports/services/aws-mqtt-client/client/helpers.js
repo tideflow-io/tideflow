@@ -12,3 +12,30 @@ Template.servicesAwsCommonConfig.helpers({
     })
   }
 })
+
+Template.registerHelper('sAwsMqttClientReportStatusDot', function() {
+  try {
+    return this ? this.details.online ?
+      '<div class="s-aws-mqtt-client-status-dot online"></div>' :
+      '<div class="s-aws-mqtt-client-status-dot offline"></div>' :
+      ''
+  }
+  catch (ex) {
+    return ''
+  }
+})
+
+Template.registerHelper('sAwsMqttClientReportStatus', function() {
+  try {
+    return this ? this.details.online ?
+      '' :
+      `
+        ${i18n.__('s-aws-mqtt-client.service.status.lastConnected')}
+        ${moment(this.details.lastSeen).fromNow() || '-'}
+      ` :
+      ''
+  }
+  catch (ex) {
+    return ''
+  }
+})

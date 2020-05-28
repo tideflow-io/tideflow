@@ -1,0 +1,14 @@
+.s-aws-mqtt-client-status-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.s-aws-mqtt-client-status-dot.offline {
+  background:#E36553;
+}
+
+.s-aws-mqtt-client-status-dot.online {
+  background:#8BD04B;
+}
