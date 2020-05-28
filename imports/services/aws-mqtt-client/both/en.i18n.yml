@@ -1,6 +1,6 @@
-_namespace: s-aws
-name: Amazon Web Services
-description: Integrate AWS assets in your workflows
+_namespace: s-aws-mqtt-client
+name: AWS IoT Device
+description: AWS MQTT Client
 
 create.region: Region
 create.accessKeyId: Access key id

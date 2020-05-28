@@ -1,38 +1,9 @@
-let awsIot = require('aws-iot-device-sdk')
-
 import { Meteor } from 'meteor/meteor'
 
-import { triggerFlows } from '/imports/queue/server'
 import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
-import filesLib from '/imports/modules/files/server/lib'
 
-/**
- * List of connected AWS IOT DEVICE clients
- * 
- * {
- *   client,
- *   device,
- *   thingName: thingName,
- *   topics: [
- *     { topic: 'dt/temperature', flow: 'QdwzDDQD6XX2iMMRo' },
- *     { topic: 'dt/humidity', flow: 'XgCPK3wzqMb9WnMY6' },
- *   ]
- * }
- */
-let cachedClients = []
-
-module.exports.cachedClients = cachedClients
-
-const connected = client => {
-  Services.update(
-    { _id: client._id },
-    {
-      $set: { 'details.online': true },
-      $unset: { 'details.lastSeen': '' }
-    }
-  )
-}
+import { cachedClients, connectClient, subscribe } from './clients'
 
 Meteor.startup(async () => {
 
@@ -42,91 +13,49 @@ Meteor.startup(async () => {
     { multi: true }
   )
 
-  const clientsInDb = Services.find({ type: 'aws-mqtt-client' })
+  // Debug list of connected mqtt clients
+  Meteor.setInterval(() => {
+    console.log('')
+    cachedClients.map(c => {
+      console.log(`${c.thingName}: ${JSON.stringify(c.topics)}`)
+    })
+  }, 1000)
+
+  const mqttFlows = Flows.find({
+    'trigger.type': 'aws-mqtt-client',
+    'status': 'enabled'
+  }).fetch()
+
+  let clientIds = []
+
+  mqttFlows.map(flow => {
+    if(flow.trigger._id) clientIds.push(flow.trigger._id)
+  })
+
+  console.log({expectedClients : clientIds})
+
+  const clientsInDb = Services.find({
+    _id: { $in: clientIds },
+    type: 'aws-mqtt-client'
+  })
 
   clientsInDb.forEach(async client => {
-
     // Find flows using client as trigger
-    const clientFlows = Flows.find({
-      'trigger.type': 'aws-mqtt-client',
-      'trigger._id': client._id
+    const clientFlows = mqttFlows.filter(mqttFlow => {
+      return mqttFlow.trigger._id === client._id
     })
+    
+    console.log('start', clientFlows)
 
-    const thingName = client.config.clientId
-    const device = awsIot.device({
-      privateKey: Buffer.from(client.config.key),
-      clientCert: Buffer.from(client.config.cert),
-      caCert: Buffer.from(client.config.ca),
-      clientId: thingName,
-      host: client.config.host
-    })
+    if (!clientFlows.length) return
 
-    let cachedClient = {
-      client,
-      device,
-      thingName: thingName,
-      topics: []
-    }
-
-    device.on('connect', async () => {
-      clientFlows.forEach(flow => {
-        const { topic } = flow.trigger.config
-        device.subscribe(topic)
-        cachedClient.topics.push({
-          topic,
-          flow: flow._id
-        })
-      })
-    })
-
-    device.on('message', (topic, payload) => {
-      console.log(`  "${thingName}" message on "${topic}"`)
-      const matchedTopics = cachedClient.topics.filter(t => {
-        return t.topic === topic
-      })
-
-      if (!matchedTopics.length) return console.log('ignored topic');
-
-      matchedTopics.map(async matchedTopic => {
-        // Fire flow
-        const flow = Flows.findOne({
-          status: 'enabled',
-          _id: matchedTopic.flow,
-          'trigger.type': 'aws-mqtt-client',
-          'trigger._id': client._id,
-          'trigger.config.topic': matchedTopic.topic
-        })
-
-        if (!flow) return
-
-        let user = Meteor.users.findOne({_id: flow.user}, {
-          fields: { services: false }
-        })
-
-        if (!user) return
-
-        try {
-          payload = JSON.parse(payload)
-        } catch (ex) {
-          if (Buffer.isBuffer(payload)) {
-            payload = {
-              files: [
-                await filesLib.fileFromBuffer(payload, 'file')
-              ]
-            }
-          }
-        }
-
-        await triggerFlows(
-          flow.trigger,
-          user,
-          null,
-          payload,
-          [flow]
-        )
-      })
-    })
-
+    let cachedClient = await connectClient(client)
+    console.log({cachedClient})
     cachedClients.push(cachedClient)
+
+    clientFlows.forEach(flow => {
+      const { topic } = flow.trigger.config
+      subscribe(cachedClient.client._id, flow._id, topic)
+    })
   })
 })

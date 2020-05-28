@@ -1,26 +1,7 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { instance as iotData } from './helpers/iotData'
-
-const awsResponse = (err, data, success, cb) => {
-  const lines = err ? [{
-    m: err.message,
-    err: true,
-    p: [],
-    d: new Date()
-  }] : [{
-    m: success,
-    p: [],
-    d: new Date()
-  }]
-  
-  cb(null, {
-    result: { data },
-    error: !!err,
-    next: true,
-    msgs: lines
-  })
-}
+import { compare } from '/imports/helpers/both/compare'
+import { subscribe, unSubscribe } from './clients'
 
 const service = {
   name: 'aws-mqtt-client',
@@ -29,7 +10,50 @@ const service = {
   stepable: true,
   ownable: true,
   hooks: {
-    // service: {},
+    service: {
+      create: {},
+      update: {
+        /**
+         * @param {object} originalService
+         * @param {object} mewService
+         * @param {string} treat What's the expected service to be returned.
+         * Possile values are: "new", "original"
+         */
+        pre: (originalService, newService, treat) => {
+          console.log('1')
+          return treat === 'original' ? originalService : newService
+        },
+
+        /**
+         * @param {object} originalService
+         * @param {object} mewService
+         * @param {string} treat What's the expected service to be returned.
+         * Possile values are: "new", "original"
+         */
+        post: (originalService, newService, treat) => {
+          console.log('2')
+          return treat === 'original' ? originalService : newService
+        }
+      },
+
+      delete: {
+        /**
+         * @param {object} service
+         */
+        pre: service => {
+          console.log('3')
+          return service
+        },
+
+        /**
+         * @param {object} service
+         */
+        post: service => {
+          console.log('4')
+          return service
+        }
+      }
+    },
     // step: {}
 
     // Hooks that involves triggers.
@@ -37,10 +61,16 @@ const service = {
     trigger: {
       // Creating a new workflow
       create: {
+        /**
+         * @param {object} flow
+         */
         pre: flow => { // before creating it
           console.log('trigger.create.pre')
           return flow.trigger
         },
+        /**
+         * @param {object} flow
+         */
         post: flow => { // after it's created
           console.log('trigger.create.post')
           return flow.trigger
@@ -66,16 +96,18 @@ const service = {
             // The flow has changed its status (disabled / enabled)
             if (!compare(originalFlow.status, newFlow.status)) {
 
+              const flowId = newFlow._id
+              const clientId = newFlow.trigger._id
+              const topic = (newFlow.trigger.config || {}).topic
+
               // DISABLE => ENABLE
               if (newFlow.status === 'enabled') {
-                console.log('TODO start client')
-                // TODO start client
+                subscribe(clientId, flowId, topic)
               }
 
               // ENABLE => DISABLE
               else if (newFlow.status === 'disabled') {
-                console.log('TODO stop client')
-                // TODO stop client
+                unSubscribe(clientId, flowId, topic)
               }
             }
 
@@ -87,29 +119,33 @@ const service = {
           else if (
             compare(treat, 'new') &&
             compare(originalFlow.trigger.type, newFlow.trigger.type, 'aws-mqtt-client') &&
-            !compare(originalFlow.trigger, newFlow.trigger)
+            !compare(originalFlow.trigger.config.topic, newFlow.trigger.config.topic)
           ) {
+            const flowId = newFlow._id
+            const previousClient = originalFlow.trigger._id
+            const newClient = newFlow.trigger._id
+            const oldTopic = (originalFlow.trigger.config || {}).topic
+            const newtopic = (newFlow.trigger.config || {}).topic
+
+            unSubscribe(previousClient, flowId, oldTopic)
 
             // STATUS UPDATE
             if (!compare(originalFlow.status, newFlow.status)) {
 
               // DISABLE => ENABLE
               if (newFlow.status === 'enabled') {
-                // TODO start client
-                console.log('TODO start client')
+                subscribe(newClient, flowId, newtopic)
               }
 
               // ENABLE => DISABLE
               else if (newFlow.status === 'disabled') {
-                // TODO stop client
-                console.log('TODO stop client')
+                // Do nothing. Already unsubscribed
               }
             }
 
             // mqtt => mqtt, WITH DIFFERENT SETUP, AND STILL ENABLED
             else if (newFlow.status === 'enabled') {
-              // TODO update client
-              console.log('TODO update client')
+              subscribe(newClient, flowId, newtopic)
             }
 
             // mqtt => mqtt, WITH DIFFERENT SETUP, AND STILL DISABLED
@@ -117,29 +153,46 @@ const service = {
               // Keep disabled
             }
           } else if ( // Moving from non mqtt to mqtt
-            compare(newFlow.trigger.type, 'aws-mqtt-client') &&
             !compare(originalFlow.trigger.type, 'aws-mqtt-client')
           ) {
-            // TODO start client
-            console.log('TODO start client')
+            const flowId = newFlow._id
+            const clientId = newFlow.trigger._id
+            const topic = (newFlow.trigger.config || {}).topic
+            subscribe(clientId, flowId, topic)
           } else if (
             !compare(newFlow.trigger.type, 'aws-mqtt-client') &&
             compare(originalFlow.trigger.type, 'aws-mqtt-client')
           ) {
-            // TODO stop client
-            console.log('TODO stop client')
+            const flowId = newFlow._id
+            const previousClient = originalFlow.trigger._id
+            const oldTopic = (originalFlow.trigger.config || {}).topic
+            unSubscribe(previousClient, flowId, oldTopic)
           }
           return treat === 'original' ? originalFlow.trigger : newFlow.trigger
         },
+
+        /**
+         * @param {object} originalFlow
+         * @param {object} mewFlow
+         * @param {string} treat What's the expected trigger to be returned.
+         * Possile values are: "new", "original"
+         */
         post: (originalFlow, newFlow, treat) => {
           return treat === 'original' ? originalFlow.trigger : newFlow.trigger
         }
       },
       delete: {
-        pre: (flow) => {
+        /**
+         * @param {object} flow
+         */
+        pre: flow => {
           return flow.trigger
         },
-        post: (flow) => {
+
+        /**
+         * @param {object} flow
+         */
+        post: flow => {
           return flow.trigger
         }
       }
