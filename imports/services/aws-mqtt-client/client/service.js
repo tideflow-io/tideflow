@@ -8,7 +8,7 @@ const service = {
   icon: 'fas fa-satellite-dish',
   iconColor: '#59105C',
   ownable: true,
-  stepable: true,
+  stepable: false,
   templates: {
     createForm: 'servicesAwsMqttClientCreateForm',
     updateForm: 'servicesAwsMqttClientUpdateForm'
