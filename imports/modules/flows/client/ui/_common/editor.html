@@ -134,7 +134,7 @@
                 <div class="connector-out connector-inbound" data-step="{{this.index}}">
                   -
                 </div>
-                <div class="card-body">
+                <div class="card-body edit-mode-enter"  data-step="{{this.index}}">
                   {{> afFieldInput label=true name=this.current.type type='hidden'}}
                   {{> afFieldInput label=true name=this.current._id type='hidden'}}
                   {{> afFieldInput label=true name=this.current.event type='hidden'}}
@@ -143,18 +143,16 @@
                       <option value="{{this.name}}" {{isSelectedStepType ../../flow ../index this.name}}>{{__ this.humanName}}</option>
                     {{/each}}
                   </select>
-                  <div class="card-title mb-2">
+                  <div class="card-title mb-2 font-weight-bold">
                     <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
-                    <strong>{{cardTitle}}</strong> 
+                    {{cardTitle}}
                   </div>
                   <p>
                     {{#if editMode}}{{else}}{{cardText flow=../flow}}{{/if}}
                   </p>
                   {{#if editMode}}
                   {{else}}
-                    <p class="edit-mode-link edit-mode-enter">
-                      <small data-step="{{this.index}}">{{__ "flows.editor.step.editDetails"}}</small>
-                    </p>
+                    <small>{{__ "flows.editor.step.editDetails"}}</small>
                   {{/if}}
                 </div>
                 <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
