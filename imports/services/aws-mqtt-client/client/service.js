@@ -20,14 +20,14 @@ const service = {
   },
   events: [
     {
-      name: 'message',
-      humanName: 's-aws-mqtt-client.events.message.name',
-      viewerTitle: 's-aws-mqtt-client.events.message.title',
+      name: 'subscribe',
+      humanName: 's-aws-mqtt-client.events.subscribe.name',
+      viewerTitle: 's-aws-mqtt-client.events.subscribe.title',
       inputable: true,
       stepable: false,
       callback: () => {},
       templates: {
-        triggerEditor: 'servicesAwsMqttClientMessage'
+        triggerEditor: 'servicesAwsMqttClientSubscribe'
       }
     }
   ]

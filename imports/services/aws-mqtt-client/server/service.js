@@ -65,15 +65,18 @@ const service = {
          * @param {object} flow
          */
         pre: flow => { // before creating it
-          console.log('trigger.create.pre')
           return flow.trigger
         },
         /**
          * @param {object} flow
          */
-        post: flow => { // after it's created
-          console.log('trigger.create.post')
-          return flow.trigger
+        post: newFlow => { // after it's created
+          if (newFlow.status === 'disabled') return newFlow.trigger
+          const flowId = newFlow._id
+          const clientId = newFlow.trigger._id
+          const topic = (newFlow.trigger.config || {}).topic
+          subscribe(clientId, flowId, topic)
+          return newFlow.trigger
         }
       },
 
@@ -107,7 +110,9 @@ const service = {
 
               // ENABLE => DISABLE
               else if (newFlow.status === 'disabled') {
-                unSubscribe(clientId, flowId, topic)
+                try {
+                  unSubscribe(clientId, flowId, topic)
+                } catch (ex) { console.error(ex) }
               }
             }
 
@@ -127,7 +132,11 @@ const service = {
             const oldTopic = (originalFlow.trigger.config || {}).topic
             const newtopic = (newFlow.trigger.config || {}).topic
 
-            unSubscribe(previousClient, flowId, oldTopic)
+            try {
+              unSubscribe(previousClient, flowId, oldTopic)
+            } catch (ex) {
+              console.error(ex)
+            }
 
             // STATUS UPDATE
             if (!compare(originalFlow.status, newFlow.status)) {
@@ -166,7 +175,9 @@ const service = {
             const flowId = newFlow._id
             const previousClient = originalFlow.trigger._id
             const oldTopic = (originalFlow.trigger.config || {}).topic
-            unSubscribe(previousClient, flowId, oldTopic)
+            try {
+              unSubscribe(previousClient, flowId, oldTopic)
+            } catch (ex) { console.error(ex) }
           }
           return treat === 'original' ? originalFlow.trigger : newFlow.trigger
         },
@@ -186,6 +197,14 @@ const service = {
          * @param {object} flow
          */
         pre: flow => {
+          const flowId = flow._id
+          const previousClient = flow.trigger._id
+          const oldTopic = (flow.trigger.config || {}).topic
+          try {
+            unSubscribe(previousClient, flowId, oldTopic)
+          } catch (ex) {
+            console.error(ex)
+          }
           return flow.trigger
         },
 
@@ -201,7 +220,7 @@ const service = {
   templates: {},
   events: [
     {
-      name: 'message',
+      name: 'subscribe',
       capabilities: {
         runInOneGo: true
       },
@@ -215,7 +234,7 @@ const service = {
           next: true,
           msgs: [
             {
-              m: 's-aws-mqtt-client.log.message',
+              m: 's-aws-mqtt-client.events.subscribe.log',
               p: null,
               d: new Date()
             }

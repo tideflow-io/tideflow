@@ -32,8 +32,6 @@ Meteor.startup(async () => {
     if(flow.trigger._id) clientIds.push(flow.trigger._id)
   })
 
-  console.log({expectedClients : clientIds})
-
   const clientsInDb = Services.find({
     _id: { $in: clientIds },
     type: 'aws-mqtt-client'
@@ -45,12 +43,9 @@ Meteor.startup(async () => {
       return mqttFlow.trigger._id === client._id
     })
     
-    console.log('start', clientFlows)
-
     if (!clientFlows.length) return
 
     let cachedClient = await connectClient(client)
-    console.log({cachedClient})
     cachedClients.push(cachedClient)
 
     clientFlows.forEach(flow => {

@@ -1,6 +1,6 @@
 import './createForm.html'
 import './updateForm.html'
-import './servicesAwsMqttClientMessage.html'
+import './servicesAwsMqttClientSubscribe.html'
 
 import './service'
 import './events'
