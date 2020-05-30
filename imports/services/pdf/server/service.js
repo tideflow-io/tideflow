@@ -2,10 +2,9 @@ const Handlebars = require('handlebars')
 
 import filesLib from '/imports/modules/files/server/lib'
 
-import { moment } from 'meteor/momentjs:moment'
 import { servicesAvailable } from '/imports/services/_root/server'
 
-const puppeteer = require('puppeteer')
+const webparsy = require('webparsy')
 
 const generatePdf = async (content, data, cb) => {
   let options = {
@@ -14,22 +13,39 @@ const generatePdf = async (content, data, cb) => {
     scaleFactor: 2,
     fullPage: false,
     defaultBackground: true,
-    timeout: 60, // The Puppeteer default of 30 is too short
+    timeout: 600,
     delay: 0,
-    debug: false,
-    launchOptions: {},
-    _keepAlive: false
+    debug: false
   }
 
-  const launchOptions = {...options.launchOptions}
-
   const html = Handlebars.compile(content)(data)
-  const browser = await puppeteer.launch(launchOptions)
-  const page = await browser.newPage()
-  await page.setContent(html)
-  const file = await page.pdf() 
-  await browser.close()
-  cb(null, file)
+  const browser = await webparsy.init({
+    json: {
+      version: 1,
+      jobs: {
+        main: {
+          browser: options,
+          steps: [
+            {
+              setContent: {
+                flag: 'html'
+              }
+            },
+            {
+              pdf: {
+                as: 'file',
+                format: 'A4'
+              }
+            }
+          ]
+        }
+      }
+    },
+    flags: {
+      html
+    }
+  })
+  cb(null, browser.file)
 }
 
 const service = {
