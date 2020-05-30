@@ -3,7 +3,7 @@ import socket_io from 'socket.io'
 import { Meteor } from 'meteor/meteor'
 import { WebApp } from 'meteor/webapp';
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
-import { Services } from '/imports/modules/services/both/collection'<
+import { Services } from '/imports/modules/services/both/collection'
 
 import { executeNextStep, executionError } from '/imports/queue/server'
 import { pick } from '/imports/helpers/both/objects'
