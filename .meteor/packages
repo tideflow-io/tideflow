@@ -25,7 +25,6 @@ juliancwirko:s-alert
 session@1.2.0
 meteortoys:allthings
 mdg:validated-method
-underscore@1.0.10
 momentjs:moment
 alexwine:bootstrap-4
 universe:i18n
@@ -41,3 +40,4 @@ http@1.4.2
 ostrio:cookies
 msavin:mongol
 tunguska:reactive-aggregate
+erasaur:meteor-lodash

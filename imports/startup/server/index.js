@@ -24,6 +24,9 @@ import '/imports/services/webform/server'
 import '/imports/services/aws/both'
 import '/imports/services/aws/server'
 
+import '/imports/services/aws-mqtt-client/both'
+import '/imports/services/aws-mqtt-client/server'
+
 import '/imports/services/endpoint/both'
 import '/imports/services/endpoint/server'
 

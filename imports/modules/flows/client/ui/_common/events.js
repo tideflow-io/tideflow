@@ -58,11 +58,17 @@ Template.flowEditorStepAvailable.events({
 
 Template.flowEditor.events({
 
-  'click .edit-mode-enter': (event, template) => {
-    const stepIndex = $(event.target).data('step')
-    if (typeof stepIndex === 'undefined') return;
+  'click .edit-mode-enter > *, click .edit-mode-enter': (event, template) => {
+    let element = $(event.target)
+
+    if (!element.hasClass('edit-mode-enter')) {
+      element = element.parent('.edit-mode-enter')
+    }
+
+    const stepIndex = element.data('step')
+    if (typeof stepIndex === 'undefined') return
     Session.set('fe-editMode', stepIndex)
-    $('#nav-task-settings-tab').tab('show');
+    $('#nav-task-settings-tab').tab('show')
   },
 
   'click .edit-mode-leave': (event, template) => {

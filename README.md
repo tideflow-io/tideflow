@@ -99,7 +99,6 @@ instructions or [via Docker](https://docs.tideflow.io/docs/sysadmin-deploying-do
 ```bash
 docker run -d \ 
   -p 80:3000 \
-  -p 1337:1337 \
   -e ROOT_URL="<the url where your application will be available>" \
   -e MONGO_URL="<mongodb deployment>" \
   -e JWT_SECRET="<a random security token>" \

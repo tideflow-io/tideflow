@@ -1,16 +1,15 @@
-import http from 'http'
 import socket_io from 'socket.io'
 
 import { Meteor } from 'meteor/meteor'
+import { WebApp } from 'meteor/webapp';
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
-import { Services } from '/imports/modules/services/both/collection'
+import { Services } from '/imports/modules/services/both/collection'<
 
 import { executeNextStep, executionError } from '/imports/queue/server'
 import { pick } from '/imports/helpers/both/objects'
 
 // Server
-const server = http.createServer()
-const io = socket_io(server)
+const io = socket_io(WebApp.httpServer)
 
 const logUpdate = (context, messages, results, extras) => {
   const { log, execution } = context
@@ -35,13 +34,9 @@ const logUpdate = (context, messages, results, extras) => {
 
 Meteor.startup(async () => {
   await Services.update(
+    { type: 'agent' },
     {
-      type: 'agent'
-    },
-    {
-      $set: {
-        'details.online': false,
-      },
+      $set: { 'details.online': false },
       $unset: { 'secrets.socketId': '' }
     },
     { multi: true }
@@ -54,18 +49,17 @@ Meteor.startup(async () => {
       type: 'agent',
       'config.token': token
     })
-    if (c) {
-      // eslint-disable-next-line require-atomic-updates
-      socket.tf = {
-        _id: c._id,
-        token,
-        user: c.user,
-        title: c.title,
-        description: c.description
-      }
-      return next()
+
+    if(!c) return next(new Error('authentication error'))
+
+    socket.tf = {
+      _id: c._id,
+      token,
+      user: c.user,
+      title: c.title,
+      description: c.description
     }
-    return next(new Error('authentication error'))
+    return next()
   })
 
   // New client
@@ -173,13 +167,6 @@ Meteor.startup(async () => {
       )
     })
   })
-
-  // Start server
-  try {
-    server.listen(1337)
-  } catch (e) {
-    console.error(e)
-  }
 })
 
 /**

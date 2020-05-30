@@ -18,6 +18,5 @@ WORKDIR /webapp
 
 ENV PORT 3000
 EXPOSE 3000
-EXPOSE 1337
 USER meteor
 CMD node main.js

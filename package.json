@@ -26,6 +26,7 @@
   "dependencies": {
     "@babel/runtime": "^7.7.6",
     "@octokit/auth-app": "^2.4.2",
+    "aws-iot-device-sdk": "^2.2.4",
     "aws-sdk": "^2.663.0",
     "bcrypt": "^3.0.7",
     "busboy": "^0.3.1",
@@ -41,7 +42,6 @@
     "moment": "^2.24.0",
     "mongodb": "^3.4.0",
     "nodemailer": "^5.1.1",
-    "nodesfc": "^0.7.2",
     "puppeteer": "^2.0.0",
     "qrcode": "^1.4.4",
     "rss-parser": "^3.7.3",

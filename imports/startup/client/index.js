@@ -20,6 +20,9 @@ import '/imports/services/bitbucket-webhooks/client'
 import '/imports/services/aws/both'
 import '/imports/services/aws/client'
 
+import '/imports/services/aws-mqtt-client/both'
+import '/imports/services/aws-mqtt-client/client'
+
 import '/imports/services/endpoint/both'
 import '/imports/services/endpoint/client'
 

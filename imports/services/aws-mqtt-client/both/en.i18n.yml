@@ -1,0 +1,22 @@
+_namespace: s-aws-mqtt-client
+name: AWS IoT Device
+description: AWS MQTT Client
+
+create.key: Private key associated with the client certificate
+create.cert: Client certificate of the private key file associated with the client certificate
+create.ca: CA certificate
+create.clientId: The client ID to use to connect to AWS IoT
+create.host: Hostname
+
+update.key: Private key associated with the client certificate
+update.cert: Client certificate of the private key file associated with the client certificate
+update.ca: CA certificate
+update.clientId: The client ID to use to connect to AWS IoT
+update.host: Hostname
+
+service.status.lastConnected: Last connected
+
+events.subscribe.name: Message received
+events.subscribe.topic: Topic to subscribe to
+events.subscribe.title: Message received
+events.subscribe.log: Message received

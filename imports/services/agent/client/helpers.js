@@ -21,8 +21,8 @@ Template.registerHelper('sAgentReportStatus', function() {
     return this ? this.details.online ?
       '' :
       `
-        ${i18n.__('s-agent.service.status.lastSeen')}
-        ${moment(this.details.lastSeen).fromNow() || '-'}
+        ${this.details.lastSeen ? i18n.__('s-agent.service.status.lastSeen') : ''}
+        ${this.details.lastSeen ? moment(this.details.lastSeen).fromNow() || '-' : ''}
       ` :
       ''
   }

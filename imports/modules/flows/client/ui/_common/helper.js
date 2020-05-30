@@ -121,7 +121,7 @@ Template.registerHelper('currentTeamId', () => {
 Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
 Template.registerHelper('agentUrl', () => {
   const url = new URL(Meteor.absoluteUrl())
-  return `${url.protocol}//${url.hostname}:1337`
+  return `${url.protocol}//${url.hostname}`
 })
 Template.registerHelper('checkUserRole', (team) => {
   return checkRole(Meteor.userId(), team)

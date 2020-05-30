@@ -22,7 +22,7 @@ const ServiceSchema = new SimpleSchema({
   },
   title: {
     type: String,
-    label: 'Title',
+    label: 'Name',
     max: 120,
     optional: false
   },
