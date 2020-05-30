@@ -123,8 +123,6 @@ const service = {
           }, file.data)
         })
 
-        console.log({previousFiles})
-
         cb(null, {
           result: {
             data: {
