@@ -14,20 +14,20 @@ Template['membership.profile.password'].events({
     let repeatNewPassword = event.target.repeatNewPassword.value
     
     if (newPassword.length < 6) {
-      sAlert.error(i18n.__('profile.password.password.length'))
+      sAlert.error(i18n.__('profilePassword.password.length'))
       return
     }
 
     if (newPassword !== repeatNewPassword) {
-      sAlert.error(i18n.__('profile.password.password.mustmatch'))
+      sAlert.error(i18n.__('profilePassword.password.mustmatch'))
       return
     }
 
     Accounts.changePassword(currentPassword, newPassword, (error) => {
       if (error) {
-        sAlert.error(i18n.__('profile.password.error'))
+        sAlert.error(i18n.__('profilePassword.change.error'))
       } else {
-        sAlert.success(i18n.__('profile.password.success'))
+        sAlert.success(i18n.__('profilePassword.change.success'))
 
         event.target.currentPassword.value = ''
         event.target.newPassword.value = ''
