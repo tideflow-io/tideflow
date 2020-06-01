@@ -168,7 +168,7 @@ const setJsPlumb = (flow) => {
     })
     
     // now and when they are created / added to the dom
-    $('body').on('DOMNodeInserted', '.card', function () {
+    $('body').on('DOMNodeInserted', '#flow-editor .card', function () {
       jsPlumb.draggable($(this), {
         containment: '#flow-editor'
       })
@@ -239,7 +239,7 @@ const setJsPlumb = (flow) => {
     })
 
     // Then instead of using click use mouseup, and on mouseup only fire if the flag is set to false
-    $('.card').bind('mouseup', function (event) {
+    $('#flow-editor .card').bind('mouseup', function (event) {
       if ($(event.target).hasClass('delete')) return
       if (dragCheck === false) {
         $('#sidebar').removeClass('d-none')
@@ -258,6 +258,7 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-triggerEventSelected', undefined)
   Session.set('fe-stepSelected', undefined)
   Session.set('fe-editMode', undefined)
+  Session.set('rfs', false)
   let initialized = false
 
   instance.autorun(function () {

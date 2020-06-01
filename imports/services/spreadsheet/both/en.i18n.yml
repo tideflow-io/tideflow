@@ -1,0 +1,8 @@
+_namespace: s-spreadsheets
+name: Work with spreadsheet files
+description: Read and write operations in spreadsheets
+
+events.pushRow.name: Add row to sheet
+event.pushRow.selectAgent: Agent to use
+event.pushRow.filePath: Remote file location
+event.pushRow.selectRemoteFile: Select remote file

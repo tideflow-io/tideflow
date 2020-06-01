@@ -1,0 +1,34 @@
+<template name="remoteFileSelectorSidebar">
+  {{#if hostname}}
+    <div id="remote-file-selector" class="card">
+      <div class="card-header">
+        {{dir}} ({{hostname}})
+      </div>
+      <table class="card-table table mb-0">
+        {{#if hasParent}}
+          <tr class="parentFolder">
+            <td>.. {{__ "remoteFileSelector.browse.parentFolder.title"}}</td>
+          </tr>
+        {{/if}}
+        <tbody>
+          {{#each list}}
+            {{> remoteFileSelectorSidebarItem}}
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{/if}}
+</template>
+
+<template name="remoteFileSelectorSidebarItem">
+  <tr class="{{#if isFolder}}folder{{else}}file{{/if}}">
+    <td>
+      {{#if isFolder}}
+        \
+      {{else}}
+        <div class="file-icon file-icon-default" data-type="{{ext}}"></div>
+      {{/if}}
+      {{name}}
+    </td>
+  </tr>
+</template>

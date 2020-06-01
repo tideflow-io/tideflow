@@ -1,0 +1,1 @@
+require('./en.i18n.yml')

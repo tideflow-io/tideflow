@@ -13,7 +13,8 @@ events.code_nodesfc.title: Execute a single-file-code
 
 event.execute.commandFile: File to execute
 event.execute.selectAgent: Which agent must be used
-events.execute.selectOneFile: Select one file
+events.execute.selectOneFile: Select a file
+events.execute.selectRemoteFile: Use a remote file
 event.execute.anyAgent: Any agent available
 service.status.lastSeen: Last seen
 service.status.offline: Offline

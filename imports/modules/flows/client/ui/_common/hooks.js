@@ -1,3 +1,8 @@
+import { AutoForm } from 'meteor/aldeed:autoform'
+import { sAlert } from 'meteor/juliancwirko:s-alert'
+
+import i18n from 'meteor/universe:i18n'
+
 AutoForm.hooks({ 
   updateFlowForm: { 
     onError: function(formType, error) {

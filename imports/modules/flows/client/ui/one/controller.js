@@ -24,7 +24,7 @@ Template['flows.one'].onCreated(function() {
 Template['flows.one'].helpers({
   'executions': function () {
     let e = ExecutionsStats.find().fetch()
-      return e && e[0] ? e[0] : {}
+    return e && e[0] ? e[0] : {}
   }
 })
 

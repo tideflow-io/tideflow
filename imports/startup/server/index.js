@@ -6,6 +6,9 @@ import './router'
 import '/imports/download/both'
 import '/imports/download/server'
 
+import '/imports/services/spreadsheet/both'
+import '/imports/services/spreadsheet/server'
+
 import '/imports/services/rss/both'
 import '/imports/services/rss/server'
 
@@ -110,6 +113,9 @@ import '/imports/modules/teams/server'
 
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/server'
+
+import '/imports/modules/remoteFileSelector/both'
+import '/imports/modules/remoteFileSelector/server'
 
 import '/imports/modules/profileNotifications/both'
 import '/imports/modules/profileNotifications/server'

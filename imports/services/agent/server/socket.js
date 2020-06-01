@@ -32,6 +32,8 @@ const logUpdate = (context, messages, results, extras) => {
   })
 }
 
+let cachedSockets = {}
+
 Meteor.startup(async () => {
   await Services.update(
     { type: 'agent' },
@@ -63,7 +65,7 @@ Meteor.startup(async () => {
   })
 
   // New client
-  io.on('connection', async (socket) => {
+  io.on('connection', async socket => {
     let auth = socket.tf
     await Services.update(
       { _id: auth._id },
@@ -75,6 +77,8 @@ Meteor.startup(async () => {
         $unset: { 'details.lastSeen': '' }
       }
     )
+    
+    cachedSockets[auth._id] = socket
     
     socket.emit('tf.authz', auth)
 
@@ -89,6 +93,7 @@ Meteor.startup(async () => {
         msgs.map(msg => { return { m: msg, p: null, err, d: date } }),
         msgs
       )
+    cachedSockets[auth._id] = socket
     })
 
     // An agent is reporting std/err output.
@@ -165,6 +170,8 @@ Meteor.startup(async () => {
           $unset: { 'secrets.socketId': '' }
         }
       )
+
+      delete cachedSockets[auth._id]
     })
   })
 })
@@ -175,8 +182,9 @@ Meteor.startup(async () => {
  * @param {Object} agent 
  * @param {*} message 
  * @param {*} topic 
+ * @param {Function} callback optional ack function
  */
-const ioTo = (agent, message, topic) => {
+const ioTo = (agent, message, topic, callback) => {
   if (agent === 'any') {
     // TODO Select the most recent-online agent and send it the message.
     // If not agents found, set the execution and the step as failed.
@@ -186,14 +194,39 @@ const ioTo = (agent, message, topic) => {
       if (!agent.secrets.socketId) throw new Error('agent-not-connected')
       return io
         .to(agent.secrets.socketId)
-        .emit(topic, message)
+        .emit(topic, message, callback)
     }
     catch (ex) {
       console.error(ex)
-      executionError(pick(message, ['flow', 'execution']))
-      return null
+      if (message.execution) {
+        executionError(pick(message, ['flow', 'execution']))
+        return null
+      }
+      throw ex
     }
   }
 }
 
 module.exports.ioTo = ioTo
+
+const ioToPrivate = (socket, topic, message, callback) => {
+  return socket.emit(topic, message, callback)
+}
+
+module.exports.ioToPrivate = ioToPrivate
+
+const fileExplorer = async (agent, options) => {
+  return new Promise((resolve, reject) => {
+    try {
+      if (!cachedSockets[agent._id]) throw new Error('agent-not-available')
+      ioToPrivate(cachedSockets[agent._id], 'tf.browser', options, data => {
+        resolve(data)
+      })
+    }
+    catch (ex) {
+      reject(ex)
+    }
+  })
+}
+
+module.exports.fileExplorer = fileExplorer

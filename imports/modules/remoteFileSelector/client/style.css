@@ -1,0 +1,4 @@
+#remote-file-selector .file,
+#remote-file-selector .folder {
+  cursor: pointer;
+}

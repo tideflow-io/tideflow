@@ -5,6 +5,9 @@ import './autoSubscribe'
 import '/imports/services/rss/both'
 import '/imports/services/rss/client'
 
+import '/imports/services/spreadsheet/both'
+import '/imports/services/spreadsheet/client'
+
 import '/imports/services/webparsy/both'
 import '/imports/services/webparsy/client'
 
@@ -108,6 +111,9 @@ import '/imports/modules/profile/client'
 
 import '/imports/modules/profileEdit/both'
 import '/imports/modules/profileEdit/client'
+
+import '/imports/modules/remoteFileSelector/both'
+import '/imports/modules/remoteFileSelector/client'
 
 import '/imports/modules/profilePassword/both'
 import '/imports/modules/profilePassword/client'
