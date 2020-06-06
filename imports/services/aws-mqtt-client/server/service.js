@@ -20,7 +20,6 @@ const service = {
          * Possile values are: "new", "original"
          */
         pre: (originalService, newService, treat) => {
-          console.log('1')
           return treat === 'original' ? originalService : newService
         },
 

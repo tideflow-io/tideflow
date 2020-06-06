@@ -2,12 +2,13 @@ import { Meteor } from 'meteor/meteor'
 import SimpleSchema from 'simpl-schema'
 
 import { Executions } from '../both/collection'
+import { isMember } from '../../_common/both/teams'
 
 Meteor.publish('executions.all', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-  query.user = Meteor.userId()
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
   new SimpleSchema({
-    user: String,
+    team: String,
     flow: String,
     createdAt: {
       type: Object,
@@ -25,10 +26,10 @@ Meteor.publish('executions.all', (query, options) => {
 
 Meteor.publish('executions.single', (query, options) => {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-  query.user = Meteor.userId()
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
   new SimpleSchema({
     _id: String,
-    user: String
+    team: String
   }).validate(query)
   return Executions.find(query, options)
 })

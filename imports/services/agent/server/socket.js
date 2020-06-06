@@ -34,6 +34,12 @@ const logUpdate = (context, messages, results, extras) => {
 
 let cachedSockets = {}
 
+const getSocketByAgentId = agentId => {
+  return cachedSockets[agentId]
+}
+
+module.exports.getSocketByAgentId = getSocketByAgentId
+
 Meteor.startup(async () => {
   await Services.update(
     { type: 'agent' },
@@ -93,7 +99,6 @@ Meteor.startup(async () => {
         msgs.map(msg => { return { m: msg, p: null, err, d: date } }),
         msgs
       )
-    cachedSockets[auth._id] = socket
     })
 
     // An agent is reporting std/err output.
@@ -209,24 +214,20 @@ const ioTo = (agent, message, topic, callback) => {
 
 module.exports.ioTo = ioTo
 
-const ioToPrivate = (socket, topic, message, callback) => {
-  return socket.emit(topic, message, callback)
+const ioToPrivate = (socket, topic, message) => {
+  return new Promise((resolve, reject) => {
+    socket.emit(topic, message, (error, result) => {
+      return error ? reject(error) : resolve(result)
+    })
+  })
 }
 
 module.exports.ioToPrivate = ioToPrivate
 
 const fileExplorer = async (agent, options) => {
-  return new Promise((resolve, reject) => {
-    try {
-      if (!cachedSockets[agent._id]) throw new Error('agent-not-available')
-      ioToPrivate(cachedSockets[agent._id], 'tf.browser', options, data => {
-        resolve(data)
-      })
-    }
-    catch (ex) {
-      reject(ex)
-    }
-  })
+  if (!cachedSockets[agent._id]) throw new Error('agent-not-available')
+  const socket = getSocketByAgentId(agent._id)
+  return ioToPrivate(socket, 'tf.browser', options)
 }
 
 module.exports.fileExplorer = fileExplorer

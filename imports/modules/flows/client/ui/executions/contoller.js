@@ -34,6 +34,7 @@ Template.flowsOneExecutions.onRendered(function() {
     
     self.subscribe('flows.one.executionsStats', {
       flow: Router.current().params._id,
+      team: Router.current().params.teamId,
       createdAt: {
         $gt: self.start.get().toDate(),
         $lt: self.end.get().toDate()
@@ -42,6 +43,7 @@ Template.flowsOneExecutions.onRendered(function() {
 
     self.subscribe('executions.all', {
       flow: Router.current().params._id,
+      team: Router.current().params.teamId,
       createdAt: {
         $gt: self.start.get().toDate(),
         $lt: self.end.get().toDate()
