@@ -15,7 +15,7 @@ const awsResponse = (err, data, success, cb) => {
   }]
   
   cb(null, {
-    result: { data },
+    result: data ? { data } : {},
     error: !!err,
     next: true,
     msgs: lines
@@ -40,7 +40,7 @@ const service = {
         client.getThingShadow({
           thingName: currentStep.config.thingName
         }, (err, data) => {
-          awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-get.ok', cb)
+          awsResponse(err, data ? JSON.parse(data.payload) : null, 's-aws.log.iot-shadow-get.ok', cb)
         })
       }
     },
