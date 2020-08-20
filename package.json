@@ -28,7 +28,7 @@
     "@octokit/auth-app": "^2.4.2",
     "aws-iot-device-sdk": "^2.2.4",
     "aws-sdk": "^2.663.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "busboy": "^0.3.1",
     "cron-converter": "1.0.0",
     "debug": "^4.1.1",
