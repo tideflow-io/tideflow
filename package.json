@@ -24,7 +24,7 @@
     "debug": "meteor run --inspect-brk=9229"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.11.2",
     "@octokit/auth-app": "^2.4.2",
     "aws-iot-device-sdk": "^2.2.4",
     "aws-sdk": "^2.663.0",

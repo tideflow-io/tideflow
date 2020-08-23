@@ -322,9 +322,7 @@ Template.flowEditor.helpers({
   },
 
   stepsAvailableSidebar() {
-    return servicesAvailable.filter(sa => {
-      return !!sa.stepable
-    })
+    return _.chain(servicesAvailable).filter(s => s.stepable).orderBy(s => s.control).value()
   },
 
   triggerEditorEventForm: function() {

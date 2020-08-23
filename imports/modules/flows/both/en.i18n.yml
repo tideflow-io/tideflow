@@ -23,9 +23,9 @@ editor.step.event.selectOneOption: Select an option
 editor.step.removeOne: Remove task
 editor.step.editDetails: Edit details
 editor.step.editDetailsDone: Done
-editor.sidebar.tabs.tasks.link.text: Add task
+editor.sidebar.tabs.tasks.link.text: Add step
 editor.sidebar.tabs.tasks.search.text: Search ...
-editor.sidebar.tabs.task.link.text: Task settings
+editor.sidebar.tabs.task.link.text: Step settings
 edit.submit: Save
 index.title: Workflows
 index.subtitle: Workflows are lists of actions that happen upon a trigger.

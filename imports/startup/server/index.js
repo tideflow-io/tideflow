@@ -12,6 +12,9 @@ import '/imports/services/rss/server'
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/server'
 
+import '/imports/services/control-if/both'
+import '/imports/services/control-if/server'
+
 import '/imports/services/github-webhooks/both'
 import '/imports/services/github-webhooks/server'
 
