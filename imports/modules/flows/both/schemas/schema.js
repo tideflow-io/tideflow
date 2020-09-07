@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 
 SimpleSchema.extendOptions(['autoform'])
 
-import { list as statusList } from '/imports/modules/flows/both/list'
+import { list as statusList, conditions } from '/imports/modules/flows/both/list'
 
 const FlowSchema = new SimpleSchema({
   _id: {
@@ -91,7 +91,6 @@ const FlowSchema = new SimpleSchema({
     optional: true
   },
   'trigger.outputs.$.stepIndex': {
-    label: 'Trigger output steps index',
     type: Number
   },
   'trigger.secrets': {
@@ -144,6 +143,41 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true,
     blackbox: true
+  },
+  'steps.$.control': {
+    type: Array,
+    optional: true
+  },
+  'steps.$.control.$': {
+    type: Object
+  },
+  'steps.$.control.$.outputs': {
+    type: Array,
+    optional: true
+  },
+  'steps.$.control.$.outputs.$': {
+    type: Object,
+    optional: true
+  },
+  'steps.$.control.$.outputs.$.stepIndex': {
+    type: Number
+  },
+  'steps.$.control.$.step': {
+    type: Number,
+    defaultValue: 0
+  },
+  'steps.$.control.$.param': {
+    type: String
+  },
+  'steps.$.control.$.condition': {
+    type: String,
+    autoform: {
+      options: conditions
+    },
+    allowedValues: conditions.map(sl => sl.value),
+  },
+  'steps.$.control.$.value': {
+    type: String
   },
   createdAt: {
     type: Date,

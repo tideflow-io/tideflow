@@ -207,6 +207,12 @@ Template.flowEditor.helpers({
     return Session.get('fe-editMode') === this.index
   },
 
+  currentTypeIs: (flow, index, expected) => {
+    if (!flow || !flow.steps || !flow.steps[index]) return false
+    console.log(flow.steps[index].type, expected)
+    return flow.steps[index].type === expected
+  },
+
   cardText: function(context) {
     const getFromDoc = () => {
       const flow = context.hash.flow
@@ -234,6 +240,10 @@ Template.flowEditor.helpers({
     return selectedService ? selectedService.icon : null
   },
 
+  flowEditorCardControls: function() {
+    console.log({this: this})
+  },
+
   cardIconColor: function() {
     const selectedService = Session.get(`fe-step-${this.index}`)
     if (!selectedService) return;
@@ -245,6 +255,7 @@ Template.flowEditor.helpers({
     return selectedService ? selectedService.events.filter(e => e.stepable) || false : false
   },
   isSelectedStepType: (flow, index, current) => {
+    console.log({flow, index, current})
     if (!flow || !flow.steps || !flow.steps[index]) return ''
     return flow.steps[index].type === current ? 'selected' : ''
   },

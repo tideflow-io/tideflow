@@ -1,17 +1,25 @@
 <template name="servicesIfSimpleCommonConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-email-outgoing.event.common.subject"}}</label>
-    <input class="form-control" value="{{stepConfigValue 'subject' ''}}" data-schema-key="{{stepConfigName 'subject'}}" name="{{stepConfigName 'subject'}}">
-  </div>
-  <div class="form-group">
-    <label class="control-label">{{__ "s-email-outgoing.event.common.body"}}</label>
-    <textarea rows="10" class="form-control" data-schema-key="{{stepConfigName 'body' ''}}" name="{{stepConfigName 'body' ''}}">{{stepConfigValue 'body' ''}}</textarea>
-  </div>
-  <div class="form-group">
-    <label class="control-label" for="{{stepConfigName 'inputLast'}}">{{__ "s-email-outgoing.event.common.attachPreviousStepOutput"}}</label>
-    <select class="form-control" data-schema-key="{{stepConfigName 'inputLast'}}" name="{{stepConfigName 'inputLast'}}">
-      <option value="yes" {{stepConfigValueSelected 'inputLast' 'yes'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputYes"}}</option>
-      <option value="no" {{stepConfigValueSelected 'inputLast' 'no'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputNo"}}</option>
-    </select>
-  </div>
+  {{debug stepControls}}
+  {{#afEachArrayItem name=stepControls}}
+    <div class="condition">
+      <div class="form-group">
+        <label for="repeatpassword" class="sr-only">Step</label>
+        {{> afFieldInput name=this.current.step}}  
+      </div>
+      <div class="form-group">
+        <label for="repeatpassword" class="sr-only">Param</label>
+        {{> afFieldInput name=this.current.param}}  
+      </div>
+      <div class="form-group">
+        <label for="repeatpassword" class="sr-only">Condition</label>
+        {{> afFieldInput name=this.current.condition}}
+      </div>
+      <div class="form-group">
+        <label for="repeatpassword" class="sr-only">Value</label>
+        {{> afFieldInput name=this.current.value}}
+      </div>
+      <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+    </div>
+  {{/afEachArrayItem}}
+  <button type="button" class="autoform-add-item" data-autoform-field="control"><span class="glyphicon glyphicon-plus"></span></button>
 </template>

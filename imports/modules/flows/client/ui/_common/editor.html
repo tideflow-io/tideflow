@@ -56,7 +56,7 @@
                     {{/each}}
                   </select>
                 {{/if}}
-                {{> stepEventConfig steps=../flow.steps index=this.index}}
+                {{> stepEventConfig control=this steps=../flow.steps index=this.index}}
               </div>
 
               <button type="button" class="edit-mode-leave form-control btn btn-primary">
@@ -159,9 +159,15 @@
                 <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
                   X
                 </button>
-                <div class="connector-out connector-outbound" data-step="{{this.index}}">
-                  -
-                </div>
+                {{#if currentTypeIs ../flow index "control-if"}}
+                  {{#afEachArrayItem name=this.current.control}}
+                    aa
+                  {{/afEachArrayItem}}
+                {{else}}
+                  <div class="connector-out connector-outbound" data-step="{{this.index}}">
+                    -
+                  </div>
+                {{/if}}
               </div>
             {{/afEachArrayItem}}
           </div>
@@ -188,6 +194,6 @@
 
 <template name="stepEventConfig">
   {{#if event.templates.eventConfig}}
-  {{> Template.dynamic template=event.templates.eventConfig}}
+    {{> Template.dynamic template=event.templates.eventConfig}}
   {{/if}}
 </template>
