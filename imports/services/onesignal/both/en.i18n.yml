@@ -1,0 +1,17 @@
+_namespace: s-onesignal
+name: OneSignal notifications
+description: Trigger Web and Mobile notifications
+
+create:
+  appId: Application ID
+  restApiKey: REST Api Key
+
+events:
+  selectApplication: Select application
+  sendnotification:
+    name: Send notification
+    title: Send notification
+    subject: Title
+    content: Content
+    log:
+      success: Notification sent to {$recipients} recipients

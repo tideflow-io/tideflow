@@ -89,7 +89,7 @@ const service = {
           msgs: [
             {
               m: commandSent ? 's-gh-ci.events.pull_request.agent.sent.success' : 's-gh-ci.events.pull_request.agent.sent.error',
-              err: !commandSent,
+              e: !commandSent,
               d: new Date()
             }
           ]
@@ -137,7 +137,7 @@ const service = {
           msgs: [
             {
               m: commandSent ? 's-gh-ci.events.push.agent.sent.success' : 's-gh-ci.events.push.agent.sent.error',
-              err: !commandSent,
+              e: !commandSent,
               d: new Date()
             }
           ]

@@ -15,6 +15,9 @@ import '/imports/services/bitbucket-webhooks/server'
 import '/imports/services/github-webhooks/both'
 import '/imports/services/github-webhooks/server'
 
+import '/imports/services/onesignal/both'
+import '/imports/services/onesignal/server'
+
 import '/imports/services/webparsy/both'
 import '/imports/services/webparsy/server'
 

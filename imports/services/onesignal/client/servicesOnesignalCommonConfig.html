@@ -1,0 +1,10 @@
+<template name="servicesOnesignalCommonConfig">
+  <div class="form-group">
+    <label class="control-label">{{__ "s-onesignal.events.selectApplication"}}</label>
+    <select class="form-control" data-schema-key="{{stepConfigName 'application'}}" name="{{stepConfigName 'application'}}">
+      {{#each registeredApplications}}
+        <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'application' _id}}>{{title}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>

@@ -1,0 +1,10 @@
+<template name="servicesOnesignalUpdateForm">
+    <div class="form-group">
+        <label class="control-label">{{__ "s-onesignal.create.appId"}}</label>
+        <input value="{{service.config.appId}}" type="text" class="form-control" data-schema-key="config.appId" name="config.appId">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{__ "s-onesignal.create.restApiKey"}}</label>
+        <input value="{{service.config.restApiKey}}" type="text" class="form-control" data-schema-key="config.restApiKey" name="config.restApiKey">
+    </div>
+</template>

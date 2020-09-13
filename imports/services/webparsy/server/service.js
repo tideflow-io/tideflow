@@ -52,7 +52,6 @@ const service = {
               {
                 m: 's-agent.log.scrape.commandfile.error',
                 err: true,
-                p: [],
                 d: new Date()
               }
             ]

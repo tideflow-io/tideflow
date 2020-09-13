@@ -29,7 +29,7 @@ const service = {
           msgs: [
             {
               m: 's-rss.log.new-content.new-content-available',
-              p: [lastData.length],
+              p: { itemsCount: lastData.length },
               d: new Date()
             }
           ]

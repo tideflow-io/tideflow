@@ -1,0 +1,13 @@
+<template name="servicesOnesignalSend">
+  {{> servicesOnesignalCommonConfig}}
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-onesignal.events.sendnotification.subject"}}</label>
+    <input type="text" class="form-control" value="{{stepConfigValue 'title' ''}}" data-schema-key="{{stepConfigName 'title' ''}}" name="{{stepConfigName 'title' ''}}">
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-onesignal.events.sendnotification.content"}}</label>
+    <input type="text" class="form-control" value="{{stepConfigValue 'content' ''}}" data-schema-key="{{stepConfigName 'content'}}" name="{{stepConfigName 'content'}}">
+  </div>
+</template>

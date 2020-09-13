@@ -49,7 +49,6 @@ const service = {
           msgs: [
             {
               m: 's-endpoint.log.called_input_parsed',
-              p: null,
               d: new Date()
             }
           ]

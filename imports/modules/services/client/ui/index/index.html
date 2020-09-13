@@ -36,7 +36,11 @@
     <div class="row">
       <div class="col-md-1">
         <div class="align-middle card-image card-mini-icon text-center">
-          <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
+          {{#if serviceProperty this.type 'icon_image'}}
+            <img width="34" src="/icons/services/{{serviceProperty this.type 'icon_image'}}">
+          {{else}}
+            <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
+          {{/if}}
         </div>
       </div>
       <div class="col-md-9 my-auto">

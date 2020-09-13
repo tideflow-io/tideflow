@@ -234,6 +234,11 @@ Template.flowEditor.helpers({
     return selectedService ? selectedService.icon : null
   },
 
+  cardIconImage: function() {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    return selectedService ? selectedService.icon_image : null
+  },
+
   cardIconColor: function() {
     const selectedService = Session.get(`fe-step-${this.index}`)
     if (!selectedService) return;

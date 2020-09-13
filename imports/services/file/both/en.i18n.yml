@@ -7,7 +7,7 @@ events.readFile.title: Connect a file
 events.readFile.select: Select a file
 
 events.create-input-log-file.title: Create a log file with previous results
-log.create-input-log-file.created: Log file created
+log.create-input-log-file.created: Log file "{$fileName}" created
 
 events.store-previous-files.title: Store previous files
 events.store-previous-files.viewer.title: Store previous files

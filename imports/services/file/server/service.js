@@ -46,7 +46,7 @@ const service = {
           error: false,
           msgs: [{
             m: 's-file.log.create-input-log-file.created',
-            p: [],
+            p: { fileName: `${fileName}.json` },
             d: new Date()
           }]
         })
@@ -80,7 +80,6 @@ const service = {
             error: false,
             msgs: [{
               m: 's-file.log.read-file.readed',
-              p: [],
               d: new Date()
             }]
           })
@@ -91,7 +90,6 @@ const service = {
             error: true,
             msgs: [{
               m: 's-file.log.read-file.retrieveFailed',
-              p: [],
               d: new Date(),
               e: true
             }]
@@ -114,7 +112,6 @@ const service = {
 
         previousFiles.map(file => {
           const fileName = slugify(`${execution._id.substring(0, 5)}-${file.fileName}`).toLowerCase()
-          //require('fs').writeFileSync(`/Users/joseconstela/Desktop/${fileName}`, file.data.data)
           fileNames.push(fileName)
           return filesLib.create({
             team: execution.team,
@@ -133,7 +130,7 @@ const service = {
           error: false,
           msgs: [{
             m: 's-file.log.store-previous-files.created',
-            p: [fileNames.length],
+            p: { numOfFiles: fileNames.length },
             d: new Date()
           }]
         })

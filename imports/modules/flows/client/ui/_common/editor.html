@@ -44,7 +44,11 @@
           {{#afEachArrayItem name="steps"}}
             <div class="fixed-right-sidebar {{#if editMode}}{{else}}d-none{{/if}}">
               <div class="mb-3">
-                <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                {{#if cardIconImage}}
+                  <img width="16" src="/icons/services/{{cardIconImage}}">
+                {{else}}
+                  <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                {{/if}}
                 <strong>{{cardTitle}}</strong>
               </div>
               <div class="step-event-selector-wrapper">
@@ -144,7 +148,11 @@
                     {{/each}}
                   </select>
                   <div class="card-title mb-2 font-weight-bold">
-                    <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                    {{#if cardIconImage}}
+                      <img width="16" src="/icons/services/{{cardIconImage}}">
+                    {{else}}
+                      <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                    {{/if}}
                     {{cardTitle}}
                   </div>
                   <p>
@@ -175,7 +183,11 @@
   <div class="card clickable card-task">
     <div class="card-body">
       <div class="mr-3 card-image card-mini-icon text-center">
+        {{#if serviceProperty this.name 'icon_image'}}
+          <img width="34" src="/icons/services/{{serviceProperty this.name 'icon_image'}}">
+        {{else}}
           <i class="{{serviceProperty this.name 'icon'}}" style="color: {{serviceProperty this.name 'iconColor'}}"></i>
+        {{/if}}
       </div>
       <div class="card-title text-left">
         <h6>{{serviceHumanName this.name}}</h6>

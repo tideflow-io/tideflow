@@ -16,7 +16,7 @@ update.error.validation: Your workflow can not be updated. Please check trigger 
 update.error.generic: There was a problem updating your workflow.
 
 editor.trigger.notSet: Not defined
-editor.trigger.title: What event triggers this workflow?
+editor.trigger.title: When this happens...
 editor.triggerEvent.selectOneOption: Select an option
 editor.trigger.selectOneOption: Select an option
 editor.step.event.selectOneOption: Select an option

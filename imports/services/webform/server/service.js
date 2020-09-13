@@ -43,7 +43,6 @@ const service = {
           msgs: [
             {
               m: 's-webform.log.submitted_input_parsed',
-              p: null,
               d: new Date()
             }
           ]

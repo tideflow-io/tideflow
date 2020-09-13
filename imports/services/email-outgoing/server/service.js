@@ -66,7 +66,6 @@ const service = {
         msgs: [
           {
             m: 's-email-outgoing.log.to-me.sent',
-            p: [to],
             d: new Date()
           }
         ]
@@ -126,7 +125,6 @@ const service = {
         msgs: [
           {
             m: 's-email-outgoing.log.to-others.sent',
-            p: to,
             d: new Date()
           }
         ]

@@ -1,5 +1,5 @@
 <template name="files.templates">
-  <div class="container-fluid" style="">
+  <div class="container" style="">
     <div class="row">
       <div class="col-md-12">
         <div class="page-header mb-4">
@@ -22,7 +22,7 @@
       <div class="col-lg-10 col-md-8 col-sm-12">
         <div class="d-flex flex-items-stretch ml-n2 mr-n2 mb-2 flex-wrap">
           {{#if sessEq 'fileTemplatesCategoryFilter' null}}
-            <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
+          <div class="col-md-6">
               <div class="card clickable new-file-empty">
                 <div class="card-body">
                   <div class="row">
@@ -53,7 +53,7 @@
 </template>
 
 <template name="filesTemplatesCard">
-  <div class="px-2 col-sm-12 col-lg-6 col-xl-4 d-flex flex-column">
+  <div class="col-md-6">
     <div class="card clickable">
       <div class="card-body">
         <div class="row">

@@ -62,7 +62,6 @@ const service = {
               {
                 m: 's-agent.log.execute.commandfile.error',
                 err: true,
-                p: [],
                 d: new Date()
               }
             ]
@@ -93,7 +92,6 @@ const service = {
             {
               m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
               err: !commandSent,
-              p: [],
               d: new Date()
             }
           ]
@@ -126,7 +124,6 @@ const service = {
               {
                 m: 's-agent.log.code_nodesfc.commandfile.error',
                 err: true,
-                p: [],
                 d: new Date()
               }
             ]
@@ -153,7 +150,6 @@ const service = {
             {
               m: commandSent ? 's-agent.log.code_nodesfc.sent.success' : 's-agent.log.code_nodesfc.sent.error',
               err: !commandSent,
-              p: [],
               d: new Date()
             }
           ]

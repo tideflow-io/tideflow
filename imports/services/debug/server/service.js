@@ -12,7 +12,6 @@ const executionCb = (cb, executionLogs, name) => {
     msgs: [
       {
         m: `s-debug.log.${name}`,
-        p: [],
         d: new Date()
       }
     ]

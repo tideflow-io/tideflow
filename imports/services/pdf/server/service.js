@@ -90,7 +90,7 @@ const service = {
             msgs: [
               {
                 m: 's-pdf.log.create-from-html.created',
-                p: [],
+                p: { fileName: `${execution._id}.pdf` },
                 d: new Date()
               }
             ]
@@ -103,7 +103,11 @@ const service = {
             error: true,
             msgs: [{
               m: 's-pdf.log.create-from-html.retrieveFailed',
-              p: [],
+              d: new Date(),
+              e: true
+            },
+            {
+              m: ex.message,
               d: new Date(),
               e: true
             }]

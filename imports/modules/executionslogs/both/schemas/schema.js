@@ -88,14 +88,10 @@ const ExecutionlogSchema = new SimpleSchema({
     optional: true
   },
   'msgs.$.p': {
-    type: Array,
+    type: Object,
     label: 'Parameters',
-    optional: true
-  },
-  'msgs.$.p.$': {
-    type: String,
-    label: 'Parameter',
-    optional: true
+    optional: true,
+    blackbox: true
   },
   'msgs.$.d': {
     type: Date,

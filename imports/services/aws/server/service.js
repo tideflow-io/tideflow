@@ -6,11 +6,9 @@ const awsResponse = (err, data, success, cb) => {
   const lines = err ? [{
     m: err.message,
     err: true,
-    p: [],
     d: new Date()
   }] : [{
     m: success,
-    p: [],
     d: new Date()
   }]
   

@@ -32,7 +32,11 @@
           {{#with flow.trigger}}
           <div class="card flow-trigger flow-trigger-{{type}} flow-trigger-{{type}}-{{event}}">
             <div class="card-body">
-              <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
+              {{#if serviceProperty this.type 'icon_image'}}
+                <img width="34" src="/icons/services/{{serviceProperty this.type 'icon_image'}}">
+              {{else}}
+                <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
+              {{/if}}
               {{__ "flows.one.viewer.trigger"}}: {{flowViewerTriggerTitle}}
             </div>
           </div>
@@ -40,7 +44,11 @@
           {{#each flow.steps}}
             <div class="card flow-step flow-step-{{type}} flow-step-{{type}}-{{event}}">
               <div class="card-body">
+                {{#if serviceProperty this.type 'icon_image'}}
+                  <img width="15" src="/icons/services/{{serviceProperty this.type 'icon_image'}}">
+                {{else}}
                   <i class="{{serviceProperty this.type 'icon'}}" style="color: {{serviceProperty this.type 'iconColor'}}"></i>
+                {{/if}}
                 {{{flowViewerStepTitle}}}
               </div>
             </div>

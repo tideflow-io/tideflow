@@ -20,7 +20,6 @@ const service = {
          * Possile values are: "new", "original"
          */
         pre: (originalService, newService, treat) => {
-          console.log('1')
           return treat === 'original' ? originalService : newService
         },
 
@@ -31,7 +30,6 @@ const service = {
          * Possile values are: "new", "original"
          */
         post: (originalService, newService, treat) => {
-          console.log('2')
           return treat === 'original' ? originalService : newService
         }
       },
@@ -41,7 +39,6 @@ const service = {
          * @param {object} service
          */
         pre: service => {
-          console.log('3')
           return service
         },
 
@@ -49,7 +46,6 @@ const service = {
          * @param {object} service
          */
         post: service => {
-          console.log('4')
           return service
         }
       }
@@ -227,15 +223,12 @@ const service = {
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const lastData = executionLogs[0].stepResult
 
-        console.log({lastData})
-
         cb(null, {
           result: lastData,
           next: true,
           msgs: [
             {
               m: 's-aws-mqtt-client.events.subscribe.log',
-              p: null,
               d: new Date()
             }
           ]
