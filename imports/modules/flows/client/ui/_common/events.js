@@ -168,7 +168,7 @@ const setJsPlumb = (flow) => {
     })
     
     // now and when they are created / added to the dom
-    $('body').on('DOMNodeInserted', '.card', function () {
+    $('body').on('DOMNodeInserted', '.flow-step-step', function (event) {
       jsPlumb.draggable($(this), {
         containment: '#flow-editor'
       })
