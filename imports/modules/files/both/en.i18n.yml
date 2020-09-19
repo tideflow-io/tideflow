@@ -1,37 +1,44 @@
 _namespace: files
-index.title: Files
-index.subtitle: Connect and collect files into your processes
-index.createNew: New file...
-index.emptyListDescription: It seems your team haven't created any file yet.
+index:
+  title: Files
+  subtitle: Connect and collect files into your processes
+  createNew: New file...
+  emptyListDescription: It seems your team haven't created any file yet.
 
-index.list.download: Download
-index.list.edit: Edit
-index.list.delete: Delete
-index.list.options: Options
+  list:
+    download: Download
+    edit: Edit
+    delete: Delete
+    options: Options
 
-new.title: New file
-new.submit: Save
+new:
+  title: New file
+  submit: Save
 
-edit.title: Edit file
-edit.remove: Remove file
-edit.submit: Save
-edit.makePublic.link: Make this file publicly available
-edit.makePublic.copyUrl: Copy file\'s public URL to clipboard
-edit.makePublic.success: Settings updated
-edit.makePublic.error: Error updating file settings
+edit:
+  title: Edit file
+  remove: Remove file
+  submit: Save
+  makePublic:
+    link: Make this file publicly available
+    copyUrl: Copy file\'s public URL to clipboard
+    success: Settings updated
+    error: Error updating file settings
 
-delete.title: Are you sure?
-delete.text: Once deleted, you will not be able to recover it.
-delete.success: File deleted
+delete:
+  title: Are you sure?
+  text: Once deleted, you will not be able to recover it.
+  success: File deleted
 
-download.error: Error downloading file
+download:
+  error: Error downloading file
 
-templates.title: File templates
-templates.subtitle: Select a template to get started
-
-templates.useThis: Use this template
-templates.allTemplates: All templates
-
-templates.empty.title: Empty file
-templates.empty.description: Start from a blank template
-templates.empty.start: Start now
+templates:
+  title: File templates
+  subtitle: Select a template to get started
+  useThis: Use this template
+  allTemplates: All templates
+  empty:
+    title: Empty file
+    description: Start from a blank template
+    start: Start now

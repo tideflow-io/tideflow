@@ -1,14 +1,18 @@
 _namespace: dashboard
 title: Dashboard
 subtitle: History of your workflows executions.
-executions.empty: It seems your team haven't executed any workflow.
-executions.title: Executions history
-executions.filters.last24Hours: Last 24 hours
-executions.filters.lastWeek: Last week
-executions.filters.lastMonth: Last month
-executions.stats.executions: Executions
-executions.stats.times: times
-executions.stats.inProgress: In Progress
-executions.stats.success: Success
-executions.stats.failed: Failed
-wellcome.title: Wellcome to Tideflow
+executions:
+  empty: It seems your team haven't executed any workflow.
+  title: Executions history
+  filters:
+    last24Hours: Last 24 hours
+    lastWeek: Last week
+    lastMonth: Last month
+  stats:
+    executions: Executions
+    times: times
+    inProgress: In Progress
+    success: Success
+    failed: Failed
+wellcome:
+  title: Wellcome to Tideflow

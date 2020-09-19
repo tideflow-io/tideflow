@@ -1,31 +1,44 @@
 _namespace: flows
-breadcrumb.title.index: Workflows
-breadcrumb.title.new: New
-breadcrumb.title.executions: Executions
-breadcrumb.title.edit: Edit
-create.ok: Workflow created
-create.error: There was a problem creating the workflow
-delete.title: Are you sure?
-delete.text: Once deleted, you will not be able to recover this.
-delete.ok: Workflow deleted
-delete.error: There was a problem deleting the workflow
-delete.success: Your workflow was deleted
-
-insert.error.noTrigger: You must define a trigger before saving your workflow.
-update.error.validation: Your workflow can not be updated. Please check trigger and tasks.
-update.error.generic: There was a problem updating your workflow.
-
-editor.trigger.notSet: Not defined
-editor.trigger.title: When this happens...
-editor.triggerEvent.selectOneOption: Select an option
-editor.trigger.selectOneOption: Select an option
-editor.step.event.selectOneOption: Select an option
-editor.step.removeOne: Remove task
-editor.step.editDetails: Edit details
-editor.step.editDetailsDone: Done
-editor.sidebar.tabs.tasks.link.text: Add task
-editor.sidebar.tabs.tasks.search.text: Search ...
-editor.sidebar.tabs.task.link.text: Task settings
+breadcrumb:
+  title:
+    index: Workflows
+    new: New
+    executions: Executions
+    edit: Edit
+create:
+  ok: Workflow created
+  error: There was a problem creating the workflow
+delete:
+  title: Are you sure?
+  text: Once deleted, you will not be able to recover this.
+  ok: Workflow deleted
+  error: There was a problem deleting the workflow
+  success: Your workflow was deleted
+insert:
+  error:
+    noTrigger: You must define a trigger before saving your workflow.
+update:
+  error:
+    validation: Your workflow can not be updated. Please check trigger and tasks.
+    generic: There was a problem updating your workflow.
+editor:
+  trigger:
+    notSet: Not defined
+    selectOneOption: Select an option
+    title: When this happens...
+  triggerEvent:
+    selectOneOption: Select an option
+  step:
+    event:
+      selectOneOption: Select an option
+    removeOne: Remove task
+    editDetails: Edit details
+    editDetailsDone: Done
+  sidebar:
+    tabs:
+      tasks.link.text: Add task
+      tasks.search.text: Search ...
+      task.link.text: Task settings
 edit.submit: Save
 index.title: Workflows
 index.subtitle: Workflows are lists of actions that happen upon a trigger.
@@ -34,29 +47,31 @@ index.emptyListSubTitle: It seems your team haven't created any workflow yet.
 index.viewOne: View
 new.submit: Create
 executions.steps.title: "Action by action:"
-one.enabled: Enabled
 executions.title: Workflow's execution logs
 executiondetails.logsViewAs.console: View as console
 executiondetails.logsViewAs.cards: View as cards
-one.viewer.trigger: Trigger
-one.viewer.triggerNotDefined: Not defined
-one.viewer.stepNotDefined: Not defined
-one.disabled: Disabled
-one.edit: Edit
-one.remove: Delete
-one.allExecutions: Browse all executions
-one.executions.empty: This workflow hasn't been executed.
-one.executions.title: Executions
-
-one.executions.stats.executions: Executions
-one.executions.stats.times: times
-one.executions.stats.inProgress: In Progress
-one.executions.stats.success: Success
-one.executions.stats.loading: Loading
-one.executions.stats.failed: Failed
-
-status.running: Running...
-status.finished: Finished
-status.failed: Failed
-status.update.ok: Workflow updated
-status.update.error: There was a problem updating the workflow
+one:
+  enabled: Enabled
+  viewer.trigger: Trigger
+  viewer.triggerNotDefined: Not defined
+  viewer.stepNotDefined: Not defined
+  disabled: Disabled
+  edit: Edit
+  remove: Delete
+  allExecutions: Browse all executions
+  executions:
+    empty: This workflow hasn't been executed.
+    title: Executions
+    stats:
+      executions: Executions
+      times: times
+      inProgress: In Progress
+      success: Success
+      loading: Loading
+      failed: Failed
+status:
+  running: Running...
+  finished: Finished
+  failed: Failed
+  update.ok: Workflow updated
+  update.error: There was a problem updating the workflow
