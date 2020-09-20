@@ -3,7 +3,7 @@ import { isMember } from '../both/teams'
 
 const removeUser = (user, team) => {
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
-  if (!fullTeam) throw 'no-team'
+  if (!fullTeam) return false
 
   let userId = user._id || user
 
@@ -26,7 +26,7 @@ const setRole = (user, team, role) => {
   let userId = user._id || user
 
   let fullTeam = team._id ? team : Teams.findOne({_id: team})
-  if (!fullTeam) throw 'no-team'
+  if (!fullTeam) return null
 
   let userIsMember = isMember(user, fullTeam)
 
