@@ -77,9 +77,12 @@ const service = {
           Payload: JSON.stringify(data)
         }
         const profile = await getAwsProfile(currentStep, execution)
-        console.log({profile})
-        new Lambda(profile).invoke(params, (err, data) => {
-          awsResponse(err, JSON.parse(data), 's-aws.log.lambda-invoke.ok', cb)
+        new Lambda({
+          region: profile.region,
+          accessKeyId: profile.accessKeyId,
+          secretAccessKey: profile.accessSecretId
+        }).invoke(params, (err, data) => {
+          awsResponse(err, data, 's-aws.log.lambda-invoke.ok', cb)
         });
       }
     }
