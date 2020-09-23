@@ -2,6 +2,7 @@ import './createForm.html'
 import './updateForm.html'
 import './servicesAwsIotShadowUpdate.html'
 import './servicesAwsIotShadowGet.html'
+import './servicesAwsLambdaInvokeUpdate.html'
 
 import './servicesAwsCommonConfig'
 

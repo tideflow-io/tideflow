@@ -1,6 +1,8 @@
 import { servicesAvailable } from '/imports/services/_root/server'
 
 import { instance as iotData } from './helpers/iotData'
+import { getAwsProfile } from './helpers/profile'
+import { Lambda } from 'aws-sdk'
 
 const awsResponse = (err, data, success, cb) => {
   const lines = err ? [{
@@ -58,6 +60,27 @@ const service = {
         }, (err, data) => {
           awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-update.ok', cb)
         })
+      }
+    },
+    {
+      name: 'lambda-invoke',
+      capabilities: {
+        runInOneGo: true
+      },
+      callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        const data = lastData ? lastData.data || {} : {}
+
+        var params = {
+          FunctionName: currentStep.config.functionName, /* required */
+          InvocationType: 'Event', // | RequestResponse | DryRun,
+          Payload: JSON.stringify(data)
+        }
+        const profile = await getAwsProfile(currentStep, execution)
+        console.log({profile})
+        new Lambda(profile).invoke(params, (err, data) => {
+          awsResponse(err, JSON.parse(data), 's-aws.log.lambda-invoke.ok', cb)
+        });
       }
     }
   ]

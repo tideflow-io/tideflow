@@ -40,6 +40,17 @@ const service = {
       templates: {
         eventConfig: 'servicesAwsIotShadowUpdate' // servicesAwsCommonConfig
       }
+    },
+    {
+      name: 'lambda-invoke',
+      humanName: 's-aws.events.lambda.invoke.name',
+      viewerTitle: 's-aws.events.lambda.invoke.title',
+      inputable: false,
+      stepable: true,
+      callback: () => {},
+      templates: {
+        eventConfig: 'servicesAwsLambdaInvokeUpdate' // servicesAwsCommonConfig
+      }
     }
   ]
 }
