@@ -12,6 +12,7 @@ events:
     name: Send notification
     title: Send notification
     subject: Title
+    segment: Segment (All by default)
     content: Content
     log:
       success: Notification sent to {$recipients} recipients

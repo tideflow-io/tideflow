@@ -29,11 +29,14 @@ module.exports.sendNotification = async (appConfig, currentStep) => {
         req.end()
       }
 
+      const segment = (currentStep.config.segment||'').trim() !== '' ? 
+        currentStep.config.segment : 'All'
+
       var message = { 
         app_id: appConfig.appId,
         contents: {"en": currentStep.config.content},
         headings: {"en": currentStep.config.title},
-        included_segments: ["All"]
+        included_segments: [segment]
       }
       
       sendNotification(message)
