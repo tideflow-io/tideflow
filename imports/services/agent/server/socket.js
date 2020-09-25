@@ -77,7 +77,6 @@ Meteor.startup(async () => {
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.progress', async message => {
-      console.log('progress', message.stdLines)
       await logUpdate(
         message,
         message.stdLines
@@ -106,7 +105,6 @@ Meteor.startup(async () => {
     // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finish', async message => {
-      console.log('finih', message.stdLines)
       await logUpdate(
         message,
         message.stdLines,
