@@ -11,19 +11,15 @@ import { pick } from '/imports/helpers/both/objects'
 // Server
 const io = socket_io(WebApp.httpServer)
 
-const logUpdate = (context, messages, results, extras) => {
+const logUpdate = (context, messages, extras) => {
   const { log, execution } = context
-
-  if (results && !Array.isArray(results)) {
-    results = [results]
-  }
 
   let push = {
     msgs: { $each: messages }
   }
 
-  if (results && results.length) {
-    push['stepResult.data'] = { $each: results }
+  if (messages && messages.length) {
+    push['stepResult.data'] = { $each: (messages||[]).map(l => l.m) }
   }
 
   return ExecutionsLogs.update({_id: log, execution}, {
@@ -81,32 +77,21 @@ Meteor.startup(async () => {
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.progress', async message => {
-      let date = message.date || new Date()
-      let err = !!(message.stderr && message.stderr.length)
-      let msgs = err ? message.stderr : message.stdout
+      console.log('progress', message.stdLines)
       await logUpdate(
         message,
-        msgs.map(msg => { return { m: msg, p: null, err, d: date } }),
-        msgs
+        message.stdLines
       )
     })
 
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finishBulk', async message => {
-      let err = !!message.code
+      let err = !!message.error
 
       await logUpdate(
         message,
-        message.stdLines.map(line => { return { 
-          m: line.output,
-          p: null,
-          err: line.err,
-          d: line.date
-        } }),
-        message.stdLines.map(l => {
-          return `${l.err ? 'ERR ' : ''}${l.output}`
-        }),
+        message.stdLines,
         { status: err ? 'error' : 'success' }
       )
 
@@ -121,17 +106,14 @@ Meteor.startup(async () => {
     // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finish', async message => {
-      let msgs = message.stdout || message.stderr
-      let err = !!(message.stderr && message.stderr.length)
-
+      console.log('finih', message.stdLines)
       await logUpdate(
         message,
-        msgs.map(msg => { return { m: msg, p: null, err, d: new Date() } }),
-        msgs,
-        { status: err ? 'error' : 'success' }
+        message.stdLines,
+        { status: message.error ? 'error' : 'success' }
       )
 
-      if (err) {
+      if (message.error) {
         executionError(pick(message, ['flow', 'execution']))
       }
       else {
@@ -140,15 +122,14 @@ Meteor.startup(async () => {
       // Once reported, check if the Workflow have more steps to execute
     })
 
+
     // An agent is reporting an exception when executing the command
     socket.on('tf.notify.exception', async message => {
-      console.error('tf.notify.exception', message)
       await logUpdate(
         message,
         [
           { m: message.ex, p: null, err: true, d: new Date() }
         ],
-        [ `ERR ${message.ex}` ],
         { status: 'error' }
       )
       executionError(pick(message, ['flow', 'execution']))

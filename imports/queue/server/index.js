@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
-import { Jobs as Queue } from './engine/api'
-
+// import { Jobs as Queue } from './engine/api'
+const Queue = Jobs
 import { Random } from 'meteor/random'
 import { check } from 'meteor/check'
 
@@ -262,10 +262,10 @@ const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
     // executionData now contains _id and createdAt
     jobs.run('workflow-start', { execution, user })
 
-    return {
-      _id: executionId,
-      capabilities: execution.capabilities
-    }
+    // return {
+    //   _id: executionId,
+    //   capabilities: execution.capabilities
+    // }
   })
 
   return executionCreated
@@ -284,6 +284,9 @@ const executeNextStep = (context) => {
 
   const executionId = context.execution
   const execution = Executions.findOne({_id: executionId})
+  const user = Meteor.users.findOne({_id:execution.user}, {
+    fields: { services: false }
+  })
   const flow = execution.fullFlow
   const listOfCalls = calledFrom(flow)
 
@@ -330,7 +333,12 @@ const executeNextStep = (context) => {
 
     // Schedule execution
     debug('executeNextStep is scheduling', nextStepFull.type)
-    jobs.run('workflow-step', { currentStep: nextStepFull, executionId })
+    
+    jobs.run('workflow-step', {
+      execution,
+      currentStep: nextStepFull,
+      user 
+    })
   })
 }
 
@@ -613,7 +621,7 @@ const workflowStart = function (jobData) {
 jobs.register('workflow-start', workflowStart)
 
 const workflowStep = function(jobData) {
-  debug(`workflow-step execution: ${jobData.execution._id}`)
+  debug(`workflow-step execution: ${jobData.executionId}`)
 
   let createdAt = new Date()
   let instance = this

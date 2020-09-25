@@ -2,7 +2,7 @@ import { Actions } from './imports/actions'
 import { Utilities } from './imports/utilities'
 import { Operator } from './imports/operator'
 import { check, Match } from 'meteor/check'
-import './imports/startup'
+// import './imports/startup'
 
 var Jobs = {}
 

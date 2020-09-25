@@ -51,6 +51,7 @@ tfQueue.jobs.register('s-rss-schedule', function() {
   let instance = this
 
   const finishJob = () => {
+    instance.success()
     instance.replicate({
       singular: true,
       in: {
@@ -58,8 +59,6 @@ tfQueue.jobs.register('s-rss-schedule', function() {
       },
       date: instance.document.due
     })
-
-    instance.success()
   }
 
   const flows = Flows.find({

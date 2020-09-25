@@ -86,6 +86,7 @@ mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
 msavin:mongol@1.6.2
+msavin:sjobs@4.0.0
 natestrauser:connection-banner@0.5.2
 npm-bcrypt@0.9.3
 npm-mongo@3.8.0

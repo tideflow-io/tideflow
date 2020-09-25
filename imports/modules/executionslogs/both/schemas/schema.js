@@ -103,16 +103,6 @@ const ExecutionlogSchema = new SimpleSchema({
     label: 'Execute next step inmediately',
     optional: true
   },
-  stdout: {
-    type: String,
-    label: 'stdout',
-    optional: true
-  },
-  stderr: {
-    type: String,
-    label: 'stderr',
-    optional: true
-  },
   createdAt: {
     type: Date,
     optional: true,

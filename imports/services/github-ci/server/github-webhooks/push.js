@@ -18,7 +18,7 @@ const created = (service, body) => {
     return
   }
 
-  flows.fetch().map(flow => {
+  flows.fetch().map(async flow => {
     let user = Meteor.users.findOne({_id: service.user}, {
       fields: { services: false }
     })
@@ -28,7 +28,7 @@ const created = (service, body) => {
       return null
     }
 
-    triggerFlows(
+    await triggerFlows(
       service,
       user,
       null,
