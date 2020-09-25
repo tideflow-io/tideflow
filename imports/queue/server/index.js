@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor'
-// import { Jobs as Queue } from './engine/api'
 const Queue = Jobs
 import { Random } from 'meteor/random'
 import { check } from 'meteor/check'
