@@ -87,7 +87,6 @@ Meteor.startup(async () => {
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.finishBulk', async message => {
       let err = !!message.error
-
       await logUpdate(
         message,
         message.stdLines,

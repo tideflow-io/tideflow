@@ -102,7 +102,7 @@ const service = {
     {
       name: 'code_nodesfc',
       capabilities: {
-        runInOneGo: true
+        runInOneGo: false
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
