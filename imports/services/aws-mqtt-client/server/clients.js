@@ -87,7 +87,7 @@ const onMessage = (clientId, topic, payload) => {
       }
     }
 
-    await triggerFlows(
+    triggerFlows(
       flow.trigger,
       user,
       null,
