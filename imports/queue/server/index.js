@@ -824,7 +824,6 @@ const workflowStep = function(jobData) {
 jobs.register('workflow-step', workflowStep)
 
 jobs.register('workflow-execution-finished', function(jobData) {
-  console.log('finished!')
   let { execution } = jobData
 
   const user = Meteor.users.findOne({_id:execution.user}, {
