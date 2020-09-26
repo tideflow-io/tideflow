@@ -620,7 +620,7 @@ const workflowStart = function (jobData) {
 jobs.register('workflow-start', workflowStart)
 
 const workflowStep = function(jobData) {
-  debug(`workflow-step execution: ${jobData.executionId}`)
+  debug(`workflow-step execution: ${jobData.execution._id}`)
 
   let createdAt = new Date()
   let instance = this
@@ -753,7 +753,7 @@ const workflowStep = function(jobData) {
       // If no, it could mean that we should stop the flow's execution
       if (!numberOfOutputs) {
         // Get the number of executed steps in the current execution ...
-        const executedSteps = ExecutionsLogs.find({execution:execution._id}).count()
+        const executedSteps = ExecutionsLogs.find({execution:execution._id, status: {$in:['success','error']}}).count()
 
         // if (currentStep.type === 'debug')
         // console.log({executedSteps, length: flow.steps.length})
