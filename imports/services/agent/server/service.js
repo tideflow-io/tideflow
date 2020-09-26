@@ -73,6 +73,7 @@ const service = {
 
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const agentName =  agent === 'any' ? 'any' : agentDoc.title
         const commandSent = ioTo(agentDoc, {
           flow: fullFlow._id,
           execution: execution._id,
@@ -91,6 +92,7 @@ const service = {
           msgs: [
             {
               m: commandSent ? 's-agent.log.execute.sent.success' : 's-agent.log.execute.sent.error',
+              p: {agentName},
               err: !commandSent,
               d: new Date()
             }
@@ -109,6 +111,7 @@ const service = {
         const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
+        const agentName =  agent === 'any' ? 'any' : agentDoc.title
 
         let command = null
 
@@ -123,6 +126,7 @@ const service = {
             msgs: [
               {
                 m: 's-agent.log.code_nodesfc.commandfile.error',
+                p: {agentName},
                 err: true,
                 d: new Date()
               }

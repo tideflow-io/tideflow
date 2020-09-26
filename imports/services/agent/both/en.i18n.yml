@@ -19,7 +19,7 @@ service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
 
-log.execute.sent.success: Command reported to the agent
+log.execute.sent.success: Command reported to the agent "{$agentName}"
 log.execute.sent.error: The command could not be delivered. Is the agent online?
 log.execute.commandfile.error: Could not find the command file
 
