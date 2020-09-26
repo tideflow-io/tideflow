@@ -258,7 +258,7 @@ const processableResults = (executionLogs, external) => {
           data: { _id, execution, flow, step, user, fileName: file.fileName, fieldName: file.fieldName }
         }, jwtSecret)
   
-        file.url = `${process.env.ROOT_URL}download?type=actionFile&token=${token}`
+        file.url = `${process.env.ROOT_URL}/download?type=actionFile&token=${token}`
         delete file.data
       })
     }
