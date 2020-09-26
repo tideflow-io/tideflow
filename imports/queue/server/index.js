@@ -251,23 +251,23 @@ const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
     if (execution.capabilities.runInOneGo) {
       let result = await executeFlowInOneGo(execution, user)
 
-      return {
+      return Promise.resolve({
         _id: executionId,
         capabilities: execution.capabilities,
         result
-      }
+      })
     }
 
     // executionData now contains _id and createdAt
     jobs.run('workflow-start', { execution, user })
 
-    // return {
-    //   _id: executionId,
-    //   capabilities: execution.capabilities
-    // }
+    return {
+      _id: executionId,
+      capabilities: execution.capabilities
+    }
   })
 
-  return executionCreated
+  return Promise.all(executionCreated)
 }
 
 module.exports.triggerFlows = triggerFlows
