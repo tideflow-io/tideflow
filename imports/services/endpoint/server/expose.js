@@ -59,7 +59,7 @@ Router.route('/service/endpoint/:uuid', async function () {
     [flow]
   )
 
-  const firstExecution = await triggeredExecutions[0]
+  const firstExecution = triggeredExecutions[0]
 
   if (firstExecution && firstExecution.capabilities.runInOneGo) {
     const executionsLogs = ExecutionsLogs.find({
