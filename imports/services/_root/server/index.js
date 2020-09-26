@@ -242,7 +242,8 @@ const processableResults = (executionLogs, external) => {
 
   return (executionLogs || []).map(el => {
     let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, stepResult } = el
-    if (!external && stepResult.files) { // Store files locally
+
+    if (!external && stepResult && stepResult.files) { // Store files locally
       stepResult.files.map(file => {
         const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
         fs.writeFileSync(tmpFileName, stepResult.data.data)
@@ -250,7 +251,7 @@ const processableResults = (executionLogs, external) => {
         delete file.data
       })
     }
-    else if (external && stepResult.files) {
+    else if (external && stepResult && stepResult.files) {
       stepResult.files.map(file => {
         let token = jwt.sign({
           exp: Math.floor(Date.now() / 1000) + (60 * 60),
