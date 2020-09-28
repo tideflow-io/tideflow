@@ -16,3 +16,4 @@ help:
     fromHtml:
       title: "From HTML template:"
       content: Converts a HTML template from the files library into a PDF file.
+      templating: Upon generating the PDF file, Tideflow will use the templating system.

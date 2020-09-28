@@ -22,6 +22,8 @@ update:
     validation: Your workflow can not be updated. Please check trigger and tasks.
     generic: There was a problem updating your workflow.
 editor:
+  help:
+    usesTemplates: Uses templating system
   trigger:
     notSet: Not defined
     selectOneOption: Select an option

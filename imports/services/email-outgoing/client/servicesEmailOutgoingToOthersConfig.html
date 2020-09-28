@@ -2,6 +2,7 @@
   <div class="form-group">
     <label class="control-label">{{__ "s-email-outgoing.event.others.tgtEmail"}}</label>
     <input class="form-control" value="{{stepConfigValue 'emailTo' ''}}" data-schema-key="{{stepConfigName 'emailTo'}}" name="{{stepConfigName 'emailTo'}}">
+    {{> helpUsesTemplates}}
   </div>
   {{> servicesEmailOutgoingCommonConfig}}
 </template>

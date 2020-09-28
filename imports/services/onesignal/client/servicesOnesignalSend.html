@@ -4,15 +4,18 @@
   <div class="form-group">
     <label class="control-label">{{__ "s-onesignal.events.sendnotification.segment"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'segment' ''}}" data-schema-key="{{stepConfigName 'segment' ''}}" name="{{stepConfigName 'segment' ''}}">
+    {{> helpUsesTemplates}}
   </div>
 
   <div class="form-group">
     <label class="control-label">{{__ "s-onesignal.events.sendnotification.subject"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'title' ''}}" data-schema-key="{{stepConfigName 'title' ''}}" name="{{stepConfigName 'title' ''}}">
+    {{> helpUsesTemplates}}
   </div>
 
   <div class="form-group">
     <label class="control-label">{{__ "s-onesignal.events.sendnotification.content"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'content' ''}}" data-schema-key="{{stepConfigName 'content'}}" name="{{stepConfigName 'content'}}">
+    {{> helpUsesTemplates}}
   </div>
 </template>

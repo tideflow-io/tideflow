@@ -4,10 +4,18 @@
   <div class="form-group">
     <label class="control-label">{{__ "s-aws.events.iot.shadow-update.endpoint"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'endpoint' ''}}" data-schema-key="{{stepConfigName 'endpoint' ''}}" name="{{stepConfigName 'endpoint' ''}}">
+    {{> helpUsesTemplates}}
   </div>
 
   <div class="form-group">
     <label class="control-label">{{__ "s-aws.events.iot.shadow-update.deviceName"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'thingName' ''}}" data-schema-key="{{stepConfigName 'thingName'}}" name="{{stepConfigName 'thingName'}}">
+    {{> helpUsesTemplates}}
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-aws.events.iot.shadow-update.shadow"}}</label>
+    <textarea rows="10" class="form-control" data-schema-key="{{stepConfigName 'shadow' ''}}" name="{{stepConfigName 'shadow' ''}}">{{stepConfigValue 'shadow' ''}}</textarea>
+    {{> helpUsesTemplates}}
   </div>
 </template>

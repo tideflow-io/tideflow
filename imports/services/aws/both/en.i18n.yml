@@ -11,6 +11,7 @@ events.selectProfile: Select account profile
 events.iot.name: IoT Core
 events.iot.shadow-update.name: '[IoT Core] Update device shadow'
 events.iot.shadow-update.title: '[IoT Core] Update device shadow'
+events.iot.shadow-update.shadow: Device shadow
 
 events.iot.shadow-get.name: '[IoT Core] Get device shadow'
 events.iot.shadow-get.title: '[IoT Core] Get device shadow'

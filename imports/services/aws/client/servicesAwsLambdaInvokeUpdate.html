@@ -4,6 +4,13 @@
   <div class="form-group">
     <label class="control-label">{{__ "s-aws.events.lambda.invoke.functionName"}}</label>
     <input type="text" class="form-control" value="{{stepConfigValue 'functionName' ''}}" data-schema-key="{{stepConfigName 'functionName' ''}}" name="{{stepConfigName 'functionName' ''}}">
+    {{> helpUsesTemplates}}
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "s-aws.events.lambda.invoke.data"}}</label>
+    <textarea rows="10" class="form-control" data-schema-key="{{stepConfigName 'data' ''}}" name="{{stepConfigName 'data' ''}}">{{stepConfigValue 'data' ''}}</textarea>
+    {{> helpUsesTemplates}}
   </div>
 
 </template>
