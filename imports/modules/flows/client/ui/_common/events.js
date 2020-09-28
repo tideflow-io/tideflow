@@ -58,6 +58,10 @@ Template.flowEditorStepAvailable.events({
 
 Template.flowEditor.events({
 
+  'click .btn-open-modal': (event, template) => {
+    // $('#modal-fullscreen-xl').modal('show')
+  },
+
   'click .edit-mode-enter > *, click .edit-mode-enter': (event, template) => {
     let element = $(event.target)
 

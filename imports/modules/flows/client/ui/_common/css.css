@@ -1,3 +1,22 @@
+#modal-fullscreen-xl {
+  padding: 30px !important;
+}
+#modal-fullscreen-xl .modal-dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+#modal-fullscreen-xl .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+#modal-fullscreen-xl .modal-body {
+  overflow-y: auto;
+}
+
+
 #sidebar-wrapper {
   min-width: 350px !important;
   -webkit-transition: margin .25s ease-out;
@@ -133,4 +152,3 @@
   border-left: 2px solid #E9EEF2;
   overflow-y: auto;
 }
-
