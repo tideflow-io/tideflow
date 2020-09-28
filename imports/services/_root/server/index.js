@@ -298,6 +298,7 @@ module.exports.buildTemplate = (execution, executionLogs, string) => {
     let data = {}
     executionLogs.map(el => {
       const { id, ...others } = el
+      if (!id) id = others.stepIndex
       data[id] = others
     })
 

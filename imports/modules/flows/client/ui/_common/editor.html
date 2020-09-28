@@ -203,7 +203,7 @@
 
 <template name="stepEventConfig">
   <div class="form-group">
-    <label class="control-label">ID</label>
+    <label class="control-label">{{__ "flows.editor.step.id"}}</label>
     <input type="text" class="form-control" value="{{stepPropertyValue 'id' ''}}" data-schema-key="{{stepProperty 'id' ''}}" name="{{stepProperty 'id' ''}}">
   </div>
   {{#if event.templates.eventConfig}}
