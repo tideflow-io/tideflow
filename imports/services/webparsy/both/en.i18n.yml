@@ -10,3 +10,9 @@ events.scrape.selectOneFile: Select one file
 log.scrape.yaml.title: Scraping process finished
 log.scrape.yaml.errorTitle: Scraping process failed
 log.scrape.commandfile.error: Scraping definition not found
+
+help:
+  intro:
+    title: What is it?
+    content: Scrape websites using WebParsy.
+    repository: Visit WebParsy's respository to know more.

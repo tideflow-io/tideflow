@@ -11,6 +11,8 @@ const service = {
   ownable: false,
   stepable: true,
   templates: {
+    help: 'servicesFilesHelp',
+    helpIntro: 'servicesFilesHelpIntro'
   },
   hooks: {
     // service: {},
@@ -26,7 +28,8 @@ const service = {
       stepable: true,
       callback: () => { return {} },
       templates: {
-        eventConfig: 'servicesfileCreateInputLogFileConfig'
+        eventConfig: 'servicesfileCreateInputLogFileConfig',
+        
       }
     },
 

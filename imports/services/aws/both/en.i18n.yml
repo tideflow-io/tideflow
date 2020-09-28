@@ -28,3 +28,16 @@ events.iot.shadow-get.deviceName: Device name
 
 log.iot-shadow-update.ok: Device shadow updated
 log.iot-shadow-get.ok: Device shadow retrieved
+
+help:
+  intro:
+    title: What is it?
+    content: Integrate with your AWS resources, IoT Core devices, etc.
+  events:
+    title: Integrations
+    iot:
+      title: IoT Core
+      content: Manage your Internet Of Things devices shadows.
+    lambda:
+      title: Lambda functions
+      content: Invoke Lambda functions

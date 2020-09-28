@@ -11,6 +11,8 @@ const service = {
   stepable: true,
   ownable: true,
   templates: {
+    help: 'servicesGithubCiHelp',
+    helpIntro: 'servicesGithubCiHelpIntro',
     detailsView: 'servicesGhCiDetailsView',
     createForm: 'servicesGhCiCreateForm',
     triggerEditorPre: 'servicesGhCiTriggerEditorPre',

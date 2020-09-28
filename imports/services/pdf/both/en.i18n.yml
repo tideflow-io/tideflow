@@ -6,3 +6,13 @@ events.create-from-html.title: Create from HTML
 events.create-from-html.viewer.title: Create from HTML
 log.create-from-html.created: Files created
 log.create-from-html.retrieveFailed: Failed to load HTML template
+
+help:
+  intro:
+    title: What is it?
+    content: Integrate PDF files in your workflows.
+  events:
+    title: "Events:"
+    fromHtml:
+      title: "From HTML template:"
+      content: Converts a HTML template from the files library into a PDF file.

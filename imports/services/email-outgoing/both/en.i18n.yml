@@ -13,3 +13,23 @@ event.common.attachPreviousStepOutputYes: Yes
 log.to-me.sent: Email sent to the user's email address
 log.to-others.sent: Email sent to others
 event.common.attachPreviousStepOutputNo: No
+
+help:
+  intro: 
+    title: Sending emails
+    content: Send emails as part of your workflows.
+  events:
+    title: Addressee
+    common:
+      attach:
+        title: Attaching previous results
+        content: Attach previous task results to the email (links, plain-text results, etc)
+      responsability:
+        title: Be responsible
+        content: Be responsible when sending emails to others. Make sure you have their consent before emailing them.
+    toMe:
+      title: Send me
+      content: "Sends an email to the workflow's creator email address."
+    toOthers:
+      title: To others
+      content: "Sends an email to others, by specifying the list of email addresses specified."

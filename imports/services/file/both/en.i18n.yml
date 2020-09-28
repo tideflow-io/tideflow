@@ -16,3 +16,19 @@ log.store-previous-files.created: Previous files stored
 
 log.read-file.retrieveFailed: Failed to retrieve file
 log.read-file.readed: File connected to the workflow
+
+help:
+  intro:
+    title: What is it?
+    content: Create and connect files you can use to store and retrieve, in your workflows. 
+  events:
+    title: "Usecases:"
+    logFile:
+      title: "Create log file:"
+      content: "Creates a file with the current tasks results. Useful for logging and debugging purposes."
+    read:
+      title: "Connect a file:"
+      content: "Injects a file from the library into subsequent(s) tasks."
+    storePreviousFiles:
+      title: "Store previous files:"
+      content: "Stores any file that previous tasks might have generated. For example: PDF templates, etc."

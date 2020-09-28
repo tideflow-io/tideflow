@@ -11,6 +11,8 @@ const service = {
   ownable: false,
   stepable: true,
   templates: {
+    help: 'servicesPdfHelp',
+    helpIntro: 'servicesPdfHelpIntro'
   },
   hooks: {
     // service: {},

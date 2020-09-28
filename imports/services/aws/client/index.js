@@ -5,6 +5,7 @@ import './servicesAwsIotShadowGet.html'
 import './servicesAwsLambdaInvokeUpdate.html'
 
 import './servicesAwsCommonConfig'
+import './help'
 
 import './service'
 import './events'

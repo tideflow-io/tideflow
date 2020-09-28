@@ -13,6 +13,7 @@ const service = {
   inputable: false,
   stepable: true,
   templates: {
+    helpIntro: 'servicesWebparsyHelpIntro'
   },
   hooks: {
     // service: {},

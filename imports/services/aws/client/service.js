@@ -11,7 +11,9 @@ const service = {
   stepable: true,
   templates: {
     createForm: 'servicesAwsCreateForm',
-    updateForm: 'servicesAwsUpdateForm'
+    updateForm: 'servicesAwsUpdateForm',
+    help: 'servicesAwsHelp',
+    helpIntro: 'servicesAwsHelpIntro',
   },
   hooks: {
     // service: {},

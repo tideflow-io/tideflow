@@ -16,3 +16,14 @@ events:
     content: Content
     log:
       success: Notification sent to {$recipients} recipients
+
+help:
+  intro:
+    title: What it it?
+    content: Integrate with OneSignal notifications.
+    visit: Visit OneSignal.com for more information.
+  events:
+    title: Events
+    sendNotification:
+      title: Send notification
+      content: Let's you send push - web and mobile - notifications.
