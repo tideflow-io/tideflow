@@ -15,7 +15,8 @@ const service = {
     detailsView: 'servicesAgentDetailsView',
     createFormPre: 'servicesAgentCreateFormPre',
     updateFormPre: 'servicesAgentUpdateFormPre',
-    eventHelp: 'servicesAgentCommonHelp'
+    help: 'servicesAgentHelp',
+    helpIntro: 'servicesAgentHelpIntro'
   },
   hooks: {
     // service: {},
@@ -31,7 +32,8 @@ const service = {
       stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentCommonConfig'
+        eventConfig: 'servicesAgentCommonConfig',
+        help: 'servicesAgentExecuteHelp'
       }
     },
     {
@@ -42,7 +44,8 @@ const service = {
       stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentCommonConfig'
+        eventConfig: 'servicesAgentCommonConfig',
+        help: 'servicesAgentNodeSFCHelp'
       }
     }
   ]

@@ -8,11 +8,11 @@ moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
 events.command.title: Execute a command in my agent.
 
-events.code_nodesfc.name: Execute a single-file-code
-events.code_nodesfc.title: Execute a single-file-code
+events.code_nodesfc.name: Execute NodeJS sfc
+events.code_nodesfc.title: Execute NodeJS sfc
 
 event.execute.commandFile: File to execute
-event.execute.selectAgent: Which agent must be used
+event.execute.selectAgent: Agent to use
 events.execute.selectOneFile: Select one file
 event.execute.anyAgent: Any agent available
 service.status.lastSeen: Last seen
@@ -26,3 +26,25 @@ log.execute.commandfile.error: Could not find the command file
 log.code_nodesfc.sent.success: NodeJS script reported to the agent.
 log.code_nodesfc.sent.error: NodeJS script could not be delivered. Is the agent online?
 log.code_nodesfc.commandfile.error: Could not find the source code file
+
+help:
+  intro: 
+    title: What is it?
+    content: Self-hosted runner let's you run tasks in your own computers and servers.
+    repository: Visit the agent's repository for more information.
+  events:
+    title: Events available
+    command:
+      title: Execute a command
+      description: Tideflow will run a command in your machine. This will be treated as any executable under Windows machine, or a bash script on Linux/macOS.
+      current: 
+        title: Executing a command
+        description: The agent will execute your script passing the parameter "tf_previous_file" pointing to a JSON file containing the previous tasks results.
+        removesAfter: All files are removed when the execution finishes.
+    nodesfc:
+      title: Execute NodeJS sfc
+      description: Invokes a NodeJS script, based on SFC library, which let's you to defined your script dependencies and versions based on code comments (instead of having to deal with "npm" commands)
+      current:
+        title: Executing a NodeJS sfc
+        description: The agent will invoke the NodeJS script. An environment variable "TF_PREVIOUS_FILE" points to a JSON file containing the previous tasks results.
+        removesAfter: All files and your script dependencies are removed when the execution finishes.

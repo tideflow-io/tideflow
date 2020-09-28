@@ -42,8 +42,8 @@
                 </div>
                 <div class="modal-body {{#if editMode}}{{else}}d-none{{/if}}">
                   <div class="row">
-                    <div class="d-none d-sm-block col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                      {{> stepEventHelp steps=../flow.steps index=this.index}}
+                    <div class="sidebar d-none d-sm-block col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                      {{> serviceHelp steps=../flow.steps index=this.index}}
                     </div>
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9 col-xl-10">
                       <div class="step-event-selector-wrapper">
@@ -203,8 +203,21 @@
   {{/if}}
 </template>
 
-<template name="stepEventHelp">
-  {{#if helpTemplate}}
-    {{> Template.dynamic template=helpTemplate}}
+<!-- Help templates -->
+
+<!-- Service general help -->
+<template name="serviceHelp">
+  {{#if serviceHelpIntroTpl}}
+    {{> Template.dynamic template=serviceHelpIntroTpl}}
+  {{/if}}
+
+  {{#if serviceTaskHelpTpl}}
+    <hr>
+    {{> Template.dynamic template=serviceTaskHelpTpl}}
+  {{/if}}
+
+  {{#if serviceHelpTpl}}
+    <hr>
+    {{> Template.dynamic template=serviceHelpTpl}}
   {{/if}}
 </template>

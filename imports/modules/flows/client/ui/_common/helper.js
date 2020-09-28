@@ -186,13 +186,26 @@ Template.registerHelper('triggerConfigName', function(setting) {
   return `trigger.config.${setting}`
 })
 
-Template.stepEventHelp.helpers({
-  helpTemplate() {
+Template.serviceHelp.helpers({
+  serviceHelpTpl() {
     let service = Session.get(`fe-step-${this.index}`)
     if (!service || !service.templates) return false
-    return service.templates.eventHelp || false
+    return service.templates.help || false
+  },
+  
+  serviceHelpIntroTpl() {
+    let service = Session.get(`fe-step-${this.index}`)
+    if (!service || !service.templates) return false
+    return service.templates.helpIntro || false
+  },
+
+  serviceTaskHelpTpl() {
+    const event = Session.get(`fe-step-${this.index}-event`)
+    if (!event || !event.templates) return false
+    return event.templates.help
   }
 })
+
 
 Template.stepEventConfig.helpers({
   service() {
