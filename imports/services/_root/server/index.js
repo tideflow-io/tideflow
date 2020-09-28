@@ -2,6 +2,7 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken')
+const Handlebars = require('handlebars')
 const jwtSecret = require('/imports/download/server/secret')
 
 let servicesAvailable = []
@@ -291,3 +292,19 @@ const getResultsTypes = (executionLogs, type) => {
 }
 
 module.exports.getResultsTypes = getResultsTypes
+
+module.exports.buildTemplate = (executionLogs, string) => {
+  try {
+    let data = {}
+    let trigger = executionLogs.find(el => el.step === 'trigger')
+    if (trigger) {
+      data.trigger = { data: trigger.stepResult.data || undefined }
+    }
+
+    return Handlebars.compile(string)(data)
+  }
+  catch (ex) {
+    console.error(ex)
+    return string
+  }
+}
