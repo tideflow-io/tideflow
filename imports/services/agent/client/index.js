@@ -3,6 +3,7 @@ import './createFormPre.html'
 import './updateFormPre.html'
 import './createFormPre.html'
 import './servicesAgentCommonConfig'
+import './servicesAgentCommonHelp'
 
 import './service'
 import './events'

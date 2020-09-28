@@ -1,21 +1,20 @@
-#modal-fullscreen-xl {
+#modal-task-editor {
   padding: 30px !important;
 }
-#modal-fullscreen-xl .modal-dialog {
+#modal-task-editor .modal-dialog {
   width: 100%;
   max-width: none;
   height: 100%;
   margin: 0;
 }
-#modal-fullscreen-xl .modal-content {
+#modal-task-editor .modal-content {
   height: 100%;
   border: 0;
   border-radius: 0;
 }
-#modal-fullscreen-xl .modal-body {
+#modal-task-editor .modal-body {
   overflow-y: auto;
 }
-
 
 #sidebar-wrapper {
   min-width: 350px !important;
@@ -122,13 +121,6 @@
 
 #flow-editor .card.edit-mode .only-edit-mode {
   display: table;
-}
-
-#flow-editor .card select:not(:last-child), 
-#flow-editor .fixed-right-sidebar select:not(:last-child),
-#flow-editor .fixed-right-sidebar .step-event-selector-wrapper
-{
-  margin-bottom: 20px;
 }
 
 #flow-editor .card .form-group:last-child {

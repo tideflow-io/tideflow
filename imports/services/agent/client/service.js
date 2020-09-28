@@ -14,7 +14,8 @@ const service = {
   templates: {
     detailsView: 'servicesAgentDetailsView',
     createFormPre: 'servicesAgentCreateFormPre',
-    updateFormPre: 'servicesAgentUpdateFormPre'
+    updateFormPre: 'servicesAgentUpdateFormPre',
+    eventHelp: 'servicesAgentCommonHelp'
   },
   hooks: {
     // service: {},

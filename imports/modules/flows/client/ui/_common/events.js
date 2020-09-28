@@ -57,9 +57,8 @@ Template.flowEditorStepAvailable.events({
 })
 
 Template.flowEditor.events({
-
-  'click .btn-open-modal': (event, template) => {
-    // $('#modal-fullscreen-xl').modal('show')
+  'hidden.bs.modal #modal-task-editor': (event, template) => {
+    Session.set('fe-editMode', undefined)
   },
 
   'click .edit-mode-enter > *, click .edit-mode-enter': (event, template) => {
@@ -72,12 +71,7 @@ Template.flowEditor.events({
     const stepIndex = element.data('step')
     if (typeof stepIndex === 'undefined') return
     Session.set('fe-editMode', stepIndex)
-    $('#nav-task-settings-tab').tab('show')
-  },
-
-  'click .edit-mode-leave': (event, template) => {
-    Session.set('fe-editMode', undefined)
-    $('#nav-tasks-tab').tab('show');
+    $('#modal-task-editor').modal('show')
   },
 
   'input #flow-sidebar-step-search input': (event, template) => {
@@ -128,7 +122,7 @@ Template.flowEditor.events({
       }
     })
     Session.set('fe-editMode', undefined)
-    $('#nav-tasks-tab').tab('show');
+    $('#modal-task-editor').modal('hide')
   },
 
   'change .step-event-selector': function(event, template) {
@@ -262,6 +256,7 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-triggerEventSelected', undefined)
   Session.set('fe-stepSelected', undefined)
   Session.set('fe-editMode', undefined)
+  $('#modal-task-editor').modal('hide')
   let initialized = false
 
   instance.autorun(function () {
