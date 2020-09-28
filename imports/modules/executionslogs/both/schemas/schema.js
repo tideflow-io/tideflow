@@ -10,6 +10,10 @@ const ExecutionlogSchema = new SimpleSchema({
     type: String,
     optional: false
   },
+  id: {
+    type: String,
+    optional: false
+  },
   type: {
     type: String,
     optional: false
@@ -61,7 +65,7 @@ const ExecutionlogSchema = new SimpleSchema({
     defaultValue: 'pending',
     optional: false
   },
-  stepResult: {
+  result: {
     type: Object,
     optional: true,
     label: 'Step result',

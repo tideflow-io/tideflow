@@ -141,6 +141,18 @@ Template.registerHelper('triggerConfigValue', function(setting) {
   return this.flow.trigger.config[setting] ? this.flow.trigger.config[setting] : null
 })
 
+Template.registerHelper('stepPropertyValue', function(property, defaultValue) {
+  if (!this || !this.steps || !this.steps[this.index]) {
+    return typeof defaultValue === 'object' ? null : defaultValue || ''
+  }
+  if (!defaultValue) defaultValue = ''
+  return this.steps[this.index] ? this.steps[this.index][property] || defaultValue : defaultValue
+})
+
+Template.registerHelper('stepProperty', function(setting) {
+  return `steps.${this.index}.${setting}`
+})
+
 Template.registerHelper('stepConfigValue', function(setting, defaultValue) {
   if (!this || !this.steps || !this.steps[this.index]) {
     return typeof defaultValue === 'object' ? null : defaultValue || ''

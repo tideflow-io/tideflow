@@ -48,7 +48,7 @@ Router.route('/download', function () {
       return
     }
 
-    const { fileName, data } = executionLog.stepResult.files.find(f => f.fieldName === fieldName)
+    const { fileName, data } = executionLog.result.files.find(f => f.fieldName === fieldName)
 
     res.setHeader('Content-Type', 'application/octet-stream')
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`)

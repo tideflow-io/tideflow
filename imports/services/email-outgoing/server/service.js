@@ -81,7 +81,7 @@ const service = {
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       const { fullFlow } = execution
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = executionLogs.map(el => el.stepResult)
+      const previousStepsData = executionLogs.map(el => el.result)
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail

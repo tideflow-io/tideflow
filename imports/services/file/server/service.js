@@ -19,7 +19,7 @@ const service = {
         runInOneGo: true
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        let previousSteps = executionLogs.map(el => el.stepResult)
+        let previousSteps = executionLogs.map(el => el.result)
         
         previousSteps.map(previousStep => {
           if (previousStep.files) previousStep.files.map(f => f.data = '...')
@@ -67,7 +67,7 @@ const service = {
             _id: file._id
           })
 
-          let string = buildTemplate(executionLogs, fileAsString)
+          let string = buildTemplate(execution, executionLogs, fileAsString)
 
           cb(null, {
             result: {
@@ -97,8 +97,6 @@ const service = {
             }]
           })
         }
-
-
       }
     },
 

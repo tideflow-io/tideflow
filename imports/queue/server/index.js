@@ -367,7 +367,7 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
       flow.trigger,
       [
         {
-          stepResult: triggerData,
+          result: triggerData,
           next: true
         }
       ],
@@ -496,6 +496,7 @@ const workflowStart = function (jobData) {
       .then(() => {
         // Log the trigger execution
         let executionLog = {
+          id: 'trigger',
           team: flow.team,
           execution: execution._id,
           type: flow.trigger.type,
@@ -520,7 +521,7 @@ const workflowStart = function (jobData) {
         // For the trigger log, update it with the results
         let stepUpdate = {
           $set: {
-            stepResult: triggerResult.result,
+            result: triggerResult.result,
             next: triggerResult.next,
             status: triggerResult.next ? triggerResult.error ? 'error' : 'success' : 'pending'
           }
@@ -641,6 +642,7 @@ const workflowStep = function(jobData) {
   return Promise.resolve()
     .then(async () => { // Store log in database
       executionLog = {
+        id: currentStep.id,
         team: flow.team,
         execution: execution._id,
         flow: execution.flow,
@@ -709,12 +711,12 @@ const workflowStep = function(jobData) {
 
     .then(async eventCallback => {
       debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
-      //executionLog.stepResult = eventCallback.result
+      //executionLog.result = eventCallback.result
       //executionLog.next = eventCallback.next
 
       let updateReq = {
         $set: {
-          stepResult: eventCallback.result,
+          result: eventCallback.result,
           next: eventCallback.next
         }
       }

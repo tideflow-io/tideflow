@@ -198,6 +198,10 @@
 </template>
 
 <template name="stepEventConfig">
+  <div class="form-group">
+    <label class="control-label">ID</label>
+    <input type="text" class="form-control" value="{{stepPropertyValue 'id' ''}}" data-schema-key="{{stepProperty 'id' ''}}" name="{{stepProperty 'id' ''}}">
+  </div>
   {{#if event.templates.eventConfig}}
     {{> Template.dynamic template=event.templates.eventConfig}}
   {{/if}}

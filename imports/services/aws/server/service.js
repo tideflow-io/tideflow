@@ -50,7 +50,7 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        const lastData = ([].concat(executionLogs).pop() || {}).result
         const shadowData = lastData ? lastData.data || {} : {}
 
         let client = await iotData(currentStep, execution)
@@ -68,7 +68,7 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        const lastData = ([].concat(executionLogs).pop() || {}).result
         const data = lastData ? lastData.data || {} : {}
 
         var params = {
