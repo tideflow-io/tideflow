@@ -29,6 +29,9 @@ const validateReqSignature = (service, req) => {
 
 Router.route('/ghci/:uuid', function () {
 
+  const req = this.request
+  const res = this.response
+
   // Ignore requests without body
   if (!this.request.body) {
     res.writeHead(404)
@@ -37,10 +40,6 @@ Router.route('/ghci/:uuid', function () {
   }
 
   const body = this.request.body
-
-  const req = this.request
-  const res = this.response
-  
   const uuid = this.params.uuid
 
   // Find services using this GH's webhook endpoint
