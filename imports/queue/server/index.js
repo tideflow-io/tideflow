@@ -425,14 +425,14 @@ const compareArrays = (arr1, arr2) => {
  * For the flow:
  * +--------------------+
  * | +-------+      +-+ |
- * | |Trigger|----->|1| |
+ * | |Trigger|----->|0| |
  * | +-------+      +-+ |
  * |                    |
  * |    +-+    +-+      |
- * |    |2|--->|3|      |
+ * |    |1|--->|2|      |
  * |    +-+    +-+      |
  * +--------------------+
- * Result is [1]
+ * Result is [0]
  * 
  * @param {Object} flow 
  */
@@ -441,11 +441,13 @@ const guessTriggerSingleChilds = (flow) => {
   let result = []
   Object.keys(listOfCalls).map(stepIndex => {
     if (compareArrays(listOfCalls[stepIndex], ['trigger'])) {
-      result.push(stepIndex)
+      result.push(parseInt(stepIndex))
     }
   })
   return result
 }
+
+module.exports.guessTriggerSingleChilds = guessTriggerSingleChilds
 
 /**
  * workflow-start launches a flow execution
@@ -584,7 +586,7 @@ const workflowStart = function (jobData) {
         debug(`triggerSingleChilds ${JSON.stringify(triggerSingleChilds)}`)
 
         let runInOneGoPromises = []
-
+        
         stepsWithoutPreceding.concat(triggerSingleChilds).map(stepIndex => {
           debug(`workflow-start triggered step [${flow.steps[stepIndex].type.toUpperCase()}]`)
 
@@ -608,13 +610,13 @@ const workflowStart = function (jobData) {
         }
       })
       .then(r => {
-        if (instance.success) instance.success()
+        if (instance.remove) instance.remove()
         return resolve(r)
       })
 
       .catch(ex => {
         if (!ex.completed) console.error(ex)
-        if (instance.success) instance.success()
+        if (instance.remove) instance.remove()
       })
   })
 }
@@ -807,14 +809,14 @@ const workflowStep = function(jobData) {
     })
 
     .then(r => {
-      if (instance.success) instance.success()
+      if (instance.remove) instance.remove()
       // return Object.assign(executionLog, { subSteps: r })
       return executionLog
     })
 
     .catch(ex => {
       if (!ex.completed) console.error(ex)
-      if (instance.success) instance.success()
+      if (instance.remove) instance.remove()
     })  
 }
 
@@ -839,7 +841,7 @@ jobs.register('workflow-execution-finished', function(jobData) {
   const stepEvent = stepService.events.find(sse => sse.name === trigger.event)
 
   if (!stepEvent || !stepEvent.executionFinished) {
-    this.success()
+    this.remove()
     return
   }
 
@@ -847,5 +849,5 @@ jobs.register('workflow-execution-finished', function(jobData) {
     stepEvent.executionFinished(user, execution, cb)
   })()
 
-  this.success()
+  this.remove()
 })
