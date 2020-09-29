@@ -1,6 +1,6 @@
 {
   "name": "tideflowio",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "license": "GPLV3",
   "bugs": {
     "url": "https://github.com/tideflow-io/platform/issues"
@@ -18,7 +18,6 @@
   "scripts": {
     "start": "meteor run",
     "lint": "eslint .",
-    "pretest": "npm run lint --silent",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "testwatch": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "debug": "meteor run --inspect-brk=9229"
