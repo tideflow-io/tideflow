@@ -1,5 +1,3 @@
-const Handlebars = require('handlebars')
-
 import filesLib from '/imports/modules/files/server/lib'
 
 import { servicesAvailable, buildTemplate } from '/imports/services/_root/server'
