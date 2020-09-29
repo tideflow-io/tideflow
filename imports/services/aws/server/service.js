@@ -1,4 +1,4 @@
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, buildTemplate } from '/imports/services/_root/server'
 
 import { instance as iotData } from './helpers/iotData'
 import { getAwsProfile } from './helpers/profile'
