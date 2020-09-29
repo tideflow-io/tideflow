@@ -85,7 +85,6 @@ const service = {
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       const { fullFlow } = execution
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = executionLogs.map(el => el.result)
 
       currentStep.config.emailTo = buildTemplate(execution, executionLogs, currentStep.config.emailTo)
 

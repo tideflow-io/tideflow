@@ -19,7 +19,7 @@ const logUpdate = (context, messages, extras) => {
   }
 
   if (messages && messages.length) {
-    push['result.data'] = { $each: (messages||[]).map(l => l.m) }
+    push['result.data'] = { $each: messages.map(l => l.m) }
   }
 
   return ExecutionsLogs.update({_id: log, execution}, {

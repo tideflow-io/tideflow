@@ -38,7 +38,7 @@ const stepEventSelectorChanged = function(index, type) {
   if (!selectedStepService) return
   let selectedStepEvent = (selectedStepService.events || []).find(e => e.name === type)
   
-  $(`[name="steps.${index}.event"]`).val(selectedStepService ? type : null)
+  $(`[name="steps.${index}.event"]`).val(type)
   Session.set(`fe-step-${index}-event`, selectedStepEvent || null)
 }
 
@@ -128,7 +128,7 @@ Template.flowEditor.events({
   'change .step-event-selector': function(event, template) {
     const newValue = event.currentTarget.value
     let stepIndex = event.currentTarget.dataset.step
-    stepIndex = stepIndex = stepIndex ? parseInt(stepIndex) : null
+    stepIndex = stepIndex ? parseInt(stepIndex) : null
     stepEventSelectorChanged(stepIndex, newValue)
   }
 })

@@ -241,7 +241,7 @@ module.exports.exposeExecutionLogs = exposeExecutionLogs
 const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
 
-  return (executionLogs || []).map(el => {
+  return executionLogs.map(el => {
     let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = el
 
     if (!external && result && result.files) { // Store files locally
