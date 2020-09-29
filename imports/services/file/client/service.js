@@ -1,5 +1,3 @@
-import i18n from 'meteor/universe:i18n'
-
 import { servicesAvailable } from '/imports/services/_root/client'
 
 const service = {
@@ -11,6 +9,8 @@ const service = {
   ownable: false,
   stepable: true,
   templates: {
+    help: 'servicesFilesHelp',
+    helpIntro: 'servicesFilesHelpIntro'
   },
   hooks: {
     // service: {},
@@ -26,7 +26,8 @@ const service = {
       stepable: true,
       callback: () => { return {} },
       templates: {
-        eventConfig: 'servicesfileCreateInputLogFileConfig'
+        eventConfig: 'servicesfileCreateInputLogFileConfig',
+        
       }
     },
 

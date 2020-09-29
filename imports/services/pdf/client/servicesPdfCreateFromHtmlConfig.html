@@ -1,10 +1,21 @@
 <template name="servicesPdfCreateFromHtmlConfig">
-  <div class="form-group">
-    <select class="form-control" data-schema-key="{{stepConfigName 'file'}}" name="{{stepConfigName 'file'}}">
-      <option value="">{{__ "s-pdf.event.create-from-html.file.selectOne"}}</option>
-      {{#each files}}
-        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' this._id}}>{{__ this.name}}</option>
-      {{/each}}
-    </select>
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-pdf.event.create-from-html.file.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-pdf.event.create-from-html.file.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" data-schema-key="{{stepConfigName 'file'}}" name="{{stepConfigName 'file'}}">
+        <option value="">{{__ "s-pdf.event.create-from-html.file.selectOne"}}</option>
+        {{#each files}}
+          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' this._id}}>{{__ this.name}}</option>
+        {{/each}}
+      </select>
+      {{> helpUsesTemplates}}
+    </div>
   </div>
 </template>

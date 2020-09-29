@@ -66,12 +66,15 @@ Router.route('/service/endpoint/:uuid', async function () {
       execution: firstExecution._id
     }).fetch()
 
+    const execution = Executions.findOne({_id: firstExecution._id})
+
     const result = exposeExecutionLogs(executionsLogs)
-    if (!timedOut)
-    return res.end(JSON.stringify({
-      status: 'finished',
-      results: result
-    }, ' ', 2))
+    if (!timedOut) {
+      return res.end(JSON.stringify({
+        status: execution.status,
+        results: result
+      }, ' ', 2))
+    }
   }
   else {
     let callResult = await new Promise((resolve, reject) => {

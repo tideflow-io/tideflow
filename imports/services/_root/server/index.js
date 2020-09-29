@@ -2,6 +2,7 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken')
+const Handlebars = require('handlebars')
 const jwtSecret = require('/imports/download/server/secret')
 
 let servicesAvailable = []
@@ -211,8 +212,8 @@ module.exports.flows = flows
 const exposeExecutionLogs = executionLogs => {
   executionLogs = processableResults(executionLogs, true)
   return executionLogs.map(el => {
-    const { _id, type, event, stepIndex, status, createdAt, stepResult, updatedAt } = el
-    return { _id, type, event, stepIndex, status, createdAt, stepResult, updatedAt }
+    const { _id, type, event, stepIndex, status, createdAt, result, updatedAt } = el
+    return { _id, type, event, stepIndex, status, createdAt, result, updatedAt }
   })
 }
 
@@ -240,19 +241,19 @@ module.exports.exposeExecutionLogs = exposeExecutionLogs
 const processableResults = (executionLogs, external) => {
   if (!executionLogs || !executionLogs.length) return []
 
-  return (executionLogs || []).map(el => {
-    let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, stepResult } = el
+  return executionLogs.map(el => {
+    let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = el
 
-    if (!external && stepResult && stepResult.files) { // Store files locally
-      stepResult.files.map(file => {
-        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${stepResult.data.fileName}`
-        fs.writeFileSync(tmpFileName, stepResult.data.data)
+    if (!external && result && result.files) { // Store files locally
+      result.files.map(file => {
+        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${result.data.fileName}`
+        fs.writeFileSync(tmpFileName, result.data.data)
         file.path = tmpFileName
         delete file.data
       })
     }
-    else if (external && stepResult && stepResult.files) {
-      stepResult.files.map(file => {
+    else if (external && result && result.files) {
+      result.files.map(file => {
         let token = jwt.sign({
           exp: Math.floor(Date.now() / 1000) + (60 * 60),
           data: { _id, execution, flow, step, user, fileName: file.fileName, fieldName: file.fieldName }
@@ -262,7 +263,7 @@ const processableResults = (executionLogs, external) => {
         delete file.data
       })
     }
-    return { _id, stepIndex, type, event, status, createdAt, updatedAt, stepResult }
+    return { _id, stepIndex, type, event, status, createdAt, updatedAt, result }
   }) // external ? 'external' : 'internal'
 }
 
@@ -277,8 +278,8 @@ const getResultsTypes = (executionLogs, type) => {
   let r = []
 
   executionLogs.map(executionLog => {
-    if (executionLog.stepResult && executionLog.stepResult[type]) {
-      let el = executionLog.stepResult[type]
+    if (executionLog.result && executionLog.result[type]) {
+      let el = executionLog.result[type]
       let canProcess = false
       if (Array.isArray(el) && el.length) canProcess = true
       if (Object.keys(el).length) canProcess = true
@@ -291,3 +292,20 @@ const getResultsTypes = (executionLogs, type) => {
 }
 
 module.exports.getResultsTypes = getResultsTypes
+
+module.exports.buildTemplate = (execution, executionLogs, string) => {
+  try {
+    let data = {}
+    executionLogs.map(el => {
+      let { id, ...others } = el
+      if (!id) id = others.stepIndex
+      data[id] = others
+    })
+
+    return Handlebars.compile(string)(data)
+  }
+  catch (ex) {
+    console.error(ex)
+    return string
+  }
+}

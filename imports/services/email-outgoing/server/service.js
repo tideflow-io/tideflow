@@ -1,6 +1,7 @@
 import * as commonEmailHelper from '/imports/helpers/both/emails'
 import * as emailHelper from '/imports/helpers/server/emails'
-import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
+
+import { servicesAvailable, getResultsTypes, buildTemplate } from '/imports/services/_root/server'
 
 const service = {
   name: 'email-outgoing',
@@ -58,6 +59,9 @@ const service = {
         }
       })
 
+      data.subject = buildTemplate(execution, executionLogs, data.subject)
+      data.body = buildTemplate(execution, executionLogs, data.body)
+
       emailHelper.send(data)
 
       cb(null, {
@@ -81,7 +85,9 @@ const service = {
     callback: (user, currentStep, executionLogs, execution, logId, cb) => {
       const { fullFlow } = execution
       const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-      const previousStepsData = executionLogs.map(el => el.stepResult)
+
+      currentStep.config.emailTo = buildTemplate(execution, executionLogs, currentStep.config.emailTo)
+
       const to = (currentStep.config.emailTo || '').split(',').map(e => e.trim())
       const userEmail = commonEmailHelper.userEmail(user)
       const fullName = user.profile ? user.profile.firstName || userEmail : userEmail
@@ -107,6 +113,9 @@ const service = {
       }
 
       let data = emailHelper.data(to, currentStep, tplVars, 'standard')
+
+      data.subject = buildTemplate(execution, executionLogs, data.subject)
+      data.body = buildTemplate(execution, executionLogs, data.body)
 
       if (!data.to || data.to.trim() === '') return null
 

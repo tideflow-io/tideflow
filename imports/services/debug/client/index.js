@@ -1,3 +1,4 @@
+import './help'
 import './events'
 import './helpers'
 

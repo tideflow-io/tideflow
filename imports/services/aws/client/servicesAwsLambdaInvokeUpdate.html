@@ -1,9 +1,33 @@
 <template name="servicesAwsLambdaInvokeUpdate">
   {{> servicesAwsCommonConfig}}
 
-  <div class="form-group">
-    <label class="control-label">{{__ "s-aws.events.lambda.invoke.functionName"}}</label>
-    <input type="text" class="form-control" value="{{stepConfigValue 'functionName' ''}}" data-schema-key="{{stepConfigName 'functionName' ''}}" name="{{stepConfigName 'functionName' ''}}">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-aws.events.lambda.invoke.functionName.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-aws.events.lambda.invoke.functionName.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input type="text" class="form-control" value="{{stepConfigValue 'functionName' ''}}" data-schema-key="{{stepConfigName 'functionName' ''}}" name="{{stepConfigName 'functionName' ''}}">
+      {{> helpUsesTemplates}}
+    </div>
   </div>
 
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-aws.events.lambda.invoke.data.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-aws.events.lambda.invoke.data.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <textarea rows="10" class="form-control code" data-schema-key="{{stepConfigName 'data' ''}}" name="{{stepConfigName 'data' ''}}">{{stepConfigValue 'data' ''}}</textarea>
+      {{> helpUsesTemplates}}
+    </div>
+  </div>
 </template>

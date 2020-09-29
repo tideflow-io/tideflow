@@ -1,3 +1,29 @@
+#modal-task-editor {
+  padding: 30px !important;
+}
+#modal-task-editor .modal-dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+#modal-task-editor .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+#modal-task-editor .modal-body {
+  overflow-y: auto;
+}
+
+#modal-task-editor .sidebar {
+  border-right: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+.field-container .field-controllers {
+  margin-bottom: 15px;
+}
+
 #sidebar-wrapper {
   min-width: 350px !important;
   -webkit-transition: margin .25s ease-out;
@@ -12,6 +38,26 @@
 #page-content-wrapper {
     min-width: 0;
     width: 100%;
+}
+
+.step-event-selector-wrapper .field-descriptor {
+  padding-bottom: 20px;
+}
+
+.step-event-selector-wrapper .field-name {
+  font-weight: bold;
+}
+
+.step-event-selector-wrapper .field-description {
+  color: gray;
+}
+
+textarea.form-control.code {
+  background: #002B37;
+  border: 1px solid #CED4DA;
+  border-radius: 0%;
+  color:#909E9E;
+  font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
 
 #flow-editor {
@@ -105,13 +151,6 @@
   display: table;
 }
 
-#flow-editor .card select:not(:last-child), 
-#flow-editor .fixed-right-sidebar select:not(:last-child),
-#flow-editor .fixed-right-sidebar .step-event-selector-wrapper
-{
-  margin-bottom: 20px;
-}
-
 #flow-editor .card .form-group:last-child {
   margin-bottom: 0px;
 }
@@ -133,4 +172,3 @@
   border-left: 2px solid #E9EEF2;
   overflow-y: auto;
 }
-

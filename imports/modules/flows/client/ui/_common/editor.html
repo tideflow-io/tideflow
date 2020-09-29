@@ -1,3 +1,7 @@
+<template name="helpUsesTemplates">
+  <small class="form-text text-muted">{{__ "flows.editor.help.usesTemplates"}}</small>
+</template>
+
 <template name="flowEditor">
   <!-- <div id="flow-sidebar-right" class="sidebar bg-light greyed-separator-l">
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center p-3 mb-0 text-muted greyed-separator-b">
@@ -12,62 +16,74 @@
   </nav> -->
   <div class="d-flex" id="wrapper">
     <div class="bg-light border-right sidebar-sticky" id="sidebar-wrapper">
-      <nav class="m-3">
-        <div class="nav nav-tabs" id="editor-sidebar-tab" role="tablist">
-          <a class="nav-item nav-link active" id="nav-tasks-tab" data-toggle="tab" href="#nav-tasks" role="tab" aria-controls="nav-tasks" aria-selected="true">
-            {{__ "flows.editor.sidebar.tabs.tasks.link.text"}}
-          </a>
-          <a class="nav-item nav-link {{#if sessIsSet 'fe-editMode'}}{{else}}d-none{{/if}}" id="nav-task-settings-tab" data-toggle="tab" href="#nav-task-settings" role="tab" aria-controls="nav-task-settings" aria-selected="false">
-            {{__ "flows.editor.sidebar.tabs.task.link.text"}}
-          </a>
+      <div class="tab-content mt-4" id="nav-tabContent">
+        <div class="list-group list-group-flush">
+          <div class="pr-3 pl-3 pb-2">
+            <form id="flow-sidebar-step-search">
+              <input type="text" class="form-control" placeholder="{{__ "flows.editor.sidebar.tasks.search.text"}}">
+            </form>
+          </div>
+          <div class="p-3 pt-0" id="flow-sidebar-steps">
+            {{#each stepsAvailableSidebar}}
+              {{> flowEditorStepAvailable}}
+            {{/each}}
+          </div>
         </div>
-      </nav>
-      <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-tasks" role="tabpanel" aria-labelledby="nav-tasks-tab">
-          
-          <div class="list-group list-group-flush">
-            <div class="pr-3 pl-3 pb-2">
-              <form id="flow-sidebar-step-search">
-                <input type="text" class="form-control" placeholder="{{__ "flows.editor.sidebar.tabs.tasks.search.text"}}">
-              </form>
-            </div>
-            <div class="p-3 pt-0" id="flow-sidebar-steps">
-              {{#each stepsAvailableSidebar}}
-                {{> flowEditorStepAvailable}}
-              {{/each}}
+
+        <div class="modal modal-task-editor" id="modal-task-editor" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              {{#afEachArrayItem name="steps"}}
+                <div class="modal-header {{#if editMode}}{{else}}d-none{{/if}}">
+                  <h5 class="modal-title">
+                    {{#if cardIconImage}}
+                      <img width="16" src="/icons/services/{{cardIconImage}}">
+                    {{else}}
+                      <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
+                    {{/if}}
+                    <strong>{{cardTitle}}</strong>
+                  </h5>
+                </div>
+                <div class="modal-body {{#if editMode}}{{else}}d-none{{/if}}">
+                  <div class="row">
+                    <div class="sidebar d-none d-sm-block col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                      {{> serviceHelp steps=../flow.steps index=this.index}}
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9 col-xl-10">
+                      <div class="step-event-selector-wrapper">
+                        {{#if stepSelectedEvents ../../flow ../index this.name}}
+                        <div class="row field-container">
+                          <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+                            <div class="field-name">
+                              <label class="control-label">{{__ "flows.editor.step.event.title"}}</label>
+                            </div>
+                            <div class="field-description">
+                              {{__ "flows.editor.step.event.description"}}
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+                            <select class="step-event-selector form-control" data-step="{{this.index}}">
+                              <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                              {{#each stepSelectedEvents}}
+                                <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                        </div>
+                        {{/if}}
+                        {{> stepEventConfig steps=../flow.steps index=this.index}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{/afEachArrayItem}}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                  {{__ "flows.editor.step.editDetailsDone"}}
+                </button>
+              </div>
             </div>
           </div>
-
-        </div>
-        <div class="tab-pane fade p-3 {{#if sessIsSet 'fe-editMode'}}{{else}}d-none{{/if}}" id="nav-task-settings" role="tabpanel" aria-labelledby="nav-task-settings-tab">
-          
-          {{#afEachArrayItem name="steps"}}
-            <div class="fixed-right-sidebar {{#if editMode}}{{else}}d-none{{/if}}">
-              <div class="mb-3">
-                {{#if cardIconImage}}
-                  <img width="16" src="/icons/services/{{cardIconImage}}">
-                {{else}}
-                  <i class="{{cardIcon}}" style="color: {{cardIconColor}}"></i>&nbsp;
-                {{/if}}
-                <strong>{{cardTitle}}</strong>
-              </div>
-              <div class="step-event-selector-wrapper">
-                {{#if stepSelectedEvents ../../flow ../index this.name}}
-                  <select class="step-event-selector form-control mb-3" data-step="{{this.index}}">
-                    <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-                    {{#each stepSelectedEvents}}
-                      <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-                    {{/each}}
-                  </select>
-                {{/if}}
-                {{> stepEventConfig steps=../flow.steps index=this.index}}
-              </div>
-
-              <button type="button" class="edit-mode-leave form-control btn btn-primary">
-                {{__ "flows.editor.step.editDetailsDone"}}
-              </button>
-            </div>
-          {{/afEachArrayItem}}
         </div>
       </div>
     </div>
@@ -100,7 +116,7 @@
                 <div class="card-title">
                   {{__ "flows.editor.trigger.title"}}
                 </div>
-                <select class="form-control" name="triggerSelector">
+                <select class="form-control mb-3" name="triggerSelector">
                   <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
                   {{#each triggers}}
                     <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
@@ -112,7 +128,7 @@
                 {{/if}}
                 
                 {{#if triggerSelected.events}}
-                  <select class="form-control" name="triggerEventSelector">
+                  <select class="form-control mb-3" name="triggerEventSelector">
                     <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
                     {{#each triggerSelected.events}}
                       {{#if inputable}}
@@ -198,7 +214,42 @@
 </template>
 
 <template name="stepEventConfig">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "flows.editor.step.id.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "flows.editor.step.id.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <div class="form-group">
+        <input type="text" class="form-control" value="{{stepPropertyValue 'id' ''}}" data-schema-key="{{stepProperty 'id' ''}}" name="{{stepProperty 'id' ''}}">
+      </div>
+    </div>
+  </div>
+    
   {{#if event.templates.eventConfig}}
-  {{> Template.dynamic template=event.templates.eventConfig}}
+    {{> Template.dynamic template=event.templates.eventConfig}}
+  {{/if}}
+</template>
+
+<!-- Help templates -->
+
+<!-- Service general help -->
+<template name="serviceHelp">
+  {{#if serviceHelpIntroTpl}}
+    {{> Template.dynamic template=serviceHelpIntroTpl}}
+  {{/if}}
+
+  {{#if serviceTaskHelpTpl}}
+    <hr>
+    {{> Template.dynamic template=serviceTaskHelpTpl}}
+  {{/if}}
+
+  {{#if serviceHelpTpl}}
+    <hr>
+    {{> Template.dynamic template=serviceHelpTpl}}
   {{/if}}
 </template>

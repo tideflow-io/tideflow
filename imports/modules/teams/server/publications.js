@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 
-import { isMember, isAdmin } from '../../_common/both/teams'
+import { isMember } from '../../_common/both/teams'
 import { Teams } from '../both/collection'
 import { checkRole } from '/imports/helpers/both/roles'
 

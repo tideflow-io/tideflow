@@ -1,5 +1,3 @@
-import i18n from 'meteor/universe:i18n'
-
 import { servicesAvailable } from '/imports/services/_root/client'
 
 const service = {

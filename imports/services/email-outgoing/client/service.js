@@ -10,6 +10,8 @@ const service = {
   ownable: false,
   stepable: true,
   templates: {
+    help: 'servicesOutgoingEmailHelp',
+    helpIntro: 'servicesOutgoingEmailHelpIntro',
   },
   hooks: {
     // service: {},

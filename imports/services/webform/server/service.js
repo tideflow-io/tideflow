@@ -35,7 +35,7 @@ const service = {
         runInOneGo: true
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
+        const lastData = ([].concat(executionLogs).pop() || {}).result
         
         cb(null, {
           result: lastData,

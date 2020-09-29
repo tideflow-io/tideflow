@@ -5,11 +5,42 @@ events.tome.name: Send me an email
 events.tome.viewer.title: Send me an email
 events.toother.name: Send an email to an email address 
 events.toother.viewer.title: Send an email to an email address 
-event.others.tgtEmail: What email address do you want to reach?
-event.common.subject: Subject
-event.common.body: Body email
-event.common.attachPreviousStepOutput: Attach the output from the previous step
+event.others.tgtEmail:
+  title: Addresses
+  description: List of email addresses - separated by comma - to which the email
+    will be sent to.
+event.common.subject:
+  title: Subject
+  description: Content of the email's "Subject" field
+event.common.body:
+  title: Body email
+  description: Content of the email. (Except the subject)
+event.common.attachPreviousStepOutput:
+  title: Attach previous tasks
+  description: Attaches previous tasks results to the email. Note this only
+    affects JSON objects, links, texts, etc. Files from connected tasks will
+    always be included.
 event.common.attachPreviousStepOutputYes: Yes
 log.to-me.sent: Email sent to the user's email address
 log.to-others.sent: Email sent to others
 event.common.attachPreviousStepOutputNo: No
+
+help:
+  intro: 
+    title: Sending emails
+    content: Send emails as part of your workflows.
+  events:
+    title: Addressee
+    common:
+      attach:
+        title: Attaching previous results
+        content: Attach previous task results to the email (links, plain-text results, etc)
+      responsability:
+        title: Be responsible
+        content: Be responsible when sending emails to others. Make sure you have their consent before emailing them.
+    toMe:
+      title: Send me
+      content: "Sends an email to the workflow's creator email address."
+    toOthers:
+      title: To others
+      content: "Sends an email to others, by specifying the list of email addresses specified."

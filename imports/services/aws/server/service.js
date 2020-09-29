@@ -36,7 +36,11 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
+        currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
+        currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
+        
         let client = await iotData(currentStep, execution)
+
         client.getThingShadow({
           thingName: currentStep.config.thingName
         }, (err, data) => {
@@ -50,13 +54,14 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
-        const shadowData = lastData ? lastData.data || {} : {}
+        currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
+        currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
+        let shadowData = buildTemplate(execution, executionLogs, currentStep.config.shadow)
 
         let client = await iotData(currentStep, execution)
         client.updateThingShadow({
           thingName: currentStep.config.thingName,
-          payload: Buffer.from(JSON.stringify({state: shadowData}))
+          payload: Buffer.from(JSON.stringify(shadowData))
         }, (err, data) => {
           awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-update.ok', cb)
         })
@@ -68,13 +73,21 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
-        const data = lastData ? lastData.data || {} : {}
+        currentStep.config.functionName = buildTemplate(execution, executionLogs, currentStep.config.functionName)
+        let data = buildTemplate(execution, executionLogs, currentStep.config.data)
+        let invokeData = null
+
+        try { 
+          invokeData = JSON.parse(data)
+          invokeData = JSON.stringify(invokeData)
+        } catch (ex) {
+          invokeData = data
+        }
 
         var params = {
           FunctionName: currentStep.config.functionName, /* required */
           InvocationType: 'Event', // | RequestResponse | DryRun,
-          Payload: JSON.stringify(data)
+          Payload: invokeData
         }
         const profile = await getAwsProfile(currentStep, execution)
         new Lambda({
