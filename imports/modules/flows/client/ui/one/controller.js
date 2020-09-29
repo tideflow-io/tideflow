@@ -85,7 +85,7 @@ Template['flows.one'].events({
 Template.flowOneExecutionSmallCardsHorizontal.events({
   'click': (event, template) => {
     Router.go('flowsOneExecutions', {
-      _id: template.data.executions._id,
+      _id: template.data._id,
       teamId: Router.current().params.teamId
     })
   }
