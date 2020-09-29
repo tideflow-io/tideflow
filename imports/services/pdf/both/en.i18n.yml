@@ -1,7 +1,12 @@
 _namespace: s-pdf
 name: PDF
 description: Generate PDF files
-event.create-from-html.file.selectOne: Select a template
+event.create-from-html:
+  file:
+    selectOne: Select a template
+    title: "Template:"
+    description: Template file (as in the "Files" tab) that will be used to
+      generate the PDF file from.
 events.create-from-html.title: Create from HTML
 events.create-from-html.viewer.title: Create from HTML
 log.create-from-html.created: Files created

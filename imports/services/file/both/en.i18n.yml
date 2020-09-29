@@ -1,7 +1,11 @@
 _namespace: s-file
 name: Files
 description: Connect and collect files
-event.readFile.file: Select a file
+event.readFile.file:
+  title: File to be used
+  description: Select the file (as available on the "Files" tab) that will be
+    used in your workflow.
+  templating: Tideflow will run the templating system on the file's contents once loaded.
 events.readFile.viewer.title: Connect a file
 events.readFile.title: Connect a file
 events.readFile.select: Select a file

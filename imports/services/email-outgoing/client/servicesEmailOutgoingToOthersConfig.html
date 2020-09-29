@@ -1,8 +1,19 @@
 <template name="servicesEmailOutgoingToOthersConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-email-outgoing.event.others.tgtEmail"}}</label>
-    <input class="form-control" value="{{stepConfigValue 'emailTo' ''}}" data-schema-key="{{stepConfigName 'emailTo'}}" name="{{stepConfigName 'emailTo'}}">
-    {{> helpUsesTemplates}}
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-email-outgoing.event.others.tgtEmail.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-email-outgoing.event.others.tgtEmail.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'emailTo' ''}}" data-schema-key="{{stepConfigName 'emailTo'}}" name="{{stepConfigName 'emailTo'}}">
+      {{> helpUsesTemplates}}
+    </div>
   </div>
+
   {{> servicesEmailOutgoingCommonConfig}}
 </template>

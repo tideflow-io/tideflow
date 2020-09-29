@@ -1,15 +1,33 @@
 <template name="servicesAwsIotShadowGet">
   {{> servicesAwsCommonConfig}}
 
-  <div class="form-group">
-    <label class="control-label">{{__ "s-aws.events.iot.shadow-get.endpoint"}}</label>
-    <input type="text" class="form-control" value="{{stepConfigValue 'endpoint' ''}}" data-schema-key="{{stepConfigName 'endpoint' ''}}" name="{{stepConfigName 'endpoint' ''}}">
-    {{> helpUsesTemplates}}
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-aws.events.iot.shadow-get.endpoint.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-aws.events.iot.shadow-get.endpoint.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input type="text" class="form-control" value="{{stepConfigValue 'endpoint' ''}}" data-schema-key="{{stepConfigName 'endpoint' ''}}" name="{{stepConfigName 'endpoint' ''}}">
+      {{> helpUsesTemplates}}
+    </div>
   </div>
 
-  <div class="form-group">
-    <label class="control-label">{{__ "s-aws.events.iot.shadow-get.deviceName"}}</label>
-    <input type="text" class="form-control" value="{{stepConfigValue 'thingName' ''}}" data-schema-key="{{stepConfigName 'thingName'}}" name="{{stepConfigName 'thingName'}}">
-    {{> helpUsesTemplates}}
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-aws.events.iot.shadow-get.deviceName.title"}}</label>
+      </div>
+      <div class="field-description">
+        <label class="control-label">{{__ "s-aws.events.iot.shadow-get.deviceName.description"}}</label>
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input type="text" class="form-control" value="{{stepConfigValue 'thingName' ''}}" data-schema-key="{{stepConfigName 'thingName'}}" name="{{stepConfigName 'thingName'}}">
+      {{> helpUsesTemplates}}
+    </div>
   </div>
 </template>

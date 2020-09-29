@@ -50,7 +50,9 @@ events.deploy_cmd.viewer.title: Run a deploy procress
 
 log.called_input_parsed: Request's input parsed
 
-events.general.cmd.title: Command to run
+events.general.cmd:
+  title: Script
+  description: The script to execute. This can be created in the "Files" tab.
 
 help:
   intro:

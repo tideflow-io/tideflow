@@ -11,10 +11,17 @@ events.command.title: Execute a command in my agent.
 events.code_nodesfc.name: Execute NodeJS sfc
 events.code_nodesfc.title: Execute NodeJS sfc
 
-event.execute.commandFile: File to execute
-event.execute.selectAgent: Agent to use
-events.execute.selectOneFile: Select one file
-event.execute.anyAgent: Any agent available
+event.execute:
+  commandFile: 
+    title: Script
+    description: The script to execute. This can be created in the "Files" tab.
+  selectAgent: 
+    title: Agent
+    description: The Tideflow self-hosted runner that will execute the script.
+      This can be created on the "Services" tab.
+  selectOneFile: Select one file
+  anyAgent: Any agent available
+
 service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online

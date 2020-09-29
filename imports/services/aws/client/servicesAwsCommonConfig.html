@@ -1,10 +1,19 @@
 <template name="servicesAwsCommonConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-aws.events.selectProfile"}}</label>
-    <select class="form-control" data-schema-key="{{stepConfigName 'profile'}}" name="{{stepConfigName 'profile'}}">
-      {{#each registeredProfiles}}
-        <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'profile' _id}}>{{title}}</option>
-      {{/each}}
-    </select>
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-aws.events.selectProfile.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-aws.events.selectProfile.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" data-schema-key="{{stepConfigName 'profile'}}" name="{{stepConfigName 'profile'}}">
+        {{#each registeredProfiles}}
+          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'profile' _id}}>{{title}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 </template>

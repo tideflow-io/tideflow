@@ -1,19 +1,49 @@
 <template name="servicesEmailOutgoingCommonConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-email-outgoing.event.common.subject"}}</label>
-    <input class="form-control" value="{{stepConfigValue 'subject' ''}}" data-schema-key="{{stepConfigName 'subject'}}" name="{{stepConfigName 'subject'}}">
-    {{> helpUsesTemplates}}
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-email-outgoing.event.common.subject.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-email-outgoing.event.common.subject.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'subject' ''}}" data-schema-key="{{stepConfigName 'subject'}}" name="{{stepConfigName 'subject'}}">
+      {{> helpUsesTemplates}}
+    </div>
   </div>
-  <div class="form-group">
-    <label class="control-label">{{__ "s-email-outgoing.event.common.body"}}</label>
-    <textarea rows="10" class="form-control" data-schema-key="{{stepConfigName 'body' ''}}" name="{{stepConfigName 'body' ''}}">{{stepConfigValue 'body' ''}}</textarea>
-    {{> helpUsesTemplates}}
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-email-outgoing.event.common.body.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-email-outgoing.event.common.body.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <textarea rows="10" class="form-control" data-schema-key="{{stepConfigName 'body' ''}}" name="{{stepConfigName 'body' ''}}">{{stepConfigValue 'body' ''}}</textarea>
+      {{> helpUsesTemplates}}
+    </div>
   </div>
-  <div class="form-group">
-    <label class="control-label" for="{{stepConfigName 'inputLast'}}">{{__ "s-email-outgoing.event.common.attachPreviousStepOutput"}}</label>
-    <select class="form-control" data-schema-key="{{stepConfigName 'inputLast'}}" name="{{stepConfigName 'inputLast'}}">
-      <option value="yes" {{stepConfigValueSelected 'inputLast' 'yes'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputYes"}}</option>
-      <option value="no" {{stepConfigValueSelected 'inputLast' 'no'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputNo"}}</option>
-    </select>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-email-outgoing.event.common.attachPreviousStepOutput.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-email-outgoing.event.common.attachPreviousStepOutput.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" data-schema-key="{{stepConfigName 'inputLast'}}" name="{{stepConfigName 'inputLast'}}">
+        <option value="yes" {{stepConfigValueSelected 'inputLast' 'yes'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputYes"}}</option>
+        <option value="no" {{stepConfigValueSelected 'inputLast' 'no'}}>{{__ "s-email-outgoing.event.common.attachPreviousStepOutputNo"}}</option>
+      </select>
+    </div>
   </div>
 </template>
