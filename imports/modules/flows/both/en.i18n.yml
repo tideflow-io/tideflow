@@ -27,7 +27,7 @@ editor:
   trigger:
     notSet: Not defined
     selectOneOption: Select an option
-    title: When this happens...
+    title: ⚡️ Trigger
   triggerEvent:
     selectOneOption: Select an option
   step:

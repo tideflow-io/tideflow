@@ -116,7 +116,7 @@
                 <div class="card-title">
                   {{__ "flows.editor.trigger.title"}}
                 </div>
-                <select class="form-control" name="triggerSelector">
+                <select class="form-control mb-3" name="triggerSelector">
                   <option value="">{{__ "flows.editor.trigger.selectOneOption"}}</option>
                   {{#each triggers}}
                     <option value="{{this._id}}" {{isSelectedTrigger}}>{{__ this.humanName}} {{this.title}}</option>
@@ -128,7 +128,7 @@
                 {{/if}}
                 
                 {{#if triggerSelected.events}}
-                  <select class="form-control" name="triggerEventSelector">
+                  <select class="form-control mb-3" name="triggerEventSelector">
                     <option value="">{{__ "flows.editor.triggerEvent.selectOneOption"}}</option>
                     {{#each triggerSelected.events}}
                       {{#if inputable}}
