@@ -297,7 +297,7 @@ module.exports.buildTemplate = (execution, executionLogs, string) => {
   try {
     let data = {}
     executionLogs.map(el => {
-      const { id, ...others } = el
+      let { id, ...others } = el
       if (!id) id = others.stepIndex
       data[id] = others
     })
