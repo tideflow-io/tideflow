@@ -14,7 +14,7 @@ tfQueue.jobs.register('s-cron-runOne', function(job) {
 
   if (!flow) {
     console.error(`Flow not found ${job.flowId}`)
-    instance.success()
+    instance.remove()
     return
   }
 
@@ -37,5 +37,5 @@ tfQueue.jobs.register('s-cron-runOne', function(job) {
     })
   }
   
-  instance.success()
+  instance.remove()
 })

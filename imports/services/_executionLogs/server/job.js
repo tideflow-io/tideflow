@@ -128,7 +128,7 @@ tfQueue.jobs.register('_executionLogsRun', function() {
     date: instance.document.due
   })
 
-  instance.success()
+  instance.remove()
 })
 
 tfQueue.jobs.register('_executionLogsSendEmail', function(emailData) {
