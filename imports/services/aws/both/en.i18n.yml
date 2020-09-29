@@ -19,6 +19,7 @@ events.iot.shadow-get.title: '[IoT Core] Get device shadow'
 events.lambda.invoke.name: '[Lambda] Invoke function'
 events.lambda.invoke.title: '[Lambda] Invoke function'
 events.lambda.invoke.functionName: Function name
+events.lambda.invoke.data: Invocation data
 log.lambda-invoke.ok: 'Lambda function invoked'
 
 events.iot.shadow-update.endpoint: Endpoint

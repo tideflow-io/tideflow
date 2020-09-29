@@ -36,6 +36,14 @@
     width: 100%;
 }
 
+textarea.form-control.code {
+  background: #002B37;
+  border: 1px solid #CED4DA;
+  border-radius: 0%;
+  color:#909E9E;
+  font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
 #flow-editor {
   /* background: url(/images/bground.png) white; */
   background: url(/images/bground.svg) white;
