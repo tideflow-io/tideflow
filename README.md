@@ -1,5 +1,7 @@
 # <a href='https://tideflow.io'><img src='https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg' width='260' alt='Tideflow.io'></a>
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/tideflow-io/tideflow.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/tideflow-io/tideflow/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/tideflow-io/tideflow.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/tideflow-io/tideflow/context:javascript)
+
 > Using Tideflow, you can design, automate and monitor your workflows in realtime.
 
 It's as easy as drag and drop. Create and connect tasks to create custom
