@@ -36,6 +36,18 @@
     width: 100%;
 }
 
+.step-event-selector-wrapper .field-descriptor {
+  padding-bottom: 20px;
+}
+
+.step-event-selector-wrapper .field-name {
+  font-weight: bold;
+}
+
+.step-event-selector-wrapper .field-description {
+  color: gray;
+}
+
 textarea.form-control.code {
   background: #002B37;
   border: 1px solid #CED4DA;

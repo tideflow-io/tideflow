@@ -1,11 +1,20 @@
 <template name="servicesWebparsyScrapeConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-webparsy.events.scrape.yml"}}</label>
-    <select class="form-control" name="{{stepConfigName 'ymlFile'}}" data-schema-key="{{stepConfigName 'ymlFile'}}">
-      <option value="">{{__ "s-webparsy.events.scrape.selectOneFile"}}</option>
-      {{#each files}}
-        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'ymlFile' this._id}}>{{__ this.name}}</option>
-      {{/each}}
-    </select>
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-webparsy.events.scrape.yml.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-webparsy.events.scrape.yml.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" name="{{stepConfigName 'ymlFile'}}" data-schema-key="{{stepConfigName 'ymlFile'}}">
+        <option value="">{{__ "s-webparsy.events.scrape.selectOneFile"}}</option>
+        {{#each files}}
+          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'ymlFile' this._id}}>{{__ this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 </template>

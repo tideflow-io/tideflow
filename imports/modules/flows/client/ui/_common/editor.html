@@ -52,12 +52,24 @@
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9 col-xl-10">
                       <div class="step-event-selector-wrapper">
                         {{#if stepSelectedEvents ../../flow ../index this.name}}
-                          <select class="step-event-selector form-control mb-3" data-step="{{this.index}}">
-                            <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
-                            {{#each stepSelectedEvents}}
-                              <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
-                            {{/each}}
-                          </select>
+                        <div class="row field-container">
+                          <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+                            <div class="field-name">
+                              <label class="control-label">{{__ "flows.editor.step.event.title"}}</label>
+                            </div>
+                            <div class="field-description">
+                              {{__ "flows.editor.step.event.description"}}
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+                            <select class="step-event-selector form-control" data-step="{{this.index}}">
+                              <option>{{__ "flows.editor.step.event.selectOneOption"}}</option>
+                              {{#each stepSelectedEvents}}
+                                <option value="{{this.name}}" {{isSelectedEventsEvent ../../flow ../index this.name}}>{{__ this.humanName}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                        </div>
                         {{/if}}
                         {{> stepEventConfig steps=../flow.steps index=this.index}}
                       </div>
@@ -202,10 +214,22 @@
 </template>
 
 <template name="stepEventConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "flows.editor.step.id"}}</label>
-    <input type="text" class="form-control" value="{{stepPropertyValue 'id' ''}}" data-schema-key="{{stepProperty 'id' ''}}" name="{{stepProperty 'id' ''}}">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "flows.editor.step.id.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "flows.editor.step.id.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <div class="form-group">
+        <input type="text" class="form-control" value="{{stepPropertyValue 'id' ''}}" data-schema-key="{{stepProperty 'id' ''}}" name="{{stepProperty 'id' ''}}">
+      </div>
+    </div>
   </div>
+    
   {{#if event.templates.eventConfig}}
     {{> Template.dynamic template=event.templates.eventConfig}}
   {{/if}}

@@ -2,10 +2,13 @@ _namespace: s-webparsy
 name: Get websites contents
 description: Scrape and interact with websites
 
-events.scrape.yml: YAML definition
-events.scrape.name: Scrape website content(s)
-events.scrape.title: Run web scraping
-events.scrape.selectOneFile: Select one file
+events.scrape:
+  yml: 
+    title: YAML definition
+    description: File containing the WebParsy's scraping definition
+  name: Scrape website content(s)
+  title: Run web scraping
+  selectOneFile: Select one file
 
 log.scrape.yaml.title: Scraping process finished
 log.scrape.yaml.errorTitle: Scraping process failed

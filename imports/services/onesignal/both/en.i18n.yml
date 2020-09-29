@@ -7,13 +7,23 @@ create:
   restApiKey: REST Api Key
 
 events:
-  selectApplication: Select application
+  selectApplication: 
+    title: Select application
+    description: To trigger OneSignal actions, you need to have created a
+      OneSignal application in the "Services" tab. Once done, select it here.
   sendnotification:
     name: Send notification
     title: Send notification
-    subject: Title
-    segment: Segment (All by default)
-    content: Content
+    subject:
+      title: Title
+      description: The notification's title.
+    segment: 
+      title: Segment (All by default)
+      description: The segment's name you want to target. Users in these segment
+        will receive the notification.
+    content: 
+      title: Content
+      description: The notification's content (excluding the title).
     log:
       success: Notification sent to {$recipients} recipients
 

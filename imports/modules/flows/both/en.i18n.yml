@@ -31,9 +31,13 @@ editor:
   triggerEvent:
     selectOneOption: Select an option
   step:
-    id: Step id
+    id:
+      title: Step id
+      description: Name of the step, to use in the templating system.
     event:
-      selectOneOption: Select an option
+      title: Action
+      description: Select the action that this task will trigger.
+      selectOneOption: Select an option...
     removeOne: Remove task
     editDetails: Edit details
     editDetailsDone: Done
