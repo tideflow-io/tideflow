@@ -61,6 +61,7 @@ AutoForm.addHooks(['insertFlowForm'], {
   after: {
     method: (error, result) => {
       jsPlumb.ready(function() {
+        jsPlumbUtil.logEnabled = false
         $('#flow-editor .card').remove()
         jsPlumb.deleteEveryConnection()
       })

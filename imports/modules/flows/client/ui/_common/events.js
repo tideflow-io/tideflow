@@ -150,6 +150,7 @@ const createConnection = (from, to) => {
  */
 const setJsPlumb = (flow) => {
   jsPlumb.ready(function() {
+    jsPlumbUtil.logEnabled = false
     jsPlumb.setContainer($('#flow-editor'))
 
     jsPlumb.draggable($('.card.flow-step'), {
