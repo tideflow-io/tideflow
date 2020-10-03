@@ -12,7 +12,9 @@ const service = {
   stepable: true,
   templates: {
     createForm: 'servicesOnesignalCreateForm',
-    updateForm: 'servicesOnesignalUpdateForm'
+    updateForm: 'servicesOnesignalUpdateForm',
+    helpIntro: 'servicesOnesignalHelpIntro',
+    help: 'servicesOnesignalHelp'
   },
   hooks: {
     // service: {},

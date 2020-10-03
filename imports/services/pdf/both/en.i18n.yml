@@ -1,8 +1,24 @@
 _namespace: s-pdf
 name: PDF
 description: Generate PDF files
-event.create-from-html.file.selectOne: Select a template
+event.create-from-html:
+  file:
+    selectOne: Select a template
+    title: "Template:"
+    description: Template file (as in the "Files" tab) that will be used to
+      generate the PDF file from.
 events.create-from-html.title: Create from HTML
 events.create-from-html.viewer.title: Create from HTML
 log.create-from-html.created: Files created
 log.create-from-html.retrieveFailed: Failed to load HTML template
+
+help:
+  intro:
+    title: What is it?
+    content: Integrate PDF files in your workflows.
+  events:
+    title: "Events:"
+    fromHtml:
+      title: "From HTML template:"
+      content: Converts a HTML template from the files library into a PDF file.
+      templating: Upon generating the PDF file, Tideflow will use the templating system.

@@ -1,3 +1,4 @@
+import './help'
 import './servicesGhCiCreateForm.html'
 import './detailsView.html'
 import './servicesGhCiTriggerEditorPre.html'

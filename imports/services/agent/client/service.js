@@ -1,5 +1,3 @@
-import i18n from 'meteor/universe:i18n'
-
 import { servicesAvailable } from '/imports/services/_root/client'
 
 const service = {
@@ -14,7 +12,9 @@ const service = {
   templates: {
     detailsView: 'servicesAgentDetailsView',
     createFormPre: 'servicesAgentCreateFormPre',
-    updateFormPre: 'servicesAgentUpdateFormPre'
+    updateFormPre: 'servicesAgentUpdateFormPre',
+    help: 'servicesAgentHelp',
+    helpIntro: 'servicesAgentHelpIntro'
   },
   hooks: {
     // service: {},
@@ -30,7 +30,8 @@ const service = {
       stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentCommonConfig'
+        eventConfig: 'servicesAgentCommonConfig',
+        help: 'servicesAgentExecuteHelp'
       }
     },
     {
@@ -41,7 +42,8 @@ const service = {
       stepable: true,
       callback: () => {},
       templates: {
-        eventConfig: 'servicesAgentCommonConfig'
+        eventConfig: 'servicesAgentCommonConfig',
+        help: 'servicesAgentNodeSFCHelp'
       }
     }
   ]

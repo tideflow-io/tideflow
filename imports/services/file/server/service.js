@@ -1,5 +1,5 @@
 import filesLib from '/imports/modules/files/server/lib'
-import { servicesAvailable, getResultsTypes } from '/imports/services/_root/server'
+import { servicesAvailable, getResultsTypes, buildTemplate } from '/imports/services/_root/server'
 const slugify = require('slugify')
 
 const service = {
@@ -19,7 +19,7 @@ const service = {
         runInOneGo: true
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
-        let previousSteps = executionLogs.map(el => el.stepResult)
+        let previousSteps = executionLogs.map(el => el.result)
         
         previousSteps.map(previousStep => {
           if (previousStep.files) previousStep.files.map(f => f.data = '...')
@@ -63,9 +63,11 @@ const service = {
           const file = await filesLib.getOne({
             _id: currentStep.config.file
           })
-          const string = await filesLib.getOneAsString({
+          let fileAsString = await filesLib.getOneAsString({
             _id: file._id
           })
+
+          let string = buildTemplate(execution, executionLogs, fileAsString)
 
           cb(null, {
             result: {
@@ -95,8 +97,6 @@ const service = {
             }]
           })
         }
-
-
       }
     },
 

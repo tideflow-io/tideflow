@@ -109,6 +109,15 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
+  'steps.$.id': {
+    type: String,
+    optional: false,
+    autoValue: function () {
+      if (!this.isSet) {
+        return '123'
+      }
+    }
+  },
   'steps.$.outputs': {
     type: Array,
     optional: true

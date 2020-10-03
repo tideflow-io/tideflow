@@ -8,6 +8,9 @@ import { triggerFlows } from '/imports/queue/server'
 
 Router.route('/bbwebhook/:uuid', function () {
 
+  const req = this.request;
+  const res = this.response;
+  
   // Ignore requests without body
   if (!this.request.body) {
     res.writeHead(404)
@@ -15,8 +18,6 @@ Router.route('/bbwebhook/:uuid', function () {
     return
   }
 
-  const req = this.request;
-  const res = this.response;
   const uuid = this.params.uuid
 
   // Find services using this BB's webhook endpoint

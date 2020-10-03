@@ -1,12 +1,10 @@
-const Handlebars = require('handlebars')
-
 import filesLib from '/imports/modules/files/server/lib'
 
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, buildTemplate } from '/imports/services/_root/server'
 
 const webparsy = require('webparsy')
 
-const generatePdf = async (content, data, cb) => {
+const generatePdf = async (html, cb) => {
   let options = {
     width: 1280,
     height: 800,
@@ -18,7 +16,6 @@ const generatePdf = async (content, data, cb) => {
     debug: false
   }
 
-  const html = Handlebars.compile(content)(data)
   const browser = await webparsy.init({
     json: {
       version: 1,
@@ -66,13 +63,13 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = ([].concat(executionLogs).pop() || {}).stepResult
-        const fileData = lastData ? lastData.data || {} : {}
-
         try {
           const file = await filesLib.getOne({ _id: currentStep.config.file })
-          const string = await filesLib.getOneAsString({ _id: file._id })
-          const fileBuffer = Meteor.wrapAsync(cb => generatePdf(string, fileData, cb))()
+          const fileAsString = await filesLib.getOneAsString({ _id: file._id })
+
+          let string = buildTemplate(execution, executionLogs, fileAsString)
+
+          const fileBuffer = Meteor.wrapAsync(cb => generatePdf(string, cb))()
           cb(null, {
             result: {
               data: {},

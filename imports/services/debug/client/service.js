@@ -8,6 +8,7 @@ const service = {
   stepable: true,
   icon: 'far fa-file-code',
   templates: {
+    helpIntro: 'servicesDebugHelpIntro'
   },
   hooks: {
     // service: {},

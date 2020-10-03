@@ -6,7 +6,7 @@ import { ExecutionsStats } from '/imports/modules/executions/client/collection'
 
 Template.dashboard.onCreated(function() {
   let self = this
-  this.executionsTime = new ReactiveVar('lastMonth')
+  this.executionsTime = new ReactiveVar('last24Hours')
   this.autorun(function () {
     self.subscribe('dashboard.executionsStats', {
       time: self.executionsTime.get(),

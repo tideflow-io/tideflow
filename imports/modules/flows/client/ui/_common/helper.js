@@ -141,6 +141,18 @@ Template.registerHelper('triggerConfigValue', function(setting) {
   return this.flow.trigger.config[setting] ? this.flow.trigger.config[setting] : null
 })
 
+Template.registerHelper('stepPropertyValue', function(property, defaultValue) {
+  if (!this || !this.steps || !this.steps[this.index]) {
+    return typeof defaultValue === 'object' ? null : defaultValue || ''
+  }
+  if (!defaultValue) defaultValue = ''
+  return this.steps[this.index] ? this.steps[this.index][property] || defaultValue : defaultValue
+})
+
+Template.registerHelper('stepProperty', function(setting) {
+  return `steps.${this.index}.${setting}`
+})
+
 Template.registerHelper('stepConfigValue', function(setting, defaultValue) {
   if (!this || !this.steps || !this.steps[this.index]) {
     return typeof defaultValue === 'object' ? null : defaultValue || ''
@@ -185,6 +197,27 @@ Template.registerHelper('stepConfigName', function(setting) {
 Template.registerHelper('triggerConfigName', function(setting) {
   return `trigger.config.${setting}`
 })
+
+Template.serviceHelp.helpers({
+  serviceHelpTpl() {
+    let service = Session.get(`fe-step-${this.index}`)
+    if (!service || !service.templates) return false
+    return service.templates.help || false
+  },
+  
+  serviceHelpIntroTpl() {
+    let service = Session.get(`fe-step-${this.index}`)
+    if (!service || !service.templates) return false
+    return service.templates.helpIntro || false
+  },
+
+  serviceTaskHelpTpl() {
+    const event = Session.get(`fe-step-${this.index}-event`)
+    if (!event || !event.templates) return false
+    return event.templates.help
+  }
+})
+
 
 Template.stepEventConfig.helpers({
   service() {

@@ -56,7 +56,7 @@ const run = async () => {
 
     tplCategory.templates.map(tpl => {
       const templateInfo = JSON.parse(Assets.getText(tpl))
-      let r = FilesTemplates.upsert({
+      FilesTemplates.upsert({
         id: templateInfo.id,
         userCreated: false
       }, {

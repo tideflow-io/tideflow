@@ -221,7 +221,7 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        const lastData = executionLogs[0].stepResult
+        const lastData = executionLogs[0].result
 
         cb(null, {
           result: lastData,

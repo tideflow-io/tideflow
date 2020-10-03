@@ -50,4 +50,28 @@ events.deploy_cmd.viewer.title: Run a deploy procress
 
 log.called_input_parsed: Request's input parsed
 
-events.general.cmd.title: Command to run
+events.general.cmd:
+  title: Script
+  description: The script to execute. This can be created in the "Files" tab.
+
+help:
+  intro:
+    title: What is it?
+    content: Integrate your Github's CI/CD in your workflows, via Tideflow's hosted runner.
+    checkouts: Tideflow's agent will automatically pull the repository's source code and remove it after the commands finishes executing.
+  events:
+    title: "Events:"
+    run:
+      title: Run command
+      content: Runs an script (Windows and Linux/MacOS) in the checkedout code.
+  triggers:
+    title: "Triggers:"
+    pull_request:
+      title: Pull requests
+      content: Run a custom script when a new pull request is created in your repositories.
+    push:
+      title: Commits
+      content: Run a custom script when new code is pushed to your repositories.
+    checksuite:
+      title: Checksuites
+      content: Run a custom script when Github asks to run a CI task.

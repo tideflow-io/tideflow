@@ -44,14 +44,14 @@ tfQueue.jobs.register('s-rss-runOne', function(flow) {
       [flow]
     )
   }
-  instance.success()
+  instance.remove()
 })
 
 tfQueue.jobs.register('s-rss-schedule', function() {
   let instance = this
 
   const finishJob = () => {
-    instance.success()
+    instance.remove()
     instance.replicate({
       singular: true,
       in: {

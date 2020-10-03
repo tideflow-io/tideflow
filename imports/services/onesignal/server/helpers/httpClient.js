@@ -1,6 +1,3 @@
-const { resolve } = require('path')
-const { rejects } = require('assert')
-
 module.exports.sendNotification = async (appConfig, currentStep) => {
   
   try {

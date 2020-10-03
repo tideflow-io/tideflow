@@ -1,27 +1,39 @@
 <template name="servicesAgentCommonConfig">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-agent.event.execute.selectAgent"}}</label>
-    <select class="form-control" data-schema-key="{{stepConfigName 'agent'}}" name="{{stepConfigName 'agent'}}">
-      <option value="any" {{stepConfigValueSelected 'agent' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
-      {{#each registeredAgents}}
-        <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'agent' _id}}>{{title}}</option>
-      {{/each}}
-    </select>
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-agent.event.execute.selectAgent.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-agent.event.execute.selectAgent.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" data-schema-key="{{stepConfigName 'agent'}}" name="{{stepConfigName 'agent'}}">
+        <option value="any" {{stepConfigValueSelected 'agent' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
+        {{#each registeredAgents}}
+          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'agent' _id}}>{{title}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
-  <div class="form-group">
-    <label class="control-label">{{__ "s-agent.event.execute.commandFile"}}</label>
-    <select class="form-control" name="{{stepConfigName 'commandFile'}}" data-schema-key="{{stepConfigName 'commandFile'}}">
-      <option value="">{{__ "s-agent.events.execute.selectOneFile"}}</option>
-      {{#each files}}
-        <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'commandFile' this._id}}>{{__ this.name}}</option>
-      {{/each}}
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="control-label" for="{{stepConfigName 'inputLast'}}">{{__ "s-agent.event.common.attachPreviousStepOutput"}}</label>
-    <select class="form-control" data-schema-key="{{stepConfigName 'inputLast'}}" name="{{stepConfigName 'inputLast'}}">
-      <option value="yes" {{stepConfigValueSelected 'inputLast' 'yes'}}>{{__ "s-agent.event.common.attachPreviousStepOutputYes"}}</option>
-      <option value="no" {{stepConfigValueSelected 'inputLast' 'no'}}>{{__ "s-agent.event.common.attachPreviousStepOutputNo"}}</option>
-    </select>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-agent.event.execute.commandFile.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-agent.event.execute.commandFile.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" name="{{stepConfigName 'commandFile'}}" data-schema-key="{{stepConfigName 'commandFile'}}">
+        <option value="">{{__ "s-agent.event.execute.selectOneFile"}}</option>
+        {{#each files}}
+          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'commandFile' this._id}}>{{__ this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 </template>

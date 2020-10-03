@@ -39,11 +39,6 @@
           <a href="{{pathFor 'services.one.edit' teamId=currentTeamId type=type _id=_id}}">
             <h6>
               {{__ this.humanName}}
-              {{#if this.website}}
-                <a title="{{__ "services.new.moreInfo"}}" class="ml-1" href="{{this.website}}" target="_blank">
-                  <i class="fa fa-info-circle"></i>
-                </a>
-              {{/if}}
             </h6>
           </a>
           <span class="text-small">{{__ this.description}}</span>

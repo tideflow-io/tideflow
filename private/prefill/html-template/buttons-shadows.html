@@ -33,7 +33,7 @@
           
           return body.results.find(result => {
             return result.type === 'aws' && result.event === 'iot-shadow-get'
-          }).stepResult.data.state.reported.relays
+          }).result.data.state.reported.relays
         })
         .then(relays => {
           Object.keys(relays).map(k => {

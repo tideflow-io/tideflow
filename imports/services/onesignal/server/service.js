@@ -1,4 +1,4 @@
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, buildTemplate } from '/imports/services/_root/server'
 
 import { sendNotification } from './helpers/httpClient'
 import { getOnesignalService } from './helpers/app'
@@ -18,6 +18,10 @@ const service = {
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         try {
+          currentStep.config.segment = buildTemplate(execution, executionLogs, currentStep.config.segment)
+          currentStep.config.title = buildTemplate(execution, executionLogs, currentStep.config.title)
+          currentStep.config.content = buildTemplate(execution, executionLogs, currentStep.config.content)
+
           const appConfig = getOnesignalService(currentStep)
           let data = await sendNotification(appConfig, currentStep)
 

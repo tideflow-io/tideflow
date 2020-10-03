@@ -69,8 +69,6 @@ const service = {
           return
         }
 
-        const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
-
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const agentName =  agent === 'any' ? 'any' : agentDoc.title
@@ -80,9 +78,9 @@ const service = {
           log: logId,
           step: currentStep._id,
           command,
-          previous: attachPrevious ? JSON.stringify(
+          previous: JSON.stringify(
             processableResults(executionLogs, true)
-          ) : null
+          )
         }, 'tf.agent.execute')
 
         cb(null, {
@@ -108,7 +106,6 @@ const service = {
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
-        const attachPrevious = (currentStep.config.inputLast || '') === 'yes'
         const agent = currentStep.config.agent
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const agentName =  agent === 'any' ? 'any' : agentDoc.title
@@ -141,9 +138,9 @@ const service = {
           log: logId,
           step: currentStep._id,
           code: command,
-          previous: attachPrevious ? JSON.stringify(
+          previous: JSON.stringify(
             processableResults(executionLogs, true)
-          ) : null
+          )
         }, 'tf.agent.code_nodesfc')
 
         cb(null, {

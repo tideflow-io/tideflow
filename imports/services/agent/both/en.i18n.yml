@@ -8,13 +8,20 @@ moreDetails: To learn more about the agent service, visit
 events.command.name: Execute a command
 events.command.title: Execute a command in my agent.
 
-events.code_nodesfc.name: Execute a single-file-code
-events.code_nodesfc.title: Execute a single-file-code
+events.code_nodesfc.name: Execute NodeJS sfc
+events.code_nodesfc.title: Execute NodeJS sfc
 
-event.execute.commandFile: File to execute
-event.execute.selectAgent: Which agent must be used
-events.execute.selectOneFile: Select one file
-event.execute.anyAgent: Any agent available
+event.execute:
+  commandFile: 
+    title: Script
+    description: The script to execute. This can be created in the "Files" tab.
+  selectAgent: 
+    title: Agent
+    description: The Tideflow self-hosted runner that will execute the script.
+      This can be created on the "Services" tab.
+  selectOneFile: Select one file
+  anyAgent: Any agent available
+
 service.status.lastSeen: Last seen
 service.status.offline: Offline
 service.status.online: Online
@@ -27,6 +34,24 @@ log.code_nodesfc.sent.success: NodeJS script reported to the agent.
 log.code_nodesfc.sent.error: NodeJS script could not be delivered. Is the agent online?
 log.code_nodesfc.commandfile.error: Could not find the source code file
 
-event.common.attachPreviousStepOutput: Attach the output from the previous step
-event.common.attachPreviousStepOutputYes: Yes
-event.common.attachPreviousStepOutputNo: No
+help:
+  intro: 
+    title: What is it?
+    content: Self-hosted runner let's you run tasks in your own computers and servers.
+    repository: Visit the agent's repository for more information.
+  events:
+    title: Events available
+    command:
+      title: Execute a command
+      description: Tideflow will run a command in your machine. This will be treated as any executable under Windows machine, or a bash script on Linux/macOS.
+      current: 
+        title: Executing a command
+        description: The agent will execute your script passing the parameter "tf_previous_file" pointing to a JSON file containing the previous tasks results.
+        removesAfter: All files are removed when the execution finishes.
+    nodesfc:
+      title: Execute NodeJS sfc
+      description: Invokes a NodeJS script, based on SFC library, which let's you to defined your script dependencies and versions based on code comments (instead of having to deal with "npm" commands)
+      current:
+        title: Executing a NodeJS sfc
+        description: The agent will invoke the NodeJS script. An environment variable "TF_PREVIOUS_FILE" points to a JSON file containing the previous tasks results.
+        removesAfter: All files and your script dependencies are removed when the execution finishes.

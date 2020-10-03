@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-12">
         <h4>{{__ "flows.one.executions.title"}}</h4>
-        {{> flowOneExecutionSmallCardsHorizontal executions=executions}}
+        {{> flowOneExecutionSmallCardsHorizontal teamId=currentTeamId _id=flow._id executions=executions}}
       </div>
     </div>
 

@@ -38,7 +38,7 @@ const stepEventSelectorChanged = function(index, type) {
   if (!selectedStepService) return
   let selectedStepEvent = (selectedStepService.events || []).find(e => e.name === type)
   
-  $(`[name="steps.${index}.event"]`).val(selectedStepService ? type : null)
+  $(`[name="steps.${index}.event"]`).val(type)
   Session.set(`fe-step-${index}-event`, selectedStepEvent || null)
 }
 
@@ -57,6 +57,9 @@ Template.flowEditorStepAvailable.events({
 })
 
 Template.flowEditor.events({
+  'hidden.bs.modal #modal-task-editor': (event, template) => {
+    Session.set('fe-editMode', undefined)
+  },
 
   'click .edit-mode-enter > *, click .edit-mode-enter': (event, template) => {
     let element = $(event.target)
@@ -68,12 +71,7 @@ Template.flowEditor.events({
     const stepIndex = element.data('step')
     if (typeof stepIndex === 'undefined') return
     Session.set('fe-editMode', stepIndex)
-    $('#nav-task-settings-tab').tab('show')
-  },
-
-  'click .edit-mode-leave': (event, template) => {
-    Session.set('fe-editMode', undefined)
-    $('#nav-tasks-tab').tab('show');
+    $('#modal-task-editor').modal('show')
   },
 
   'input #flow-sidebar-step-search input': (event, template) => {
@@ -124,13 +122,13 @@ Template.flowEditor.events({
       }
     })
     Session.set('fe-editMode', undefined)
-    $('#nav-tasks-tab').tab('show');
+    $('#modal-task-editor').modal('hide')
   },
 
   'change .step-event-selector': function(event, template) {
     const newValue = event.currentTarget.value
     let stepIndex = event.currentTarget.dataset.step
-    stepIndex = stepIndex = stepIndex ? parseInt(stepIndex) : null
+    stepIndex = stepIndex ? parseInt(stepIndex) : null
     stepEventSelectorChanged(stepIndex, newValue)
   }
 })
@@ -259,6 +257,7 @@ Template.flowEditor.onRendered(function() {
   Session.set('fe-triggerEventSelected', undefined)
   Session.set('fe-stepSelected', undefined)
   Session.set('fe-editMode', undefined)
+  $('#modal-task-editor').modal('hide')
   let initialized = false
 
   instance.autorun(function () {

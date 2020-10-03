@@ -6,25 +6,62 @@ create.region: Region
 create.accessKeyId: Access key id
 create.accessSecretId: Access secret id
 
-events.selectProfile: Select account profile
+events.selectProfile:
+  title: AWS profile
+  description: Interactions with AWS requires a profile. Create one in the 
+    "Services" section and select it here. AWS will use this to determine your
+    invokation permissions.
 
 events.iot.name: IoT Core
 events.iot.shadow-update.name: '[IoT Core] Update device shadow'
 events.iot.shadow-update.title: '[IoT Core] Update device shadow'
+events.iot.shadow-update.shadow:
+  title: Device shadow
+  description: The state information, in JSON format.
 
 events.iot.shadow-get.name: '[IoT Core] Get device shadow'
 events.iot.shadow-get.title: '[IoT Core] Get device shadow'
 
 events.lambda.invoke.name: '[Lambda] Invoke function'
 events.lambda.invoke.title: '[Lambda] Invoke function'
-events.lambda.invoke.functionName: Function name
+events.lambda.invoke.functionName: 
+  title: Function name
+  description: The name of the lambda function to be invoked.
+events.lambda.invoke.data:
+  title: Invocation data
+  description: The event parameters to pass to the lambda function.
 log.lambda-invoke.ok: 'Lambda function invoked'
 
-events.iot.shadow-update.endpoint: Endpoint
-events.iot.shadow-update.deviceName: Device name
+events.iot.shadow-update.endpoint:
+  title: Endpoint
+  description: An Endpoint object representing the endpoint URL for service
+    requests. It can be found on the "Interact" tab in AWS IoT Core thing
+    administration panel.
+events.iot.shadow-update.deviceName:
+  title: Thing name
+  description: The name of the thing.
 
-events.iot.shadow-get.endpoint: Endpoint
-events.iot.shadow-get.deviceName: Device name
+events.iot.shadow-get.endpoint: 
+  title: Endpoint
+  description: An Endpoint object representing the endpoint URL for service
+    requests. It can be found on the "Interact" tab in AWS IoT Core thing
+    administration panel.
+events.iot.shadow-get.deviceName:
+  title: Thing name
+  description: The name of the thing.
 
 log.iot-shadow-update.ok: Device shadow updated
 log.iot-shadow-get.ok: Device shadow retrieved
+
+help:
+  intro:
+    title: What is it?
+    content: Integrate with your AWS resources, IoT Core devices, etc.
+  events:
+    title: Integrations
+    iot:
+      title: IoT Core
+      content: Manage your Internet Of Things devices shadows.
+    lambda:
+      title: Lambda functions
+      content: Invoke Lambda functions

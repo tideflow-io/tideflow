@@ -19,11 +19,11 @@ const logUpdate = (context, messages, extras) => {
   }
 
   if (messages && messages.length) {
-    push['stepResult.data'] = { $each: (messages||[]).map(l => l.m) }
+    push['result.data'] = { $each: messages.map(l => l.m) }
   }
 
   return ExecutionsLogs.update({_id: log, execution}, {
-    $set: Object.assign({}, extras, { 'stepResult.type': 'array' }),
+    $set: Object.assign({}, extras, { 'result.type': 'array' }),
     $push: push
   })
 }
