@@ -130,7 +130,7 @@ describe('queue/server/index', () => {
     describe('extended test', () => {
       it('should work', () => {
         const input = fullFlow
-        const expected = [0]
+        const expected = [1]
         const result = guessTriggerSingleChilds(input)
         assert.deepEqual(result, expected)
       })
