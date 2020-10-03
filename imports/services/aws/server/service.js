@@ -74,7 +74,9 @@ const service = {
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         currentStep.config.functionName = buildTemplate(execution, executionLogs, currentStep.config.functionName)
-        let data = buildTemplate(execution, executionLogs, currentStep.config.data)
+        let data = buildTemplate(execution, executionLogs, currentStep.config.data, {
+          external: true
+        })
         let invokeData = null
 
         try { 

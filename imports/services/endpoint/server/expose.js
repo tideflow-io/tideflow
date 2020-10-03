@@ -4,7 +4,7 @@ import { Router } from 'meteor/iron:router'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { Executions } from '/imports/modules/executions/both/collection'
 import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
-import { exposeExecutionLogs } from '/imports/services/_root/server'
+import { executionResults } from '/imports/services/_root/server'
 
 import { triggerFlows } from '/imports/queue/server'
 Router.route('/service/endpoint/:uuid', async function () {
@@ -68,7 +68,9 @@ Router.route('/service/endpoint/:uuid', async function () {
 
     const execution = Executions.findOne({_id: firstExecution._id})
 
-    const result = exposeExecutionLogs(executionsLogs)
+    const result = executionResults(execution, executionsLogs, {
+      external: true
+    })
     if (!timedOut) {
       return res.end(JSON.stringify({
         status: execution.status,
@@ -91,7 +93,9 @@ Router.route('/service/endpoint/:uuid', async function () {
               execution: firstExecution._id
             }).fetch()
   
-            const result = exposeExecutionLogs(executionsLogs)
+            const result = executionResults(waitedResult, executionsLogs, {
+              external: true
+            })
   
             return waitedResult ? resolve({
               status: waitedResult.status,

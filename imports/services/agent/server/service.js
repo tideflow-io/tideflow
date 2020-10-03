@@ -2,7 +2,7 @@ import i18n from 'meteor/universe:i18n'
 
 import { Services } from '/imports/modules/services/both/collection'
 import filesLib from '/imports/modules/files/server/lib'
-import { servicesAvailable, processableResults } from '/imports/services/_root/server'
+import { servicesAvailable, executionResults } from '/imports/services/_root/server'
 import { ioTo } from './socket'
 
 const uuidv4 = require('uuid/v4')
@@ -79,7 +79,7 @@ const service = {
           step: currentStep._id,
           command,
           previous: JSON.stringify(
-            processableResults(executionLogs, true)
+            executionResults(execution, executionLogs, {external:true})
           )
         }, 'tf.agent.execute')
 
@@ -139,7 +139,7 @@ const service = {
           step: currentStep._id,
           code: command,
           previous: JSON.stringify(
-            processableResults(executionLogs, true)
+            executionResults(execution, executionLogs, {external:true})
           )
         }, 'tf.agent.code_nodesfc')
 

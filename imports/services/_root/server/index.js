@@ -206,70 +206,6 @@ const flows = {
 module.exports.flows = flows
 
 /**
- * Given a set of executionLogs, return the data that can be publicly available
- * @param {Array} executionLogs 
- */
-const exposeExecutionLogs = executionLogs => {
-  executionLogs = processableResults(executionLogs, true)
-  return executionLogs.map(el => {
-    const { _id, type, event, stepIndex, status, createdAt, result, updatedAt } = el
-    return { _id, type, event, stepIndex, status, createdAt, result, updatedAt }
-  })
-}
-
-module.exports.exposeExecutionLogs = exposeExecutionLogs
-
-/**
- * Given actions execution logs (as taken from the database) return them in a
- * format that can be passed to services like `code` or `agent`, so this
- * services get only the necessary data and that they can get.
- * 
- * For example, some workflow actions generate files. This files can then be
- * passed to other actions that can be either executed locally (in the same server
- * that is running Tideflow) or in external computers. 
- * 
- * This means that such files needs to be accesible externally. 
- * 
- * What this function does is to prepare files to they can be used locally and
- * externally.
- * 
- * @param {array} executionLogs 
- * @param {boolean} external Indicates if the service executing the workflow
- * action is running on an external system. This causes any files to be neede to
- * be returned as an URL that can be reached externally.
- */
-const processableResults = (executionLogs, external) => {
-  if (!executionLogs || !executionLogs.length) return []
-
-  return executionLogs.map(el => {
-    let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = el
-
-    if (!external && result && result.files) { // Store files locally
-      result.files.map(file => {
-        const tmpFileName = `${os.tmpdir}${path.sep}${new Date().getTime()}-${result.data.fileName}`
-        fs.writeFileSync(tmpFileName, result.data.data)
-        file.path = tmpFileName
-        delete file.data
-      })
-    }
-    else if (external && result && result.files) {
-      result.files.map(file => {
-        let token = jwt.sign({
-          exp: Math.floor(Date.now() / 1000) + (60 * 60),
-          data: { _id, execution, flow, step, user, fileName: file.fileName, fieldName: file.fieldName }
-        }, jwtSecret)
-  
-        file.url = `${process.env.ROOT_URL}/download?type=actionFile&token=${token}`
-        delete file.data
-      })
-    }
-    return { _id, stepIndex, type, event, status, createdAt, updatedAt, result }
-  }) // external ? 'external' : 'internal'
-}
-
-module.exports.processableResults = processableResults
-
-/**
  * returns an array of all 'type' results
  * @param {array} executionLogs Original list of step results
  * @param {string} type Type of results to get
@@ -293,15 +229,47 @@ const getResultsTypes = (executionLogs, type) => {
 
 module.exports.getResultsTypes = getResultsTypes
 
-module.exports.buildTemplate = (execution, executionLogs, string) => {
-  try {
-    let data = {}
-    executionLogs.map(el => {
-      let { id, ...others } = el
-      if (!id) id = others.stepIndex
-      data[id] = others
-    })
+const executionResults = (execution, executionLogs, config) => {
+  if (!config) config = {}
 
+  let data = {
+    tasks: {}
+  }
+  if (config.external) {
+    executionLogs.map(log => {
+      let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = log
+
+      if (!result || !result.files) return;
+      result.files.map(file => {
+        let token = jwt.sign({
+          exp: Math.floor(Date.now() / 1000) + (60 * 60),
+          data: { _id, execution, flow, step, user, fileName: file.fileName, fieldName: file.fieldName }
+        }, jwtSecret)
+  
+        file.url = `${process.env.ROOT_URL}/download?type=actionFile&token=${token}`
+        delete file.data
+      })
+    })
+  }
+  else {
+    executionLogs.map(log => {
+      if (log.result.files) log.result.files.map(f => f.data = '...')
+    })
+  }
+  executionLogs.map(el => {
+    let { _id, id, stepIndex, type, event, createdAt, status, result, updatedAt } = el
+    if (!id) id = stepIndex
+    data.tasks[id] = { _id, stepIndex, type, event, createdAt, status, result, updatedAt }
+  })
+  return data
+}
+module.exports.executionResults = executionResults
+
+module.exports.buildTemplate = (execution, executionLogs, string, config) => {
+  if (!config) config = {}
+
+  try {
+    let data = executionResults(execution, executionLogs, config)
     return Handlebars.compile(string)(data)
   }
   catch (ex) {

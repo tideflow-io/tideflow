@@ -39,46 +39,6 @@ const service = {
       inputable: false,
       stepable: true,
       callback: () => { return {} }
-    },
-    {
-      name: 'e4',
-      humanName: 'debug e4',
-      viewerTitle: 's-debug.events.e4.title',
-      inputable: false,
-      stepable: true,
-      callback: () => { return {} }
-    },
-    {
-      name: 'e5',
-      humanName: 'debug e5',
-      viewerTitle: 's-debug.events.e5.title',
-      inputable: false,
-      stepable: true,
-      callback: () => { return {} }
-    },
-    {
-      name: 'e6',
-      humanName: 'debug e6',
-      viewerTitle: 's-debug.events.e6.title',
-      inputable: false,
-      stepable: true,
-      callback: () => { return {} }
-    },
-    {
-      name: 'e7',
-      humanName: 'debug e7',
-      viewerTitle: 's-debug.events.e7.title',
-      inputable: false,
-      stepable: true,
-      callback: () => { return {} }
-    },
-    {
-      name: 'e8',
-      humanName: 'debug e8',
-      viewerTitle: 's-debug.events.e8.title',
-      inputable: false,
-      stepable: true,
-      callback: () => { return {} }
     }
   ]
 }
