@@ -1,6 +1,3 @@
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
 const jwt = require('jsonwebtoken')
 const Handlebars = require('handlebars')
 const jwtSecret = require('/imports/download/server/secret')
@@ -156,8 +153,7 @@ const flows = {
           newFlow.trigger = executeFlowHook(triggerService, 'trigger', 'update', 'pre', [originalFlow, newFlow], 'new')
         }
       }
-      // Todo bien
-      // TODO: Steps hooks
+      
       return newFlow
     },
     post: (originalFlow, newFlow) => {
@@ -177,7 +173,7 @@ const flows = {
           newFlow.trigger = executeFlowHook(triggerService, 'trigger', 'update', 'post', [originalFlow, newFlow], 'new')
         }
       }
-      // TODO: Steps hooks
+      
       return newFlow
     }
   },
@@ -188,7 +184,6 @@ const flows = {
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)
       if (!triggerService) throw new Error('Service not found')
       flow.trigger = executeFlowHook(triggerService, 'trigger', 'delete', 'pre', [flow], 'original')
-      // TODO: Steps hooks
       return flow
     },
     post: (flow) => {
@@ -197,7 +192,6 @@ const flows = {
       let triggerService = servicesAvailable.find(service => service.name === flow.trigger.type)
       if (!triggerService) throw new Error('Service not found')
       flow.trigger = executeFlowHook(triggerService, 'trigger', 'delete', 'post', [flow], 'original')
-      // TODO: Steps hooks
       return flow
     }
   }

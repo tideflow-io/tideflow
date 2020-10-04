@@ -26,7 +26,6 @@ const service = {
   stepable: false,
   ownable: true,
   hooks: {
-    // step: {},
     // trigger: {}
     service: {
       create: {

@@ -52,7 +52,6 @@ const service = {
   ownable: false,
   hooks: {
     // service: {},
-    // step: {},
     // trigger: {}
   },
   events: [

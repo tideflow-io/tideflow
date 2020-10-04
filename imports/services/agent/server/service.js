@@ -15,7 +15,6 @@ const service = {
   ownable: true,
   templates: {},
   hooks: {
-    // step: {},
     // trigger: {}
     service: {
       create: {

@@ -13,7 +13,6 @@ const service = {
   templates: {
   },
   hooks: {
-    // step: {},
     // trigger: {}
     service: {
       create: {

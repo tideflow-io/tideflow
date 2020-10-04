@@ -27,29 +27,48 @@ import schema from '../both/schemas/schema.js'
  * 
  * This prevents attackers from making use of other teams owned resources.
  * 
+ * https://github.com/tideflow-io/tideflow/issues/92
+ * 
  * @param {Object} flow 
  * @param {String} teamId
  */
 const checkIntegrationsPermission = (flow, teamId) => {
   if (!flow || !teamId) return false
 
-  const { trigger, steps } = flow
-
+  // Hold the list of ownable services to validate
   let ownableServices = []
 
+  const { trigger, steps } = flow
+
+  let triggerService = servicesAvailable.find(sa => {
+    return sa.name === trigger.type && sa.ownable === true
+  })
+  
+  console.log(JSON.stringify({triggerService}, ' ', 2))
+
+  if (triggerService) { // validate the integration shares workflow's team
+    ownableServices.push({
+      type: triggerService.type,
+      _id: trigger._id
+    })
+  }
+
   steps.map(step => {
-    let service = servicesAvailable.find(sa => {
+    let taskService = servicesAvailable.find(sa => {
       return sa.name === step.type && sa.ownable === true
     })
 
-    if (!service) return false
+    if (!taskService) return false
     if (!step.config || !step.config._id) return false
 
-    ownableServices.push({
-      type: service.name,
+    ownableServices.push({ // validate the integration shares workflow's team
+      type: taskService.name,
       _id: step.config._id
     })
   })
+
+  // No services to check. So user can proceed
+  if (!ownableServices.length) return true
 
   let count = Services.find({
     $and: [
