@@ -39,7 +39,7 @@ const service = {
         let string = null
 
         try {
-          string = await filesLib.getOneAsString({ _id: currentStep.config.ymlFile })
+          string = await filesLib.getOneAsString({ _id: currentStep.config._id })
           debug('Scraping definition: loaded')
         }
         catch (ex) {

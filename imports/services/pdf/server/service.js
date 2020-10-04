@@ -64,7 +64,7 @@ const service = {
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         try {
-          const file = await filesLib.getOne({ _id: currentStep.config.file })
+          const file = await filesLib.getOne({ _id: currentStep.config._id })
           const fileAsString = await filesLib.getOneAsString({ _id: file._id })
 
           let string = buildTemplate(execution, executionLogs, fileAsString)

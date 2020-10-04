@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <select class="form-control" data-schema-key="{{stepConfigName 'file'}}" name="{{stepConfigName 'file'}}">
+      <select class="form-control" data-schema-key="{{stepConfigName '_id'}}" name="{{stepConfigName '_id'}}">
         <option value="">{{__ "s-pdf.event.create-from-html.file.selectOne"}}</option>
         {{#each files}}
-          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'file' this._id}}>{{__ this.name}}</option>
+          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index '_id' this._id}}>{{__ this.name}}</option>
         {{/each}}
       </select>
       {{> helpUsesTemplates}}

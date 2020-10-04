@@ -59,7 +59,7 @@ const service = {
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         try {
           const file = await filesLib.getOne({
-            _id: currentStep.config.file
+            _id: currentStep.config._id
           })
           let fileAsString = await filesLib.getOneAsString({
             _id: file._id

@@ -9,13 +9,59 @@ import {
 } from '/imports/services/_root/server'
 import { pick } from '/imports/helpers/both/objects'
 
+import { Services } from '../../services/both/collection'
 import { Flows } from '../both/collection'
 import { Executions } from '../../executions/both/collection'
 import { ExecutionsLogs } from '../../executionslogs/both/collection'
 
 import { isMember } from '../../_common/both/teams'
+import { servicesAvailable } from '/imports/services/_root/server'
 
 import schema from '../both/schemas/schema.js'
+
+/**
+ * SECURITY!
+ * 
+ * Given a flow, determine if the current logged in user have access to the
+ * services the flow integrates with.
+ * 
+ * This prevents attackers from making use of other teams owned resources.
+ * 
+ * @param {Object} flow 
+ * @param {String} teamId
+ */
+const checkIntegrationsPermission = (flow, teamId) => {
+  if (!flow || !teamId) return false
+
+  const { trigger, steps } = flow
+
+  let ownableServices = []
+
+  steps.map(step => {
+    let service = servicesAvailable.find(sa => {
+      return sa.name === step.type && sa.ownable === true
+    })
+
+    if (!service) return false
+    if (!step.config || !step.config._id) return false
+
+    ownableServices.push({
+      type: service.name,
+      _id: step.config._id
+    })
+  })
+
+  let count = Services.find({
+    $and: [
+      { team: teamId },
+      {
+        $or: ownableServices
+      }
+    ]
+  }).count()
+
+  return ownableServices.length === count
+}
 
 export const createFlow = new ValidatedMethod({
   name: 'flows.create',
@@ -25,10 +71,8 @@ export const createFlow = new ValidatedMethod({
 
     if (!isMember(Meteor.userId(), flow.team)) throw new Meteor.Error('no-access')
 
-    // SECURITY:
-    // This can not contain the flow.trigger.secrets, and it's meant to contain
-    // details uniquely created by the server.
-    // flow = _.omit(flow, ['flow.trigger.secrets'])
+    // Check if the user is using other teams services
+    if (!checkIntegrationsPermission(flow, flow.team)) throw new Meteor.Error('no-access')
 
     // Some hooks may need to have a pre-defined _id
     flow._id = Random.id()
@@ -52,7 +96,6 @@ export const updateFlow = new ValidatedMethod({
   validate: schema.validator(),
 
   /**
-   * 
    * @param {Object} flow Contains the flow, as it came from the client, and after
    * model validation
    */
@@ -68,12 +111,13 @@ export const updateFlow = new ValidatedMethod({
     // grab it first.
     let originalFlow = Flows.findOne({_id: flow._id})
 
-    if (!originalFlow) {
-      throw new Meteor.Error('not-found')
-    }
+    if (!originalFlow) throw new Meteor.Error('not-found')
 
     // Check if the user can update the flow
     if (!isMember(Meteor.userId(), originalFlow.team)) throw new Meteor.Error('no-access')
+
+    // Check if the user is using other teams services
+    if (!checkIntegrationsPermission(flow, originalFlow.team)) throw new Meteor.Error('no-access')
 
     // Now we need to build the hook's new object
   

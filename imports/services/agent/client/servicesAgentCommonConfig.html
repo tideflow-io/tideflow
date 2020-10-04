@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <select class="form-control" data-schema-key="{{stepConfigName 'agent'}}" name="{{stepConfigName 'agent'}}">
-        <option value="any" {{stepConfigValueSelected 'agent' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
+      <select class="form-control" data-schema-key="{{stepConfigName '_id'}}" name="{{stepConfigName '_id'}}">
+        <option value="any" {{stepConfigValueSelected '_id' 'any'}}>{{__ "s-agent.event.execute.anyAgent"}}</option>
         {{#each registeredAgents}}
-          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'agent' _id}}>{{title}}</option>
+          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index '_id' _id}}>{{title}}</option>
         {{/each}}
       </select>
     </div>
