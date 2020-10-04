@@ -44,8 +44,6 @@ const checkIntegrationsPermission = (flow, teamId) => {
     return sa.name === trigger.type && sa.ownable === true
   })
   
-  console.log(JSON.stringify({triggerService}, ' ', 2))
-
   if (triggerService) { // validate the integration shares workflow's team
     ownableServices.push({
       type: triggerService.type,
