@@ -22,6 +22,15 @@ const service = {
   ownable: false,
   hooks: {
     trigger: {
+      create: {
+        pre: (previousFlow, newFlow, toBeReturned) => {
+          if (toBeReturned !== 'original') return previousFlow.trigger
+
+          let alreadyExists = ensureUniqueEndpoint(previousFlow.trigger.config.endpoint)
+          if (alreadyExists) throw new Meteor.Error('trigger-already-used')
+          return previousFlow.trigger
+        }
+      },
       update: {
         pre: (previousFlow, newFlow, toBeReturned) => {
           if (toBeReturned !== 'new') return previousFlow.trigger
