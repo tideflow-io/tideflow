@@ -14,6 +14,7 @@
 }
 #modal-task-editor .modal-body {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #modal-task-editor .sidebar {
