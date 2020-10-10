@@ -1,7 +1,7 @@
 _namespace: files
 index:
   title: Files
-  subtitle: Connect and collect files into your processes
+  subtitle: Integrate and collect files into your processes
   createNew: New file...
   emptyListDescription: It seems your team haven't created any file yet.
 
