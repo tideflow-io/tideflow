@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Parse URL parameters</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"></script>
+    <script>
+      const showUrl = url => {
+        $('#url').text(JSON.stringify(url, ' ', 2));
+      }
+      const showSearch = search => {
+        $('#search').text(JSON.stringify(search, ' ', 2));
+      }
+      const showQr = fullUrl => {
+        $('#qr img.small').attr('src', `https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=${encodeURIComponent(fullUrl)}&choe=UTF-8`)
+        $('#qr img.mid').attr('src', `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(fullUrl)}&choe=UTF-8`)
+        $('#qr img.large').attr('src', `https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=${encodeURIComponent(fullUrl)}&choe=UTF-8`)
+      }
+
+      const paramsToObject = entries => {
+        let result = {}
+        for (let entry of entries) { // each 'entry' is a [key, value] tupple
+          const [key, value] = entry;
+          result[key] = value;
+        }
+        return result;
+      }
+
+      $(document).ready(function () {
+        const url = new URL(window.location.href);
+        const urlProperties = {
+          href: url.href,
+          protocol: url.protocol,
+          host: url.host,
+          host: url.host,
+          port: url.port,
+          pathname: url.pathname,
+          search: url.search,
+          hash: url.hash
+        }
+
+        const queryParameters = paramsToObject(new URLSearchParams(url.search))
+
+        showSearch(queryParameters)
+        showUrl(urlProperties)
+        showQr(url.href)
+      });
+    </script>
+  </head>
+
+  <body>
+    <main role="main" class="flex-shrink-0">
+      <div class="container pt-5">
+        <div class="row mb-3">
+          <div class="col-12">
+            <h1>URL parsing</h1>
+            <div class="callout">
+              <h4>Extracting data from Urls</h4>
+              <p>This example shows you how to extract data from the browser's url. This can be useful in many cases. For
+                example, when you create multiple QR codes, with different parameters, but having all of them pointing to
+                the same base URL.</p>
+              <p>This page will show you any URL parameter. Including full url,
+                <span class="hl green">protocol</span>,
+                <span class="hl blue">port</span>,
+                <span class="hl orange">path</span>,
+                <span class="hl indian">hash</span>,
+                <span class="hl navy">query parameters</span>,
+                etc.</p>
+              <p>
+                <span class="hl green">http:</span>//example.com:<span class="hl blue">3000</span><span
+                  class="hl orange">/page</span><span class="hl navy">?query=text</span><span
+                  class="hl indian">#123</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <h2>URL</h2>
+            <pre id="url"></pre>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2>Query parameters</h2>
+            <pre id="search"></pre>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2>Current URL qr code</h2>
+            <div id="qr">
+              <img class="large" />
+              <img class="mid" />
+              <img class="small" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <style>
+    pre {
+      background: #00212B;
+      color: white !important;
+      padding: 2em;
+      border-radius: 10px;
+    }
+
+    .callout {
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #aaaccc;
+      border-left-width: 5px;
+      border-radius: 5px;
+      border-left-color: #5bc0de;
+    }
+
+    .callout p:last-child { margin-bottom: 0; }
+
+    .hl { font-weight: bold;}
+    .green { color: green;}
+    .blue { color: blue;}
+    .indian { color: indianred;}
+    .orange { color: orange;}
+    .navy { color: navy;}
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</html>
