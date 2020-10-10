@@ -1,0 +1,9 @@
+{
+  "id": "html-barcode-scanner",
+  "name": "Javascript Barcode Scanner",
+  "description": "Mobile friendly barcode scanner powered by quagga",
+  "fileName": "barcode-scanner.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}
