@@ -36,16 +36,35 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
-        currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
-        
-        let client = await iotData(currentStep, execution)
-
-        client.getThingShadow({
-          thingName: currentStep.config.thingName
-        }, (err, data) => {
-          awsResponse(err, data ? JSON.parse(data.payload) : null, 's-aws.log.iot-shadow-get.ok', cb)
-        })
+        try {
+          currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
+          currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
+          
+          let client = await iotData(currentStep, execution)
+  
+          client.getThingShadow({
+            thingName: currentStep.config.thingName
+          }, (err, data) => {
+            awsResponse(err, data ? JSON.parse(data.payload) : null, 's-aws.log.iot-shadow-get.ok', cb)
+          })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: true,
+            error: true,
+            msgs: [{
+              m: 's-aws.log.iot-shadow-get.error',
+              d: new Date(),
+              e: true
+            },
+            {
+              m: ex.message,
+              d: new Date(),
+              e: true
+            }]
+          })
+        }
       }
     },
     {
@@ -54,17 +73,38 @@ const service = {
         runInOneGo: true
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
-        currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
-        currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
-        let shadowData = buildTemplate(execution, executionLogs, currentStep.config.shadow)
-
-        let client = await iotData(currentStep, execution)
-        client.updateThingShadow({
-          thingName: currentStep.config.thingName,
-          payload: Buffer.from(JSON.stringify(shadowData))
-        }, (err, data) => {
-          awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-update.ok', cb)
-        })
+        try {
+          currentStep.config.thingName = buildTemplate(execution, executionLogs, currentStep.config.thingName)
+          currentStep.config.endpoint = buildTemplate(execution, executionLogs, currentStep.config.endpoint)
+          let shadowData = buildTemplate(execution, executionLogs, currentStep.config.shadow)
+          shadowData = JSON.parse(shadowData)
+  
+          let client = await iotData(currentStep, execution)
+          client.updateThingShadow({
+            thingName: currentStep.config.thingName,
+            payload: Buffer.from(JSON.stringify(shadowData))
+          }, (err, data) => {
+            awsResponse(err, JSON.parse(data.payload), 's-aws.log.iot-shadow-update.ok', cb)
+          })
+        }
+        catch (ex) {
+          cb(null, {
+            result: {},
+            next: true,
+            error: true,
+            msgs: [{
+              m: 's-aws.log.iot-shadow-update.error',
+              d: new Date(),
+              e: true
+            },
+            {
+              m: ex.message,
+              d: new Date(),
+              e: true
+            }]
+          })
+        }
+        
       }
     },
     {
