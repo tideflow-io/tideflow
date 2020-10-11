@@ -26,7 +26,6 @@ const service = {
   stepable: false,
   ownable: true,
   hooks: {
-    // step: {},
     // trigger: {}
     service: {
       create: {
@@ -74,7 +73,7 @@ const service = {
        */
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow, fullService, triggerData } = execution
-        const agent = currentStep.config.agent
+        const agent = currentStep.config._id
         const webhook = triggerData.data
 
         const commandSent = sendAgent(agent, fullFlow, execution, logId, currentStep, 'tf.githubCi.pullRequest', {
@@ -98,7 +97,7 @@ const service = {
 
       executionFinished: async (user, execution, cb) => {
         const { fullFlow } = execution
-        const commandSent = sendAgent(fullFlow.trigger.config.agent, fullFlow, execution, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
+        const commandSent = sendAgent(fullFlow.trigger.config._id, fullFlow, execution, null, null, 'tf.githubCi.pullRequest.execution.finished', {})
         cb(!commandSent, null)
       }
     },
@@ -123,7 +122,7 @@ const service = {
        */
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullService, fullFlow, triggerData } = execution
-        const agentId = fullFlow.trigger.config.agent
+        const agentId = fullFlow.trigger.config._id
         const webhook = triggerData.data
         const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.push', {
           triggerService: fullService,
@@ -146,7 +145,7 @@ const service = {
 
       executionFinished: async (user, execution, cb) => {
         const { fullFlow } = execution
-        const agentId = fullFlow.trigger.config.agent
+        const agentId = fullFlow.trigger.config._id
         const commandSent = sendAgent(agentId, fullFlow, execution, null, null, 'tf.githubCi.push.execution.finished', {})
         cb(!commandSent, null)
       }
@@ -174,7 +173,7 @@ const service = {
         const { fullService, fullFlow } = execution
         const webhook = execution.triggerData.data
 
-        const agentId = fullFlow.trigger.config.agent
+        const agentId = fullFlow.trigger.config._id
         const commandSent = sendAgent(agentId, fullFlow, execution, logId, currentStep, 'tf.githubCi.checksuite', {
           triggerService: fullService,
           webhook
@@ -209,7 +208,7 @@ const service = {
         const webhook = execution.triggerData.data
         const checkRun = execution.extras.checkRun
         const conclusion = status === 'finished' ? 'success' : status === 'error' ? 'failure' : 'neutral'
-        const commandSent = sendAgent(fullFlow.trigger.config.agent, fullFlow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
+        const commandSent = sendAgent(fullFlow.trigger.config._id, fullFlow, execution, null, null, 'tf.githubCi.checksuite.execution.finished', {})
         await updateCheckrun(fullService, webhook, checkRun, 'completed', conclusion)
         cb(!commandSent, null)
       }
@@ -238,7 +237,7 @@ const service = {
        */
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow, triggerData } = execution
-        const agentId = fullFlow.trigger.config.agent
+        const agentId = fullFlow.trigger.config._id
         const webhook = triggerData.data
 
         const cmd = await filesLib.getOneAsString({ _id: currentStep.config.cmdFile })

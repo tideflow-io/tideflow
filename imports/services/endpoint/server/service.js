@@ -1,16 +1,45 @@
 import i18n from 'meteor/universe:i18n'
 
 import { servicesAvailable } from '/imports/services/_root/server'
+import { Flows } from '/imports/modules/flows/both/collection'
+
+const ensureUniqueEndpoint = (endpoint, flowId) => {
+  let q = {
+    'trigger.type': 'endpoint',
+    'trigger.config.endpoint': endpoint
+  }
+
+  if (flowId) q._id = { $ne: flowId }
+
+  return Flows.findOne(q)
+}
 
 const service = {
   name: 'endpoint',
   humanName: i18n.__('s-endpoint.name'),
   inputable: true,
   stepable: false,
-  ownable: true,
+  ownable: false,
   hooks: {
-    // step: {},
-    // trigger: {}
+    trigger: {
+      create: {
+        pre: (previousFlow, newFlow, toBeReturned) => {
+          if (toBeReturned !== 'original') return previousFlow.trigger
+
+          let alreadyExists = ensureUniqueEndpoint(previousFlow.trigger.config.endpoint)
+          if (alreadyExists) throw new Meteor.Error('trigger-already-used')
+          return previousFlow.trigger
+        }
+      },
+      update: {
+        pre: (previousFlow, newFlow, toBeReturned) => {
+          if (toBeReturned !== 'new') return previousFlow.trigger
+          let alreadyExists = ensureUniqueEndpoint(newFlow.trigger.config.endpoint, newFlow._id)
+          if (alreadyExists) throw new Meteor.Error('trigger-already-used')
+          return newFlow.trigger
+        }
+      }
+    },
     /* service: {
       create: {
         pre: (service) => {

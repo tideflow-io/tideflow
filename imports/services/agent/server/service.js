@@ -15,7 +15,6 @@ const service = {
   ownable: true,
   templates: {},
   hooks: {
-    // step: {},
     // trigger: {}
     service: {
       create: {
@@ -69,7 +68,7 @@ const service = {
           return
         }
 
-        const agent = currentStep.config.agent
+        const agent = currentStep.config._id
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const agentName =  agent === 'any' ? 'any' : agentDoc.title
         const commandSent = ioTo(agentDoc, {
@@ -106,7 +105,7 @@ const service = {
       },
       callback: async (user, currentStep, executionLogs, execution, logId, cb) => {
         const { fullFlow } = execution
-        const agent = currentStep.config.agent
+        const agent = currentStep.config._id
         const agentDoc = agent === 'any' ? 'any' : Services.findOne({_id: agent})
         const agentName =  agent === 'any' ? 'any' : agentDoc.title
 

@@ -59,6 +59,9 @@ AutoForm.addHooks(['updateFlowForm'], {
   },
   after: {
     method: (error, result) => {
+      if (error) {
+        return;
+      }
       jsPlumb.ready(function() {
         jsPlumbUtil.logEnabled = false
         $('#flow-editor .card').remove()

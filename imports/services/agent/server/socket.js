@@ -61,6 +61,7 @@ Meteor.startup(async () => {
   // New client
   io.on('connection', async (socket) => {
     let auth = socket.tf
+
     await Services.update(
       { _id: auth._id },
       { 
@@ -73,6 +74,17 @@ Meteor.startup(async () => {
     )
     
     socket.emit('tf.authz', auth)
+
+    socket.on('clientConfig', async message => {
+      await Services.update(
+        { _id: auth._id },
+        { 
+          $set: {
+            'details': Object.assign({}, message, {online: true})
+          }
+        }
+      )
+    })
 
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.

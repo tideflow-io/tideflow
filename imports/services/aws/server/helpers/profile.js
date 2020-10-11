@@ -1,12 +1,12 @@
 import { Services } from '/imports/modules/services/both/collection'
 
 module.exports.getAwsProfile = (currentStep, execution) => {
-  if (!currentStep.config || !currentStep.config.profile) {
+  if (!currentStep.config || !currentStep.config._id) {
     throw new Error('credentials-not-available')
   }
 
   const credentialService = Services.findOne({
-    _id: currentStep.config.profile,
+    _id: currentStep.config._id,
     team: execution.fullFlow.team
   })
 

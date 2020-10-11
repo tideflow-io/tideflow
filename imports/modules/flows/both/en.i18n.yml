@@ -21,6 +21,8 @@ update:
   error:
     validation: Your workflow can not be updated. Please check trigger and tasks.
     generic: There was a problem updating your workflow.
+errors:
+  identicalTrigger: There's already a trigger with the same configuration.
 editor:
   help:
     usesTemplates: Uses templating system.

@@ -11,9 +11,9 @@
 
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
       <div class="form-group">
-        <select class="form-control" data-schema-key="{{stepConfigName 'application'}}" name="{{stepConfigName 'application'}}">
+        <select class="form-control" data-schema-key="{{stepConfigName '_id'}}" name="{{stepConfigName '_id'}}">
           {{#each registeredApplications}}
-            <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'application' _id}}>{{title}}</option>
+            <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index '_id' _id}}>{{title}}</option>
           {{/each}}
         </select>
       </div>
