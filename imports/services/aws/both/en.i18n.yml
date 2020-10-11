@@ -18,6 +18,8 @@ events.iot.shadow-update.title: '[IoT Core] Update device shadow'
 events.iot.shadow-update.shadow:
   title: Device shadow
   description: The state information, in JSON format.
+  example:
+    load: Load an example
 
 events.iot.shadow-get.name: '[IoT Core] Get device shadow'
 events.iot.shadow-get.title: '[IoT Core] Get device shadow'
@@ -51,7 +53,9 @@ events.iot.shadow-get.deviceName:
   description: The name of the thing.
 
 log.iot-shadow-update.ok: Device shadow updated
+log.iot-shadow-update.error: Error updating device shadow
 log.iot-shadow-get.ok: Device shadow retrieved
+log.iot-shadow-get.error: Error retrieving device shadow
 
 help:
   intro:

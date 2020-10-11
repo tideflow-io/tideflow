@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <select class="form-control" name="{{stepConfigName 'ymlFile'}}" data-schema-key="{{stepConfigName 'ymlFile'}}">
+      <select class="form-control" name="{{stepConfigName '_id'}}" data-schema-key="{{stepConfigName '_id'}}">
         <option value="">{{__ "s-webparsy.events.scrape.selectOneFile"}}</option>
         {{#each files}}
-          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index 'ymlFile' this._id}}>{{__ this.name}}</option>
+          <option value="{{this._id}}" {{stepConfigValueSelectedEach ../steps ../index '_id' this._id}}>{{__ this.name}}</option>
         {{/each}}
       </select>
     </div>

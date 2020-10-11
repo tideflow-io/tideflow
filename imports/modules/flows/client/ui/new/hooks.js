@@ -60,6 +60,10 @@ AutoForm.addHooks(['insertFlowForm'], {
   },
   after: {
     method: (error, result) => {
+      if (error.error === 'trigger-already-used') {
+        return sAlert.error(i18n.__('flows.errors.identicalTrigger'))
+      }
+      
       jsPlumb.ready(function() {
         jsPlumbUtil.logEnabled = false
         $('#flow-editor .card').remove()

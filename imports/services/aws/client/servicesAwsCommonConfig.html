@@ -9,9 +9,9 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <select class="form-control" data-schema-key="{{stepConfigName 'profile'}}" name="{{stepConfigName 'profile'}}">
+      <select class="form-control" data-schema-key="{{stepConfigName '_id'}}" name="{{stepConfigName '_id'}}">
         {{#each registeredProfiles}}
-          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index 'profile' _id}}>{{title}}</option>
+          <option value="{{_id}}" {{stepConfigValueSelectedEach ../steps ../index '_id' _id}}>{{title}}</option>
         {{/each}}
       </select>
     </div>

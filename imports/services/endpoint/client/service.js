@@ -12,7 +12,6 @@ const service = {
   },
   hooks: {
     // service: {},
-    // step: {},
     // trigger: {}
   },
   events: [

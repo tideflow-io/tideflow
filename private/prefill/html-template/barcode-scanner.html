@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Parse URL parameters</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+  <style>
+    .scan {
+      height: 200px;
+      width: 200px;
+      border-radius: 100px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #2590EB;
+      overflow: hidden;
+      background: white;
+      background-size: 100% 200%;
+      transition: all 1s;
+      color: #2590EB;
+      font-size: 100px;
+    }
+
+    .scan input[type='file'] {
+      height: 200px;
+      width: 200px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    #results pre {
+      background: black;
+      color: white;
+    }
+  </style>
+
+</head>
+
+<body>
+  <script>
+    $(function () {
+      const SEND_RESULT_TO = 'http://localhost:3000/service/endpoint/33333x'
+
+      const fileToBase64 = file => {
+        return new Promise((resolve, reject) => {
+          var reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            resolve(reader.result)
+          };
+          reader.onerror = (error) => {
+            reject(error)
+          };
+        })
+      }
+
+      const getBarcode = base64Image => {
+        return new Promise((resolve, reject) => {
+          try {
+            Quagga
+              .decodeSingle({
+                numOfWorkers: 3,
+                decoder: {
+                  readers: ["code_128_reader"] // List of active readers
+                },
+                locate: true, // try to locate the barcode in the image
+                src: base64Image
+              }, (result) => {
+                resolve(result && result.codeResult ? result.codeResult.code : null)
+              })
+          } catch (e) {
+            reject(e)
+          }
+        })
+      }
+
+      const processScan = file => {
+        $('.results').removeClass('d-none')
+        fileToBase64(file)
+          .then(imageData => getBarcode(imageData))
+          .then(barcode => {
+            if (!barcode) { throw 'barcode-not-recognized' } 
+            return barcode
+          })
+          .then(barcode => {
+            $('#barcode').text(barcode)
+              $.post(SEND_RESULT_TO, { barcode }, function( data ) {
+                $('#results pre').text(JSON.stringify(data, ' ', 2))
+            }, "json")
+            .fail(function() {
+              throw 'request-failed'
+            })
+          })
+          .catch(ex => {
+            if(typeof ex === 'string') {
+              if (ex.includes('barcode')) { return $('#barcode').text(ex) }
+              if (ex.includes('request')) { return $('#results pre').text(ex) }
+            }
+            console.log({ex})
+            alert('There was an error.')
+          })
+      }
+
+      $("#file").change(function (event) {
+        event.preventDefault();
+        processScan(
+          document.querySelector('#file').files[0]
+        )
+      });
+    });
+  </script>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 pt-5 mx-auto">
+        <h2 class="text-center mb-4">Tap to start</h2>
+        <form enctype="multipart/form-data" class="scan mx-auto" id="upload-form">
+          <input id="file" name="file" type="file" accept="image/*" capture="camera">
+          <i class="fas fa-scanner"></i>
+        </form>
+      </div>
+    </div>
+    <div class="row results d-none">
+      <div class="col-12 pt-5">
+        <div class="card mb-3">
+          <div class="card-header">Barcode</div>
+          <div class="card-body" id="barcode"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">Endpoint response</div>
+          <div class="card-body p-0" id="results">
+            <pre class="mb-0 p-3"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

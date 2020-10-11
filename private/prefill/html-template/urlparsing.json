@@ -1,0 +1,9 @@
+{
+  "id": "html-url-parsing",
+  "name": "Parse URL parameters",
+  "description": "Example on how to parse all URL aspects",
+  "fileName": "urlparsing.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}
