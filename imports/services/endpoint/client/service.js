@@ -4,7 +4,6 @@ const service = {
   name: 'endpoint',
   humanName: 's-endpoint.name',
   description: 's-endpoint.description',
-  website: 'https://docs.tideflow.io/docs/services-endpoints',
   icon: 'fa fa-server',
   iconColor: '#563D7C',
   ownable: false,

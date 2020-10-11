@@ -4,7 +4,6 @@ const service = {
   name: 'gh-ci',
   humanName: 's-gh-ci.name',
   description: 's-gh-ci.description',
-  website: 'https://docs.tideflow.io/docs/services-gh-ci',
   icon: 'fab fa-github',
   iconColor: '#CCC',
   inputable: true,

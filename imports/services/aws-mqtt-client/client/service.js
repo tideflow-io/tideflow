@@ -4,7 +4,6 @@ const service = {
   name: 'aws-mqtt-client',
   humanName: 's-aws-mqtt-client.name',
   description: 's-aws-mqtt-client.description',
-  website: 'https://docs.tideflow.io/docs/services-aws-mqtt-client',
   icon: 'fas fa-satellite-dish',
   iconColor: '#59105C',
   ownable: true,

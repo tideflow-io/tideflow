@@ -4,7 +4,6 @@ const service = {
   name: 'onesignal',
   humanName: 's-onesignal.name',
   description: 's-onesignal.description',
-  website: 'https://docs.tideflow.io/docs/services-onesignal',
   icon: 'fab fa-onesignal',
   icon_image: 'onesignal/tiny_icon.png',
   iconColor: '#F8981D',

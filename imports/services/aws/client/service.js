@@ -4,7 +4,6 @@ const service = {
   name: 'aws',
   humanName: 's-aws.name',
   description: 's-aws.description',
-  website: 'https://docs.tideflow.io/docs/services-aws',
   icon: 'fab fa-aws',
   iconColor: '#F8981D',
   ownable: true,

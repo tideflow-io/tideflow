@@ -4,7 +4,6 @@ const service = {
   name: 'webparsy',
   humanName: 's-webparsy.name',
   description: 's-webparsy.description',
-  website: 'https://docs.tideflow.io/docs/services-webparsy',
   icon: 'fab fa-chrome',
   iconColor: '#1E6DA5',
   ownable: false,
