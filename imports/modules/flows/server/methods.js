@@ -51,7 +51,7 @@ const checkIntegrationsPermission = (flow, teamId) => {
     })
   }
 
-  steps.map(step => {
+  (steps||[]).map(step => {
     let taskService = servicesAvailable.find(sa => {
       return sa.name === step.type && sa.ownable === true
     })
