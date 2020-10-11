@@ -29,7 +29,6 @@ image you want to attach to your emails, to storing an screenshot taken from a
 website scraped via WebParsy integration.
 
 - [More about files feature](https://docs.tideflow.io/docs/files)
-- [More about WebParsy integration](https://docs.tideflow.io/docs/services-webparsy)
 
 ## Run actions in your own computers
 
@@ -37,7 +36,7 @@ Tideflow's agent allows you to run workflows actions in your own infrastructure.
 Either if it's for running an arbitrary command from your personal computer, or
 building and deploying after pushing to GitHub from your office's server.
 
-- [More about the agent](https://docs.tideflow.io/docs/services-agent)
+- [More about the agent](https://github.com/tideflow-io/tideflow-agent)
 
 ## Automate complex processes
 
