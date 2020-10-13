@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Buttons Shadows</title>
+  <title>Bootstrap AWS IoT Core Device Shadows</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script
-    src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
-    integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
-    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"></script>
 
   <script>
     const URL_TO_GET_SHADOW = ''
@@ -31,11 +28,22 @@
         .then(body => {
           if (body.status !== 'finished') throw 'queued'
           
-          return body.results.find(result => {
-            return result.type === 'aws' && result.event === 'iot-shadow-get'
-          }).result.data.state.reported.relays
+          let iotShadowStep = Object.keys(body.results.tasks).find(t => {
+            return body.results.tasks[t].event === 'iot-shadow-get'
+          })
+          
+          if (!iotShadowStep) throw 'no-shadow'
+          
+          try {
+            return body.results.tasks[iotShadowStep].result.data.state.desired.relays || {}
+          }
+          catch (e) {
+            console.log({e})
+            return {}
+          }
         })
         .then(relays => {
+          $('button').each(function(){ disableBtn($(this)) })
           Object.keys(relays).map(k => {
             const state = relays[k]
             const button = $(`button[data-number="${k}"]`)
@@ -52,7 +60,8 @@
         return fetch(URL_TO_SET_SHADOW, {
           method: 'POST', // or 'PUT'
           body: JSON.stringify({
-            desired: { relays }
+            relay: n,
+            status: status
           }),
           headers:{
             'Content-Type': 'application/json'
