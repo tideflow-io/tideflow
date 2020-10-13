@@ -60,7 +60,7 @@ AutoForm.addHooks(['insertFlowForm'], {
   },
   after: {
     method: (error, result) => {
-      if (error.error === 'trigger-already-used') {
+      if (error && error.error === 'trigger-already-used') {
         return sAlert.error(i18n.__('flows.errors.identicalTrigger'))
       }
       
