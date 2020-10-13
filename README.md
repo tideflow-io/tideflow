@@ -1,5 +1,7 @@
 # <a href='https://tideflow.io'><img src='https://raw.githubusercontent.com/tideflow-io/tideflow/b7d354c8d08d5934dcd2d351951eba29d84ed8dd/readme.jpg' width='260' alt='Tideflow.io'></a>
 
+> Building extensible automation. Tideflow is a Realtime, open source workflows execution and monitorization web application.
+
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/tideflow-io/tideflow.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/tideflow-io/tideflow/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/tideflow-io/tideflow.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/tideflow-io/tideflow/context:javascript)
 
 > Using Tideflow, you can design, automate and monitor your workflows in realtime.
@@ -7,12 +9,7 @@
 It's as easy as drag and drop. Create and connect tasks to create custom
 workflows that replaces manual steps with automation.
 
-<img src="https://raw.githubusercontent.com/tideflow-io/tideflow-website/master/website/static/img/D43dLHRXsAIwXDs.jpg" height="400" style="border:1px solid gray;">
-
-## Everything you need in workflow management
-
-- **Connect services and actions:** Designing any complexity process is as easy as drag-and-drop tasks with our tool.
-- **Audit and Improve:** Get realtime insights, logs and timings on your processes. Directly on the tool or via daily or weekly digest emails.
+<img src="https://docs.tideflow.io/img/home/tideflow.png" style="width:90%;">
 
 ## Understand how your processes are behaving. With the blink of an eye.
 
@@ -20,13 +17,23 @@ Tideflow comes with live monitoring dashboards where you can understand how your
 workflows are behaving. You also have live action-by-action logs, filterable
 historical execution logs and graphical visuals of executions.
 
+<img src="https://docs.tideflow.io/img/workflow_execution_stats.jpg" style="padding:15px;width:90%;border:10px solid #E9EEF1;">
+
+
 - [More about monitoring...](https://docs.tideflow.io/docs/monitor)
 
 ## Working with files in your processes
 
-You and your workflows can create files and connect them to processes. From an
-image you want to attach to your emails, to storing an screenshot taken from a
-website scraped via WebParsy integration.
+You and your workflows can create files and connect them to their workflows,
+and share them publicly. For example you can create a HTML file with some
+Javascript on it, directly from Tideflow’s UI, and others can open it as a
+webpage.
+
+Tideflow also comes with a set of files templates - from html bootstrap
+templates, single page applications, bash and NodeJS scripts, etc - to get your
+automation problems solved faster.
+
+<img src="https://docs.tideflow.io/img/get-started/files-templates.png" style="width:90%">
 
 - [More about files feature](https://docs.tideflow.io/docs/files)
 
