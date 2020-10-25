@@ -87,10 +87,13 @@ Meteor.methods({
     let existingTeam = Teams.findOne({ name, _id: { $ne: _id } })
     if (existingTeam) throw new Meteor.Error('already-exists')
 
+    name = name.trim()
+    let slug = slugify(name)
+
     // Check if group already exists
     return Teams.update({ _id }, {
       $set: {
-        name
+        name, slug
       }
     })
   },
