@@ -17,6 +17,7 @@ Template.flowsIndexListItem.events({
     Meteor.call('flows.update', template.data)
   },
   'click .card': (event, template) => {
+    event.preventDefault()
     event.stopPropagation()
     Router.go('flows.one', {
       teamId: Router.current().params.teamId,

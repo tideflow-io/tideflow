@@ -2,7 +2,9 @@ _namespace: s-rss
 name: RSS
 description: Execute flows when new content is available on RSS feeds.
 create:
-  serviceUrl: RSS feed url
+  serviceUrl:
+    title: RSS feed url
+    description: RSS feed url
 events:
   new-content:
     name: New content available

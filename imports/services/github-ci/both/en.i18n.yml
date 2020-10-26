@@ -1,7 +1,9 @@
 _namespace: s-gh-ci
 name: Github CI server
 description: Build and deploy from Github
-trigger.repository.name: Repository name
+trigger.repository.name:
+  title: Repository name
+  description: Repository name
 trigger.repository.any: Any repository
 createFormPreNote: Tideflow will guide you thorugh the process of creating a Github application after this initial step.
 ciUrl: Webhook URL
@@ -11,11 +13,15 @@ clientId: Client ID
 ciPem: Secret Key
 updateFormPre: Github's webhook URLs are inmutable over time. You can safely update the details on this page.
 
-events.general.cmd.selectAgent: Which agent?
+events.general.cmd.selectAgent:
+  title: Which agent?
+  description: Which agent?
 events.general.cmd.anyAgent: Any agent
 
 events.general.selectOneFile: Select one file
-events.general.branch.filter: Which branch?
+events.general.branch.filter:
+  title: Which branch?
+  description: Which branch?
 events.general.branch.filterHelp: Use "*" for any branch
 
 events.pull_request.name: Pull request created

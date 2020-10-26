@@ -198,6 +198,26 @@ Template.registerHelper('triggerConfigName', function(setting) {
   return `trigger.config.${setting}`
 })
 
+Template.triggerHelp.helpers({
+  triggerHelpTpl() {
+    let service = Session.get(`fe-triggerTypeSelected`)
+    if (!service || !service.templates) return false
+    return service.templates.triggerHelp || false
+  },
+  
+  triggerHelpIntroTpl() {
+    let service = Session.get(`fe-triggerTypeSelected`)
+    if (!service || !service.templates) return false
+    return service.templates.triggerHelpIntro || false
+  },
+
+  triggerTaskHelpTpl() {
+    const event = Session.get(`fe-triggerEventSelected`)
+    if (!event || !event.templates) return false
+    return event.templates.help
+  }
+})
+
 Template.serviceHelp.helpers({
   serviceHelpTpl() {
     let service = Session.get(`fe-step-${this.index}`)
@@ -240,7 +260,12 @@ Template.flowEditor.helpers({
     return Session.get('fe-editMode') === this.index
   },
 
-  cardText: function(context) {
+  stepCardTitle: function(flow) {
+    const selectedService = Session.get(`fe-step-${this.index}`)
+    return selectedService ? `${i18n.__(selectedService.humanName)}` : null
+  },
+
+  stepCardText: function(context) {
     const getFromDoc = () => {
       const flow = context.hash.flow
       if (!flow || !this.index || !flow.steps) return null
@@ -257,9 +282,18 @@ Template.flowEditor.helpers({
     return selectedEvent ? i18n.__(selectedEvent.humanName) : i18n.__('flows.editor.trigger.notSet')
   },
 
-  cardTitle: function() {
-    const selectedService = Session.get(`fe-step-${this.index}`)
-    return selectedService ? `${i18n.__(selectedService.humanName)}` : null
+  triggerCardTitle: function() {
+    const selectedService = Session.get('fe-triggerTypeSelected')
+    if (!selectedService) return null
+    return i18n.__(selectedService.humanName)
+  },
+
+  triggerCardText: function() {
+    const selectedService = Session.get('fe-triggerTypeSelected')
+    const selectedEventVal = Session.get('fe-triggerEventSelected')
+    if (!selectedService || !selectedEventVal) return null
+    const selectedEvent = selectedService.events.find(e => e.name === selectedEventVal)
+    return selectedEvent ? i18n.__(selectedEvent.humanName) : i18n.__('flows.editor.trigger.notSet')
   },
 
   cardIcon: function() {
@@ -321,15 +355,19 @@ Template.flowEditor.helpers({
 
     return chs.concat().sort(sortBy('title'))
   },
-  triggerTypeSelected: () => Session.get('fe-triggerTypeSelected'),
+
+  triggerTypeSelected: () => {
+    let selectedService = Session.get('fe-triggerTypeSelected')
+    if (!selectedService) return null
+    return selectedService.name
+  },
   triggerIdSelected: () => Session.get('fe-triggerIdSelected'),
   triggerEventSelected: () => Session.get('fe-triggerEventSelected'),
+
   triggerSelected: () => {
     const _id = Session.get('fe-triggerIdSelected')
     if (!_id) {
-      const type = Session.get('fe-triggerTypeSelected')
-      if (!type) return null
-      let selectedService = servicesAvailable.find(sa => sa.name === type)
+      let selectedService = Session.get('fe-triggerTypeSelected')
       if (!selectedService) return null
       return selectedService
     }
@@ -338,17 +376,18 @@ Template.flowEditor.helpers({
     let selectedService = servicesAvailable.find(sa => sa.name === selectedServiceDoc.type)
     
     if (!selectedService) return null
-    Session.set('fe-triggerTypeSelected', selectedService.name)
+    Session.set('fe-triggerTypeSelected', selectedService)
     return selectedService
   },
 
-  isSelectedTrigger(d, t) {
-    const compareTo = Session.get('fe-triggerIdSelected') || Session.get('fe-triggerTypeSelected')
-    const selected = this._id === compareTo
+  isSelectedTrigger() {
+    const compareTo = Session.get('fe-triggerTypeSelected')
+    if (!compareTo) return ''
+    const selected = this._id === compareTo.name
     return selected ? 'selected' : ''
   },
 
-  isSelectedTriggerEvent(d, t) {
+  isSelectedTriggerEvent() {
     const selected = this.name === Session.get('fe-triggerEventSelected')
     return selected ? 'selected' : ''
   },
@@ -369,8 +408,7 @@ Template.flowEditor.helpers({
     const typeSelected = Session.get('fe-triggerTypeSelected')
     const eventSelected = Session.get('fe-triggerEventSelected')
     try {
-      const sa = servicesAvailable.find(s => s.name === typeSelected)
-      const e = sa.events.find(event => event.name === eventSelected)
+      const e = typeSelected.events.find(event => event.name === eventSelected)
       return e.templates.triggerEditor
     }
     catch (ex) {

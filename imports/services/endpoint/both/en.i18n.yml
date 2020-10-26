@@ -1,7 +1,9 @@
 _namespace: s-endpoint
 name: Endpoint
 description: A unique URL to push data into Tideflow
-url: Full URL
+url:
+  title: Full URL
+  description: Full URL
 code: POST request example
 events.called.name: When it's reached
 events.called.viewer.title: When an endpoint is reached

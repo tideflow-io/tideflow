@@ -10,10 +10,11 @@ let parser = new Parser()
 tfQueue.jobs.register('s-rss-runOne', function(flow) {
   let instance = this
 
-  let feed = Meteor.wrapAsync((cb) => {
-    parser.parseURL(flow.trigger.config.serviceUrl, (err, feed) => {
-      cb(err, feed)
-    })
+  let feed = Meteor.wrapAsync(cb => {
+    try {
+      parser.parseURL(flow.trigger.config.serviceUrl, cb)
+    }
+    catch (ex) { cb(ex, null) }
   })()
 
   let rssGuids = feed.items.map(i => { return i.guid })

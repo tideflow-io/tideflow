@@ -1,11 +1,20 @@
 <template name="servicesGhCiTriggerEditorPre">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-gh-ci.trigger.repository.name"}}</label>
-    <select class="form-control" data-schema-key="{{triggerConfigName 'repository'}}" name="{{triggerConfigName 'repository'}}">
-      <option value="any" {{triggerConfigValueSelected 'repository' 'any'}}>{{__ "s-gh-ci.trigger.repository.any"}}</option>
-      {{#each registeredRepositories}}
-        <option value="{{id}}" {{selectedRepository id}}>{{full_name}}</option>
-      {{/each}}
-    </select>
+  <div class="row field-container">
+      <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+          <div class="field-name">
+            <label class="control-label">{{__ "s-gh-ci.trigger.repository.name.title"}}</label>
+          </div>
+          <div class="field-description">
+            <label class="control-label">{{__ "s-gh-ci.trigger.repository.name.description"}}</label>
+          </div>
+      </div>
+      <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+        <select class="form-control" data-schema-key="{{triggerConfigName 'repository'}}" name="{{triggerConfigName 'repository'}}">
+          <option value="any" {{triggerConfigValueSelected 'repository' 'any'}}>{{__ "s-gh-ci.trigger.repository.any"}}</option>
+          {{#each registeredRepositories}}
+            <option value="{{id}}" {{selectedRepository id}}>{{full_name}}</option>
+          {{/each}}
+        </select>
+      </div>
   </div>
 </template>

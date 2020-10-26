@@ -1,7 +1,21 @@
 <template name="triggerEditorEndpointEventNewContent">
-    <p><strong>{{__ "s-endpoint.url"}}</strong></p>
-    <p>{{absoluteUrl}}service/endpoint/</p>
-    <input class="form-control" value="{{triggerConfigValue 'endpoint'}}" data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
-
-    {{> clipboardBtnSmall prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
+    <div class="row field-container">
+        <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+            <div class="field-name">
+                <label class="control-label">{{__ "s-endpoint.url.title"}}</label>
+            </div>
+            <div class="field-description">
+                {{__ "s-endpoint.url.description"}}
+            </div>
+        </div>
+        <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">{{absoluteUrl}}service/endpoint/</span>
+                </div>
+                <input class="form-control" value="{{triggerConfigValue 'endpoint'}}" data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
+            </div>
+            {{> clipboardBtnSmall prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
+        </div>
+    </div>
 </template>
