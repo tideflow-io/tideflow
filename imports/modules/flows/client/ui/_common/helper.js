@@ -284,7 +284,7 @@ Template.flowEditor.helpers({
 
   triggerCardTitle: function() {
     const selectedService = Session.get('fe-triggerTypeSelected')
-    if (!selectedService) return null
+    if (!selectedService) return i18n.__('flows.editor.trigger.title')
     return i18n.__(selectedService.humanName)
   },
 

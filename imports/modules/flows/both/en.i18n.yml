@@ -29,7 +29,7 @@ editor:
   trigger:
     notSet: Not defined
     selectOneOption: Select an option
-    title: ⚡️ Trigger
+    title: Trigger
     editDetails: Edit details
   triggerEvent:
     title: What triggers the workflow?
