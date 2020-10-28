@@ -1,0 +1,13 @@
+var settings = {
+  "url": "{{url}}",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({"hello":"world"}),
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});

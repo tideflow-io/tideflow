@@ -8,3 +8,9 @@ Template.triggerEditorEndpointEventNewContent.onRendered(function() {
     $('[name="trigger.config.endpoint"]').val(uuidv4())
   }
 })
+
+Template.triggerEditorEndpointEventNewContent.events({
+  'keyup #s-endpoint-url': (event, tpl) => {
+    console.log({event, tpl})
+  }
+})

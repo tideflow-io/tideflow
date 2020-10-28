@@ -1,0 +1,11 @@
+import http.client
+import mimetypes
+conn = http.client.HTTPSConnection("{{url}}")
+payload = "{ \"hello\": \"world\" }"
+headers = {
+  'Content-Type': 'application/json'
+}
+conn.request("POST", "", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))

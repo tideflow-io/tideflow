@@ -13,9 +13,37 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">{{absoluteUrl}}service/endpoint/</span>
                 </div>
-                <input class="form-control" value="{{triggerConfigValue 'endpoint'}}" data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
+                <input id="s-endpoint-url" class="form-control" value="{{triggerConfigValue 'endpoint'}}"
+                    data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
             </div>
             {{> clipboardBtnSmall prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
+        </div>
+    </div>
+
+    <div class="row field-container">
+        <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+        </div>
+        <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+            <div class="console-ui console-ui-small mb-3 collapse show" id="4x3YwfHCDtmadarQ3" style="">
+                <pre class="line">
+                Request's input parsed
+                Request's input parsed
+                Request's input parsed
+                Request's input parsed</pre>
+            </div>
+            <div class="request-template-selector">
+                <a href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+            </div>
+            {{> clipboardBtnSmall selector-text="[name='trigger.config.endpoint']"}}
         </div>
     </div>
 </template>

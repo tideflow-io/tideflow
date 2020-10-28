@@ -1,0 +1,15 @@
+<?php
+$client = new http\Client;
+$request = new http\Client\Request;
+$request->setRequestUrl('{{url}}');
+$request->setRequestMethod('POST');
+$body = new http\Message\Body;
+$body->append('{ "hello": "world" }');
+$request->setBody($body);
+$request->setOptions(array());
+$request->setHeaders(array(
+  'Content-Type' => 'application/json'
+));
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+echo $response->getBody();

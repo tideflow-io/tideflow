@@ -1,0 +1,6 @@
+wget --no-check-certificate --quiet \
+  --method POST \
+  --timeout=0 \
+  --header 'Content-Type: application/json' \
+  --body-data '{ "hello": "world" }' \
+   '{{url}}'
