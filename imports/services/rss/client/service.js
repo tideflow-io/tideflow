@@ -9,6 +9,8 @@ const service = {
   ownable: false,
   trigger: true,
   templates: {
+    triggerHelp: 'triggerRSSHelp',
+    triggerHelpIntro: 'triggerRSSHelpIntro',
     detailsView: 'servicesRssDetailsView',
     createForm: 'servicesRssCreateForm',
     createFormPre: 'servicesRssCreateFormPre',

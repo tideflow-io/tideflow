@@ -218,14 +218,14 @@ Template.triggerHelp.helpers({
   }
 })
 
-Template.serviceHelp.helpers({
-  serviceHelpTpl() {
+Template.taskHelp.helpers({
+  taskHelpTpl() {
     let service = Session.get(`fe-step-${this.index}`)
     if (!service || !service.templates) return false
     return service.templates.help || false
   },
   
-  serviceHelpIntroTpl() {
+  taskHelpIntroTpl() {
     let service = Session.get(`fe-step-${this.index}`)
     if (!service || !service.templates) return false
     return service.templates.helpIntro || false

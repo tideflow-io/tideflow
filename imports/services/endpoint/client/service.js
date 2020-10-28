@@ -10,7 +10,7 @@ const service = {
   trigger: true,
   templates: {
     triggerHelp: 'triggerEndpointHelp',
-    triggerHelpIntro: 'triggerEndpointHelpIntro',
+    triggerHelpIntro: 'triggerEndpointHelpIntro'
   },
   hooks: {
     // service: {},

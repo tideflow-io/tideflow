@@ -7,3 +7,13 @@ updateFormPre: Bitbucket's webhook URLs are inmutable over time. You can safely 
 events.called.name: When it's called
 events.called.viewer.title: When this webhook URL is called
 log.called_input_parsed: Request's input parsed
+
+help:
+  intro:
+    title: What's it?
+    content: Bitbucket webhooks provide a way to configure Bitbucket Cloud to trigger your workflows whenever certain events occur in Bitbucket Cloud.
+  events:
+    title: Triggering events
+    called:
+      title: When it's called
+      content: Triggered when Bitbucket requests is received.

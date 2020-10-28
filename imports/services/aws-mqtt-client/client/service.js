@@ -9,6 +9,8 @@ const service = {
   ownable: true,
   stepable: false,
   templates: {
+    triggerHelp: 'triggerAwsMqttClientHelp',
+    triggerHelpIntro: 'triggerAwsMqttClientHelpIntro',
     createForm: 'servicesAwsMqttClientCreateForm',
     updateForm: 'servicesAwsMqttClientUpdateForm'
   },

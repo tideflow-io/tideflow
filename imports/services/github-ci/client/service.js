@@ -10,6 +10,8 @@ const service = {
   stepable: true,
   ownable: true,
   templates: {
+    triggerHelp: 'triggerGithubCiHelp',
+    triggerHelpIntro: 'triggerGithubCiHelpIntro',
     help: 'servicesGithubCiHelp',
     helpIntro: 'servicesGithubCiHelpIntro',
     detailsView: 'servicesGhCiDetailsView',

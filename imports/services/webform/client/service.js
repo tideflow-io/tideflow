@@ -8,6 +8,8 @@ const service = {
   iconColor: '#FF3031',
   ownable: true,
   templates: {
+    triggerHelp: 'triggerWebformHelp',
+    triggerHelpIntro: 'triggerWebformHelpIntro',
     createForm: 'servicesWebformCreateForm',
     updateForm: 'servicesWebformUpdateForm',
     detailsView: 'servicesWebformDetailsView',

@@ -4,10 +4,20 @@ description: Execute flows when new content is available on RSS feeds.
 create:
   serviceUrl:
     title: RSS feed url
-    description: RSS feed url
+    description: Absolute feed's url
 events:
   new-content:
     name: New content available
     viewer:
       title: When there's new content available on RSS
   new-content-available: Received {$itemsCount} new items
+
+help:
+  intro:
+    title: What's it?
+    content: RSS Feed is a resource for the distribution of content, tipically blog or a news channel, to follow its updates through a software.
+  events:
+    title: Triggering events
+    new-content:
+      title: New content available
+      content: Triggers the workflow when new content is available on the RSS feed.

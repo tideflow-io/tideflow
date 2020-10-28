@@ -10,6 +10,8 @@ const service = {
   stepable: false,
   ownable: true,
   templates: {
+    triggerHelp: 'triggerGHWebhooksHelp',
+    triggerHelpIntro: 'triggerGHWebhooksHelpIntro',
     detailsView: 'servicesGhWebhooksDetailsView',
     createFormPre: 'servicesGhWebhooksCreateFormPre',
     updateFormPre: 'servicesGhWebhooksUpdateFormPre'

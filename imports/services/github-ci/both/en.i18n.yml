@@ -15,13 +15,13 @@ updateFormPre: Github's webhook URLs are inmutable over time. You can safely upd
 
 events.general.cmd.selectAgent:
   title: Which agent?
-  description: Which agent?
+  description: Which agent?The Tideflow self-hosted runner that will execute the task. This can be created on the "Services" tab.
 events.general.cmd.anyAgent: Any agent
 
 events.general.selectOneFile: Select one file
 events.general.branch.filter:
   title: Which branch?
-  description: Which branch?
+  description: The name of the branch that triggers the event
 events.general.branch.filterHelp: Use "*" for any branch
 
 events.pull_request.name: Pull request created
@@ -61,23 +61,39 @@ events.general.cmd:
   description: The script to execute. This can be created in the "Files" tab.
 
 help:
-  intro:
-    title: What is it?
-    content: Integrate your Github's CI/CD in your workflows, via Tideflow's hosted runner.
-    checkouts: Tideflow's agent will automatically pull the repository's source code and remove it after the commands finishes executing.
-  events:
-    title: "Events:"
-    run:
-      title: Run command
-      content: Runs an script (Windows and Linux/MacOS) in the checkedout code.
-  triggers:
-    title: "Triggers:"
-    pull_request:
-      title: Pull requests
-      content: Run a custom script when a new pull request is created in your repositories.
-    push:
-      title: Commits
-      content: Run a custom script when new code is pushed to your repositories.
-    checksuite:
-      title: Checksuites
-      content: Run a custom script when Github asks to run a CI task.
+  trigger:
+    intro:
+      title: What is it?
+      content: GitHub CI integration lets you run continuous integration workflows for any repository hosted in GitHub.
+    events:
+      title: Triggering events
+      pull_request:
+        title: Pull request
+        content: When a pull request is created or when it gets synchronized (new commits)
+      push:
+        title: Push
+        content: When new commits are pushed
+      checksuite:
+        title: Check suite
+        content: A check suite is a collection of the check runs created for a specific commit.
+  tasks:
+    intro:
+      title: What is it?
+      content: Integrate your Github's CI/CD in your workflows, via Tideflow's hosted runner.
+      checkouts: Tideflow's agent will automatically pull the repository's source code and remove it after the commands finishes executing.
+    events:
+      title: "Events:"
+      run:
+        title: Run command
+        content: Runs an script (Windows and Linux/MacOS) in the checkedout code.
+    triggers:
+      title: "Triggers:"
+      pull_request:
+        title: Pull requests
+        content: Run a custom script when a new pull request is created in your repositories.
+      push:
+        title: Commits
+        content: Run a custom script when new code is pushed to your repositories.
+      checksuite:
+        title: Checksuites
+        content: Run a custom script when Github asks to run a CI task.

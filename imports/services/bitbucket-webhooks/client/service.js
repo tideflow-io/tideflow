@@ -10,6 +10,8 @@ const service = {
   stepable: false,
   ownable: true,
   templates: {
+    triggerHelp: 'triggerBBWebhooksHelp',
+    triggerHelpIntro: 'triggerBBWebhooksHelpIntro',
     detailsView: 'servicesBbWebhooksDetailsView',
     createFormPre: 'servicesBbWebhooksCreateFormPre',
     updateFormPre: 'servicesBbWebhooksUpdateFormPre'

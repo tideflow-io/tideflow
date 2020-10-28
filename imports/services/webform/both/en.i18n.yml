@@ -9,3 +9,13 @@ description: Create public web forms and share them with others.
 events.submitted.name: When it's submitted
 events.submitted.viewer.title: When an form it's submitted
 log.submitted_input_parsed: Submitted form readed
+
+help:
+  intro:
+    title: What's it?
+    content: Create and share forms with anyone.
+  events:
+    title: Triggering events
+    submitted:
+      title: When it's submitted
+      content: Triggers the workflow when a user submits the webform

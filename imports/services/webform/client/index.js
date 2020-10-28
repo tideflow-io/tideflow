@@ -4,5 +4,7 @@ import './updateForm.html'
 import './createFormAfter.html'
 import './updateFormAfter.html'
 import './detailsView.html'
+import './help.html'
+
 import './service'
 import './events'

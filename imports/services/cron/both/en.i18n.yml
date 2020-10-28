@@ -5,7 +5,17 @@ events.called.name: "When cron's time is meet"
 events.called.title: "When cron's time is meet"
 cron.schedule.value: 
   title: Cron expression
-  description: Cron expression
+  description: Schedule expression
 validation.cron.wait: Validating value...
 validation.cron.ok: Valid value
 validation.cron.error: Invalid cron value. The flow will be set to inactive on save.
+
+help:
+  intro:
+    title: What's it?
+    content: Schedule workflows to happen at a certain periodical interval
+  events:
+    title: Triggering events
+    called:
+      title: Cron expression
+      content: Schedules the execution based on a Cron expression.
