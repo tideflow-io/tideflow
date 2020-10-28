@@ -1,8 +1,20 @@
 _namespace: s-endpoint
 name: Endpoint
 description: A unique URL to push data into Tideflow
-url: Full URL
+url:
+  title: Exposed URL
+  description: The full URL to be exposed.
 code: POST request example
-events.called.name: When it's reached
-events.called.viewer.title: When an endpoint is reached
+events.called.name: When it's called
+events.called.viewer.title: When an endpoint is called
 log.called_input_parsed: Request's input parsed
+
+help:
+  intro:
+    title: What's it?
+    content: Accept incoming HTTP requests that can trigger and intake data to your workflows.
+  events:
+    title: Triggering events
+    called:
+      title: When it's called
+      content: Triggers when the specified URL is requested.

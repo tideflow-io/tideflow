@@ -9,6 +9,8 @@ const service = {
   ownable: false,
   trigger: true,
   templates: {
+    triggerHelp: 'triggerEndpointHelp',
+    triggerHelpIntro: 'triggerEndpointHelpIntro'
   },
   hooks: {
     // service: {},

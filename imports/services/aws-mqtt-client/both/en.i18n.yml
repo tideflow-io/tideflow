@@ -16,7 +16,20 @@ update.host: Hostname
 
 service.status.lastConnected: Last connected
 
-events.subscribe.name: Message received
-events.subscribe.topic: Topic to subscribe to
-events.subscribe.title: Message received
-events.subscribe.log: Message received
+events.subscribe.name: Message published
+events.subscribe.topic: 
+  title: Topic
+  description: What's the topic to subscribe to
+  help: Can use + and "#" wildcards
+events.subscribe.title: Message published
+events.subscribe.log: Message published
+
+help:
+  intro:
+    title: What's it?
+    content: Integrate with your AWS IoT Core devices.
+  events:
+    title: Triggering events
+    subscribe:
+      title: Message published
+      content: A message has been published in a certain topic

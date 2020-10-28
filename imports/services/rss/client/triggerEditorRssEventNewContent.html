@@ -1,6 +1,15 @@
 <template name="triggerEditorRssEventNewContent">
-  <div class="form-group">
-    <label class="control-label">{{__ "s-rss.create.serviceUrl"}}</label>
-    <input class="form-control" value="{{triggerConfigValue 'serviceUrl'}}" data-schema-key="{{triggerConfigName 'serviceUrl'}}" name="{{triggerConfigName 'serviceUrl'}}">
+  <div class="row field-container">
+      <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+          <div class="field-name">
+              <label class="control-label">{{__ "s-rss.create.serviceUrl.title"}}</label>
+          </div>
+          <div class="field-description">
+            {{__ "s-rss.create.serviceUrl.description"}}
+          </div>
+      </div>
+      <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+        <input class="form-control" value="{{triggerConfigValue 'serviceUrl'}}" data-schema-key="{{triggerConfigName 'serviceUrl'}}" name="{{triggerConfigName 'serviceUrl'}}">
+      </div>
   </div>
 </template>

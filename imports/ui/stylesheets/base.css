@@ -24,3 +24,7 @@ pre.code {
   word-wrap: break-word;
   /* Internet Explorer 5.5+ */
 }
+
+.s-alert-info, .s-alert-success, .s-alert-warning, .s-alert-error {
+  z-index: 9999999;
+}

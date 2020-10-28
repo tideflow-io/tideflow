@@ -29,8 +29,15 @@ editor:
   trigger:
     notSet: Not defined
     selectOneOption: Select an option
-    title: ⚡️ Trigger
+    title: Trigger
+    editDetails: Edit details
   triggerEvent:
+    title: What triggers the workflow?
+    description: Service or integration that will cause this workflow to be triggered
+    selectOneOption: Select an option
+  triggerEventEvent:
+    title: Triggering event
+    description: What event cuases the trigger
     selectOneOption: Select an option
   step:
     id:

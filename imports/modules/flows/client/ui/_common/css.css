@@ -1,23 +1,23 @@
-#modal-task-editor {
+.modal-step-editor {
   padding: 30px !important;
 }
-#modal-task-editor .modal-dialog {
+.modal-step-editor .modal-dialog {
   width: 100%;
   max-width: none;
   height: 100%;
   margin: 0;
 }
-#modal-task-editor .modal-content {
+.modal-step-editor .modal-content {
   height: 100%;
   border: 0;
   border-radius: 0;
 }
-#modal-task-editor .modal-body {
+.modal-step-editor .modal-body {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-#modal-task-editor .sidebar {
+.modal-step-editor .sidebar {
   border-right: 1px solid rgba(0, 0, 0, 0.1)
 }
 

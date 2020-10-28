@@ -6,6 +6,8 @@ const service = {
   description: 's-cron.description',
   ownable: false,
   templates: {
+    triggerHelp: 'triggerCronHelp',
+    triggerHelpIntro: 'triggerCronHelpIntro',
   },
   hooks: {
     // service: {},

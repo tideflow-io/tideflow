@@ -8,3 +8,13 @@ updateFormPre: Github's webhook URLs are inmutable over time. You can safely upd
 events.called.name: When it's called
 events.called.viewer.title: When this webhook URL is called
 log.called_input_parsed: Request's input parsed
+
+help:
+  intro:
+    title: What's it?
+    content: Github webhooks provide a way to configure Github to trigger your workflows whenever certain events occur in repositories.
+  events:
+    title: Triggering events
+    called:
+      title: When it's called
+      content: Triggered when Bitbucket requests is received.

@@ -57,8 +57,12 @@ Template.flowEditorStepAvailable.events({
 })
 
 Template.flowEditor.events({
-  'hidden.bs.modal #modal-task-editor': (event, template) => {
+  'hidden.bs.modal .modal-step-editor': (event, template) => {
     Session.set('fe-editMode', undefined)
+  },
+
+  'click .card.flow-step-trigger': (event, template) => {
+    $('#modal-trigger-editor').modal('show')
   },
 
   'click .edit-mode-enter > *, click .edit-mode-enter': (event, template) => {
@@ -94,7 +98,8 @@ Template.flowEditor.events({
     }
     else {
       Session.set('fe-triggerIdSelected', '')
-      Session.set('fe-triggerTypeSelected', event.currentTarget.value)
+      let selectedService = servicesAvailable.find(sa => sa.name === event.currentTarget.value)
+      Session.set('fe-triggerTypeSelected', selectedService)
     }
   },
 
@@ -298,7 +303,8 @@ Template.flowEditor.onRendered(function() {
       }
 
       if (flow.trigger.type) {
-        Session.set('fe-triggerTypeSelected', flow.trigger.type)
+        let selectedService = servicesAvailable.find(sa => sa.name === flow.trigger.type)
+        Session.set('fe-triggerTypeSelected', selectedService)
       }
 
       if (flow.trigger.event) {
