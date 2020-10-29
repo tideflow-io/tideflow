@@ -1,7 +1,0 @@
-$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("Content-Type", "application/json")
-
-$body = "{ `"hello`": `"world`" }"
-
-$response = Invoke-RestMethod '{{url}}' -Method 'POST' -Headers $headers -Body $body
-$response | ConvertTo-Json

@@ -1,7 +1,0 @@
-var client = new RestClient("{{url}}");
-client.Timeout = -1;
-var request = new RestRequest(Method.POST);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{ \"hello\": \"world\" }",  ParameterType.RequestBody);
-IRestResponse response = client.Execute(request);
-Console.WriteLine(response.Content);

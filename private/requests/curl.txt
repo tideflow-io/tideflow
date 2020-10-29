@@ -1,3 +1,0 @@
-curl --location --request POST '{{url}}' \
---header 'Content-Type: application/json' \
---data-raw '{ "hello": "world" }'

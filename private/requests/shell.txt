@@ -1,2 +1,0 @@
-printf '{ "hello": "world" }'| http  --follow --timeout 3600 POST {{url}}/ \
- Content-Type:'application/json'
