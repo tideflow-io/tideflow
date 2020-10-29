@@ -8,6 +8,8 @@ code: POST request example
 events.called.name: When it's called
 events.called.viewer.title: When an endpoint is called
 log.called_input_parsed: Request's input parsed
+postman:
+  download: Download Postman collection
 
 help:
   intro:

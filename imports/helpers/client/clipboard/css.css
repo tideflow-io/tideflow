@@ -1,7 +1,7 @@
-.copy-clipboard {
+.small-link {
   cursor: pointer;
   font-style: italic;
 }
-.copy-clipboard:hover {
+.small-link:hover {
   text-decoration: underline;
 }

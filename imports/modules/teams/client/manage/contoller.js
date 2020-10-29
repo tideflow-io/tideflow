@@ -75,7 +75,6 @@ Template.teamsManageMembersUser.events({
         Router.current().params.teamId,
         this.user,
         newRole, (error, result) => {
-          console.log({error, result})
         }
       )
     }

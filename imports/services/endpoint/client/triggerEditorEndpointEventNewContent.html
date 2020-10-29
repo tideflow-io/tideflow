@@ -13,9 +13,19 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">{{absoluteUrl}}service/endpoint/</span>
                 </div>
-                <input class="form-control" value="{{triggerConfigValue 'endpoint'}}" data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
+                <input id="s-endpoint-url" class="form-control" value="{{triggerConfigValue 'endpoint'}}"
+                    data-schema-key="{{triggerConfigName 'endpoint'}}" name="{{triggerConfigName 'endpoint'}}">
             </div>
             {{> clipboardBtnSmall prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
+            {{> downloadPostman prefix-text=absoluteUrl text="service/endpoint/" subfix-val="[name='trigger.config.endpoint']"}}
         </div>
+    </div>
+</template>
+
+<template name="downloadPostman">
+    <div class="small-link mt-1">
+        <small><i class="far fa-clipboard ml-1"></i> 
+            {{__ 's-endpoint.postman.download'}}
+        </small>
     </div>
 </template>
