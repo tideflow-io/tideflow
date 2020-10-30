@@ -32,6 +32,8 @@ events.lambda.invoke.functionName:
 events.lambda.invoke.data:
   title: Invocation data
   description: The event parameters to pass to the lambda function.
+  example:
+    load: Load an example
 log.lambda-invoke.ok: 'Lambda function invoked'
 
 events.iot.shadow-update.endpoint:

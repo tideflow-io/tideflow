@@ -6,7 +6,38 @@ import { sAlert } from 'meteor/juliancwirko:s-alert'
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
 
+import { copyTextToClipboard } from '../../../../../helpers/client/clipboard/helper'
+
 Template.filesIndexElement.events({
+  'click .copy-url': (event, template) => {
+    event.preventDefault()
+    event.stopPropagation()
+    copyTextToClipboard(`${Meteor.absoluteUrl()}publicFile/${template.data.uniqueId}`)
+  },
+  'click .make-private': (event, template) => {
+    event.preventDefault()
+    event.stopPropagation()
+    Meteor.call(
+      'files.updatePublic',
+      template.data._id,
+      false,
+      error => {
+        if (error) return sAlert.error(i18n.__('files.edit.makePublic.error'))
+        sAlert.success(i18n.__('files.edit.makePublic.success'))
+      })
+  },
+  'click .make-public': (event, template) => {
+    event.preventDefault()
+    event.stopPropagation()
+    Meteor.call(
+      'files.updatePublic',
+      template.data._id,
+      true,
+      error => {
+        if (error) return sAlert.error(i18n.__('files.edit.makePublic.error'))
+        sAlert.success(i18n.__('files.edit.makePublic.success'))
+      })
+  },
   'click .download-file': (event, template) => {
     event.preventDefault()
     event.stopPropagation()

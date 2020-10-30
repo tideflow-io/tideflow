@@ -19,9 +19,11 @@ edit:
   title: Edit file
   remove: Remove file
   submit: Save
+  makePrivate:
+    link: Make this file private
   makePublic:
     link: Make this file publicly available
-    copyUrl: Copy file\'s public URL to clipboard
+    copyUrl: "Copy file's public URL to clipboard"
     success: Settings updated
     error: Error updating file settings
 

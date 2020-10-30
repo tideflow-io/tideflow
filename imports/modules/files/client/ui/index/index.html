@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-9">
-        <div class="page-header mb-4">
+        <div class="page-header">
           <h2>
             {{__ "files.index.title"}}
           </h2>
@@ -33,23 +33,44 @@
 
 <template name="filesIndexElement">
   <div class="card clickable card-task p-3">
-    <div class="row  my-auto">
+    <div class="row my-auto">
       <div class="col-md-1 my-auto">
           <div class="file-icon file-icon-default" data-type="{{this.ext}}"></div>
       </div>
-      <div class="col-md-9 my-auto">
+      <div class="col-md-8 my-auto">
         <div class="card-title text-left my-auto">
           <h6>{{this.name}}</h6>
         </div>
       </div>
+      <div class="col-md-1 my-auto">
+        <div class="card-title text-right my-auto">
+          {{#if this.public}}
+            <i class="fas fa-link copy-url" title="{{__ "files.edit.makePublic.copyUrl"}}"></i>
+          {{/if}}
+        </div>
+      </div>
       <div class="col-md-2">
         <div class="float-right">
-          <div class="three-dots btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+          <div class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
             {{__ "files.index.list.options"}}
           </div>
           <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item download-file">{{__ "files.index.list.download"}}</a>
-              <a class="dropdown-item" href="{{pathFor 'files.one.edit' teamId=currentTeamId _id=_id}}">{{__ "files.index.list.edit"}}</a>
+            <a class="dropdown-item download-file">{{__ "files.index.list.download"}}</a>
+            <a class="dropdown-item" href="{{pathFor 'files.one.edit' teamId=currentTeamId _id=_id}}">{{__ "files.index.list.edit"}}</a>
+            <div class="dropdown-divider"></div>
+            {{#if this.public}}
+              <a class="dropdown-item make-private">
+                {{__ "files.edit.makePrivate.link"}}
+              </a>
+              <a class="dropdown-item copy-url">
+                <i class="fas fa-link"></i>
+                {{__ "files.edit.makePublic.copyUrl"}}
+              </a>
+            {{else}}
+              <a class="dropdown-item make-public">
+                {{__ "files.edit.makePublic.link"}}
+              </a>
+            {{/if}}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item files-one-delete" href="#">{{__ "files.index.list.delete"}}</a>
           </div>

@@ -40,7 +40,6 @@ Meteor.methods({
     return FilesTemplates.findOne({_id})
   },
   'files.updatePublic': (_id, isPublic) => {
-
     if (!Meteor.userId()) throw new Meteor.Error('no-auth')
     let originalFile = Files.findOne({_id})
     if (!isMember(Meteor.userId(), originalFile.team)) throw new Meteor.Error('no-access')

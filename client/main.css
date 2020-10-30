@@ -146,6 +146,7 @@ img.h2 {
 
 .page-header {
   padding-top: 1.5rem;
+  margin-bottom: 1.5em;
 }
 
 @media (min-width: 768px) {

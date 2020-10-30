@@ -28,6 +28,9 @@
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
       <textarea rows="10" class="form-control code" data-schema-key="{{stepConfigName 'data' ''}}" name="{{stepConfigName 'data' ''}}">{{stepConfigValue 'data' ''}}</textarea>
       {{> helpUsesTemplates}}
+      <a href="#" class="load-example">
+        {{__ "s-aws.events.lambda.invoke.data.example.load"}}
+      </a>
     </div>
   </div>
 </template>
