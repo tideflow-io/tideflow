@@ -13,6 +13,7 @@
         <a href="{{pathFor 'files.templates' teamId=currentTeamId}}" class="float-right btn btn-success mt-5 mb-4">{{__ "files.index.createNew"}}</a>
       </div>
     </div>
+    <hr class="mb-3">
     <div class="row">
       <div class="col-md-12 text-center">
         {{#if cursorIsEmpty files}}
@@ -37,9 +38,14 @@
       <div class="col-md-1 my-auto">
           <div class="file-icon file-icon-default" data-type="{{this.ext}}"></div>
       </div>
-      <div class="col-md-8 my-auto">
+      <div class="col-md-7 my-auto">
         <div class="card-title text-left my-auto">
           <h6>{{this.name}}</h6>
+        </div>
+      </div>
+      <div class="col-md-1 my-auto">
+        <div class="card-title my-auto">
+          {{fileSizeKb this.size}}
         </div>
       </div>
       <div class="col-md-1 my-auto">

@@ -165,15 +165,18 @@ const create = async (doc, content) => {
   if (!doc.ext) doc.ext = getFilenameExtension(doc.name) || ''
 
   let uploadStream = gfs.openUploadStream(`${doc.user}/${new Date().getTime()}/${doc.name}`)
+  const buff = Buffer.from(content)
+  doc.size = Buffer.byteLength(buff)
 
   doc.versions = [{
     date: new Date(),
+    size: Buffer.byteLength(buff),
     gfsId: uploadStream.id.toString()
   }]
 
   // Create stream with buffer to pipe to uploadStream
   var s = new Readable()
-  s.push(Buffer.from(content))
+  s.push(buff)
   s.push(null) // Push null to end stream
   s.pipe(uploadStream)
   

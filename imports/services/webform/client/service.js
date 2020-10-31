@@ -3,6 +3,7 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'webform',
   humanName: 's-webform.name',
+  pluralName: 's-webform.pluralName',
   description: 's-webform.description',
   icon: 'fas fa-clipboard-list',
   iconColor: '#FF3031',

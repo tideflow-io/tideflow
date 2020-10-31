@@ -3,6 +3,7 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'gh-webhooks',
   humanName: 's-gh-webhooks.name',
+  pluralName: 's-gh-webhooks.pluralName',
   description: 's-gh-webhooks.description',
   icon: 'fab fa-github',
   iconColor: '#CCC',

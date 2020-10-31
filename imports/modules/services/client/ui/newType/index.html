@@ -9,6 +9,7 @@
         </div>
       </div>
     </div>
+    <hr class="mb-5">
     {{#autoForm collection=Services id="insertServiceForm" type="method" meteormethod="services.create"}}
     {{> afQuickField name='team' value=currentTeamId type='hidden'}}
     {{> afQuickField name='type' value=this.type type='hidden'}}

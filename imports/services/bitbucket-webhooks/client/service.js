@@ -3,6 +3,7 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'bb-webhooks',
   humanName: 's-bb-webhooks.name',
+  pluralName: 's-bb-webhooks.pluralName',
   description: 's-bb-webhooks.description',
   icon: 'fab fa-bitbucket',
   iconColor: 'rgb(7, 71, 166)',

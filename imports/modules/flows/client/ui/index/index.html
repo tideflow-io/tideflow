@@ -1,33 +1,44 @@
 <template name="flows.index">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-9">
-          <div class="page-header">
-            <h2>
-              {{__ "flows.index.title"}}
-            </h2>
-            <p class="lead">{{__ "flows.index.subtitle"}}</p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <a href="{{pathFor 'flows.new' teamId=currentTeamId}}" class="flow-editor-link float-right btn btn-success mt-5 mb-4">{{__ "flows.index.createNew"}}</a>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="page-header">
+          <h2>
+            {{__ "flows.index.title"}}
+          </h2>
+          <p class="lead">{{__ "flows.index.subtitle"}}</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          {{#if cursorIsEmpty flows}}
-            <p class="mt-5 text-center">{{__ "flows.index.emptyListSubTitle"}}</p>
-          {{else}}
-            <div class="card-list">
+      <div class="col-md-3">
+        <a href="{{pathFor 'flows.new' teamId=currentTeamId}}" class="flow-editor-link float-right btn btn-success mt-5 mb-4">{{__ "flows.index.createNew"}}</a>
+      </div>
+    </div>
+    <hr class="mb-3">
+    <div class="row">
+      <div class="col-md-12">
+        {{#if cursorIsEmpty flows}}
+          <p class="mt-5 text-center">{{__ "flows.index.emptyListSubTitle"}}</p>
+        {{else}}
+          {{#each flows}}
+            <h4 class="font-weight-normal mt-3">
+              {{#if serviceProperty this.type 'icon_image'}}
+                <img width="34" src="/icons/services/{{serviceProperty this.type 'icon_image'}}">
+              {{else}}
+                <i style="color: {{serviceProperty this.type 'iconColor'}}" class="{{serviceProperty this.type 'icon'}}"></i>
+              {{/if}}
+              {{serviceHumanPluralName this.type}}
+            </h4>
+            <div class="card-list mb-5">
               <div class="card-list-body">
-                {{#each flows}}
+                {{#each this.flows}}
                   {{> flowsIndexListItem}}
                 {{/each}}
               </div>
             </div>
-          {{/if}}
-        </div>
+          {{/each}}
+        {{/if}}
       </div>
+    </div>
   </div>
 </template>
 
@@ -52,7 +63,16 @@
           </a>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-1">
+        <div class="float-right">
+          {{#if isEq this.trigger.type 'endpoint'}}
+            <div class="btn btn-link ">
+              <i class="fas fa-link copy-s-endpoint-url" title="{{__ "files.edit.makePublic.copyUrl"}}"></i>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="col-md-1">
         <div class="float-right">
           <button class="btn btn-outline-primary">
             {{__ "flows.index.viewOne"}}

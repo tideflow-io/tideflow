@@ -1,5 +1,6 @@
 _namespace: s-endpoint
 name: Endpoint
+pluralName: Endpoints
 description: A unique URL to push data into Tideflow
 url:
   title: Exposed URL

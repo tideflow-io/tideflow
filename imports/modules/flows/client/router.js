@@ -21,18 +21,6 @@ import './ui/edit'
 Router.route('/:teamId/flows', function () {
   this.render('flows.index')
 }, {
-  subscriptions: function () {
-    return [
-      
-    ]
-  },
-  data: function() {
-    if (this.ready) {
-      return {
-        flows: Flows.find({})
-      }
-    } 
-  },
   name: 'flows.index',
   parent: 'home',
   title: i18n.__('flows.breadcrumb.title.index')

@@ -1,5 +1,6 @@
 _namespace: s-aws-mqtt-client
 name: AWS IoT Device
+pluralName: AWS IoT Devices
 description: AWS MQTT Client
 
 create.key: Private key associated with the client certificate

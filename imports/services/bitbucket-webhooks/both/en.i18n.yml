@@ -1,5 +1,6 @@
 _namespace: s-bb-webhooks
 name: Bitbucket webhooks
+pluralName: Bitbucket webhooks
 description: Listen for Bitbucket's events from your repositories.
 createFormPreNote: Once you create this webhook, Tideflow will assign it an URL that you can use on bitbucket.org.
 webhookUrl: Webhook URL

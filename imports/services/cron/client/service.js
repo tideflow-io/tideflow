@@ -3,7 +3,9 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'cron',
   humanName: 's-cron.name',
+  pluralName: 's-cron.pluralName',
   description: 's-cron.description',
+  icon: 'far fa-calendar-alt',
   ownable: false,
   templates: {
     triggerHelp: 'triggerCronHelp',

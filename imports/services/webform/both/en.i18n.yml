@@ -1,5 +1,6 @@
 _namespace: s-webform
 name: Webform
+pluralName: Webforms
 url: Public URL
 create.successMessage: Message on success
 create.successUrl: Redirect the user on success to the following URL
