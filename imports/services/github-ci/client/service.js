@@ -3,6 +3,7 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'gh-ci',
   humanName: 's-gh-ci.name',
+  pluralName: 's-gh-ci.pluralName',
   description: 's-gh-ci.description',
   icon: 'fab fa-github',
   iconColor: '#CCC',

@@ -1,5 +1,6 @@
 _namespace: s-cron
 name: Cron
+pluralName: Schedules
 description: Trigger flows at fixed times, dates, or intervals
 events.called.name: "When cron's time is meet"
 events.called.title: "When cron's time is meet"

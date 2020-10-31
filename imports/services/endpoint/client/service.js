@@ -3,6 +3,7 @@ import { servicesAvailable } from '/imports/services/_root/client'
 const service = {
   name: 'endpoint',
   humanName: 's-endpoint.name',
+  pluralName: 's-endpoint.pluralName',
   description: 's-endpoint.description',
   icon: 'fa fa-server',
   iconColor: '#563D7C',

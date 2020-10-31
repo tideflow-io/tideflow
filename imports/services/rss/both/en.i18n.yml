@@ -1,5 +1,6 @@
 _namespace: s-rss
 name: RSS
+pluralName: RSS Channels
 description: Execute flows when new content is available on RSS feeds.
 create:
   serviceUrl:

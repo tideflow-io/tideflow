@@ -93,6 +93,15 @@ Template.registerHelper('serviceHumanName', (name) => {
   }
 })
 
+Template.registerHelper('serviceHumanPluralName', (name) => {
+  if (!name) return null
+  try {
+    return i18n.__(servicesAvailable.find(sa => sa.name === name).pluralName)
+  } catch (ex) {
+    return null
+  }
+})
+
 Template.registerHelper('eventHumanName', (serviceName, eventName) => {
   if (!serviceName) return null
   if (!eventName) return null

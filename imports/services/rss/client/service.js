@@ -5,6 +5,7 @@ const service = {
   icon: 'fa fa-rss',
   iconColor: '#FFA200',
   humanName: 's-rss.name',
+  pluralName: 's-rss.pluralName',
   description: 's-rss.description',
   ownable: false,
   trigger: true,

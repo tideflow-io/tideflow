@@ -1,26 +1,16 @@
 import { Template } from 'meteor/templating'
+import { Flows } from '/imports/modules/flows/both/collection'
 
-import { servicesAvailable } from '/imports/services/_root/client'
-
-Template.registerHelper('flowTrigger', function() {
-  try {
-    let output = this.trigger.type
-
-    let service = servicesAvailable.find(sa => sa.name === output).humanName
-
-    if (service) {
-      output = service
-    }
-
-    if (this.trigger.type === 'cron') {
-      if (this.trigger.config.cron) {
-        output = `${output} ${this.trigger.config.cron}`
-      }
-    }
-
-    return output
-  }
-  catch (ex) {
-    return ''
+Template['flows.index'].helpers({
+  'flows': () => {
+    let result = []
+    const list = Flows.find({})
+    list.map(item => {
+      let type = item.trigger.type
+      let found = result.find(ri => ri.type === type)
+      if (found) found.flows.push(item)
+      else result.push({type, flows: [item]})
+    })
+    return result
   }
 })
