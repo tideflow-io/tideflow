@@ -6,7 +6,7 @@ import { sAlert } from 'meteor/juliancwirko:s-alert'
 import { Template } from 'meteor/templating'
 import { Router } from 'meteor/iron:router'
 
-import { copyTextToClipboard } from '../../../../../helpers/client/clipboard/helper'
+import { copyTextToClipboard } from '/imports/helpers/client/clipboard/helper'
 
 Template.filesIndexElement.events({
   'click .copy-url': (event, template) => {

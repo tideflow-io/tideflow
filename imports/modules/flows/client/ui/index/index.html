@@ -24,7 +24,7 @@
               {{#if serviceProperty this.type 'icon_image'}}
                 <img width="34" src="/icons/services/{{serviceProperty this.type 'icon_image'}}">
               {{else}}
-                <i class="{{serviceProperty this.type 'icon'}}"></i>
+                <i style="color: {{serviceProperty this.type 'iconColor'}}" class="{{serviceProperty this.type 'icon'}}"></i>
               {{/if}}
               {{serviceHumanPluralName this.type}}
             </h4>
@@ -63,7 +63,16 @@
           </a>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-1">
+        <div class="float-right">
+          {{#if isEq this.trigger.type 'endpoint'}}
+            <div class="btn btn-link ">
+              <i class="fas fa-link copy-s-endpoint-url" title="{{__ "files.edit.makePublic.copyUrl"}}"></i>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="col-md-1">
         <div class="float-right">
           <button class="btn btn-outline-primary">
             {{__ "flows.index.viewOne"}}
