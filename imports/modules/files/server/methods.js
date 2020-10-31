@@ -70,22 +70,26 @@ export const updateFile = new ValidatedMethod({
     
     let uploadStream = gfs.openUploadStream(`${originalFile.user}/${new Date().getTime()}/${file.name}`)
 
+    const buff = Buffer.from(content)
+
     update.$push = {
       versions: {
         date: new Date(),
+        size: Buffer.byteLength(buff),
         gfsId: uploadStream.id.toString()
       }
     }
 
     update.$set = {
       name: file.name,
+      size: Buffer.byteLength(buff),
       type: mime.lookup(file.name) || 'text/plain',
       ext: lib.getFilenameExtension(file.name) || ''
     }
 
     // Create stream with buffer to pipe to uploadStream
     var s = new Readable()
-    s.push(content)
+    s.push(buff)
     s.push(null) // Push null to end stream
     s.pipe(uploadStream)
     

@@ -126,6 +126,13 @@ Template.registerHelper('currentTeamId', () => {
   }
 })
 
+Template.registerHelper('fileSizeKb', size => {
+  if (!size) return ''
+  let kb = (size / 1024).toFixed(2)
+  return kb > 1024 ? 
+    `${(kb / 1024).toFixed(2)} Mb` : 
+    `${kb} Kb`
+})
 
 Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
 Template.registerHelper('agentUrl', () => {

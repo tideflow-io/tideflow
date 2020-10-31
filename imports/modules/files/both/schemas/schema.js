@@ -66,6 +66,14 @@ const Schema = new SimpleSchema({
     optional: true,
     blackbox: true
   },
+  'versions.$.date': {
+    type: Date,
+    optional: false
+  },
+  'versions.$.size': {
+    type: Number,
+    optional: true
+  },
   'versions.$.gfsId': {
     type: String,
     optional: false
