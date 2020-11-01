@@ -50,13 +50,11 @@ Accounts.emailTemplates.enrollAccount = {
     return `Invitation for joining ${siteName}`
   },
   text(_user, url) {
-    console.log({text:{_user, url}})
     const siteSettings = Settings.findOne({type: 'siteSettings'})
     const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
     return `You are invited to join ${ siteName }, click ${ url } to set up your account and join.`; 
   },
   html(user, url, abc) {
-    console.log({html:{user, url, abc}})
     // Add common contents to the template variables
     const siteSettings = Settings.findOne({type: 'siteSettings'})
     const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
