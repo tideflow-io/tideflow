@@ -127,6 +127,7 @@ Template.registerHelper('currentTeamId', () => {
 })
 
 Template.registerHelper('fileSizeKb', size => {
+  if (size === 0) return '0 Kb'
   if (!size) return ''
   let kb = (size / 1024).toFixed(2)
   return kb > 1024 ? 
