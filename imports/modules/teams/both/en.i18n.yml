@@ -24,7 +24,7 @@ members:
     title: Invite new members
     email:
       title: Email address
-      help: The email address of the person you want no invite to the team
+      help: The email address of the person you want to invite to the team
       submit: Invite person
   delete:
     title: Remove member from team
