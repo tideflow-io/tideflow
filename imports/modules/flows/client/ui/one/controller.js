@@ -16,7 +16,8 @@ Template['flows.one'].onCreated(function() {
     self.executions.set([])
 
     self.subscribe('flows.one.executionsStats', {
-      flow: Router.current().params._id
+      flow: Router.current().params._id,
+      team: Router.current().params.teamId
     })
   })
 })

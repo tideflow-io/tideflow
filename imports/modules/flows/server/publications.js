@@ -30,7 +30,12 @@ Meteor.publish('flows.single', (query, options) => {
 Meteor.publish('flows.one.executionsStats', function(query, options) {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
-  query.user = Meteor.userId()
+  new SimpleSchema({
+    flow: String,
+    team: String
+  }).validate(query)
+
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
 
   var pipeline = [
     {

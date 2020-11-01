@@ -1,7 +1,13 @@
 _namespace: emails
-verify.title: Verify your email address
-verify.description: In order to continue, you need to verify your email address
-verify.button: Verify my email address and continue
-resetPassword.title: Recover your password
-resetPassword.description: Someone, likely you, have requested to reset your Tideflow password. Please visit the following link to recover it.
-resetPassword.button: Specify a new password
+enroll:
+  title: Invitation for joining {$siteName}
+  description: You are invited to join {$siteName}, click on the button below to set up your account and join. 
+  button: Verify my email address and continue
+verify:
+  title: Verify your email address
+  description: In order to continue, you need to verify your email address
+  button: Verify my email address and continue
+resetPassword:
+  title: Recover your password
+  description: Someone, likely you, have requested to reset your Tideflow password. Please visit the following link to recover it.
+  button: Specify a new password

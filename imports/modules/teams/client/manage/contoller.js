@@ -51,7 +51,6 @@ Template.teamsManageMembers.events({
           return;
         }
         sAlert.success(i18n.__('teams.members.add.success'))
-
       }
     )
   }

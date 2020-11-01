@@ -8,6 +8,7 @@ SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.htm
 SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'))
 SSR.compileTemplate('emailTemplateAccountsResetPassword', Assets.getText('emails/resetPassword.html'))
 SSR.compileTemplate('emailTemplateAccountsVerifyEmail', Assets.getText('emails/verifyEmail.html'))
+SSR.compileTemplate('emailTemplateAccountsEnrollEmail', Assets.getText('emails/enrollEmail.html'))
 
 /**
  * Get the email configuration for Nodemailer

@@ -121,17 +121,22 @@ Meteor.methods({
     check(teamId, String)
     check(userEmail, String)
 
+    let existingTeam = Teams.findOne({ _id: teamId })
+    if (!existingTeam) throw new Meteor.Error('teams.members.add.errors.team-not-found')
+
     let user = Meteor.users.findOne({
       'emails.address': userEmail,
       'emails.verified': true
     })
 
     if (!user) {
-      throw new Meteor.Error('teams.members.add.errors.user-not-found')
-    }
+      let userId = Accounts.createUser({
+        email: userEmail
+      })
 
-    let existingTeam = Teams.findOne({ _id: teamId })
-    if (!existingTeam) throw new Meteor.Error('teams.members.add.errors.team-not-found')
+      Accounts.sendEnrollmentEmail(userId)
+      return setRole(userId, existingTeam, ROLES.MEMBER)
+    }
 
     if (!isAdmin(Meteor.userId(), existingTeam)) {
       throw new Meteor.Error('teams.members.add.errors.not-authorized')

@@ -2,12 +2,13 @@ import { Meteor } from 'meteor/meteor'
 import { ReactiveAggregate } from 'meteor/tunguska:reactive-aggregate'
 import { moment } from 'meteor/momentjs:moment'
 
+import { isMember } from '../../_common/both/teams'
 import { Executions } from '../../executions/both/collection'
 
 Meteor.publish('dashboard.executionsStats', function(query, options) {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
-
-  query.user = Meteor.userId()
+  if (!query.team) throw new Meteor.Error('no-auth')
+  if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
 
   let time = new Date()
   switch (query.time) {

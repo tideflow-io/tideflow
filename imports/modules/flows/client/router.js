@@ -66,7 +66,8 @@ Router.route('/:teamId/flows/:_id', function () {
         team: Router.current().params.teamId
       }),
       Meteor.subscribe('executions.all', {
-        flow: this.params._id
+        flow: this.params._id,
+        team: Router.current().params.teamId
       }, {
         fields: {
           _id: true, status: true, createdAt: true, updatedAt: true
@@ -137,10 +138,12 @@ Router.route('/:teamId/flows/:_id/executions/:executionId', function () {
         team: Router.current().params.teamId
       }),
       Meteor.subscribe('executions.single', {
-        _id: this.params.executionId
+        _id: this.params.executionId,
+        team: Router.current().params.teamId
       }),
       Meteor.subscribe('executionsLogs.all', {
-        execution: this.params.executionId
+        execution: this.params.executionId,
+        team: Router.current().params.teamId
       }, {
         sort: {
           createdAt: 1
