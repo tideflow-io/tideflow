@@ -156,6 +156,7 @@ const remove = async (_id) => {
 module.exports.remove = remove
 
 const create = async (doc, content) => {
+  if (!content) content = ''
   delete doc.content
 
   if (!doc.user) throw Meteor.Error('no-user')

@@ -70,7 +70,7 @@ export const updateFile = new ValidatedMethod({
     
     let uploadStream = gfs.openUploadStream(`${originalFile.user}/${new Date().getTime()}/${file.name}`)
 
-    const buff = Buffer.from(content)
+    const buff = Buffer.from(content || '')
 
     update.$push = {
       versions: {

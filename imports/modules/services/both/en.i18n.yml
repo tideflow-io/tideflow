@@ -1,4 +1,6 @@
 _namespace: services
+url:
+  copy: Copy URL
 update.error: There was a problem updating this service
 update.ok: Service updated
 delete.title: Are you sure?

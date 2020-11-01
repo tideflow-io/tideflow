@@ -1,5 +1,17 @@
 #editor {
   width: 100% !important;
-  height: 800px !important;
   border: 1px solid #CED4DA;
+  position: absolute;
+  height: 100% !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.ace-editor-container {
+  height: calc(100vh - 52.75px);
+    width: 100%;
+    display:inline-block;
+    position:relative;
 }
