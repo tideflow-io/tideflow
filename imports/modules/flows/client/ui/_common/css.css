@@ -25,22 +25,6 @@
   margin-bottom: 15px;
 }
 
-#sidebar-wrapper {
-  min-width: 350px !important;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 56px);
-    overflow: auto;
-}
-#page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-}
-
 .step-event-selector-wrapper .field-descriptor {
   padding-bottom: 20px;
 }

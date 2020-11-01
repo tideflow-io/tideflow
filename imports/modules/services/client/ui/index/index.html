@@ -61,7 +61,6 @@
           <div class="text-small">
             {{#if this.description}}
               {{this.description}}
-            {{else}}
             {{/if}}
             {{#if isEq this.type 'agent'}}
               <i><span class="text-muted">{{{sAgentReportStatus}}}</span></i>
@@ -72,7 +71,16 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-1">
+        <div class="float-right">
+          {{#if isEq this.type 'webform'}}
+            <div class="btn btn-link">
+              <i class="fas fa-link copy-s-webform-url" title="{{__ "services.url.copy"}}"></i>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="col-md-1">
         <div class="float-right">
           <a href="{{pathFor 'services.one.edit' teamId=currentTeamId type=type _id=_id}}" class="btn btn-outline-primary">
             {{__ "services.index.itemView"}}

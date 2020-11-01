@@ -28,3 +28,24 @@ pre.code {
 .s-alert-info, .s-alert-success, .s-alert-warning, .s-alert-error {
   z-index: 9999999;
 }
+
+#sidebar-wrapper {
+  min-width: 350px !important;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 56px);
+    overflow: auto;
+}
+
+.sidebar-sticky-white {
+  background-color: white !important;
+}
+
+#page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+}
