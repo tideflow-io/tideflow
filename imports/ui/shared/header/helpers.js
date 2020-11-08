@@ -5,11 +5,10 @@ import { getSetting } from '../../../modules/management/both/settings'
 import { Teams } from '/imports/modules/teams/both/collection'
 import { checkRole } from '/imports/helpers/both/roles'
 import { isAdmin } from '../../../modules/_common/both/teams'
+import { siteName } from '/imports/helpers/both/tideflow'
 
 Template.appHeader.helpers({
-  siteName: () => {
-    return getSetting('siteSettings', 'title') || ''
-  },
+  siteName: siteName(),
   allowTeamCreation: () => {
     return getSetting('teamsCreation', 'creationPermissions') === 'public' ||
       checkRole(Meteor.userId(), 'super-admin')

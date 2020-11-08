@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import { Settings } from '/imports/modules/management/both/collection'
+import { siteName } from '/imports/helpers/both/tideflow'
 
 import i18n from 'meteor/universe:i18n'
 
-const siteSettings = Settings.findOne({type: 'siteSettings'}) || {}
-const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
+const mailSiteName = siteName()
 
 Accounts.urls = {
   resetPassword: (token) => Meteor.absoluteUrl('resetpassword/' + token),
@@ -13,8 +13,8 @@ Accounts.urls = {
   enrollAccount: (token) => Meteor.absoluteUrl('enroll-account/' + token),
 }
 
-Accounts.emailTemplates.siteName = siteName
-Accounts.emailTemplates.from = `${siteName} <no-reply@service.tideflow.io>`
+Accounts.emailTemplates.siteName = mailSiteName
+Accounts.emailTemplates.from = `${mailSiteName} <no-reply@service.tideflow.io>`
 
 Accounts.emailTemplates.resetPassword = {
   subject(_user) {
@@ -25,13 +25,10 @@ Accounts.emailTemplates.resetPassword = {
     + url
   },
   html(user, url) {
-    const siteSettings = Settings.findOne({type: 'siteSettings'})
-    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
-
     const data = {
       tideflow: {
         appUrl: Meteor.absoluteUrl(),
-        name: siteName
+        name: mailSiteName
       },
       user,
       url,
@@ -45,30 +42,24 @@ Accounts.emailTemplates.resetPassword = {
 
 Accounts.emailTemplates.enrollAccount = {
   subject(user) {
-    const siteSettings = Settings.findOne({type: 'siteSettings'})
-    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
-    return `Invitation for joining ${siteName}`
+    return `Invitation for joining ${mailSiteName}`
   },
   text(_user, url) {
-    const siteSettings = Settings.findOne({type: 'siteSettings'})
-    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
-    return `You are invited to join ${ siteName }, click ${ url } to set up your account and join.`; 
+    return `You are invited to join ${ mailSiteName }, click ${ url } to set up your account and join.`; 
   },
   html(user, url, abc) {
     // Add common contents to the template variables
-    const siteSettings = Settings.findOne({type: 'siteSettings'})
-    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
 
     const data = {
       tideflow: {
         appUrl: Meteor.absoluteUrl(),
-        name: siteName
+        name: mailSiteName
       },
       user,
       url,
-      title: i18n.__('emails.enroll.title', {siteName}),
-      description: i18n.__('emails.enroll.description', {siteName}),
-      buttonText: i18n.__('emails.enroll.button', {siteName})
+      title: i18n.__('emails.enroll.title', {mailSiteName}),
+      description: i18n.__('emails.enroll.description', {mailSiteName}),
+      buttonText: i18n.__('emails.enroll.button', {mailSiteName})
     }
     return SSR.render('emailTemplateAccountsEnrollEmail', data)
   }
@@ -83,15 +74,12 @@ Accounts.emailTemplates.verifyEmail = {
   },
   html(user, url) {
     // Add common contents to the template variables
-    const siteSettings = Settings.findOne({type: 'siteSettings'})
-    const siteName = siteSettings.settings ? siteSettings.settings.title || 'Tideflow' : 'Tideflow'
-
     const urlParts = url.split('/')
     const token = urlParts[urlParts.length - 1]
     const data = {
       tideflow: {
         appUrl: Meteor.absoluteUrl(),
-        name: siteName
+        name: mailSiteName
       },
       user,
       url: Meteor.absoluteUrl(`/verify/${token}`),

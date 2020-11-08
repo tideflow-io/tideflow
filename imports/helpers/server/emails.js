@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer'
 import url from 'url'
 
 import { Settings } from '/imports/modules/management/both/collection'
+import { siteName } from '/imports/helpers/both/tideflow'
 
 SSR.compileTemplate('emailTemplatestandard', Assets.getText('emails/standard.html'))
 SSR.compileTemplate('emailTemplateExecutionLogs', Assets.getText('emails/executionLogs.html'))
@@ -124,21 +125,20 @@ const data = (to, emailDetails, tplVars, tplName) => {
   to = to.filter(t => /^[A-Z0-9'.1234z_%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(t))
 
   // Add common contents to the template variables
-  const siteSettings = Settings.findOne({type: 'siteSettings'})
-  const siteName = siteSettings.settings ? siteSettings.settings.title || 'Unnamed' : 'Unnamed'
+  const mailSiteName = siteName()
 
   tplVars = Object.assign(tplVars, {
     tideflow: {
       appUrl: process.env.ROOT_URL,
-      name: siteName
+      name: mailSiteName
     }
   })
 
   return {
-    from: `${siteName} <${config && config.auth ? config.auth.user : 'noreply@localhost'}>`,
+    from: `${mailSiteName} <${config && config.auth ? config.auth.user : 'noreply@localhost'}>`,
     to: Array.isArray(to) ? to.join(' ') : to,
-    subject: emailDetails.config ? emailDetails.config.subject || siteName : siteName,
-    text: emailDetails.config ? `${siteName}: ${emailDetails.config.body}` : siteName,
+    subject: emailDetails.config ? emailDetails.config.subject || mailSiteName : mailSiteName,
+    text: emailDetails.config ? `${mailSiteName}: ${emailDetails.config.body}` : mailSiteName,
     html: SSR.render(`emailTemplate${tplName}`, tplVars),
     attachments: []
   }
