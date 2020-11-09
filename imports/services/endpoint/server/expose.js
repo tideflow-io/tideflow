@@ -35,9 +35,10 @@ Router.route('/service/endpoint/:uuid', async function () {
     return
   }
 
-  let result = {}
+  let result = { data: {} }
 
-  if (req.body) result.data = req.body
+  if (req.body) result.data.body = req.body
+  if (req.headers) result.data.headers = req.headers
   if (req.files) result.files = req.files
 
   if (!Object.keys(result).length) { return }
