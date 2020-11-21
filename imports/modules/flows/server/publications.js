@@ -31,8 +31,9 @@ Meteor.publish('flows.one.executionsStats', function(query, options) {
   if (!Meteor.userId()) throw new Meteor.Error('no-auth')
 
   new SimpleSchema({
-    flow: String,
-    team: String
+    flow: String, 
+    team: String,
+    createdAt: { type: Object, blackbox: true }
   }).validate(query)
 
   if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
