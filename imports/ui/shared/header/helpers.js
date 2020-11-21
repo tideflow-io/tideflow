@@ -8,8 +8,8 @@ import { isAdmin } from '../../../modules/_common/both/teams'
 import { siteName, siteSetting } from '/imports/helpers/both/tideflow'
 
 Template.appHeader.helpers({
-  siteName: siteName(),
-  showTitle: siteSetting('showTitle', false),
+  siteName: () => siteName(),
+  showTitle: () => siteSetting('showTitle'),
   allowTeamCreation: () => {
     return getSetting('teamsCreation', 'creationPermissions') === 'public' ||
       checkRole(Meteor.userId(), 'super-admin')
