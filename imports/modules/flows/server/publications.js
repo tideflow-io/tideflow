@@ -33,7 +33,7 @@ Meteor.publish('flows.one.executionsStats', function(query, options) {
   new SimpleSchema({
     flow: String, 
     team: String,
-    createdAt: { type: Object, blackbox: true }
+    createdAt: { type: Object, blackbox: true, optional: true }
   }).validate(query)
 
   if (!isMember(Meteor.userId(), query.team)) throw new Meteor.Error('no-access')
