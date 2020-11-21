@@ -29,5 +29,4 @@ Executions.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 Executions.attachSchema(ExecutionSchema)

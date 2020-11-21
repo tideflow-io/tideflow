@@ -29,5 +29,4 @@ FilesTemplatesCategories.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 FilesTemplatesCategories.attachSchema(schema)

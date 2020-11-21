@@ -29,5 +29,4 @@ Files.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 Files.attachSchema(schema)

@@ -29,5 +29,4 @@ Teams.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 Teams.attachSchema(TeamsSchema)

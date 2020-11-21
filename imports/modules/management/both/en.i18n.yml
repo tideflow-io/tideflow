@@ -1,8 +1,12 @@
 _namespace: management
 title: Administration
 site.submit: Update
-site.title.label: Site's title
-site.title.empty: Site's title can not be empty
+site:
+  title:
+    label: Site's title
+    empty: Site's title can not be empty
+  showSiteName:
+    label: Show title in the top navbar
 site.ok: Site's settings updated
 site.error: Something went wrong
 permissions.noSignups.label: No signups allowed

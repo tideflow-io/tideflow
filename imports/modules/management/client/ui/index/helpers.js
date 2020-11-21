@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating'
-import { siteName } from '/imports/helpers/both/tideflow'
+import { siteName, siteSetting } from '/imports/helpers/both/tideflow'
 
 Template['management.index'].helpers({
-  siteName: () => siteName() || 'Tideflow'
+  siteName: () => siteName() || 'Tideflow',
+  showTitle: () => siteSetting('showTitle', false)
 })

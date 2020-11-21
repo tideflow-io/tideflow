@@ -29,5 +29,4 @@ Services.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 Services.attachSchema(ServiceSchema)

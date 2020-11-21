@@ -13,6 +13,14 @@
                 <label class="control-label">{{__ "management.site.title.label"}}</label>
                 <input type="text" id="title" name="title" class="form-control" value="{{siteName}}" placeholder="{{siteName}}" required autofocus>
               </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <input checked="{{#if showTitle}}checked{{/if}}" class="form-check-input" type="checkbox" value="" id="show-site-title">
+                  <label class="form-check-label" for="show-site-title">
+                    {{__ "management.site.showSiteName.label"}}
+                  </label>
+                </div>
+              </div>
               <button class="btn  btn-primary " type="submit">{{__ "management.site.submit"}}</button>
             </form>
           </div>

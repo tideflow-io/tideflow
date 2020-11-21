@@ -7,3 +7,11 @@ const siteName = () => {
   return st && st.settings ? st.settings.title || 'Unnamed' : 'Unnamed'
 }
 module.exports.siteName = siteName
+
+const siteSetting = (value, defaultValue) => {
+  const st = Settings.findOne({
+    type: 'siteSettings'
+  })
+  return st && st.settings ? st.settings[value] || defaultValue : defaultValue
+}
+module.exports.siteSetting = siteSetting

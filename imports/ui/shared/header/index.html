@@ -4,7 +4,8 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="{{pathFor 'dashboard' teamId=currentTeamId}}">
           <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          &nbsp; {{siteName}}
+          {{#if showTitle}}&nbsp; {{siteName}}{{/if}}
+          {{siteName}}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
           aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,9 +1,6 @@
 import { Meteor } from 'meteor/meteor'
-
 import { check } from 'meteor/check'
-
 import { checkRole } from '/imports/helpers/both/roles'
-
 import { Settings as SettingsCollection } from '../both/collection'
 
 Meteor.methods({
@@ -13,7 +10,8 @@ Meteor.methods({
     }
 
     check(settings, {
-      title: String
+      title: String,
+      showTitle: Boolean
     })
 
     if (settings.title.trim() === '') {
@@ -25,6 +23,7 @@ Meteor.methods({
     }, {
       $set: {
         public: true,
+        'settings.showTitle': settings.showTitle,
         'settings.title': settings.title
       }
     })

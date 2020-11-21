@@ -7,15 +7,15 @@ import i18n from 'meteor/universe:i18n'
 Template['management.index'].events({
   'submit #site-update': (event, template) => {
     event.preventDefault()
-    let title = event.target.title.value
-    Meteor.call('site-settings', { title }, (error, result) => {
+    Meteor.call('site-settings', {
+      title: event.target.title.value,
+      showTitle: !!event.target['show-site-title'].checked
+    }, (error, result) => {
       if (error) {
         let errorMessage = 'management.site.error'
-        
         if (error.error === 'title-empty') {
           errorMessage = 'management.site.title.empty'
         }
-
         sAlert.error(i18n.__(errorMessage))
       }
       else {

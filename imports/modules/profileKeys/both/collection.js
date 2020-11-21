@@ -29,5 +29,4 @@ Keys.deny({
   }
 })
 
-// Must remember to attach the schema to the collection
 Keys.attachSchema(KeySchema)
