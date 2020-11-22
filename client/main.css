@@ -25,7 +25,9 @@ b {
 }
 
 .navbar {
+  z-index: 9999;
   background-color: #24292E;
+  box-shadow: 0 0.1rem 1rem rgba(33, 37, 41, 0.2);
 }
 
 .navbar .navbar-nav .nav-item > a {
