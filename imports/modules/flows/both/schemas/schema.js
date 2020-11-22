@@ -112,9 +112,15 @@ const FlowSchema = new SimpleSchema({
   'steps.$.id': {
     type: String,
     optional: false,
-    autoValue: function () {
+    autoValue: function (doc) {
       if (!this.isSet) {
-        return '123'
+        try {
+          let i = parseInt(this.key.replace(/[^0-9]/g, ""))
+          return `${doc.steps[i].type}-${++i}`
+        }
+        catch (ex) {
+          return i
+        }
       }
     }
   },
