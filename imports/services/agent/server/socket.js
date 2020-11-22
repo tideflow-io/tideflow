@@ -136,13 +136,11 @@ Meteor.startup(async () => {
 
     // An agent is reporting an exception when executing the command
     socket.on('tf.notify.stdException', async message => {
-      console.log(message)
       await logStdLines(
         message,
         message.stdLines,
         { status: 'error' }
       )
-      console.log(pick(message, ['flow', 'execution', 'log', 'step']))
       executionError(pick(message, ['flow', 'execution']))
     })
     
