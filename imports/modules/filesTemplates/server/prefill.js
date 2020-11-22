@@ -23,6 +23,7 @@ const run = async () => {
         'prefill/html-template/buttons.json',
         'prefill/html-template/urlparsing.json',
         'prefill/html-template/barcode-scanner.json',
+        'prefill/html-template/days-billing.json',
         'prefill/html-template/buttons-shadows.json'
       ]
     },

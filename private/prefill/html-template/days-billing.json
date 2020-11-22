@@ -1,0 +1,9 @@
+{
+  "id": "html-days-billing",
+  "name": "Simple daily billing form",
+  "description": "Date selector html for daily based billing",
+  "fileName": "days-billing.html",
+  "type": "text",
+  "iconClass": "fab fa-html5",
+  "iconColor": "#E44D26"
+}
