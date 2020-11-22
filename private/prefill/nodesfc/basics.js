@@ -1,10 +1,9 @@
 /**
  * @dependency lodash latest
- */
-require('lodash').map([1,2,3,4], n => console.log(n));
-
-/**
  * @dependency faker latest
  */
-let fake = require('faker').fake('{{name.lastName}}, {{name.firstName}}');
-console.log(fake);
+module.exports.handler = async () => {
+  require('lodash').map([1,2,3,4], n => console.log(n));
+  let fake = require('faker').fake('{{name.lastName}}, {{name.firstName}}');
+  return { fake }
+}
