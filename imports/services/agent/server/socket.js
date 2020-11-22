@@ -11,20 +11,29 @@ import { pick } from '/imports/helpers/both/objects'
 // Server
 const io = socket_io(WebApp.httpServer)
 
-const logUpdate = (context, messages, extras) => {
+const logStdLines = (context, messages, extras) => {
   const { log, execution } = context
-
-  let push = {
-    msgs: { $each: messages }
-  }
+  let push = {}
 
   if (messages && messages.length) {
+    push.msgs = { $each: messages }
     push['result.data'] = { $each: messages.map(l => l.m) }
   }
 
   return ExecutionsLogs.update({_id: log, execution}, {
     $set: Object.assign({}, extras, { 'result.type': 'array' }),
     $push: push
+  })
+}
+
+const logResult = (context, extras) => {
+  const { log, execution, result } = context
+  let set = {
+    'result.data': result
+  }
+
+  return ExecutionsLogs.update({_id: log, execution}, {
+    $set: Object.assign({}, set, { 'result.type': 'object' }, extras),
   })
 }
 
@@ -89,19 +98,17 @@ Meteor.startup(async () => {
     // An agent is reporting std/err output.
     // Add this to the list of messages for the workflow's execution step.
     socket.on('tf.notify.progress', async message => {
-      await logUpdate(
+      await logStdLines(
         message,
         message.stdLines
       )
     })
 
-    // An agent is reporting std/err output.
-    // Add this to the list of messages for the workflow's execution step.
-    socket.on('tf.notify.finishBulk', async message => {
+    // An agent is reporting full result at once.
+    socket.on('tf.notify.result', async message => {
       let err = !!message.error
-      await logUpdate(
+      await logResult(
         message,
-        message.stdLines,
         { status: err ? 'error' : 'success' }
       )
 
@@ -115,32 +122,27 @@ Meteor.startup(async () => {
 
     // An agent is reporting std/err and the exit code
     // Add this to the list of messages for the workflow's execution step.
-    socket.on('tf.notify.finish', async message => {
-      await logUpdate(
+    socket.on('tf.notify.stdResult', async message => {
+      let err = !!message.error
+      await logStdLines(
         message,
         message.stdLines,
-        { status: message.error ? 'error' : 'success' }
+        { status: 'success' }
       )
 
-      if (message.error) {
-        executionError(pick(message, ['flow', 'execution']))
-      }
-      else {
-        executeNextStep(pick(message, ['flow', 'execution', 'log', 'step']))
-      }
-      // Once reported, check if the Workflow have more steps to execute
+      executeNextStep(pick(message, ['flow', 'execution', 'log', 'step']))
     })
 
 
     // An agent is reporting an exception when executing the command
-    socket.on('tf.notify.exception', async message => {
-      await logUpdate(
+    socket.on('tf.notify.stdException', async message => {
+      console.log(message)
+      await logStdLines(
         message,
-        [
-          { m: message.ex, p: null, err: true, d: new Date() }
-        ],
+        message.stdLines,
         { status: 'error' }
       )
+      console.log(pick(message, ['flow', 'execution', 'log', 'step']))
       executionError(pick(message, ['flow', 'execution']))
     })
     

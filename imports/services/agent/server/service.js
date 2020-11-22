@@ -137,9 +137,7 @@ const service = {
           log: logId,
           step: currentStep._id,
           code: command,
-          previous: JSON.stringify(
-            executionResults(execution, executionLogs, {external:true})
-          )
+          previous: executionResults(execution, executionLogs, {external:true})
         }, 'tf.agent.code_nodesfc')
 
         cb(null, {
