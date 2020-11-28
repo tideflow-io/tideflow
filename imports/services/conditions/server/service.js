@@ -90,12 +90,10 @@ const service = {
           return error(cb, 's-conditions.events.if.errors.unknown')
         }
 
-        if (pass) {
-
-        }
-        else {
-
-        }
+        cb(null, {
+          result: {pass},
+          next: true
+        })
       }
     }
   ]
