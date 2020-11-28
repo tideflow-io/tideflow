@@ -32,6 +32,8 @@ const process = {
   }
 }
 
+module.exports.process = process
+
 const error = (cb, message) => {
   cb(null, {
     result: {},

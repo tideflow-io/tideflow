@@ -379,6 +379,7 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
 }
 
 /**
+ * Given a flow, return the list of tasks that don't have any preceding one.
  * 
  * For the flow:
  * +--------------------+
@@ -390,6 +391,8 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
  * |    |0|---------^   |
  * |    +-+             |
  * +--------------------+
+ * 
+ * return [0]
  * 
  * @param {Object} flow 
  */
@@ -412,15 +415,18 @@ const guessStepsWithoutPreceding = (flow) => {
 }
 
 /**
+ * Compare two arrays.
  * 
  * @param {*} arr1 
  * @param {*} arr2 
+ * @return {boolean}
  */
 const compareArrays = (arr1, arr2) => {
   return arr1.sort().join() === arr2.sort().join()
 }
 
 /**
+ * Given a flow, returns the list of tasks that only depends on the flow's trigger.
  * 
  * For the flow:
  * +--------------------+
@@ -436,7 +442,7 @@ const compareArrays = (arr1, arr2) => {
  * 
  * @param {Object} flow 
  */
-const guessTriggerSingleChilds = (flow) => {
+const guessTriggerSingleChilds = flow => {
   const listOfCalls = calledFrom(flow)
   let result = []
   Object.keys(listOfCalls).map(stepIndex => {
@@ -742,6 +748,13 @@ const workflowStep = function(jobData) {
       if (eventCallback.error) {
         await endExecution(execution, 'error')
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
+      }
+
+      if (currentStep.type === 'conditions') {
+        const pass = eventCallback.result.pass.toString()
+        currentStep.outputs = currentStep.outputs.filter(o => {
+          return o.reason === `condition-${pass}`
+        })
       }
 
       return eventCallback
