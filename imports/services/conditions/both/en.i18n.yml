@@ -1,0 +1,26 @@
+_namespace: s-conditions
+name: Conditions
+description: Help with Tideflow development purposes
+
+event:
+  if: 
+    step:
+      title: Task to use as input
+      description: What's the task - connected to the condition - that will be used to run the match against
+    property:
+      title: Property to check
+      description: From the input task, what's the property or value name to be checked.
+    type:
+      title: Type of value to compare
+      description: Selet what type of value should be used to run the comparisson.
+    comparisson:
+      title: Comparisson
+      description: Select the comparisson to run
+    expected:
+      title: Expected value
+      description: Expected value to make the comparisson pass.
+
+help:
+  intro:
+    title: Conditions
+    content: This integration only serves development purposes.

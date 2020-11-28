@@ -1,0 +1,113 @@
+<template name="servicesConditionIfConfig">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.step.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.step.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'step' ''}}" data-schema-key="{{stepConfigName 'step'}}" name="{{stepConfigName 'step'}}">
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.property.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.property.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'property' ''}}" data-schema-key="{{stepConfigName 'property'}}" name="{{stepConfigName 'property'}}">
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.type.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.type.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers condition-type">
+      <input type="hidden" data-schema-key="{{stepConfigName 'type'}}"  name="{{stepConfigName 'type'}}" value="{{stepConfigValue 'type'}}">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="{{stepConfigName 'type'}}.string" {{subTemplateTypeChecked 'string'}} value="string">
+        <label class="form-check-label">String</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="{{stepConfigName 'type'}}.number" {{subTemplateTypeChecked 'number'}} value="number">
+        <label class="form-check-label">number</label>
+      </div>
+    </div>
+  </div>
+
+  {{> Template.dynamic template=subTemplate}}
+</template>
+
+<template name="servicesConditionIfConfig-string">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.comparisson.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.comparisson.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'comparison' ''}}" data-schema-key="{{stepConfigName 'comparison'}}" name="{{stepConfigName 'comparison'}}">
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.expected.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.expected.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'expected' ''}}" data-schema-key="{{stepConfigName 'expected'}}" name="{{stepConfigName 'expected'}}">
+    </div>
+  </div>
+</template>
+
+<template name="servicesConditionIfConfig-number">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.comparisson.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.comparisson.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'comparison' ''}}" data-schema-key="{{stepConfigName 'comparison'}}" name="{{stepConfigName 'comparison'}}">
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.expected.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.expected.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'expected' ''}}" data-schema-key="{{stepConfigName 'expected'}}" name="{{stepConfigName 'expected'}}">
+    </div>
+  </div>
+</template>

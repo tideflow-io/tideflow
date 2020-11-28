@@ -201,10 +201,22 @@ Template.registerHelper('triggerConfigValueSelected', function(setting, compare)
   return this.flow.trigger.config[setting] === compare ? 'selected' : ''
 })
 
-Template.registerHelper('stepConfigValueChecked', function(setting) {
-  if (!this || !this.steps || !this.steps[this.index]) return
+Template.registerHelper('stepConfigValueEqChecked', function(setting, compareTo, defaults) {
+  if (!this || !this.steps) return;
+
+  if (!this.steps[this.index]) {
+    console.log({defaults})
+    return defaults ? 'checked' : ''
+  }
+
   const s = this.steps[this.index].config ? this.steps[this.index].config[setting] || '' : ''
-  return s ? 'checked' : ''
+  return s === compareTo ? 'checked' : ''
+})
+
+Template.registerHelper('stepConfigValueIsChecked', function(setting, compareTo) {
+  if (!this || !this.steps || !this.steps[this.index]) return;
+  const s = this.steps[this.index].config ? this.steps[this.index].config[setting] || '' : ''
+  return s === compareTo
 })
 
 Template.registerHelper('stepConfigName', function(setting) {
@@ -271,13 +283,25 @@ Template.stepEventConfig.helpers({
   }
 })
 
+Template.flowEditorOutputs.helpers({
+  stepOutputsTemplate: function() {
+    const { step } = this
+    try {
+      const selectedService = Session.get(`fe-step-${step.index}`)
+      return selectedService.templates.outputs
+    } catch (ex) {
+      return null
+    }
+  }
+})
+
 Template.flowEditor.helpers({
 
   editMode: function() {
     return Session.get('fe-editMode') === this.index
   },
 
-  stepCardTitle: function(flow) {
+  stepCardTitle: function() {
     const selectedService = Session.get(`fe-step-${this.index}`)
     return selectedService ? `${i18n.__(selectedService.humanName)}` : null
   },

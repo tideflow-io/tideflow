@@ -3,17 +3,6 @@
 </template>
 
 <template name="flowEditor">
-  <!-- <div id="flow-sidebar-right" class="sidebar bg-light greyed-separator-l">
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center p-3 mb-0 text-muted greyed-separator-b">
-      <span>Help sidebar</span>
-    </h6>
-    <iframe src="https://tideflow.io/docs/services-email-outgoing"></iframe>
-  </div> -->
-  <!-- <nav class="col-md-2 d-none d-md-block bg-light" id="flow-sidebar">
-    <div class="sidebar-sticky">
-      
-    </div>
-  </nav> -->
   <div class="d-flex" id="wrapper">
     <div class="bg-light border-right sidebar-sticky" id="sidebar-wrapper">
       <div class="tab-content mt-4" id="nav-tabContent">
@@ -212,7 +201,7 @@
                 <div class="connector-out connector-inbound" data-step="{{this.index}}">
                   -
                 </div>
-                <div class="card-body edit-mode-enter"  data-step="{{this.index}}">
+                <div class="card-body edit-mode-enter align-middle"  data-step="{{this.index}}">
                   {{> afFieldInput label=true name=this.current.type type='hidden'}}
                   {{> afFieldInput label=true name=this.current._id type='hidden'}}
                   {{> afFieldInput label=true name=this.current.event type='hidden'}}
@@ -240,9 +229,7 @@
                 <button type="button" class="delete autoform-remove-item hover" title="{{__ "flows.editor.step.removeOne"}}">
                   X
                 </button>
-                <div class="connector-out connector-outbound" data-step="{{this.index}}">
-                  -
-                </div>
+                {{> flowEditorOutputs step=this flow=../flow}}
               </div>
             {{/afEachArrayItem}}
           </div>
@@ -250,6 +237,15 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="flowEditorOutputs">
+  {{#if stepOutputsTemplate}}
+    {{> Template.dynamic template=stepOutputsTemplate}}
+  {{else}}
+    <div class="connector-out connector-outbound" data-step="{{step.index}}">
+    </div>
+  {{/if}}
 </template>
 
 <template name="flowEditorStepAvailable">

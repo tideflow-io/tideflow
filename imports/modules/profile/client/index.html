@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body">
             {{#autoForm collection="Meteor.users" doc=user id="profileForm" type="method-update" meteormethod="profile.update"}}
-            {{> afQuickField name='profile.firstName'}}
+            {{> afQuickField autofocus='' name='profile.firstName'}}
             {{> afQuickField name='profile.lastName'}}
             <button type="submit" class="btn btn-primary">{{__ "profile.index.submit"}}</button>
             {{/autoForm}}

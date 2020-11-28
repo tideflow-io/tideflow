@@ -138,10 +138,15 @@ Template.flowEditor.events({
   }
 })
 
-const createConnection = (from, to) => {
+const createConnection = (from, outputs) => {
+
+  const source = (outputs.reason || '').startsWith('condition') ? 
+    `#flow-editor .card[data-step="${from}"] .connector-outbound.${outputs.reason}` :
+    `#flow-editor .card[data-step="${from}"] .connector-outbound`
+
   jsPlumb.connect({
-    source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
-    target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
+    source: $(source), 
+    target: $(`#flow-editor .card[data-step="${outputs.stepIndex}"] .connector-inbound`),
     anchor: 'Continuous'
   })
 }
@@ -217,13 +222,13 @@ const setJsPlumb = (flow) => {
 
     // Trigger connectors
     (flow.trigger.outputs || []).map(out => {
-      createConnection('trigger', out.stepIndex)
+      createConnection('trigger', out)
     })
 
     // Trigger connectors
     flow.steps.map((step, index) => {
       step.outputs.map(out => {
-        createConnection(index, out.stepIndex)
+        createConnection(index, out)
       })
     })
 

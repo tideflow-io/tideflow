@@ -36,14 +36,22 @@ const before = doc => {
     const fromTrigger = source.attr('data-step') === 'trigger'
     const targetIndex = Number(target.attr('data-step'))
     const sourceIndex = Number(source.attr('data-step'))
+    const sourceCondition = source.attr('data-condition')
     const realTarget = realPosition(targetIndex)
     const realSource = realPosition(sourceIndex)
 
     if (fromTrigger) {
-      doc.trigger.outputs.push({stepIndex:realTarget})
+      doc.trigger.outputs.push({
+        // reason: 'step',
+        stepIndex: realTarget
+      })
     }
     else {
-      doc.steps[realSource].outputs.push({stepIndex:realTarget})
+      console.log({sourceCondition})
+      doc.steps[realSource].outputs.push({
+        reason: sourceCondition ? `condition-${sourceCondition}` : 'step',
+        stepIndex: realTarget
+      })
     }
   })
 
