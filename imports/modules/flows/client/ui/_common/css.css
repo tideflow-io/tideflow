@@ -48,6 +48,7 @@ textarea.form-control.code {
 #flow-editor {
   /* background: url(/images/bground.png) white; */
   background: url(/images/bground.svg) white;
+  background-position: 5px 5px;
   padding: 0;
   position: relative;
   height: calc(100vh - 140px);
@@ -64,7 +65,6 @@ textarea.form-control.code {
   position: absolute;
   border-radius: 6px;
   border: 1px solid rgba(33, 37, 41, 0.3);
-  box-shadow: 0 0.1875rem 0.375rem rgba(33, 37, 41, 0.1);
 }
 
 #flow-editor .card .delete {
