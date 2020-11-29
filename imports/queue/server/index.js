@@ -9,6 +9,8 @@ import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
+import { arrayUnique } from '/imports/helpers/both/arrays'
+
 const debug = require('debug')('tideflow:queue:core')
 
 Queue.configure({
@@ -697,7 +699,7 @@ const workflowStep = function(jobData) {
      * that previous tasks results are available for the current task.
      */
     .then(() => { 
-      return previousStepsIndexes.length ? ExecutionsLogs.find({
+      let previous = previousStepsIndexes.length ? ExecutionsLogs.find({
         execution: execution._id,
         stepIndex: { $in: previousStepsIndexes }
       }, {
@@ -705,6 +707,31 @@ const workflowStep = function(jobData) {
           createdAt: -1
         }
       }).fetch() : []
+
+      // Take the step ids from bridge tasks
+
+      let bridgedIndexes = []
+
+      previous.filter(task => {
+        if (task.bridgedIndexes) {
+          bridgedIndexes = bridgedIndexes.concat(task.bridgedIndexes)
+          console.log({bridgedIndexes})
+        }
+        return !task.bridgedIndexes || !task.bridgedIndexes.length
+      })
+
+      if (!bridgedIndexes.length) return previous
+
+      let additional = ExecutionsLogs.find({
+        execution: execution._id,
+        stepIndex: { $in: bridgedIndexes }
+      }, {
+        sort: {
+          createdAt: -1
+        }
+      }).fetch()
+
+      return previous.concat(additional)
     })
 
     /**
@@ -749,6 +776,10 @@ const workflowStep = function(jobData) {
           result: eventCallback.result,
           next: eventCallback.next
         }
+      }
+
+      if (eventCallback.bridgedIndexes) {
+        updateReq.$set.bridgedIndexes = eventCallback.bridgedIndexes
       }
   
       /**

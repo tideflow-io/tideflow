@@ -94,6 +94,7 @@ const service = {
 
         cb(null, {
           result: {pass},
+          bridgedIndexes: executionLogs.map(el => el.stepIndex),
           next: true
         })
       }
