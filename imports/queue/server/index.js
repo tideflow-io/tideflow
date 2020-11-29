@@ -628,6 +628,14 @@ const workflowStart = function (jobData) {
 }
 jobs.register('workflow-start', workflowStart)
 
+/**
+ * Executea a workflow's task (not the trigger)
+ * 
+ * @param {Object} jobData
+ * @param {Object} jobData.execution
+ * @param {Object} jobData.currentStep
+ * @param {Object} jobData.user the user's db record - expect passwords & tokens
+ */
 const workflowStep = function(jobData) {
   debug(`workflow-step execution: ${jobData.execution._id}`)
 
@@ -648,7 +656,9 @@ const workflowStep = function(jobData) {
   let executionLog = null
 
   return Promise.resolve()
-    .then(async () => { // Store log in database
+
+    // Create the execution LOG in the database
+    .then(async () => { 
       executionLog = {
         id: currentStep.id,
         team: flow.team,
@@ -682,7 +692,10 @@ const workflowStep = function(jobData) {
       }
     })
 
-    // Get the list of previous tasks to this one
+    /**
+     * Get the list of previous tasks to this one, so that previous results so
+     * that previous tasks results are available for the current task.
+     */
     .then(() => { 
       return previousStepsIndexes.length ? ExecutionsLogs.find({
         execution: execution._id,
@@ -694,6 +707,9 @@ const workflowStep = function(jobData) {
       }).fetch() : []
     })
 
+    /**
+     * Executes the current task and get the results back
+     */
     .then(async previousSteps => {
       const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
       const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
@@ -717,6 +733,12 @@ const workflowStep = function(jobData) {
       }
     })
 
+    /**
+     * Given the task results, analyzes what to do with it. This
+     * 
+     * For example: store logs, continue or end the execution, change the flow
+     * based on conditions, etc.
+     */
     .then(async eventCallback => {
       debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
       //executionLog.result = eventCallback.result
@@ -729,27 +751,34 @@ const workflowStep = function(jobData) {
         }
       }
   
+      /**
+       * error indicates the task failed to execute. Therefore the execution of
+       * the flow should be stopped
+       */
       if (eventCallback.error) {
-        //executionLog.status = 'error'
         updateReq.$set.status = 'error'
       }
   
+      // next indicates that next tasks can be executed.
       if (eventCallback.next) {
-        //executionLog.status = eventCallback.error ? 'error' : 'success'
         updateReq.$set.status = eventCallback.error ? 'error' : 'success'
       }
   
+      // List of messages to be stored
       if (eventCallback.msgs) {
         //executionLog.msgs = eventCallback.msgs
         updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
       }
+
       ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
 
+      // If there was an error, stop flow's execution here.
       if (eventCallback.error) {
         await endExecution(execution, 'error')
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
       }
 
+      // Change the execution behavior based on confitions
       if (currentStep.type === 'conditions') {
         const pass = eventCallback.result.pass.toString()
         currentStep.outputs = currentStep.outputs.filter(o => {
@@ -760,6 +789,10 @@ const workflowStep = function(jobData) {
       return eventCallback
     })
 
+    /**
+     * take decission on what to do next. For example: hold or continue with
+     * futher tasks
+     */
     .then(async eventCallback => {
       // The service asked the queue to don't keep working on the execution
       if (!eventCallback.next) throw { completed: true, reason: 'next' }
@@ -805,25 +838,40 @@ const workflowStep = function(jobData) {
           }
         }
 
+        // Build the input to be passed to the next workflow-step-execution
         const nextStepData = {
           execution,
           currentStep: nextStepFull,
           user
         }
         
+        /**
+         * Some flows can run in one-go. One-go means that tasks can be executed
+         * one right after the other (without going thorugh the queue service).
+         * 
+         * This helps completing flow executions and getting their results much
+         * faster.
+         * 
+         * But in order to to this, the system must be sure that all tasks that
+         * are part or the workflow execution support this ability.
+         */
         if (execution.capabilities.runInOneGo) {
           return await workflowStep(nextStepData)
         }
-        // Schedule execution
+
+        /**
+         * If the the execution does not supports one-go, then schedule the next
+         * task to go through the queue service.
+         */
         jobs.run('workflow-step', nextStepData)
       })
 
       return await Promise.all(allPromises)
     })
 
+    // perform database operations and finish
     .then(r => {
-      if (instance.remove) instance.remove()
-      // return Object.assign(executionLog, { subSteps: r })
+      if (instance.remove) instance.remove() // reduce database usage impact
       return executionLog
     })
 
@@ -833,11 +881,6 @@ const workflowStep = function(jobData) {
     })  
 }
 
-/**
- * Execute non-trigger flow step
- * 
- * @param {Object} jobData
- */
 jobs.register('workflow-step', workflowStep)
 
 jobs.register('workflow-execution-finished', function(jobData) {
