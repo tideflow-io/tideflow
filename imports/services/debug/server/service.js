@@ -41,7 +41,6 @@ const service = {
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let r = executionResults(execution, executionLogs, {external: true})
-        console.log({r})
         executionCb(cb, executionLogs, 'e2')
       }
     },
@@ -52,7 +51,6 @@ const service = {
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let r = executionResults(execution, executionLogs, {external: true})
-        console.log({r})
         executionCb(cb, executionLogs, 'e3')
       }
     }

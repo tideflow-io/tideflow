@@ -47,7 +47,6 @@ const before = doc => {
       })
     }
     else {
-      console.log({sourceCondition})
       doc.steps[realSource].outputs.push({
         reason: sourceCondition ? `condition-${sourceCondition}` : 'step',
         stepIndex: realTarget
