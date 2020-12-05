@@ -114,45 +114,6 @@ Template.registerHelper('eventHumanName', (serviceName, eventName) => {
   }
 })
 
-Template.registerHelper('currentTeamId', () => {
-  try {
-    let c = Router.current().params.teamId
-    if (c) Session.set('lastTeamId', c) 
-    else c = Session.get('lastTeamId') 
-    return c
-  }
-  catch (ex) {
-    return null
-  }
-})
-
-Template.registerHelper('fileSizeKb', size => {
-  if (size === 0) return '0 Kb'
-  if (!size) return ''
-  let kb = (size / 1024).toFixed(2)
-  return kb > 1024 ? 
-    `${(kb / 1024).toFixed(2)} Mb` : 
-    `${kb} Kb`
-})
-
-Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
-Template.registerHelper('agentUrl', () => {
-  const url = new URL(Meteor.absoluteUrl())
-  return `${url.protocol}//${url.hostname}`
-})
-Template.registerHelper('checkUserRole', (team) => {
-  return checkRole(Meteor.userId(), team)
-})
-
-Template.registerHelper('isInUrl', url => {
-  if (!url) return null
-  if (!Router.current().route.path()) return null
-  return Router.current().route.path().indexOf(url) === 1
-})
-
-Template.registerHelper('routeIs', routeName => Router.current().route.getName() === routeName)
-Template.registerHelper('routeContains', routeName => Router.current().route.getName().indexOf(routeName) >= 0)
-
 Template.registerHelper('triggerConfigValue', function(setting) {
   if (!this || !this.flow || !this.flow.trigger || !this.flow.trigger.config) return
   return this.flow.trigger.config[setting] ? this.flow.trigger.config[setting] : null
@@ -267,7 +228,6 @@ Template.taskHelp.helpers({
   }
 })
 
-
 Template.stepEventConfig.helpers({
   service() {
     return Session.get(`fe-step-${this.index}`)
@@ -296,6 +256,13 @@ Template.flowEditorOutputs.helpers({
 })
 
 Template.flowEditor.helpers({
+  isCircular: function() {
+    return Template.instance().isCircular.get();
+  },
+
+  haveConditionsNotMet: function() {
+    return Template.instance().haveConditionsNotMet.get();
+  },
 
   editMode: function() {
     return Session.get('fe-editMode') === this.index

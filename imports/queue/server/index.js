@@ -9,7 +9,7 @@ import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { arrayUnique } from '/imports/helpers/both/arrays'
+import { calledFrom, guessStepsWithoutPreceding } from '/imports/modules/flows/both/flow'
 
 const debug = require('debug')('tideflow:queue:core')
 
@@ -33,62 +33,6 @@ const endExecution = async (execution, status) => {
   )
   jobs.run('workflow-execution-finished', { execution, status })
 }
-
-/**
- * Returns the list steps indexes each step is called from.
- * 
- * +----------------------------+
- * | +-------+      +-+     +-+ |
- * | |Trigger|----->|0|  +->|4| |
- * | +-------+      +++  |  +-+ |
- * |                 |   |   ^  |
- * |                 v   |   |  |
- * |       +-+      +-   |  +-+ |
- * |       |2|----->|1|--+->|3| |
- * |       +-+      +-+     +-+ |
- * +----------------------------+
- * 
- * An example output is: 
- * 
- * {
- *  0: ['trigger']    // Step is 0 is called from the trigger
- *  1: [0, 2],        // Step 1 is called from 0 and 2
- *  3: [1],           // Step 3 is called from 1
- *  4: [1, 3]         // Step 4 is called from 1 and 3
- * }
- * 
- * The previous result example is for a flow like this:
- * 
- * {
- *  "trigger" : { "outputs" : [  { "stepIndex" : 0 } ] },
- *  "steps" : [
- *   { "outputs" : [ { "stepIndex" : 1 } ] },
- *   { "outputs" : [ { "stepIndex" : 3 }, { "stepIndex" : 4 } ] },
- *   { "outputs" : [ { "stepIndex" : 1 } ] },
- *   { "outputs" : [ { "stepIndex" : 4 } ] }
- *  ]
- * }
- * 
- * @param {*} flow 
- */
-const calledFrom = flow => {
-  let c = {} //
-
-  const processOutputs = (outputs, index) => {
-    (outputs || []).map(output => {
-      let outputId = output.stepIndex
-      if (!c[outputId]) c[outputId] = []
-      c[outputId].push(index)
-    })
-  }
-
-  flow.steps.map((step, index) => processOutputs(step.outputs, index))
-  processOutputs(flow.trigger.outputs, 'trigger')
-
-  return c
-}
-
-module.exports.calledFrom = calledFrom
 
 /**
  * 
@@ -167,6 +111,40 @@ const jobs = {
 module.exports.jobs = jobs
 
 /**
+ * Calculate the number of tasks to execute based on conditional steps.
+ * 
+ * For example, for the following flow:
+ *
+ *
+ *    +-----+         +----+
+ *    |  T  +-------->+    |
+ *    +-----+         |    |     +-----+
+ *                    | 2  +--T->+  3  |
+ *    +-----+         |    |     +--+--+     +-----+
+ *    |  0  +-------->+    +--v     |        |  5  |
+ *    +-----+         +-+--+  |     v        +--+--+
+ *                      ^     |  +--+--+        ^
+ *    +-----+           |     |  |  4  |        |
+ *    |  1  | +---------+     |  +-----+        |
+ *    +-----+                 |                 |
+ *                            +-------F---------+
+ *
+ *  if 2 is false (F) then the result is 4 [T, 0, 1, 5]
+ *  if 2 is true (T) then the result if 5 [T, 0, 1, 3, 4]
+ **/
+const calculateNumberOfSteps = (flow, logs) => {
+  let values = []
+  flow.steps.map((step, index) => {
+    let log = logs.find(log => log.stepIndex === index)
+    let bridged = log.bridgedIndexes
+    let isBridged = !!bridged.length
+
+  })
+}
+
+module.exports.calculateNumberOfSteps = calculateNumberOfSteps
+
+/**
  * 
  * @param {Object} flow 
  * 
@@ -186,10 +164,6 @@ const executionCapabilities = flow => {
   }
 
   return capabilities
-}
-
-const executeFlowInOneGo = (execution, user) => {
-  return workflowStart({ execution, user })
 }
 
 /**
@@ -251,7 +225,7 @@ const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
     let executionId = Executions.insert(execution)
 
     if (execution.capabilities.runInOneGo) {
-      let result = await executeFlowInOneGo(execution, user)
+      let result = await workflowStart({ execution, user })
 
       return Promise.resolve({
         _id: executionId,
@@ -380,41 +354,6 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
   })()
 }
 
-/**
- * Given a flow, return the list of tasks that don't have any preceding one.
- * 
- * For the flow:
- * +--------------------+
- * | +-------+          |
- * | |Trigger|------v   |
- * | +-------+     +-+  |
- * |               |1|  |
- * |    +-+        +-+  |
- * |    |0|---------^   |
- * |    +-+             |
- * +--------------------+
- * 
- * return [0]
- * 
- * @param {Object} flow 
- */
-const guessStepsWithoutPreceding = (flow) => {
-  // Build a list with all the steps indexes.
-  // [0, 1]
-  const allSteps = flow.steps.map((s,i)=>i)
-  // List of steps indexes that are connected to the trigger
-  // The result is [1]
-  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex)
-  // The result is [1, 1]
-  flow.steps.map(flowStep => {
-    triggerNextSteps = triggerNextSteps.concat( (flowStep.outputs || []).map(s => s.stepIndex) )
-  })
-  // The result is [ [0,1], [1,1] ]
-  const lists = [allSteps, triggerNextSteps]
-  // The result is [ 0 ]
-  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
-  return cardsWithoutInbound || []
-}
 
 /**
  * Compare two arrays.
@@ -835,9 +774,6 @@ const workflowStep = function(jobData) {
       if (!numberOfOutputs) {
         // Get the number of executed steps in the current execution ...
         const executedSteps = ExecutionsLogs.find({execution:execution._id, status: {$in:['success','error']}}).count()
-
-        // if (currentStep.type === 'debug')
-        // console.log({executedSteps, length: flow.steps.length})
 
         // and compare it against the number of steps in the executed flow (+ trigger).
         // If the number matches, flag the execution as finished

@@ -6,6 +6,8 @@ import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 
+import { isCircular, buildFlow } from '/imports/modules/flows/both/flow'
+
 /**
  * Step TYPE selector changed its value
  * 
@@ -115,8 +117,16 @@ Template.flowEditor.events({
   'click .autoform-remove-item': function(event, template) {
     const card = $(event.target).parent('.card')
     const step = card.attr('data-step')
-    jsPlumb.remove(card.find('.connector-inbound'))
-    jsPlumb.remove(card.find('.connector-outbound'))
+
+    // Remove all inbound connections
+    card.find('.connector-inbound').map(function() {
+      jsPlumb.remove(this)
+    })
+
+    // Remove all outbound connections
+    card.find('.connector-outbound').map(function() {
+      jsPlumb.remove(this)
+    })
 
     $('.flow-step-step').each(function() {
       const currentStepNumber = $( this ).attr('data-step')
@@ -139,7 +149,6 @@ Template.flowEditor.events({
 })
 
 const createConnection = (from, outputs) => {
-
   const source = (outputs.reason || '').startsWith('condition') ? 
     `#flow-editor .card[data-step="${from}"] .connector-outbound.${outputs.reason}` :
     `#flow-editor .card[data-step="${from}"] .connector-outbound`
@@ -151,13 +160,50 @@ const createConnection = (from, outputs) => {
   })
 }
 
+const changed = (template) => {
+  let formId = $('.flow-editor').attr('id')
+  const autoformValues = AutoForm.getFormValues(formId)
+  let flowFormDoc = AutoForm.getFormValues(formId).insertDoc
+  let flow = buildFlow(flowFormDoc, true)
+
+  if (isCircular(flow)) {
+    template.isCircular.set(true)
+  }
+  else {
+    template.isCircular.set(false)
+  }
+}
+
 /**
  * Initialize the JSPlumb logic to make the flow editor work
  * 
  * @param {object} flow Flow's doc - as from MongoDB
  */
-const setJsPlumb = (flow) => {
+const setJsPlumb = (flow, template) => {
+
   jsPlumb.ready(function() {
+    // Prevent having multiple connections from the same source to the
+    // same target
+    jsPlumb.bind('connection',function(info, manualEvent){
+      let con = info.connection
+      let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
+      if (arr.length > 1) jsPlumb.deleteConnection(con)
+      if (manualEvent) {
+        changed(template)
+      }
+    })
+
+    jsPlumb.bind('connectionAborted', function(info) {
+      console.log('aborted')
+      changed(template)
+    })
+
+    jsPlumb.bind('connectionDetached', function(a,b,c) {
+      setTimeout(function() {
+        changed(template)
+      }, 100)
+    })
+
     jsPlumbUtil.logEnabled = false
     jsPlumb.setContainer($('#flow-editor'))
 
@@ -192,16 +238,8 @@ const setJsPlumb = (flow) => {
         parent: '.card',
         anchor: 'Continuous'
       })
-
-      // Prevent having multiple connections from the same source to the
-      // same target
-      jsPlumb.bind('connection',function(info){
-        let con = info.connection
-        let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
-        if (arr.length > 1) jsPlumb.deleteConnection(con)
-      })
     })
-    
+
     if (!flow) {
       $('#flow-editor .flow-step-trigger').css('left', 20)
       $('#flow-editor .flow-step-trigger').css('top', 20)
@@ -255,8 +293,15 @@ const setJsPlumb = (flow) => {
         $('#sidebar-content').html($('.card-body .content', this).html())
       }
     })
+
+    changed(template)
   })
 }
+
+Template.flowEditor.onCreated(function() {
+  this.isCircular = new ReactiveVar(false)
+  this.haveConditionsNotMet = new ReactiveVar(false)
+})
 
 Template.flowEditor.onRendered(function() {
   const instance = this
@@ -274,7 +319,7 @@ Template.flowEditor.onRendered(function() {
     // The URL doesn't contains a flow _id, therefore, the user is viewing
     // the flow's editor to create a brand new flow
     if (!Router.current().params._id) {
-      setJsPlumb()
+      setJsPlumb(null, instance)
       stepTypeSelectorChanged(0, servicesAvailable.find(sa => !!sa.stepable).name)
       return
     }
@@ -297,7 +342,7 @@ Template.flowEditor.onRendered(function() {
 
       // Woops! Flow not found. Load the editor anyway
       if (!flow) {
-        setJsPlumb()
+        setJsPlumb(null, instance)
         return null
       }
 
@@ -329,9 +374,11 @@ Template.flowEditor.onRendered(function() {
         })
 
         window.setTimeout(() => {
-          setJsPlumb(flow)
+          setJsPlumb(flow, instance)
           instance.flowEditorRendered = true
         }, 1000)
+
+    
       }
     }
   })

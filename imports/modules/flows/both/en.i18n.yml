@@ -52,6 +52,11 @@ editor:
     editDetailsDone: Done
   sidebar:
     tasks.search.text: Search ...
+  problems:
+    circular:
+      short: Your flow is circular, therefore, it won't be saved. Please review it.
+    conditions:
+      short: There is a problem with some tasks and their conditions dependencies. Please review the workflow.
 edit.submit: Save
 index.title: Workflows
 index.subtitle: Workflows are lists of actions that happen upon a trigger.

@@ -1,6 +1,6 @@
 /* eslint-env mocha */
-import { assert } from 'chai'
-import { calledFrom, guessTriggerSingleChilds } from './index'
+import { assert, expect } from 'chai'
+import { guessTriggerSingleChilds, calculateNumberOfSteps } from './index'
 
 const fullFlow = {
 	"_id" : "DP4pNdGZ73owhkt3q",
@@ -40,74 +40,91 @@ const fullFlow = {
 }
 
 describe('queue/server/index', () => {
-  describe('calledFrom', () => {
-    it('simple flow', () => {
+  describe('calculateNumberOfSteps', () => {
+    it('no conditions', () => {
       const input = {
         trigger : { outputs : [  { stepIndex : 0 } ] },
         steps : [
-          { outputs : [ { stepIndex : 1 } ] },
-          { outputs : [ { stepIndex : 3 } ] },
-          { outputs : [ { stepIndex : 1 } ] },
-          { outputs : [ { stepIndex : 4 } ] }
+          { outputs : [ { reason: 'step', stepIndex : 1 } ] },
+          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
+          { outputs : [ { reason: 'step', stepIndex : 3 } ] },
+          { outputs : [] }
         ]
       }
-
-      const expected = {
-        0: ['trigger'],
-        1: [0, 2],
-        // 2: [],
-        3: [1],
-        4: [3]
-      }
-
-      const result = calledFrom(input)
-      assert.deepEqual(result, expected)
+      let steps = [
+        { stepIndex: 'trigger' },
+        { stepIndex: 0 },
+        { stepIndex: 1 },
+        { stepIndex: 2 },
+        { stepIndex: 3 }
+      ]
+      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
     })
 
-    it('multi output flow', () => {
+    it('one condition T', () => {
       const input = {
-        trigger : { outputs : [  { stepIndex : 0 } ] },
+        trigger : { outputs : [ { stepIndex : 2 } ] },
         steps : [
-          { outputs : [ { stepIndex : 1 } ] },
-          { outputs : [ { stepIndex : 3 } ] },
-          { outputs : [ { stepIndex : 1 }, { stepIndex : 4 } ] },
-          { outputs : [ { stepIndex : 4 } ] }
+          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
+          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
+          { outputs : [
+            { reason: 'condition-true', stepIndex : 3 },
+            { reason: 'condition-false', stepIndex : 5 } 
+          ] },
+          { outputs : [ { reason: 'step', stepIndex : 4 } ] },
+          { outputs : [] }
         ]
       }
-
-      const expected = {
-        0: ['trigger'],
-        1: [0, 2],
-        // 2: [],
-        3: [1],
-        4: [2, 3]
-      }
-
-      const result = calledFrom(input)
-      assert.deepEqual(result, expected)
+      let steps = [
+        { stepIndex: 'trigger' },
+        { stepIndex: 0 },
+        { stepIndex: 1 },
+        { stepIndex: 2, bridgedIndexes: ['trigger', 0, 1], pass: true },
+        { stepIndex: 3 },
+        { stepIndex: 4 }
+      ]
+      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
     })
 
-    it('multi to multi output flow', () => {
+    it('one condition F', () => {
       const input = {
-        trigger : { outputs : [  { stepIndex : 0 }, { stepIndex : 1 }, { stepIndex : 3 } ] },
+        trigger : { outputs : [  { stepIndex : 2 } ] },
         steps : [
-          { outputs : [ { stepIndex : 1 } ] },
-          { outputs : [ { stepIndex : 3 }, { stepIndex : 2 } ] },
-          { outputs : [ { stepIndex : 1 }, { stepIndex : 4 } ] },
-          { outputs : [ { stepIndex : 4 } ] }
+          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
+          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
+          { outputs : [
+            { reason: 'condition-true', stepIndex : 3 },
+            { reason: 'condition-false', stepIndex : 5 } 
+          ] }, // condition
+          { outputs : [ { reason: 'step', stepIndex : 4 } ] },
+          { outputs : [] }
         ]
       }
+      let steps = [
+        { stepIndex: 'trigger' },
+        { stepIndex: 0 },
+        { stepIndex: 1 },
+        { stepIndex: 2, bridgedIndexes: ['trigger', 0, 1], pass: true },
+        { stepIndex: 3 },
+        { stepIndex: 4 }
+      ]
+      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
+    })
 
-      const expected = {
-        0: ['trigger'],
-        1: [0, 2, 'trigger'],
-        2: [1],
-        3: [1, 'trigger'],
-        4: [2, 3]
-      }
+    it('two conditions TT', () => {
+      
+    })
 
-      const result = calledFrom(input)
-      assert.deepEqual(result, expected)
+    it('two conditions FF', () => {
+      
+    })
+
+    it('two conditions TF', () => {
+      
+    })
+
+    it('two conditions FT', () => {
+      
     })
   })
 

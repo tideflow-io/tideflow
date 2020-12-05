@@ -11,3 +11,9 @@ const arrayUnique = lists => {
 }
 
 module.exports.arrayUnique = arrayUnique
+
+const intersects = (a, b) => {
+  return !!(a || []).filter(value => (b || []).includes(value)).length
+}
+
+module.exports.intersects = intersects
