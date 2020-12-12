@@ -9,7 +9,9 @@ import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
-import { calledFrom, guessStepsWithoutPreceding } from '/imports/modules/flows/both/flow'
+import { calledFrom, analyze, guessStepsWithoutPreceding } from '/imports/modules/flows/both/flow'
+
+import { compareArrays } from '/imports/helpers/both/arrays'
 
 const debug = require('debug')('tideflow:queue:core')
 
@@ -17,9 +19,9 @@ Queue.configure({
   disableDevelopmentMode: process.env.NODE_ENV !== 'development'
 })
 
-const endExecution = async (execution, status) => {
+const endExecution = async (execution, status, trace) => {
   status = status || 'finished'
-  debug(`End execution ${execution._id} with ${status}`)
+  debug(`End execution ${execution._id} with ${status} - ${trace || '-'}`)
   let now = new Date()
   let lapsed = (now.getTime() - execution.createdAt.getTime()) / 1000
 
@@ -276,12 +278,16 @@ const executeNextStep = (context) => {
 
   // If no, it could mean that we should stop the flow's execution
   if (!outputs.length) {
-    // Get the number of executed steps in the current execution ...
-    const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
+    // Get the executed steps for the current execution ...
+    const executedSteps = ExecutionsLogs.find({execution:executionId}, {
+      fields: { stepIndex: true, 'result.pass': true }
+    }).fetch()
+
+    const analysis = analyze(flow, executedSteps)
     // and compare it against the number of steps in the executed flow (+ trigger).
     // If the number matches, flag the execution as finished
-    if (executedSteps === flow.steps.length + 1) {
-      endExecution(execution)
+    if (analysis.completed) {
+      endExecution(execution, null, '#4')
     }
   }
 
@@ -352,18 +358,6 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
       cb
     )
   })()
-}
-
-
-/**
- * Compare two arrays.
- * 
- * @param {*} arr1 
- * @param {*} arr2 
- * @return {boolean}
- */
-const compareArrays = (arr1, arr2) => {
-  return arr1.sort().join() === arr2.sort().join()
 }
 
 /**
@@ -485,7 +479,7 @@ const workflowStart = function (jobData) {
         }, stepUpdate)
 
         if (triggerResult.error) {
-          endExecution(execution, 'error')
+          endExecution(execution, 'error', 'triggerResult.error #1')
           debug('Trigger execution failed. Finishing')
           throw { completed: true, reason: 'trigger-execution-failed' }
         }
@@ -511,7 +505,7 @@ const workflowStart = function (jobData) {
 
         if (!flow.steps || !flow.steps.length) {
           debug('no flow steps')
-          endExecution(execution)
+          endExecution(execution, null, '#5')
           throw { completed: true, reason: 'flow-no-steps' }
         }
 
@@ -628,7 +622,8 @@ const workflowStep = function(jobData) {
         ExecutionsLogs.insert(executionLog)
       }
       catch (ex) {
-        endExecution(execution, 'error')
+        console.error(JSON.stringify({executionLog, currentStep}, ' ', 2))
+        endExecution(execution, 'error', 'ExecutionsLogs.insert #2')
         throw { completed: true, reason: 'executionlog-error', error: ex }
       }
     })
@@ -744,7 +739,7 @@ const workflowStep = function(jobData) {
 
       // If there was an error, stop flow's execution here.
       if (eventCallback.error) {
-        await endExecution(execution, 'error')
+        await endExecution(execution, 'error', 'eventCallback.error #3')
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
       }
 
@@ -772,13 +767,14 @@ const workflowStep = function(jobData) {
 
       // If no, it could mean that we should stop the flow's execution
       if (!numberOfOutputs) {
-        // Get the number of executed steps in the current execution ...
-        const executedSteps = ExecutionsLogs.find({execution:execution._id, status: {$in:['success','error']}}).count()
+        const executedSteps = ExecutionsLogs.find({execution:execution._id}, {
+          fields: { stepIndex: true, 'result.pass': true }
+        }).fetch()
 
-        // and compare it against the number of steps in the executed flow (+ trigger).
-        // If the number matches, flag the execution as finished
-        if (executedSteps === flow.steps.length + 1) {
-          endExecution(execution)
+        const analysis = analyze(flow, executedSteps)
+        // console.log({analysis})
+        if (analysis.completed) {
+          endExecution(execution, null, '#6')
         }
       }
 

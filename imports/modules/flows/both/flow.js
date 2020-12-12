@@ -38,6 +38,7 @@ const guessStepsWithoutPreceding = (flow) => {
   // Build a list with all the steps indexes.
   // [0, 1]
   const allSteps = flow.steps.map((s,i)=>i)
+
   // List of steps indexes that are connected to the trigger
   // The result is [1]
   let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex)
@@ -123,45 +124,103 @@ const isCircular = flow => {
     return next.map(n => path(list.concat(n), thisCallsto[n]))
   }
 
-  const triggerCalls = thisCallsto.trigger
-
-  if (triggerCalls.length) {
-    path(['tigger'], triggerCalls)
-  }
-  else {
-    let noPreceding = guessStepsWithoutPreceding(flow)
-    noPreceding.map(np => {
-      path([np], thisCallsto[np])
-    })
-  }
+  path(['trigger'], thisCallsto.trigger || [])
+  guessStepsWithoutPreceding(flow).map(np => {
+    path([np], thisCallsto[np])
+  })
 
   return result
 }
 
 module.exports.isCircular = isCircular
 
-const analyze = (flow) => {
-  let constainsConditions = !!flow.steps.filter(s => s.type === 'conditions').length
-  const thisCallsto = callsTo(flow)
-
-  const path = (list, next) => {
-    if (intersects(list, next)) throw 'circular'
-    return next.map(n => path(list.concat(n), thisCallsto[n]))
-  }
-
-  if (thisCallsto.trigger) {
-    path(['tigger'], thisCallsto.trigger)
-  }
-
-  let executionSteps = 'unknown' // Here is where your magic happens :)
-
-  return {
+const analyze = (flow, stepsResults) => {
+  let result = {
     steps: flow.steps.length,
-    executionSteps: constainsConditions ? executionSteps : flow.steps.length
+    errors: {
+      hasEmptyConditions: !!hasEmptyCondition(flow),
+      isCircular: !!isCircular(flow)
+    }
   }
+
+  result.isErrored = !!Object.values(result.errors).find(e => !!e)
+
+  if (result.isErrored) {
+    return Object.assign(result, {
+      completed: false
+    })
+  }
+  result.stepsExecuted = (stepsResults||[]).map(s => s.stepIndex)
+
+  try {
+    result.stepsToExecute = stepsToExecute(flow, stepsResults || []).sort()
+    result.completed = (
+      JSON.stringify(result.stepsToExecute) === JSON.stringify(result.stepsExecuted.sort())
+    )
+  } catch (ex) {
+    console.log({ex})
+    result.stepsToExecute = 'unknown'
+    result.completed = false
+  }
+
+  return result
 }
 
 module.exports.analyze = analyze
+
+const hasEmptyCondition = flow => {
+  return flow.steps.find(s => s.type === 'conditions' && !s.outputs.length)
+}
+
+const stepsToExecute = (flow, results) => {
+  let toExecute = []
+  
+  const push = el => {
+    if (!toExecute.includes(el)) toExecute.push(el)
+  }
+
+  const isCond = stepIndex => {
+    return flow.steps[stepIndex].type === 'conditions' ? flow.steps[stepIndex] : null
+  }
+
+  /**
+   * { type: 'conditions', outputs: [ { reason: 'conditions-true', stepIndex: 4} ] }
+   */
+  const outputsToExecute = (condition, stepIndex) => {
+    let execution = results.find(r => r.stepIndex === stepIndex)
+    if (!execution) return []
+    
+    // Boolean
+    let pass = execution.result.pass
+
+    let outputs = condition.outputs.filter(o => {
+      return o.reason === (pass ? 'condition-true' : 'condition-false')
+    })
+
+    return outputs.map(o => o.stepIndex)
+  }
+
+  const thisCallsto = callsTo(flow)
+  const path = (list, next) => {
+    // Flag as executed
+    list.map(l => push(l))
+
+    return next.map(n => {
+      let conditionalStep = isCond(n)
+      if (conditionalStep) {
+        return path(list.concat(n), outputsToExecute(conditionalStep, n))
+      }
+      return path(list.concat(n), thisCallsto[n])
+    })
+  }
+
+  path(['trigger'], thisCallsto.trigger || [])
+  guessStepsWithoutPreceding(flow).map(np => {
+    path([np], thisCallsto[np])
+  })
+
+  return toExecute
+}
 
 /**
  * 
