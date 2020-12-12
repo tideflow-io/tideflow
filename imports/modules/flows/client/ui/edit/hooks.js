@@ -14,7 +14,7 @@ AutoForm.addHooks(['updateFlowForm'], {
         sAlert.error(i18n.__(ex.message))
         return false
       }
-      let analysis = analyze(flow)
+      let analysis = analyze(flow, null, true)
       return analysis.isErrored ? false : flow
     }
   },

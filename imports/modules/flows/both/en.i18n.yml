@@ -56,6 +56,8 @@ editor:
     circular:
       short: Your flow is circular, therefore, it won't be saved. Please review it.
     conditions:
+      short: It seems some conditional tasks are not connected to anything. Please review the workflow.
+    conditionsNotMet:
       short: There is a problem with some tasks and their conditions dependencies. Please review the workflow.
 edit.submit: Save
 index.title: Workflows

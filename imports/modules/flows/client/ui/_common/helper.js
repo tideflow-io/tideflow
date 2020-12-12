@@ -264,6 +264,10 @@ Template.flowEditor.helpers({
     return Template.instance().hasEmptyConditions.get();
   },
 
+  hasConditionsNotMet: function() {
+    return Template.instance().hasConditionsNotMet.get();
+  },
+
   editMode: function() {
     return Session.get('fe-editMode') === this.index
   },

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import { intersects } from '/imports/helpers/both/arrays'
 
 const callsTo = flow => {
@@ -134,8 +135,9 @@ const isCircular = flow => {
 
 module.exports.isCircular = isCircular
 
-const analyze = (flow, stepsResults) => {
+const analyze = (flow, stepsResults, simulation) => {
   if (!flow.steps) flow.steps = []
+
   let result = {
     steps: flow.steps.length,
     errors: {
@@ -153,12 +155,12 @@ const analyze = (flow, stepsResults) => {
   result.stepsExecuted = (stepsResults||[]).map(s => s.stepIndex)
 
   try {
-    let steps = stepsToExecute(flow, stepsResults || [])
+    let steps = stepsToExecute(flow, stepsResults || [], simulation)
     result.stepsToExecute = steps.toExecute.sort()
     result.stepsToDiscard = steps.toDiscard.sort()
-    result.errors.conditionsNotMet = arrayIntersects(steps.required, result.stepsToDiscard)
+    result.errors.hasConditionsNotMet = intersects(steps.required, result.stepsToDiscard)
 
-    if (result.errors.conditionsNotMet) {
+    if (result.errors.hasConditionsNotMet) {
       return Object.assign(result, {
         isErrored: true, completed: false
       })
@@ -183,7 +185,7 @@ const hasEmptyCondition = flow => {
   return flow.steps.find(s => s.type === 'conditions' && !s.outputs.length)
 }
 
-const stepsToExecute = (flow, results) => {
+const stepsToExecute = (flow, results, simulation) => {
   let toExecute = []
   let toDiscard = []
   let required = []
@@ -200,7 +202,10 @@ const stepsToExecute = (flow, results) => {
    * { type: 'conditions', outputs: [ { reason: 'conditions-true', stepIndex: 4} ] }
    */
   const outputsToExecute = (condition, stepIndex) => {
-    let execution = results.find(r => r.stepIndex === stepIndex)
+    let execution = simulation ?
+       { result: { pass: true } } :
+       results.find(r => r.stepIndex === stepIndex)
+
     if (!execution) return []
     
     // Boolean

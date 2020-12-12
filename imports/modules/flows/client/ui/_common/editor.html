@@ -16,6 +16,11 @@
             {{__ "flows.editor.problems.conditions.short"}}
           </div>
         {{/if}}
+        {{#if hasConditionsNotMet}}
+          <div class="alert alert-danger mb-3" role="alert">
+            {{__ "flows.editor.problems.conditionsNotMet.short"}}
+          </div>
+        {{/if}}
         <div class="list-group list-group-flush">
           <form id="flow-sidebar-step-search">
             <input type="text" class="form-control" placeholder="{{__ "flows.editor.sidebar.tasks.search.text"}}">

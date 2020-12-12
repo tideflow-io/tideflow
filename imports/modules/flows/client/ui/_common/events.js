@@ -163,22 +163,13 @@ const createConnection = (from, outputs) => {
 const changed = (template) => {
   let formId = $('.flow-editor').attr('id')
   let flowFormDoc = AutoForm.getFormValues(formId).insertDoc
+
   let flow = buildFlow(flowFormDoc, true)
-  let analysis = analyze(flow)
+  let analysis = analyze(flow, null, true)
 
-  if (analysis.errors.isCircular) {
-    template.isCircular.set(true)
-  }
-  else {
-    template.isCircular.set(false)
-  }
-
-  if (analysis.errors.hasEmptyConditions) {
-    template.hasEmptyConditions.set(true)
-  }
-  else {
-    template.hasEmptyConditions.set(false)
-  }
+  template.isCircular.set(analysis.errors.isCircular)
+  template.hasEmptyConditions.set(analysis.errors.hasEmptyConditions)
+  template.hasConditionsNotMet.set(analysis.errors.hasConditionsNotMet)
 }
 
 /**
@@ -307,6 +298,7 @@ const setJsPlumb = (flow, template) => {
 Template.flowEditor.onCreated(function() {
   this.isCircular = new ReactiveVar(false)
   this.hasEmptyConditions = new ReactiveVar(false)
+  this.hasConditionsNotMet = new ReactiveVar(false)
 })
 
 Template.flowEditor.onRendered(function() {
