@@ -135,6 +135,7 @@ const isCircular = flow => {
 module.exports.isCircular = isCircular
 
 const analyze = (flow, stepsResults) => {
+  if (!flow.steps) flow.steps = []
   let result = {
     steps: flow.steps.length,
     errors: {
@@ -158,7 +159,6 @@ const analyze = (flow, stepsResults) => {
       JSON.stringify(result.stepsToExecute) === JSON.stringify(result.stepsExecuted.sort())
     )
   } catch (ex) {
-    console.log({ex})
     result.stepsToExecute = 'unknown'
     result.completed = false
   }

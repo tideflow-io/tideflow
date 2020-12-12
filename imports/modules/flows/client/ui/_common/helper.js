@@ -260,8 +260,8 @@ Template.flowEditor.helpers({
     return Template.instance().isCircular.get();
   },
 
-  haveConditionsNotMet: function() {
-    return Template.instance().haveConditionsNotMet.get();
+  hasEmptyConditions: function() {
+    return Template.instance().hasEmptyConditions.get();
   },
 
   editMode: function() {

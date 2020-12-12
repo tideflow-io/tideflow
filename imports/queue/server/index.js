@@ -289,6 +289,9 @@ const executeNextStep = (context) => {
     if (analysis.completed) {
       endExecution(execution, null, '#4')
     }
+    else if (analysis.isErrored) {
+      endExecution(execution, 'error', '#9')
+    }
   }
 
   outputs.map(output => {
@@ -579,6 +582,7 @@ const workflowStep = function(jobData) {
   
   let { currentStep, user, execution } = jobData
   const flow = execution.fullFlow
+  const originalFlow = Object.assign({}, execution.fullFlow)
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
   const listOfCalls = calledFrom(flow)
   const previousStepsIndexes = listOfCalls[currentStepIndex] || []
@@ -622,7 +626,6 @@ const workflowStep = function(jobData) {
         ExecutionsLogs.insert(executionLog)
       }
       catch (ex) {
-        console.error(JSON.stringify({executionLog, currentStep}, ' ', 2))
         endExecution(execution, 'error', 'ExecutionsLogs.insert #2')
         throw { completed: true, reason: 'executionlog-error', error: ex }
       }
@@ -649,7 +652,6 @@ const workflowStep = function(jobData) {
       previous.filter(task => {
         if (task.bridgedIndexes) {
           bridgedIndexes = bridgedIndexes.concat(task.bridgedIndexes)
-          console.log({bridgedIndexes})
         }
         return !task.bridgedIndexes || !task.bridgedIndexes.length
       })
@@ -743,14 +745,6 @@ const workflowStep = function(jobData) {
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
       }
 
-      // Change the execution behavior based on confitions
-      if (currentStep.type === 'conditions') {
-        const pass = eventCallback.result.pass.toString()
-        currentStep.outputs = currentStep.outputs.filter(o => {
-          return o.reason === `condition-${pass}`
-        })
-      }
-
       return eventCallback
     })
 
@@ -762,8 +756,21 @@ const workflowStep = function(jobData) {
       // The service asked the queue to don't keep working on the execution
       if (!eventCallback.next) throw { completed: true, reason: 'next' }
 
+      let outputs = []
+
+      // Change the execution behavior based on confitions
+      if (currentStep.type === 'conditions') {
+        const pass = eventCallback.result.pass.toString()
+        outputs = currentStep.outputs.filter(o => {
+          return o.reason === `condition-${pass}`
+        })
+      }
+      else {
+        outputs = currentStep.outputs
+      }
+
       // Does the current step have any output?
-      const numberOfOutputs = (currentStep.outputs || []).length
+      const numberOfOutputs = (outputs || []).length
 
       // If no, it could mean that we should stop the flow's execution
       if (!numberOfOutputs) {
@@ -771,14 +778,16 @@ const workflowStep = function(jobData) {
           fields: { stepIndex: true, 'result.pass': true }
         }).fetch()
 
-        const analysis = analyze(flow, executedSteps)
-        // console.log({analysis})
+        const analysis = analyze(originalFlow, executedSteps)
         if (analysis.completed) {
           endExecution(execution, null, '#6')
         }
+        else if (analysis.isErrored) {
+          endExecution(execution, 'error', '#7')
+        }
       }
 
-      let allPromises = currentStep.outputs.map(async output => {
+      let allPromises = outputs.map(async output => {
         const nextStepId = output.stepIndex
         const nextStepFull = flow.steps[nextStepId]
 

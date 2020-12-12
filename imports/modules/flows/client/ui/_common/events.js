@@ -6,7 +6,7 @@ import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { isCircular, buildFlow } from '/imports/modules/flows/both/flow'
+import { analyze, buildFlow } from '/imports/modules/flows/both/flow'
 
 /**
  * Step TYPE selector changed its value
@@ -162,15 +162,22 @@ const createConnection = (from, outputs) => {
 
 const changed = (template) => {
   let formId = $('.flow-editor').attr('id')
-  const autoformValues = AutoForm.getFormValues(formId)
   let flowFormDoc = AutoForm.getFormValues(formId).insertDoc
   let flow = buildFlow(flowFormDoc, true)
+  let analysis = analyze(flow)
 
-  if (isCircular(flow)) {
+  if (analysis.errors.isCircular) {
     template.isCircular.set(true)
   }
   else {
     template.isCircular.set(false)
+  }
+
+  if (analysis.errors.hasEmptyConditions) {
+    template.hasEmptyConditions.set(true)
+  }
+  else {
+    template.hasEmptyConditions.set(false)
   }
 }
 
@@ -300,7 +307,7 @@ const setJsPlumb = (flow, template) => {
 
 Template.flowEditor.onCreated(function() {
   this.isCircular = new ReactiveVar(false)
-  this.haveConditionsNotMet = new ReactiveVar(false)
+  this.hasEmptyConditions = new ReactiveVar(false)
 })
 
 Template.flowEditor.onRendered(function() {
