@@ -1,5 +1,5 @@
 import { AutoForm } from 'meteor/aldeed:autoform'
-import { buildFlow, isCircular } from '/imports/modules/flows/both/flow'
+import { analyze, buildFlow, isCircular } from '/imports/modules/flows/both/flow'
 
 AutoForm.addHooks(['updateFlowForm'], {
   before: {
@@ -7,13 +7,15 @@ AutoForm.addHooks(['updateFlowForm'], {
       let flow = {}
       try {
         flow = buildFlow(doc)
+        if (!flow.steps) flow.steps = []
+        if (!flow.steps.length) throw new Meteor.Error('no-steps')
       }
       catch (ex) {
         sAlert.error(i18n.__(ex.message))
         return false
       }
-      let isC = isCircular(flow)
-      return isC ? false : flow
+      let analysis = analyze(flow)
+      return analysis.isErrored ? false : flow
     }
   },
   after: {

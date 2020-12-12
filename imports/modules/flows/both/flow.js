@@ -147,19 +147,30 @@ const analyze = (flow, stepsResults) => {
   result.isErrored = !!Object.values(result.errors).find(e => !!e)
 
   if (result.isErrored) {
-    return Object.assign(result, {
-      completed: false
-    })
+    return Object.assign(result, {completed: false})
   }
+  
   result.stepsExecuted = (stepsResults||[]).map(s => s.stepIndex)
 
   try {
-    result.stepsToExecute = stepsToExecute(flow, stepsResults || []).sort()
+    let steps = stepsToExecute(flow, stepsResults || [])
+    result.stepsToExecute = steps.toExecute.sort()
+    result.stepsToDiscard = steps.toDiscard.sort()
+    result.errors.conditionsNotMet = arrayIntersects(steps.required, result.stepsToDiscard)
+
+    if (result.errors.conditionsNotMet) {
+      return Object.assign(result, {
+        isErrored: true, completed: false
+      })
+    }
+    
     result.completed = (
       JSON.stringify(result.stepsToExecute) === JSON.stringify(result.stepsExecuted.sort())
     )
   } catch (ex) {
+    console.log({ex})
     result.stepsToExecute = 'unknown'
+    result.stepsToDiscard = 'unknown'
     result.completed = false
   }
 
@@ -174,6 +185,8 @@ const hasEmptyCondition = flow => {
 
 const stepsToExecute = (flow, results) => {
   let toExecute = []
+  let toDiscard = []
+  let required = []
   
   const push = el => {
     if (!toExecute.includes(el)) toExecute.push(el)
@@ -193,14 +206,22 @@ const stepsToExecute = (flow, results) => {
     // Boolean
     let pass = execution.result.pass
 
-    let outputs = condition.outputs.filter(o => {
+    let does = condition.outputs.filter(o => {
       return o.reason === (pass ? 'condition-true' : 'condition-false')
     })
 
-    return outputs.map(o => o.stepIndex)
+    let donts = condition.outputs.filter(o => {
+      return o.reason === (pass ? 'condition-false' : 'condition-true')
+    })
+
+    toDiscard = toDiscard.concat(donts.map(o => o.stepIndex))
+
+    return does.map(o => o.stepIndex)
   }
 
   const thisCallsto = callsTo(flow)
+  const thisCalledFrom = calledFrom(flow)
+
   const path = (list, next) => {
     // Flag as executed
     list.map(l => push(l))
@@ -219,7 +240,11 @@ const stepsToExecute = (flow, results) => {
     path([np], thisCallsto[np])
   })
 
-  return toExecute
+  toExecute.map(task => {
+    required = required.concat(thisCalledFrom[task])
+  })
+
+  return { toExecute, toDiscard, required }
 }
 
 /**

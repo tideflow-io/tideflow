@@ -201,7 +201,6 @@ const setJsPlumb = (flow, template) => {
     })
 
     jsPlumb.bind('connectionAborted', function(info) {
-      console.log('aborted')
       changed(template)
     })
 
