@@ -375,8 +375,6 @@ Template.flowEditor.onRendered(function() {
           setJsPlumb(flow, instance)
           instance.flowEditorRendered = true
         }, 1000)
-
-    
       }
     }
   })

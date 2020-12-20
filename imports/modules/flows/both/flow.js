@@ -279,6 +279,7 @@ const buildFlow = (doc, skipErrors) => {
 
   // Get steps position details
   const stepCards = $('#flow-editor .flow-step-step')
+
   stepCards.map((index, card) => {
     doc.steps[index].x = parseInt($(card).css('left'), 10)
     doc.steps[index].y = parseInt($(card).css('top'), 10)
