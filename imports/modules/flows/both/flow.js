@@ -138,6 +138,8 @@ module.exports.isCircular = isCircular
 const analyze = (flow, stepsResults, simulation) => {
   if (!flow.steps) flow.steps = []
 
+  console.log(JSON.stringify(flow, ' ', 2))
+
   let result = {
     steps: flow.steps.length,
     errors: {

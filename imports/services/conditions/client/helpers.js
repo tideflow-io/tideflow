@@ -1,17 +1,20 @@
 import { Flows } from '/imports/modules/flows/both/collection'
 
 Template.servicesConditionIfConfig.onCreated(function created() {
-  let self = this
-  self.typeOfCondition = new ReactiveVar('string');
-
-  Tracker.autorun(function () {
-    try {
-      let flow = Flows.findOne({_id:Router.current().params._id})
-      let step = flow.steps[self.data.index]
-      self.typeOfCondition.set(step.config.type)
-    } catch (ex) {}
-  })
+  this.typeOfCondition = new ReactiveVar('string');
 });
+
+Template.servicesConditionIfConfig.onRendered(function created() {
+  let self = this
+  try {
+    let flow = Flows.findOne({_id:Router.current().params._id})
+    let step = flow.steps[self.data.index]
+    self.typeOfCondition.set(step.config.type)
+    $(`input[data-schema-key="steps.${self.data.index}.config.type"]`).val(step.config.type)
+  } catch (ex) {
+    $(`input[data-schema-key="steps.${self.data.index}.config.type"]`).val('string')
+  }
+})
 
 Template.servicesConditionIfConfig.events({
   'change .condition-type input[type="radio"]': (event, template) => {
