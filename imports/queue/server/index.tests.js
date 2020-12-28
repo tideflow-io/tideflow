@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { assert, expect } from 'chai'
-import { guessTriggerSingleChilds, calculateNumberOfSteps } from './index'
+import { guessTriggerSingleChilds } from './index'
 
 const fullFlow = {
 	"_id" : "DP4pNdGZ73owhkt3q",
@@ -40,94 +40,6 @@ const fullFlow = {
 }
 
 describe('queue/server/index', () => {
-  describe('calculateNumberOfSteps', () => {
-    it('no conditions', () => {
-      const input = {
-        trigger : { outputs : [  { stepIndex : 0 } ] },
-        steps : [
-          { outputs : [ { reason: 'step', stepIndex : 1 } ] },
-          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
-          { outputs : [ { reason: 'step', stepIndex : 3 } ] },
-          { outputs : [] }
-        ]
-      }
-      let steps = [
-        { stepIndex: 'trigger' },
-        { stepIndex: 0 },
-        { stepIndex: 1 },
-        { stepIndex: 2 },
-        { stepIndex: 3 }
-      ]
-      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
-    })
-
-    it('one condition T', () => {
-      const input = {
-        trigger : { outputs : [ { stepIndex : 2 } ] },
-        steps : [
-          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
-          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
-          { outputs : [
-            { reason: 'condition-true', stepIndex : 3 },
-            { reason: 'condition-false', stepIndex : 5 } 
-          ] },
-          { outputs : [ { reason: 'step', stepIndex : 4 } ] },
-          { outputs : [] }
-        ]
-      }
-      let steps = [
-        { stepIndex: 'trigger' },
-        { stepIndex: 0 },
-        { stepIndex: 1 },
-        { stepIndex: 2, bridgedIndexes: ['trigger', 0, 1], pass: true },
-        { stepIndex: 3 },
-        { stepIndex: 4 }
-      ]
-      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
-    })
-
-    it('one condition F', () => {
-      const input = {
-        trigger : { outputs : [  { stepIndex : 2 } ] },
-        steps : [
-          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
-          { outputs : [ { reason: 'step', stepIndex : 2 } ] },
-          { outputs : [
-            { reason: 'condition-true', stepIndex : 3 },
-            { reason: 'condition-false', stepIndex : 5 } 
-          ] }, // condition
-          { outputs : [ { reason: 'step', stepIndex : 4 } ] },
-          { outputs : [] }
-        ]
-      }
-      let steps = [
-        { stepIndex: 'trigger' },
-        { stepIndex: 0 },
-        { stepIndex: 1 },
-        { stepIndex: 2, bridgedIndexes: ['trigger', 0, 1], pass: true },
-        { stepIndex: 3 },
-        { stepIndex: 4 }
-      ]
-      expect(calculateNumberOfSteps(input, steps)).to.equal(5)
-    })
-
-    it('two conditions TT', () => {
-      
-    })
-
-    it('two conditions FF', () => {
-      
-    })
-
-    it('two conditions TF', () => {
-      
-    })
-
-    it('two conditions FT', () => {
-      
-    })
-  })
-
   describe('guessTriggerSingleChilds', () => {
     describe('simple test', () => {
       it('must return 0', () => {

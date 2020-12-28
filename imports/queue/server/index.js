@@ -113,40 +113,6 @@ const jobs = {
 module.exports.jobs = jobs
 
 /**
- * Calculate the number of tasks to execute based on conditional steps.
- * 
- * For example, for the following flow:
- *
- *
- *    +-----+         +----+
- *    |  T  +-------->+    |
- *    +-----+         |    |     +-----+
- *                    | 2  +--T->+  3  |
- *    +-----+         |    |     +--+--+     +-----+
- *    |  0  +-------->+    +--v     |        |  5  |
- *    +-----+         +-+--+  |     v        +--+--+
- *                      ^     |  +--+--+        ^
- *    +-----+           |     |  |  4  |        |
- *    |  1  | +---------+     |  +-----+        |
- *    +-----+                 |                 |
- *                            +-------F---------+
- *
- *  if 2 is false (F) then the result is 4 [T, 0, 1, 5]
- *  if 2 is true (T) then the result if 5 [T, 0, 1, 3, 4]
- **/
-const calculateNumberOfSteps = (flow, logs) => {
-  let values = []
-  flow.steps.map((step, index) => {
-    let log = logs.find(log => log.stepIndex === index)
-    let bridged = log.bridgedIndexes
-    let isBridged = !!bridged.length
-
-  })
-}
-
-module.exports.calculateNumberOfSteps = calculateNumberOfSteps
-
-/**
  * 
  * @param {Object} flow 
  * 
