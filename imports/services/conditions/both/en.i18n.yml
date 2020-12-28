@@ -19,7 +19,18 @@ event:
     expected:
       title: Expected value
       description: Expected value to make the comparisson pass.
-
+    number:
+      eq.option: Equal to
+      gt.option: Greater than
+      gte.option: Greater or equal to
+      lt.option: Lower than
+      lte.option: Lower than or equal to
+      between.option: In between two values (use comma separated values)
+    string:
+      contains.option: Contains
+      eq.option: Is equal to
+      begings: Begins with
+      ends.option: Ends with
 help:
   intro:
     title: Conditions

@@ -63,7 +63,12 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <input class="form-control" value="{{stepConfigValue 'comparison' ''}}" data-schema-key="{{stepConfigName 'comparison'}}" name="{{stepConfigName 'comparison'}}">
+      <select class="form-control" name="{{stepConfigName 'comparison'}}" data-schema-key="{{stepConfigName 'comparison'}}">
+        <option value="eq" {{stepConfigValueSelectedEach steps index 'comparison' 'contains'}}>{{__ "s-conditions.event.if.string.contains.option"}}</option>
+        <option value="gt" {{stepConfigValueSelectedEach steps index 'comparison' 'eq'}}>{{__ "s-conditions.event.if.string.eq.option"}}</option>
+        <option value="gte" {{stepConfigValueSelectedEach steps index 'comparison' 'begins'}}>{{__ "s-conditions.event.if.string.begins.option"}}</option>
+        <option value="lt" {{stepConfigValueSelectedEach steps index 'comparison' 'ends'}}>{{__ "s-conditions.event.if.string.ends.option"}}</option>
+      </select>
     </div>
   </div>
 
@@ -93,7 +98,15 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <input class="form-control" value="{{stepConfigValue 'comparison' ''}}" data-schema-key="{{stepConfigName 'comparison'}}" name="{{stepConfigName 'comparison'}}">
+      <select class="form-control" name="{{stepConfigName 'comparison'}}" data-schema-key="{{stepConfigName 'comparison'}}">
+        {{debug}}
+        <option value="eq" {{stepConfigValueSelectedEach steps index 'comparison' 'eq'}}>{{__ "s-conditions.event.if.number.eq.option"}}</option>
+        <option value="gt" {{stepConfigValueSelectedEach steps index 'comparison' 'gt'}}>{{__ "s-conditions.event.if.number.gt.option"}}</option>
+        <option value="gte" {{stepConfigValueSelectedEach steps index 'comparison' 'gte'}}>{{__ "s-conditions.event.if.number.gte.option"}}</option>
+        <option value="lt" {{stepConfigValueSelectedEach steps index 'comparison' 'lt'}}>{{__ "s-conditions.event.if.number.lt.option"}}</option>
+        <option value="lte" {{stepConfigValueSelectedEach steps index 'comparison' 'lte'}}>{{__ "s-conditions.event.if.number.lte.option"}}</option>
+        <option value="between" {{stepConfigValueSelectedEach steps index 'comparison' 'between'}}>{{__ "s-conditions.event.if.number.between.option"}}</option>
+      </select>
     </div>
   </div>
 
