@@ -156,4 +156,46 @@ describe('analyze', () => {
         completed: false
     })
   })
+  
+  it('simple flow', () => {
+    const input = {
+      trigger: { outputs: [ { stepIndex: 1 } ] },
+      steps: [
+        { type: 'abc', outputs: [ { reason: 'step', stepIndex: 2 } ] },      /* 0 */
+        { type: 'abc', outputs: [ { reason: 'step', stepIndex: 2 } ] },      /* 1 */
+        { type: 'abc', outputs: [ { reason: 'step', stepIndex: 3 } ] },      /* 2 */
+        { type: 'abc', outputs: [] }                                         /* 3 */
+      ]
+    }
+    
+    {
+      let result = analyze(input, [])
+      assert.equal(result.errors.isCircular, false)
+      assert.equal(result.completed, false)
+      assert.deepEqual(result.stepsToExecute, [0,1,2,3,'trigger'])
+    }
+    
+    {
+      let result = analyze(input, [
+        { stepIndex: 0 },
+        { stepIndex: 1 },
+        { stepIndex: 2 },
+        { stepIndex: 'trigger' },
+      ])
+      assert.equal(result.completed, false)
+      assert.deepEqual(result.stepsToExecute, [0,1,2,3,'trigger'])
+    }
+    
+    {
+      let result = analyze(input, [
+        { stepIndex: 0 },
+        { stepIndex: 1 },
+        { stepIndex: 2 },
+        { stepIndex: 3 },
+        { stepIndex: 'trigger' },
+      ])
+      assert.equal(result.completed, true)
+      assert.deepEqual(result.stepsToExecute, [0,1,2,3,'trigger'])
+    }
+  })
 })
