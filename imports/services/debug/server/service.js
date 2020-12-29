@@ -1,4 +1,4 @@
-import { servicesAvailable } from '/imports/services/_root/server'
+import { servicesAvailable, executionResults } from '/imports/services/_root/server'
 
 const executionCb = (cb, executionLogs, name) => {
   cb(null, {
@@ -31,7 +31,6 @@ const service = {
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let r = executionResults(execution, executionLogs, {external: true})
-        console.log({r})
         executionCb(cb, executionLogs, 'e1')
       }
     },
@@ -42,7 +41,6 @@ const service = {
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let r = executionResults(execution, executionLogs, {external: true})
-        console.log({r})
         executionCb(cb, executionLogs, 'e2')
       }
     },
@@ -53,7 +51,6 @@ const service = {
       },
       callback: (user, currentStep, executionLogs, execution, logId, cb) => {
         let r = executionResults(execution, executionLogs, {external: true})
-        console.log({r})
         executionCb(cb, executionLogs, 'e3')
       }
     }

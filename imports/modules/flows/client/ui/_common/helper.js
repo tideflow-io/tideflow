@@ -6,7 +6,6 @@ import i18n from 'meteor/universe:i18n'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { Services } from '/imports/modules/services/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
-import { checkRole } from '/imports/helpers/both/roles'
 
 /**
  * Sorts an array of objects by the specified property.
@@ -114,45 +113,6 @@ Template.registerHelper('eventHumanName', (serviceName, eventName) => {
   }
 })
 
-Template.registerHelper('currentTeamId', () => {
-  try {
-    let c = Router.current().params.teamId
-    if (c) Session.set('lastTeamId', c) 
-    else c = Session.get('lastTeamId') 
-    return c
-  }
-  catch (ex) {
-    return null
-  }
-})
-
-Template.registerHelper('fileSizeKb', size => {
-  if (size === 0) return '0 Kb'
-  if (!size) return ''
-  let kb = (size / 1024).toFixed(2)
-  return kb > 1024 ? 
-    `${(kb / 1024).toFixed(2)} Mb` : 
-    `${kb} Kb`
-})
-
-Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
-Template.registerHelper('agentUrl', () => {
-  const url = new URL(Meteor.absoluteUrl())
-  return `${url.protocol}//${url.hostname}`
-})
-Template.registerHelper('checkUserRole', (team) => {
-  return checkRole(Meteor.userId(), team)
-})
-
-Template.registerHelper('isInUrl', url => {
-  if (!url) return null
-  if (!Router.current().route.path()) return null
-  return Router.current().route.path().indexOf(url) === 1
-})
-
-Template.registerHelper('routeIs', routeName => Router.current().route.getName() === routeName)
-Template.registerHelper('routeContains', routeName => Router.current().route.getName().indexOf(routeName) >= 0)
-
 Template.registerHelper('triggerConfigValue', function(setting) {
   if (!this || !this.flow || !this.flow.trigger || !this.flow.trigger.config) return
   return this.flow.trigger.config[setting] ? this.flow.trigger.config[setting] : null
@@ -184,6 +144,10 @@ Template.registerHelper('stepConfigValueSelected', function(setting, compare) {
   return s === compare ? 'selected' : ''
 })
 
+Template.registerHelper('selectedVal', function(value) {
+  return value ? 'selected' : ''
+})
+
 Template.registerHelper('stepConfigValueSelectedEach', function(steps, index, setting, compare) {
   if (!steps || !steps[index]) return
   const s = steps[index].config ? steps[index].config[setting] || '' : ''
@@ -201,10 +165,21 @@ Template.registerHelper('triggerConfigValueSelected', function(setting, compare)
   return this.flow.trigger.config[setting] === compare ? 'selected' : ''
 })
 
-Template.registerHelper('stepConfigValueChecked', function(setting) {
-  if (!this || !this.steps || !this.steps[this.index]) return
+Template.registerHelper('stepConfigValueEqChecked', function(setting, compareTo, defaults) {
+  if (!this || !this.steps) return;
+
+  if (!this.steps[this.index]) {
+    return defaults ? 'checked' : ''
+  }
+
   const s = this.steps[this.index].config ? this.steps[this.index].config[setting] || '' : ''
-  return s ? 'checked' : ''
+  return s === compareTo ? 'checked' : ''
+})
+
+Template.registerHelper('stepConfigValueIsChecked', function(setting, compareTo) {
+  if (!this || !this.steps || !this.steps[this.index]) return;
+  const s = this.steps[this.index].config ? this.steps[this.index].config[setting] || '' : ''
+  return s === compareTo
 })
 
 Template.registerHelper('stepConfigName', function(setting) {
@@ -255,7 +230,6 @@ Template.taskHelp.helpers({
   }
 })
 
-
 Template.stepEventConfig.helpers({
   service() {
     return Session.get(`fe-step-${this.index}`)
@@ -271,13 +245,36 @@ Template.stepEventConfig.helpers({
   }
 })
 
+Template.flowEditorOutputs.helpers({
+  stepOutputsTemplate: function() {
+    const { step } = this
+    try {
+      const selectedService = Session.get(`fe-step-${step.index}`)
+      return selectedService.templates.outputs
+    } catch (ex) {
+      return null
+    }
+  }
+})
+
 Template.flowEditor.helpers({
+  isCircular: function() {
+    return Template.instance().isCircular.get();
+  },
+
+  hasEmptyConditions: function() {
+    return Template.instance().hasEmptyConditions.get();
+  },
+
+  hasConditionsNotMet: function() {
+    return Template.instance().hasConditionsNotMet.get();
+  },
 
   editMode: function() {
     return Session.get('fe-editMode') === this.index
   },
 
-  stepCardTitle: function(flow) {
+  stepCardTitle: function() {
     const selectedService = Session.get(`fe-step-${this.index}`)
     return selectedService ? `${i18n.__(selectedService.humanName)}` : null
   },

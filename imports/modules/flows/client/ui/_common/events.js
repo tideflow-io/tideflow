@@ -6,6 +6,8 @@ import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 
+import { analyze, buildFlow, calledFrom } from '/imports/modules/flows/both/flow'
+
 /**
  * Step TYPE selector changed its value
  * 
@@ -51,6 +53,7 @@ Template.flowEditorStepAvailable.events({
       let selector = $('.flow-step:last .step-type-selector').last().val(template.data.name)
       let stepIndex = selector.data().step
       stepIndex = stepIndex ? parseInt(stepIndex) : null
+      $(`[name="steps.${stepIndex}.id"]`).val(`${template.data.name}-${stepIndex}`)
       stepTypeSelectorChanged(stepIndex, template.data.name)
     }, 100)
   }
@@ -115,8 +118,16 @@ Template.flowEditor.events({
   'click .autoform-remove-item': function(event, template) {
     const card = $(event.target).parent('.card')
     const step = card.attr('data-step')
-    jsPlumb.remove(card.find('.connector-inbound'))
-    jsPlumb.remove(card.find('.connector-outbound'))
+
+    // Remove all inbound connections
+    card.find('.connector-inbound').map(function() {
+      jsPlumb.remove(this)
+    })
+
+    // Remove all outbound connections
+    card.find('.connector-outbound').map(function() {
+      jsPlumb.remove(this)
+    })
 
     $('.flow-step-step').each(function() {
       const currentStepNumber = $( this ).attr('data-step')
@@ -138,12 +149,30 @@ Template.flowEditor.events({
   }
 })
 
-const createConnection = (from, to) => {
+const createConnection = (from, outputs) => {
+  const source = (outputs.reason || '').startsWith('condition') ? 
+    `#flow-editor .card[data-step="${from}"] .connector-outbound.${outputs.reason}` :
+    `#flow-editor .card[data-step="${from}"] .connector-outbound`
+
   jsPlumb.connect({
-    source: $(`#flow-editor .card[data-step="${from}"] .connector-outbound`), 
-    target: $(`#flow-editor .card[data-step="${to}"] .connector-inbound`),
+    source: $(source), 
+    target: $(`#flow-editor .card[data-step="${outputs.stepIndex}"] .connector-inbound`),
     anchor: 'Continuous'
   })
+}
+
+const changed = (template) => {
+  let formId = $('.flow-editor').attr('id')
+  let flowFormDoc = AutoForm.getFormValues(formId).insertDoc
+  
+  let flow = buildFlow(flowFormDoc, true)
+  let analysis = analyze(flow, null, true)
+
+  template.isCircular.set(analysis.errors.isCircular)
+  Session.set('fe-flow-analysis-calledFrom', calledFrom(flow))
+  Session.set('fe-flow', flow)
+  template.hasEmptyConditions.set(analysis.errors.hasEmptyConditions)
+  template.hasConditionsNotMet.set(analysis.errors.hasConditionsNotMet)
 }
 
 /**
@@ -151,8 +180,30 @@ const createConnection = (from, to) => {
  * 
  * @param {object} flow Flow's doc - as from MongoDB
  */
-const setJsPlumb = (flow) => {
+const setJsPlumb = (flow, template) => {
+
   jsPlumb.ready(function() {
+    // Prevent having multiple connections from the same source to the
+    // same target
+    jsPlumb.bind('connection',function(info, manualEvent){
+      let con = info.connection
+      let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
+      if (arr.length > 1) jsPlumb.deleteConnection(con)
+      if (manualEvent) {
+        changed(template)
+      }
+    })
+
+    jsPlumb.bind('connectionAborted', function(info) {
+      changed(template)
+    })
+
+    jsPlumb.bind('connectionDetached', function(a,b,c) {
+      setTimeout(function() {
+        changed(template)
+      }, 100)
+    })
+
     jsPlumbUtil.logEnabled = false
     jsPlumb.setContainer($('#flow-editor'))
 
@@ -187,16 +238,8 @@ const setJsPlumb = (flow) => {
         parent: '.card',
         anchor: 'Continuous'
       })
-
-      // Prevent having multiple connections from the same source to the
-      // same target
-      jsPlumb.bind('connection',function(info){
-        let con = info.connection
-        let arr = jsPlumb.select({source:con.sourceId,target:con.targetId})
-        if (arr.length > 1) jsPlumb.deleteConnection(con)
-      })
     })
-    
+
     if (!flow) {
       $('#flow-editor .flow-step-trigger').css('left', 20)
       $('#flow-editor .flow-step-trigger').css('top', 20)
@@ -217,13 +260,13 @@ const setJsPlumb = (flow) => {
 
     // Trigger connectors
     (flow.trigger.outputs || []).map(out => {
-      createConnection('trigger', out.stepIndex)
+      createConnection('trigger', out)
     })
 
     // Trigger connectors
     flow.steps.map((step, index) => {
       step.outputs.map(out => {
-        createConnection(index, out.stepIndex)
+        createConnection(index, out)
       })
     })
 
@@ -250,14 +293,25 @@ const setJsPlumb = (flow) => {
         $('#sidebar-content').html($('.card-body .content', this).html())
       }
     })
+
+    changed(template)
   })
 }
+
+Template.flowEditor.onCreated(function() {
+  this.calledFroms = new ReactiveVar({})
+  this.isCircular = new ReactiveVar(false)
+  this.hasEmptyConditions = new ReactiveVar(false)
+  this.hasConditionsNotMet = new ReactiveVar(false)
+})
 
 Template.flowEditor.onRendered(function() {
   const instance = this
 
   instance.flowEditorRendered = false
   
+  Session.set('fe-flow', undefined)
+  Session.set('fe-flow-analysis-calledFrom', undefined)
   Session.set('fe-triggerIdSelected', undefined)
   Session.set('fe-triggerEventSelected', undefined)
   Session.set('fe-stepSelected', undefined)
@@ -269,7 +323,7 @@ Template.flowEditor.onRendered(function() {
     // The URL doesn't contains a flow _id, therefore, the user is viewing
     // the flow's editor to create a brand new flow
     if (!Router.current().params._id) {
-      setJsPlumb()
+      setJsPlumb(null, instance)
       stepTypeSelectorChanged(0, servicesAvailable.find(sa => !!sa.stepable).name)
       return
     }
@@ -292,7 +346,7 @@ Template.flowEditor.onRendered(function() {
 
       // Woops! Flow not found. Load the editor anyway
       if (!flow) {
-        setJsPlumb()
+        setJsPlumb(null, instance)
         return null
       }
 
@@ -324,7 +378,7 @@ Template.flowEditor.onRendered(function() {
         })
 
         window.setTimeout(() => {
-          setJsPlumb(flow)
+          setJsPlumb(flow, instance)
           instance.flowEditorRendered = true
         }, 1000)
       }

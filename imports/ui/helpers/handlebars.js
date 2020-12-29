@@ -3,9 +3,57 @@ import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { moment } from 'meteor/momentjs:moment'
 import { Teams } from '/imports/modules/teams/both/collection'
+import { checkRole } from '/imports/helpers/both/roles'
 
 import { Settings } from '/imports/modules/management/both/collection'
 import * as emailHelper from '/imports/helpers/both/emails'
+
+Template.registerHelper('currentTeamId', () => {
+  try {
+    let c = Router.current().params.teamId
+    if (c) Session.set('lastTeamId', c) 
+    else c = Session.get('lastTeamId') 
+    return c
+  }
+  catch (ex) {
+    return null
+  }
+})
+
+Template.registerHelper('fileSizeKb', size => {
+  if (size === 0) return '0 Kb'
+  if (!size) return ''
+  let kb = (size / 1024).toFixed(2)
+  return kb > 1024 ? 
+    `${(kb / 1024).toFixed(2)} Mb` : 
+    `${kb} Kb`
+})
+
+Template.registerHelper('absoluteUrl', () => Meteor.absoluteUrl())
+
+Template.registerHelper('agentUrl', () => {
+  const url = new URL(Meteor.absoluteUrl())
+  return `${url.protocol}//${url.hostname}`
+})
+
+Template.registerHelper('checkUserRole', (team) => {
+  return checkRole(Meteor.userId(), team)
+})
+
+Template.registerHelper('isInUrl', url => {
+  if (!url) return null
+  if (!Router.current().route.path()) return null
+  return Router.current().route.path().indexOf(url) === 1
+})
+
+Template.registerHelper('routeIs', routeName => Router.current().route.getName() === routeName)
+Template.registerHelper('routeContains', routeName => Router.current().route.getName().indexOf(routeName) >= 0)
+
+
+
+
+
+
 
 Template.registerHelper('sessVal', (name) => Session.get(name))
 

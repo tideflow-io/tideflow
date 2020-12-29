@@ -231,9 +231,11 @@ const executionResults = (execution, executionLogs, config) => {
   }
   if (config.external) {
     executionLogs.map(log => {
-      let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = log
+      if (!log.result || !log.result.files) return;
 
-      if (!result || !result.files) return;
+      // let { _id, execution, flow, step, stepIndex, status, user, type, event, createdAt, updatedAt, result } = log
+      let { _id, execution, flow, step, user, result } = log
+
       result.files.map(file => {
         let token = jwt.sign({
           exp: Math.floor(Date.now() / 1000) + (60 * 60),

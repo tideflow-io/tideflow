@@ -9,15 +9,19 @@ import { ExecutionsLogs } from '/imports/modules/executionslogs/both/collection'
 
 import { servicesAvailable } from '/imports/services/_root/server'
 
+import { calledFrom, analyze, guessStepsWithoutPreceding } from '/imports/modules/flows/both/flow'
+
+import { compareArrays } from '/imports/helpers/both/arrays'
+
 const debug = require('debug')('tideflow:queue:core')
 
 Queue.configure({
   disableDevelopmentMode: process.env.NODE_ENV !== 'development'
 })
 
-const endExecution = async (execution, status) => {
+const endExecution = async (execution, status, trace) => {
   status = status || 'finished'
-  debug(`End execution ${execution._id} with ${status}`)
+  debug(`End execution ${execution._id} with ${status} - ${trace || '-'}`)
   let now = new Date()
   let lapsed = (now.getTime() - execution.createdAt.getTime()) / 1000
 
@@ -31,62 +35,6 @@ const endExecution = async (execution, status) => {
   )
   jobs.run('workflow-execution-finished', { execution, status })
 }
-
-/**
- * Returns the list steps indexes each step is called from.
- * 
- * +----------------------------+
- * | +-------+      +-+     +-+ |
- * | |Trigger|----->|0|  +->|4| |
- * | +-------+      +++  |  +-+ |
- * |                 |   |   ^  |
- * |                 v   |   |  |
- * |       +-+      +-   |  +-+ |
- * |       |2|----->|1|--+->|3| |
- * |       +-+      +-+     +-+ |
- * +----------------------------+
- * 
- * An example output is: 
- * 
- * {
- *  0: ['trigger']    // Step is 0 is called from the trigger
- *  1: [0, 2],        // Step 1 is called from 0 and 2
- *  3: [1],           // Step 3 is called from 1
- *  4: [1, 3]         // Step 4 is called from 1 and 3
- * }
- * 
- * The previous result example is for a flow like this:
- * 
- * {
- *  "trigger" : { "outputs" : [  { "stepIndex" : 0 } ] },
- *  "steps" : [
- *   { "outputs" : [ { "stepIndex" : 1 } ] },
- *   { "outputs" : [ { "stepIndex" : 3 }, { "stepIndex" : 4 } ] },
- *   { "outputs" : [ { "stepIndex" : 1 } ] },
- *   { "outputs" : [ { "stepIndex" : 4 } ] }
- *  ]
- * }
- * 
- * @param {*} flow 
- */
-const calledFrom = flow => {
-  let c = {} //
-
-  const processOutputs = (outputs, index) => {
-    (outputs || []).map(output => {
-      let outputId = output.stepIndex
-      if (!c[outputId]) c[outputId] = []
-      c[outputId].push(index)
-    })
-  }
-
-  flow.steps.map((step, index) => processOutputs(step.outputs, index))
-  processOutputs(flow.trigger.outputs, 'trigger')
-
-  return c
-}
-
-module.exports.calledFrom = calledFrom
 
 /**
  * 
@@ -186,10 +134,6 @@ const executionCapabilities = flow => {
   return capabilities
 }
 
-const executeFlowInOneGo = (execution, user) => {
-  return workflowStart({ execution, user })
-}
-
 /**
  * Given a channel details, searches all flows using it as a trigger
  * 
@@ -249,7 +193,7 @@ const triggerFlows = async (service, user, flowsQuery, triggerData, flows) => {
     let executionId = Executions.insert(execution)
 
     if (execution.capabilities.runInOneGo) {
-      let result = await executeFlowInOneGo(execution, user)
+      let result = await workflowStart({ execution, user })
 
       return Promise.resolve({
         _id: executionId,
@@ -300,12 +244,19 @@ const executeNextStep = (context) => {
 
   // If no, it could mean that we should stop the flow's execution
   if (!outputs.length) {
-    // Get the number of executed steps in the current execution ...
-    const executedSteps = ExecutionsLogs.find({execution:executionId}).count()
+    // Get the executed steps for the current execution ...
+    const executedSteps = ExecutionsLogs.find({execution:executionId}, {
+      fields: { stepIndex: true, 'result.pass': true }
+    }).fetch()
+
+    const analysis = analyze(flow, executedSteps)
     // and compare it against the number of steps in the executed flow (+ trigger).
     // If the number matches, flag the execution as finished
-    if (executedSteps === flow.steps.length + 1) {
-      endExecution(execution)
+    if (analysis.completed) {
+      endExecution(execution, null, '#4')
+    }
+    else if (analysis.isErrored) {
+      endExecution(execution, 'error', '#9')
     }
   }
 
@@ -379,48 +330,7 @@ const executeTrigger = (service, event, flow, user, triggerData, execution, logI
 }
 
 /**
- * 
- * For the flow:
- * +--------------------+
- * | +-------+          |
- * | |Trigger|------v   |
- * | +-------+     +-+  |
- * |               |1|  |
- * |    +-+        +-+  |
- * |    |0|---------^   |
- * |    +-+             |
- * +--------------------+
- * 
- * @param {Object} flow 
- */
-const guessStepsWithoutPreceding = (flow) => {
-  // Build a list with all the steps indexes.
-  // [0, 1]
-  const allSteps = flow.steps.map((s,i)=>i)
-  // List of steps indexes that are connected to the trigger
-  // The result is [1]
-  let triggerNextSteps = flow.trigger.outputs.map(o => o.stepIndex)
-  // The result is [1, 1]
-  flow.steps.map(flowStep => {
-    triggerNextSteps = triggerNextSteps.concat( (flowStep.outputs || []).map(s => s.stepIndex) )
-  })
-  // The result is [ [0,1], [1,1] ]
-  const lists = [allSteps, triggerNextSteps]
-  // The result is [ 0 ]
-  const cardsWithoutInbound = lists.reduce((a, b) => a.filter(c => !b.includes(c)))
-  return cardsWithoutInbound || []
-}
-
-/**
- * 
- * @param {*} arr1 
- * @param {*} arr2 
- */
-const compareArrays = (arr1, arr2) => {
-  return arr1.sort().join() === arr2.sort().join()
-}
-
-/**
+ * Given a flow, returns the list of tasks that only depends on the flow's trigger.
  * 
  * For the flow:
  * +--------------------+
@@ -436,7 +346,7 @@ const compareArrays = (arr1, arr2) => {
  * 
  * @param {Object} flow 
  */
-const guessTriggerSingleChilds = (flow) => {
+const guessTriggerSingleChilds = flow => {
   const listOfCalls = calledFrom(flow)
   let result = []
   Object.keys(listOfCalls).map(stepIndex => {
@@ -538,7 +448,7 @@ const workflowStart = function (jobData) {
         }, stepUpdate)
 
         if (triggerResult.error) {
-          endExecution(execution, 'error')
+          endExecution(execution, 'error', 'triggerResult.error #1')
           debug('Trigger execution failed. Finishing')
           throw { completed: true, reason: 'trigger-execution-failed' }
         }
@@ -564,7 +474,7 @@ const workflowStart = function (jobData) {
 
         if (!flow.steps || !flow.steps.length) {
           debug('no flow steps')
-          endExecution(execution)
+          endExecution(execution, null, '#5')
           throw { completed: true, reason: 'flow-no-steps' }
         }
 
@@ -622,6 +532,14 @@ const workflowStart = function (jobData) {
 }
 jobs.register('workflow-start', workflowStart)
 
+/**
+ * Executea a workflow's task (not the trigger)
+ * 
+ * @param {Object} jobData
+ * @param {Object} jobData.execution
+ * @param {Object} jobData.currentStep
+ * @param {Object} jobData.user the user's db record - expect passwords & tokens
+ */
 const workflowStep = function(jobData) {
   debug(`workflow-step execution: ${jobData.execution._id}`)
 
@@ -630,6 +548,7 @@ const workflowStep = function(jobData) {
   
   let { currentStep, user, execution } = jobData
   const flow = execution.fullFlow
+  const originalFlow = Object.assign({}, execution.fullFlow)
   const currentStepIndex = currentStep ? flow.steps.findIndex(s => s._id === currentStep._id) : 'trigger'
   const listOfCalls = calledFrom(flow)
   const previousStepsIndexes = listOfCalls[currentStepIndex] || []
@@ -642,7 +561,9 @@ const workflowStep = function(jobData) {
   let executionLog = null
 
   return Promise.resolve()
-    .then(async () => { // Store log in database
+
+    // Create the execution LOG in the database
+    .then(async () => { 
       executionLog = {
         id: currentStep.id,
         team: flow.team,
@@ -671,14 +592,17 @@ const workflowStep = function(jobData) {
         ExecutionsLogs.insert(executionLog)
       }
       catch (ex) {
-        endExecution(execution, 'error')
+        endExecution(execution, 'error', 'ExecutionsLogs.insert #2')
         throw { completed: true, reason: 'executionlog-error', error: ex }
       }
     })
 
-    // Get the list of previous tasks to this one
+    /**
+     * Get the list of previous tasks to this one, so that previous results so
+     * that previous tasks results are available for the current task.
+     */
     .then(() => { 
-      return previousStepsIndexes.length ? ExecutionsLogs.find({
+      let previous = previousStepsIndexes.length ? ExecutionsLogs.find({
         execution: execution._id,
         stepIndex: { $in: previousStepsIndexes }
       }, {
@@ -686,8 +610,35 @@ const workflowStep = function(jobData) {
           createdAt: -1
         }
       }).fetch() : []
+
+      // Take the step ids from bridge tasks
+
+      let bridgedIndexes = []
+
+      previous.filter(task => {
+        if (task.bridgedIndexes) {
+          bridgedIndexes = bridgedIndexes.concat(task.bridgedIndexes)
+        }
+        return !task.bridgedIndexes || !task.bridgedIndexes.length
+      })
+
+      if (!bridgedIndexes.length) return previous
+
+      let additional = ExecutionsLogs.find({
+        execution: execution._id,
+        stepIndex: { $in: bridgedIndexes }
+      }, {
+        sort: {
+          createdAt: -1
+        }
+      }).fetch()
+
+      return previous.concat(additional)
     })
 
+    /**
+     * Executes the current task and get the results back
+     */
     .then(async previousSteps => {
       const stepService = servicesAvailable.find(sa => sa.name === currentStep.type)
       const stepEvent = stepService.events.find(sse => sse.name === currentStep.event)
@@ -711,6 +662,12 @@ const workflowStep = function(jobData) {
       }
     })
 
+    /**
+     * Given the task results, analyzes what to do with it. This
+     * 
+     * For example: store logs, continue or end the execution, change the flow
+     * based on conditions, etc.
+     */
     .then(async eventCallback => {
       debug(` ${currentStep.type}.${currentStep.event} => CALLBACK => `, eventCallback)
       //executionLog.result = eventCallback.result
@@ -722,54 +679,81 @@ const workflowStep = function(jobData) {
           next: eventCallback.next
         }
       }
+
+      if (eventCallback.bridgedIndexes) {
+        updateReq.$set.bridgedIndexes = eventCallback.bridgedIndexes
+      }
   
+      /**
+       * error indicates the task failed to execute. Therefore the execution of
+       * the flow should be stopped
+       */
       if (eventCallback.error) {
-        //executionLog.status = 'error'
         updateReq.$set.status = 'error'
       }
   
+      // next indicates that next tasks can be executed.
       if (eventCallback.next) {
-        //executionLog.status = eventCallback.error ? 'error' : 'success'
         updateReq.$set.status = eventCallback.error ? 'error' : 'success'
       }
   
+      // List of messages to be stored
       if (eventCallback.msgs) {
         //executionLog.msgs = eventCallback.msgs
         updateReq['$push'] = { msgs: { $each: eventCallback.msgs } }
       }
+
       ExecutionsLogs.update({_id: executionLog._id, execution: execution._id}, updateReq)
 
+      // If there was an error, stop flow's execution here.
       if (eventCallback.error) {
-        await endExecution(execution, 'error')
+        await endExecution(execution, 'error', 'eventCallback.error #3')
         throw { completed: true, reason: 'event-error', error: eventCallback.error }
       }
 
       return eventCallback
     })
 
+    /**
+     * take decission on what to do next. For example: hold or continue with
+     * futher tasks
+     */
     .then(async eventCallback => {
       // The service asked the queue to don't keep working on the execution
       if (!eventCallback.next) throw { completed: true, reason: 'next' }
 
+      let outputs = []
+
+      // Change the execution behavior based on confitions
+      if (currentStep.type === 'conditions') {
+        const pass = eventCallback.result.pass.toString()
+        outputs = currentStep.outputs.filter(o => {
+          return o.reason === `condition-${pass}`
+        })
+      }
+      else {
+        outputs = currentStep.outputs
+      }
+
       // Does the current step have any output?
-      const numberOfOutputs = (currentStep.outputs || []).length
+      const numberOfOutputs = (outputs || []).length
 
       // If no, it could mean that we should stop the flow's execution
       if (!numberOfOutputs) {
-        // Get the number of executed steps in the current execution ...
-        const executedSteps = ExecutionsLogs.find({execution:execution._id, status: {$in:['success','error']}}).count()
+        const executedSteps = ExecutionsLogs.find({execution:execution._id}, {
+          fields: { stepIndex: true, 'result.pass': true }
+        }).fetch()
 
-        // if (currentStep.type === 'debug')
-        // console.log({executedSteps, length: flow.steps.length})
-
-        // and compare it against the number of steps in the executed flow (+ trigger).
-        // If the number matches, flag the execution as finished
-        if (executedSteps === flow.steps.length + 1) {
-          endExecution(execution)
+        const analysis = analyze(originalFlow, executedSteps)
+        if (analysis.completed) {
+          endExecution(execution, null, '#6')
+        }
+        else if (analysis.isErrored) {
+          endExecution(execution, 'error', '#7')
         }
       }
 
-      let allPromises = currentStep.outputs.map(async output => {
+      let allPromises = outputs.map(async output => {
         const nextStepId = output.stepIndex
         const nextStepFull = flow.steps[nextStepId]
 
@@ -792,25 +776,40 @@ const workflowStep = function(jobData) {
           }
         }
 
+        // Build the input to be passed to the next workflow-step-execution
         const nextStepData = {
           execution,
           currentStep: nextStepFull,
           user
         }
         
+        /**
+         * Some flows can run in one-go. One-go means that tasks can be executed
+         * one right after the other (without going thorugh the queue service).
+         * 
+         * This helps completing flow executions and getting their results much
+         * faster.
+         * 
+         * But in order to to this, the system must be sure that all tasks that
+         * are part or the workflow execution support this ability.
+         */
         if (execution.capabilities.runInOneGo) {
           return await workflowStep(nextStepData)
         }
-        // Schedule execution
+
+        /**
+         * If the the execution does not supports one-go, then schedule the next
+         * task to go through the queue service.
+         */
         jobs.run('workflow-step', nextStepData)
       })
 
       return await Promise.all(allPromises)
     })
 
+    // perform database operations and finish
     .then(r => {
-      if (instance.remove) instance.remove()
-      // return Object.assign(executionLog, { subSteps: r })
+      if (instance.remove) instance.remove() // reduce database usage impact
       return executionLog
     })
 
@@ -820,11 +819,6 @@ const workflowStep = function(jobData) {
     })  
 }
 
-/**
- * Execute non-trigger flow step
- * 
- * @param {Object} jobData
- */
 jobs.register('workflow-step', workflowStep)
 
 jobs.register('workflow-execution-finished', function(jobData) {

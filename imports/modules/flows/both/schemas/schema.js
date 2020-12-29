@@ -132,6 +132,12 @@ const FlowSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
+  'steps.$.outputs.$.reason': {
+    label: 'Why its this step connected',
+    type: String,
+    allowedValues: ['step', 'condition-true', 'condition-false'],
+    defaultValue: 'step'
+  },
   'steps.$.outputs.$.stepIndex': {
     label: 'Step output steps index',
     type: Number

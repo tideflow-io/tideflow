@@ -1,0 +1,130 @@
+<template name="servicesConditionIfConfig">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.step.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.step.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" name="{{stepConfigName 'step'}}" data-schema-key="{{stepConfigName 'step'}}">
+        {{#each precedingTasks}}
+          <option value="{{id}}" {{selectedVal selected}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.property.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.property.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'property' ''}}" data-schema-key="{{stepConfigName 'property'}}" name="{{stepConfigName 'property'}}">
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.type.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.type.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers condition-type">
+      <input type="hidden" data-schema-key="{{stepConfigName 'type'}}"  name="{{stepConfigName 'type'}}" value="{{stepConfigValue 'type'}}">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="{{stepConfigName 'type'}}.string" {{subTemplateTypeChecked 'string'}} value="string">
+        <label class="form-check-label">String</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="{{stepConfigName 'type'}}.number" {{subTemplateTypeChecked 'number'}} value="number">
+        <label class="form-check-label">number</label>
+      </div>
+    </div>
+  </div>
+
+  {{> Template.dynamic template=subTemplate}}
+</template>
+
+<template name="servicesConditionIfConfig-string">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.comparisson.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.comparisson.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" name="{{stepConfigName 'comparison'}}" data-schema-key="{{stepConfigName 'comparison'}}">
+        <option value="eq" {{stepConfigValueSelectedEach steps index 'comparison' 'contains'}}>{{__ "s-conditions.event.if.string.contains.option"}}</option>
+        <option value="gt" {{stepConfigValueSelectedEach steps index 'comparison' 'eq'}}>{{__ "s-conditions.event.if.string.eq.option"}}</option>
+        <option value="gte" {{stepConfigValueSelectedEach steps index 'comparison' 'begins'}}>{{__ "s-conditions.event.if.string.begins.option"}}</option>
+        <option value="lt" {{stepConfigValueSelectedEach steps index 'comparison' 'ends'}}>{{__ "s-conditions.event.if.string.ends.option"}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.expected.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.expected.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'expected' ''}}" data-schema-key="{{stepConfigName 'expected'}}" name="{{stepConfigName 'expected'}}">
+    </div>
+  </div>
+</template>
+
+<template name="servicesConditionIfConfig-number">
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.comparisson.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.comparisson.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <select class="form-control" name="{{stepConfigName 'comparison'}}" data-schema-key="{{stepConfigName 'comparison'}}">
+        {{debug}}
+        <option value="eq" {{stepConfigValueSelectedEach steps index 'comparison' 'eq'}}>{{__ "s-conditions.event.if.number.eq.option"}}</option>
+        <option value="gt" {{stepConfigValueSelectedEach steps index 'comparison' 'gt'}}>{{__ "s-conditions.event.if.number.gt.option"}}</option>
+        <option value="gte" {{stepConfigValueSelectedEach steps index 'comparison' 'gte'}}>{{__ "s-conditions.event.if.number.gte.option"}}</option>
+        <option value="lt" {{stepConfigValueSelectedEach steps index 'comparison' 'lt'}}>{{__ "s-conditions.event.if.number.lt.option"}}</option>
+        <option value="lte" {{stepConfigValueSelectedEach steps index 'comparison' 'lte'}}>{{__ "s-conditions.event.if.number.lte.option"}}</option>
+        <option value="between" {{stepConfigValueSelectedEach steps index 'comparison' 'between'}}>{{__ "s-conditions.event.if.number.between.option"}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row field-container">
+    <div class="col-xs-12 col-lg-5 col-xl-4 field-descriptor">
+      <div class="field-name">
+        <label class="control-label">{{__ "s-conditions.event.if.expected.title"}}</label>
+      </div>
+      <div class="field-description">
+        {{__ "s-conditions.event.if.expected.description"}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
+      <input class="form-control" value="{{stepConfigValue 'expected' ''}}" data-schema-key="{{stepConfigName 'expected'}}" name="{{stepConfigName 'expected'}}">
+    </div>
+  </div>
+</template>

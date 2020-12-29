@@ -102,6 +102,21 @@ const ExecutionlogSchema = new SimpleSchema({
     label: 'Date',
     optional: true
   },
+  bridgedIndexes: {
+    type: Array,
+    label: 'Bridged results',
+    optional: true
+  },
+  'bridgedIndexes.$': {
+    type: SimpleSchema.oneOf({
+      type: Number
+    }, {
+      type: String,
+      allowedValues: ['trigger']
+    }),
+    label: 'Bridged result',
+    optional: true
+  },
   next: {
     type: Boolean,
     label: 'Execute next step inmediately',

@@ -17,6 +17,9 @@ import '/imports/services/github-webhooks/client'
 import '/imports/services/onesignal/both'
 import '/imports/services/onesignal/client'
 
+import '/imports/services/conditions/both'
+import '/imports/services/conditions/client'
+
 import '/imports/services/bitbucket-webhooks/both'
 import '/imports/services/bitbucket-webhooks/client'
 
