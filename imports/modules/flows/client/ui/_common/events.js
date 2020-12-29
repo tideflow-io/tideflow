@@ -6,7 +6,7 @@ import { Services } from '/imports/modules/services/both/collection'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
 
-import { analyze, buildFlow } from '/imports/modules/flows/both/flow'
+import { analyze, buildFlow, calledFrom } from '/imports/modules/flows/both/flow'
 
 /**
  * Step TYPE selector changed its value
@@ -53,6 +53,7 @@ Template.flowEditorStepAvailable.events({
       let selector = $('.flow-step:last .step-type-selector').last().val(template.data.name)
       let stepIndex = selector.data().step
       stepIndex = stepIndex ? parseInt(stepIndex) : null
+      $(`[name="steps.${stepIndex}.id"]`).val(`${template.data.name}-${stepIndex}`)
       stepTypeSelectorChanged(stepIndex, template.data.name)
     }, 100)
   }
@@ -163,11 +164,13 @@ const createConnection = (from, outputs) => {
 const changed = (template) => {
   let formId = $('.flow-editor').attr('id')
   let flowFormDoc = AutoForm.getFormValues(formId).insertDoc
-
+  
   let flow = buildFlow(flowFormDoc, true)
   let analysis = analyze(flow, null, true)
 
   template.isCircular.set(analysis.errors.isCircular)
+  Session.set('fe-flow-analysis-calledFrom', calledFrom(flow))
+  Session.set('fe-flow', flow)
   template.hasEmptyConditions.set(analysis.errors.hasEmptyConditions)
   template.hasConditionsNotMet.set(analysis.errors.hasConditionsNotMet)
 }
@@ -296,6 +299,7 @@ const setJsPlumb = (flow, template) => {
 }
 
 Template.flowEditor.onCreated(function() {
+  this.calledFroms = new ReactiveVar({})
   this.isCircular = new ReactiveVar(false)
   this.hasEmptyConditions = new ReactiveVar(false)
   this.hasConditionsNotMet = new ReactiveVar(false)
@@ -306,6 +310,8 @@ Template.flowEditor.onRendered(function() {
 
   instance.flowEditorRendered = false
   
+  Session.set('fe-flow', undefined)
+  Session.set('fe-flow-analysis-calledFrom', undefined)
   Session.set('fe-triggerIdSelected', undefined)
   Session.set('fe-triggerEventSelected', undefined)
   Session.set('fe-stepSelected', undefined)

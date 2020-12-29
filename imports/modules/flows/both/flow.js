@@ -251,6 +251,19 @@ const stepsToExecute = (flow, results, simulation) => {
   return { toExecute, toDiscard, required }
 }
 
+let realPosition = (i) => {
+  let offset = count = 0
+  while(count < $(`.flow-step-step`).length) {
+    if (!$(`.flow-step-step[data-step="${count}"]`).length) {
+      offset++
+    }
+    count++
+  }
+  return (i - offset) > 0 ? (i - offset) : 0
+}
+
+module.exports.realPosition = realPosition
+
 /**
  * 
  * @param {Object} doc Original object from autoform
@@ -284,16 +297,7 @@ const buildFlow = (doc, skipErrors) => {
     doc.steps[index].y = parseInt($(card).css('top'), 10)
   })
 
-  let realPosition = (i) => {
-    let offset = count = 0
-    while(count < $(`.flow-step-step`).length) {
-      if (!$(`.flow-step-step[data-step="${count}"]`).length) {
-        offset++
-      }
-      count++
-    }
-    return (i - offset) > 0 ? (i - offset) : 0
-  }
+  
 
   // Get steps connection details
   jsPlumb.getConnections().map((connection, index) => {

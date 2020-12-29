@@ -6,7 +6,6 @@ import i18n from 'meteor/universe:i18n'
 import { Flows } from '/imports/modules/flows/both/collection'
 import { Services } from '/imports/modules/services/both/collection'
 import { servicesAvailable } from '/imports/services/_root/client'
-import { checkRole } from '/imports/helpers/both/roles'
 
 /**
  * Sorts an array of objects by the specified property.
@@ -145,6 +144,10 @@ Template.registerHelper('stepConfigValueSelected', function(setting, compare) {
   return s === compare ? 'selected' : ''
 })
 
+Template.registerHelper('selectedVal', function(value) {
+  return value ? 'selected' : ''
+})
+
 Template.registerHelper('stepConfigValueSelectedEach', function(steps, index, setting, compare) {
   if (!steps || !steps[index]) return
   const s = steps[index].config ? steps[index].config[setting] || '' : ''
@@ -166,7 +169,6 @@ Template.registerHelper('stepConfigValueEqChecked', function(setting, compareTo,
   if (!this || !this.steps) return;
 
   if (!this.steps[this.index]) {
-    console.log({defaults})
     return defaults ? 'checked' : ''
   }
 

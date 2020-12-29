@@ -9,7 +9,11 @@
       </div>
     </div>
     <div class="col-xs-12 col-lg-7 col-xl-8 field-controllers">
-      <input class="form-control" value="{{stepConfigValue 'step' ''}}" data-schema-key="{{stepConfigName 'step'}}" name="{{stepConfigName 'step'}}">
+      <select class="form-control" name="{{stepConfigName 'step'}}" data-schema-key="{{stepConfigName 'step'}}">
+        {{#each precedingTasks}}
+          <option value="{{id}}" {{selectedVal selected}}>{{label}}</option>
+        {{/each}}
+      </select>
     </div>
   </div>
 
