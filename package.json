@@ -37,7 +37,7 @@
     "jsonwebtoken": "^8.5.1",
     "meteor-node-stubs": "^1.0.0",
     "mime-types": "^2.1.25",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nodemailer": "^5.1.1",
     "qrcode": "^1.4.4",
     "rss-parser": "^3.7.3",
