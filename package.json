@@ -32,7 +32,7 @@
     "cron-converter": "1.0.0",
     "debug": "^4.1.1",
     "dlv": "^1.1.3",
-    "file-type": "^13.1.0",
+    "file-type": "^16.5.4",
     "handlebars": "^4.5.3",
     "jsonwebtoken": "^8.5.1",
     "meteor-node-stubs": "^1.0.0",
