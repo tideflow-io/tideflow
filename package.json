@@ -25,7 +25,7 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "@octokit/auth-app": "^2.4.2",
-    "aws-iot-device-sdk": "^2.2.4",
+    "aws-iot-device-sdk": "^2.2.12",
     "aws-sdk": "^2.814.0",
     "bcrypt": "^5.0.0",
     "busboy": "^0.3.1",
